@@ -18,7 +18,7 @@ def pfr(recall_matrix,num,plot=True):
     prob=np.mean(recalled, axis=0)
 
     if plot==True:
-        plt.plot(range(1,len(prob)+1),prob,color='tan', lw=1)
+        plt.plot(range(1,len(prob)+1),prob,color='black', lw=1)
     
     else:
         return prob
