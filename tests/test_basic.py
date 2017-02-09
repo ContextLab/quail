@@ -33,5 +33,8 @@ def test_analysis_plr():
 	assert np.array_equal(plr(recall_matrix2),np.array([.5, 0, .5]))
 	assert np.array_equal(plr(recall_matrix3),np.array([0, 0, 1]))
 
+#def test_analysis_crp():
+
+
 
 #def test_analysis_crp():

@@ -65,7 +65,7 @@ def serial_pos(recall_matrix):
       
     """
 
-    recalled=np.zeros(len(recall_matrix),len(recall_matrix[0]),dtype=np.int)
+    recalled=np.zeros((len(recall_matrix),len(recall_matrix[0])),dtype=np.int)
     #empty array, one row per trial, one column for each presented word
     
     for idx,trial in enumerate(recall_matrix):
@@ -126,24 +126,23 @@ def pfr(recall_matrix):
 ##NOTES: 
 
 def plr(recall_matrix):
-    recalled=np.zeros((len(recall_matrix),len(recall_matrix[0]),dtype=np.int)
+    recalled=np.zeros((len(recall_matrix),len(recall_matrix[0])),dtype=np.int)
     #empty array, one row per trial, one column for each presented word
     for idx,trial in enumerate(recall_matrix):
         #for each trial in recall matrix
         
-
-        ##CHANGE###
-        for position in range(1,len(recall_matrix[0]+1)):
-            #for each possible presentation position, excluding zeros and negatives
-            
-            z=trial[-1]
-            while trial[-1]==Nan:
-                z=trial[trial.index[z]-1]
-
-            if z==position:
-                recalled[idx][position-1]=1
-                #if the last word recalled is in a given position, append a 1 to the corresponding position in recalled
+        z=trial[-1]
+        while (type(z)==float or z<=0):
+            new=trial.index(z)-1
+            z=trial[new]
+            print(z)
+    
+        ##what if entire recall matrix is nans? 
+        #(subject recalls no words)
         
+        if z in range(1,len(recall_matrix[0])+1):
+            recalled[idx][z-1]+=1
+             
     prob=np.mean(recalled, axis=0)
 
     return prob 
