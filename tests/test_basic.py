@@ -4,6 +4,7 @@ from pyrec.analysis import recall_matrix
 from pyrec.analysis import serial_pos
 from pyrec.analysis import pfr
 from pyrec.analysis import plr
+from pyrec.analysis import crp
 import numpy as np
 import pytest
 
@@ -33,8 +34,9 @@ def test_analysis_plr():
 	assert np.array_equal(plr(recall_matrix2),np.array([.5, 0, .5]))
 	assert np.array_equal(plr(recall_matrix3),np.array([0, 0, 1]))
 
-#def test_analysis_crp():
+def test_analysis_crp():
+	myList=[[8, 7, 1, 2, 3, 5, 6, 4],[8, 7, 1, 2, 3, 5, 6, 4]]
+	assert crp(myList)==[[0.0, 0.5, 0.0, 0.0, 0.0, 0.33333333333333331, 0.33333333333333331, 0.75, 0.33333333333333331, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.5, 0.0, 0.0, 0.0, 0.33333333333333331, 0.33333333333333331, 0.75, 0.33333333333333331, 0.0, 0.0, 0.0, 0.0, 0.0]]
 
 
 
-#def test_analysis_crp():

@@ -126,6 +126,22 @@ def pfr(recall_matrix):
 ##NOTES: 
 
 def plr(recall_matrix):
+    """
+    Computes probability of a word being recalled last (in the appropriate recall list), given its presentation position 
+
+    Parameters
+    ----------
+    recall_matrix : list of lists of ints
+      each integer represents the presentation position of the recalled word in a given list in order of recall
+      0s represent recalled words not presented
+      negative ints represent words recalled from previous lists  
+    
+    Returns
+    ----------
+    probabilities : numpy array of ints
+      each int represents the probability of last recall for a word presented in given position/index 
+      
+    """
     recalled=np.zeros((len(recall_matrix),len(recall_matrix[0])),dtype=np.int)
     #empty array, one row per trial, one column for each presented word
     for idx,trial in enumerate(recall_matrix):
@@ -148,6 +164,22 @@ def plr(recall_matrix):
     return prob 
 
 def crp(recall_matrix):
+    """
+    Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)
+
+    Parameters
+    ----------
+    recall_matrix : list of lists of ints
+      each integer represents the presentation position of the recalled word in a given list in order of recall
+      0s represent recalled words not presented
+      negative ints represent words recalled from previous lists  
+    
+    Returns
+    ----------
+    probabilities : list of floats
+      each float is the probability of transition distance (distnaces indexed by position, from -(n-1) to (n-1), excluding zero
+      
+    """
     
     def check_pair(a, b):
         if (a>0 and b>0) and (a!=b):
