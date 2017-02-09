@@ -12232,7 +12232,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[68]:</div>
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">pres2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
@@ -12243,23 +12243,25 @@ div#notebook {
     <span class="c1">#assumes all subs do equal lists and all lists have equal words</span>
     
     <span class="n">subs_idx</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">lsts_idx</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">lsts_idx</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">subs</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
         
-        <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx2</span><span class="p">,</span><span class="n">sub</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subs</span><span class="p">):</span>
             <span class="n">sub_idx</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">lst_idx</span> <span class="o">=</span> <span class="p">[]</span>
             
             <span class="k">for</span> <span class="n">idx3</span><span class="p">,</span><span class="n">lst</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub</span><span class="p">):</span>
                 <span class="n">lst_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx3</span><span class="p">)</span>
             
-            <span class="n">sub_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">lst_idx</span><span class="p">)</span>
+            <span class="n">sub_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx2</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">lst_idx</span><span class="p">)</span>
             
             <span class="n">subs_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_idx</span><span class="p">)</span>
             <span class="n">lsts_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lst_idx</span><span class="p">)</span>
             
-    <span class="k">print</span><span class="p">(</span><span class="n">subs_idx</span><span class="p">)</span> 
+    <span class="k">print</span><span class="p">(</span><span class="n">subs_idx</span><span class="p">)</span>
+    <span class="k">print</span>
     <span class="k">print</span><span class="p">(</span><span class="n">sub_idx</span><span class="p">)</span>
+    <span class="k">print</span>
     <span class="k">print</span><span class="p">(</span><span class="n">lst_idx</span><span class="p">)</span>
     
 <span class="n">pres2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
@@ -12276,13 +12278,28 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+<pre>[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3], [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6], [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7], [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8], [9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9], [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10], [11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11], [12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], [13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13], [14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14], [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15]]
+
+[15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15]
+
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 </pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
+
+</div>
 </div>
 </div>
 

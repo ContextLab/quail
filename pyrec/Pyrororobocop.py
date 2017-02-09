@@ -298,7 +298,7 @@ print(all_presented)
 
 # <h1>Create Presented DataFrame</h1>
 
-# In[68]:
+# In[72]:
 
 def pres2pd(all_presented):
     
@@ -308,25 +308,32 @@ def pres2pd(all_presented):
     #assumes all subs do equal lists and all lists have equal words
     
     subs_idx = []
-    lsts_idx=[]
+    lsts_idx = []
     for idx,subs in enumerate(all_presented):
         
-        for sub in subs:
+        for idx2,sub in enumerate(subs):
             sub_idx = []
             lst_idx = []
             
             for idx3,lst in enumerate(sub):
                 lst_idx.append(idx3)
             
-            sub_idx = [idx]*len(lst_idx)
+            sub_idx = [idx2]*len(lst_idx)
             
             subs_idx.append(sub_idx)
             lsts_idx.append(lst_idx)
             
-    print(subs_idx) 
+    print(subs_idx)
+    print
     print(sub_idx)
+    print
     print(lst_idx)
     
 pres2pd(all_presented)
             
+
+
+# In[ ]:
+
+
 
