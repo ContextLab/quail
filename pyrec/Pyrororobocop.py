@@ -298,36 +298,55 @@ print(all_presented)
 
 # <h1>Create Presented DataFrame</h1>
 
-# In[72]:
+# In[109]:
 
 def pres2pd(all_presented):
     
-    subs = len(all_presented)
-#   lists = len(all_presented[0])
-#   words_per = len(all_presented[0][0])
-    #assumes all subs do equal lists and all lists have equal words
+    def indexing(all_presented):
     
-    subs_idx = []
-    lsts_idx = []
-    for idx,subs in enumerate(all_presented):
+        subs = len(all_presented)
+    #   lists = len(all_presented[0])
+    #   words_per = len(all_presented[0][0])
+        #assumes all subs do equal lists and all lists have equal words
+
+        subs_idx = []
+        lsts_idx = []
+        for idx,subs in enumerate(all_presented):
+
+            for idx2,sub in enumerate(subs):
+                sub_idx = []
+                lst_idx = []
+
+                for idx3,lst in enumerate(sub):
+                    lst_idx.append(idx3)
+
+                sub_idx = [idx2]*len(lst_idx)
+
+                subs_idx.append(sub_idx)
+                lsts_idx.append(lst_idx)
+
+        subs_index = [item for sublist in subs_idx for item in sublist]
+        lsts_index = [item for sublist in lsts_idx for item in sublist]
         
-        for idx2,sub in enumerate(subs):
-            sub_idx = []
-            lst_idx = []
-            
-            for idx3,lst in enumerate(sub):
-                lst_idx.append(idx3)
-            
-            sub_idx = [idx2]*len(lst_idx)
-            
-            subs_idx.append(sub_idx)
-            lsts_idx.append(lst_idx)
-            
-    print(subs_idx)
-    print
-    print(sub_idx)
-    print
-    print(lst_idx)
+        return(subs_index, lsts_index)
+    
+    #####################
+    
+    #Make dataframe
+    
+    df = pd.DataFrame(index = [indexing(all_presented)[0],indexing(all_presented)[1]], columns = list(range(0,16)))
+    
+    for indx,subject in enumerate(all_presented):
+        for idx,lst in enumerate(subject):
+            #pd.series(lst)
+            df.loc[indx][idx] = pd.Series(lst) 
+            True
+    
+    return(df)
+    
+    #return(indexing(all_presented))
+    
+    
     
 pres2pd(all_presented)
             
