@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>Pyrororobocop</title>
+<title>Pyro</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -11757,7 +11757,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
@@ -11810,7 +11810,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">Pyro</span><span class="p">()</span>
@@ -11824,11 +11824,11 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;__main__.Pyro at 0x1086095d0&gt;</pre>
+<pre>&lt;__main__.Pyro at 0x106020a90&gt;</pre>
 </div>
 
 </div>
@@ -11839,7 +11839,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">Table</span>
@@ -11888,7 +11888,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">db_url</span> <span class="o">=</span> <span class="s2">&quot;sqlite:///participants.db&quot;</span>
@@ -11961,7 +11961,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">db_url</span> <span class="o">=</span> <span class="s2">&quot;sqlite:///participants.db&quot;</span>
@@ -12005,7 +12005,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># read in stimulus library</span>
@@ -12028,7 +12028,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">subids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_frame</span><span class="p">[</span><span class="n">data_frame</span><span class="p">[</span><span class="s1">&#39;listNumber&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">15</span><span class="p">][</span><span class="s1">&#39;uniqueid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
@@ -12093,7 +12093,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># this function takes the data frame and returns subject specific data based on the subid variable</span>
@@ -12175,13 +12175,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[61]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">experiment</span><span class="o">=</span><span class="p">[]</span>
 <span class="n">all_recalled</span><span class="o">=</span><span class="p">[]</span>
 <span class="n">all_presented</span><span class="o">=</span><span class="p">[]</span>
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">sub</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">exp1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]):</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">sub</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">exp1</span><span class="p">):</span>
 
     <span class="n">filteredStimData</span> <span class="o">=</span> <span class="n">filterData</span><span class="p">(</span><span class="n">data_frame</span><span class="p">,</span><span class="n">sub</span><span class="p">)</span>
     <span class="n">stimDict</span> <span class="o">=</span> <span class="n">createStimDict</span><span class="p">(</span><span class="n">filteredStimData</span><span class="p">)</span>
@@ -12211,8 +12211,8 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>1
-[[[&#39;OAK&#39;, &#39;JUMPER&#39;, &#39;MARIMBA&#39;, &#39;ROBE&#39;, &#39;COLANDER&#39;, &#39;BLENDER&#39;, &#39;COTTONWOOD&#39;, &#39;EVERGREEN&#39;, &#39;HARMONICA&#39;, &#39;BANJO&#39;, &#39;BELT&#39;, &#39;UKULELE&#39;, &#39;SPRUCE&#39;, &#39;CUP&#39;, &#39;SHIRT&#39;, &#39;MIXER&#39;], [&#39;SAW&#39;, &#39;CLARINET&#39;, &#39;PIANO&#39;, &#39;KAZOO&#39;, &#39;FERRET&#39;, &#39;CHISEL&#39;, &#39;SQUIRREL&#39;, &#39;ENGLAND&#39;, &#39;DRUM&#39;, &#39;LEOPARD&#39;, &#39;CAT&#39;, &#39;BOLTS&#39;, &#39;FRANCE&#39;, &#39;JAPAN&#39;, &#39;PROTRACTOR&#39;, &#39;SWITZERLAND&#39;], [&#39;LOG&#39;, &#39;BROCCOLI&#39;, &#39;CARPET&#39;, &#39;PICKLE&#39;, &#39;GRIDDLE&#39;, &#39;DISH&#39;, &#39;AZALEA&#39;, &#39;STRAINER&#39;, &#39;BUTTERCUP&#39;, &#39;SAUCER&#39;, &#39;FOUNDATION&#39;, &#39;FLOOR&#39;, &#39;ONION&#39;, &#39;ELEVATOR&#39;, &#39;CAULIFLOWER&#39;, &#39;DAHLIA&#39;], [&#39;WASHER&#39;, &#39;WISCONSIN&#39;, &#39;MANGO&#39;, &#39;VANCOUVER&#39;, &#39;VERMONT&#39;, &#39;HAWAII&#39;, &#39;TOKYO&#39;, &#39;JERUSALEM&#39;, &#39;KUMQUAT&#39;, &#39;RULER&#39;, &#39;PHILADELPHIA&#39;, &#39;NECTARINE&#39;, &#39;CALIFORNIA&#39;, &#39;GLUE&#39;, &#39;BANANA&#39;, &#39;NUTS&#39;], [&#39;SCREWS&#39;, &#39;HONEYDEW&#39;, &#39;PINE&#39;, &#39;ELM&#39;, &#39;RASPBERRY&#39;, &#39;HAMMER&#39;, &#39;FIG&#39;, &#39;HICKORY&#39;, &#39;SAXOPHONE&#39;, &#39;PLUM&#39;, &#39;WIRE&#39;, &#39;TRIANGLE&#39;, &#39;MAPLE&#39;, &#39;WEDGE&#39;, &#39;VIOLIN&#39;, &#39;CELLO&#39;], [&#39;LEMON&#39;, &#39;IOWA&#39;, &#39;MICHIGAN&#39;, &#39;POMEGRANATE&#39;, &#39;KANSAS&#39;, &#39;RIB&#39;, &#39;MONKEY&#39;, &#39;RACOON&#39;, &#39;CLEMENTINE&#39;, &#39;MOOSE&#39;, &#39;FLORIDA&#39;, &#39;TONGUE&#39;, &#39;TOOTH&#39;, &#39;PEAR&#39;, &#39;ANTELOPE&#39;, &#39;PANCREAS&#39;], [&#39;POLAND&#39;, &#39;YAMS&#39;, &#39;ETHIOPIA&#39;, &#39;ZEBRA&#39;, &#39;TROMBONE&#39;, &#39;BASS&#39;, &#39;ELEPHANT&#39;, &#39;CARROT&#39;, &#39;ITALY&#39;, &#39;CELERY&#39;, &#39;VIOLA&#39;, &#39;MARACAS&#39;, &#39;PIG&#39;, &#39;LETTUCE&#39;, &#39;LION&#39;, &#39;AUSTRALIA&#39;], [&#39;GLOVES&#39;, &#39;MANTIS&#39;, &#39;MILLIPEDE&#39;, &#39;SYCAMORE&#39;, &#39;BRA&#39;, &#39;BERLIN&#39;, &#39;MOSQUITO&#39;, &#39;RENO&#39;, &#39;CEDAR&#39;, &#39;CHICAGO&#39;, &#39;TROUSERS&#39;, &#39;TEAK&#39;, &#39;SWEATER&#39;, &#39;PALM&#39;, &#39;SYDNEY&#39;, &#39;HORNET&#39;], [&#39;WILLOW&#39;, &#39;EUCALYPTUS&#39;, &#39;BONGOS&#39;, &#39;GUITAR&#39;, &#39;HAND&#39;, &#39;WORM&#39;, &#39;LIP&#39;, &#39;LARVA&#39;, &#39;SCORPION&#39;, &#39;ANKLE&#39;, &#39;ASH&#39;, &#39;POPLAR&#39;, &#39;FINGER&#39;, &#39;MONARCH&#39;, &#39;ACCORDION&#39;, &#39;XYLOPHONE&#39;], [&#39;NARCISSUS&#39;, &#39;KNIFE&#39;, &#39;SUNFLOWER&#39;, &#39;DRESS&#39;, &#39;PANTS&#39;, &#39;LILY&#39;, &#39;SKILLET&#39;, &#39;DAISY&#39;, &#39;MAINE&#39;, &#39;GIRDLE&#39;, &#39;ARIZONA&#39;, &#39;MONTANA&#39;, &#39;TOASTER&#39;, &#39;FORK&#39;, &#39;UNDERWEAR&#39;, &#39;UTAH&#39;], [&#39;MUG&#39;, &#39;ARMS&#39;, &#39;HIP&#39;, &#39;BROILER&#39;, &#39;TAMBOURINE&#39;, &#39;PICCOLO&#39;, &#39;THERMOMETER&#39;, &#39;STOMACH&#39;, &#39;TRUMPET&#39;, &#39;TUBA&#39;, &#39;OVEN&#39;, &#39;DALLAS&#39;, &#39;MONTREAL&#39;, &#39;PELVIS&#39;, &#39;ROME&#39;, &#39;PARIS&#39;], [&#39;OKRA&#39;, &#39;PUMPKIN&#39;, &#39;PENNSYLVANIA&#39;, &#39;OHIO&#39;, &#39;RHINOCEROS&#39;, &#39;RUTABAGA&#39;, &#39;CHRYSALIS&#39;, &#39;TERMITE&#39;, &#39;BEETLE&#39;, &#39;TEXAS&#39;, &#39;ALASKA&#39;, &#39;GINGER&#39;, &#39;LLAMA&#39;, &#39;FOX&#39;, &#39;WASP&#39;, &#39;RABBIT&#39;], [&#39;KIDNEY&#39;, &#39;FOOT&#39;, &#39;SQUASH&#39;, &#39;STOCKHOLM&#39;, &#39;BOMBAY&#39;, &#39;ELBOW&#39;, &#39;GOAT&#39;, &#39;SHEEP&#39;, &#39;OLIVE&#39;, &#39;TORONTO&#39;, &#39;SHOULDER&#39;, &#39;MIAMI&#39;, &#39;ZUCCHINI&#39;, &#39;WOLF&#39;, &#39;AUBERGINE&#39;, &#39;PANTHER&#39;], [&#39;SPINACH&#39;, &#39;CAMISOLE&#39;, &#39;IRAN&#39;, &#39;BLOUSE&#39;, &#39;EGYPT&#39;, &#39;CLOSET&#39;, &#39;CHIMNEY&#39;, &#39;POTATO&#39;, &#39;FURNACE&#39;, &#39;LOBBY&#39;, &#39;GERMANY&#39;, &#39;JACKET&#39;, &#39;SUIT&#39;, &#39;CUBA&#39;, &#39;ARTICHOKE&#39;, &#39;GARLIC&#39;], [&#39;GUAVA&#39;, &#39;GIRAFFE&#39;, &#39;HORSE&#39;, &#39;COW&#39;, &#39;SPATULA&#39;, &#39;DOOR&#39;, &#39;POT&#39;, &#39;HALL&#39;, &#39;CORRIDOR&#39;, &#39;WINDOW&#39;, &#39;KIWI&#39;, &#39;GLASS&#39;, &#39;TANGELO&#39;, &#39;REFRIGERATOR&#39;, &#39;STRAWBERRY&#39;, &#39;MOUSE&#39;], [&#39;KNUCKLE&#39;, &#39;KITCHEN&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;HEART&#39;, &#39;DOG&#39;, &#39;BARN&#39;, &#39;DONKEY&#39;, &#39;TIGER&#39;, &#39;EAR&#39;, &#39;TULIP&#39;, &#39;ROSE&#39;, &#39;FACE&#39;, &#39;CARNATION&#39;, &#39;GAZEBO&#39;, &#39;PETUNIA&#39;, &#39;ALCOVE&#39;]]]
+<pre>17
+[[[&#39;OAK&#39;, &#39;JUMPER&#39;, &#39;MARIMBA&#39;, &#39;ROBE&#39;, &#39;COLANDER&#39;, &#39;BLENDER&#39;, &#39;COTTONWOOD&#39;, &#39;EVERGREEN&#39;, &#39;HARMONICA&#39;, &#39;BANJO&#39;, &#39;BELT&#39;, &#39;UKULELE&#39;, &#39;SPRUCE&#39;, &#39;CUP&#39;, &#39;SHIRT&#39;, &#39;MIXER&#39;], [&#39;SAW&#39;, &#39;CLARINET&#39;, &#39;PIANO&#39;, &#39;KAZOO&#39;, &#39;FERRET&#39;, &#39;CHISEL&#39;, &#39;SQUIRREL&#39;, &#39;ENGLAND&#39;, &#39;DRUM&#39;, &#39;LEOPARD&#39;, &#39;CAT&#39;, &#39;BOLTS&#39;, &#39;FRANCE&#39;, &#39;JAPAN&#39;, &#39;PROTRACTOR&#39;, &#39;SWITZERLAND&#39;], [&#39;LOG&#39;, &#39;BROCCOLI&#39;, &#39;CARPET&#39;, &#39;PICKLE&#39;, &#39;GRIDDLE&#39;, &#39;DISH&#39;, &#39;AZALEA&#39;, &#39;STRAINER&#39;, &#39;BUTTERCUP&#39;, &#39;SAUCER&#39;, &#39;FOUNDATION&#39;, &#39;FLOOR&#39;, &#39;ONION&#39;, &#39;ELEVATOR&#39;, &#39;CAULIFLOWER&#39;, &#39;DAHLIA&#39;], [&#39;WASHER&#39;, &#39;WISCONSIN&#39;, &#39;MANGO&#39;, &#39;VANCOUVER&#39;, &#39;VERMONT&#39;, &#39;HAWAII&#39;, &#39;TOKYO&#39;, &#39;JERUSALEM&#39;, &#39;KUMQUAT&#39;, &#39;RULER&#39;, &#39;PHILADELPHIA&#39;, &#39;NECTARINE&#39;, &#39;CALIFORNIA&#39;, &#39;GLUE&#39;, &#39;BANANA&#39;, &#39;NUTS&#39;], [&#39;SCREWS&#39;, &#39;HONEYDEW&#39;, &#39;PINE&#39;, &#39;ELM&#39;, &#39;RASPBERRY&#39;, &#39;HAMMER&#39;, &#39;FIG&#39;, &#39;HICKORY&#39;, &#39;SAXOPHONE&#39;, &#39;PLUM&#39;, &#39;WIRE&#39;, &#39;TRIANGLE&#39;, &#39;MAPLE&#39;, &#39;WEDGE&#39;, &#39;VIOLIN&#39;, &#39;CELLO&#39;], [&#39;LEMON&#39;, &#39;IOWA&#39;, &#39;MICHIGAN&#39;, &#39;POMEGRANATE&#39;, &#39;KANSAS&#39;, &#39;RIB&#39;, &#39;MONKEY&#39;, &#39;RACOON&#39;, &#39;CLEMENTINE&#39;, &#39;MOOSE&#39;, &#39;FLORIDA&#39;, &#39;TONGUE&#39;, &#39;TOOTH&#39;, &#39;PEAR&#39;, &#39;ANTELOPE&#39;, &#39;PANCREAS&#39;], [&#39;POLAND&#39;, &#39;YAMS&#39;, &#39;ETHIOPIA&#39;, &#39;ZEBRA&#39;, &#39;TROMBONE&#39;, &#39;BASS&#39;, &#39;ELEPHANT&#39;, &#39;CARROT&#39;, &#39;ITALY&#39;, &#39;CELERY&#39;, &#39;VIOLA&#39;, &#39;MARACAS&#39;, &#39;PIG&#39;, &#39;LETTUCE&#39;, &#39;LION&#39;, &#39;AUSTRALIA&#39;], [&#39;GLOVES&#39;, &#39;MANTIS&#39;, &#39;MILLIPEDE&#39;, &#39;SYCAMORE&#39;, &#39;BRA&#39;, &#39;BERLIN&#39;, &#39;MOSQUITO&#39;, &#39;RENO&#39;, &#39;CEDAR&#39;, &#39;CHICAGO&#39;, &#39;TROUSERS&#39;, &#39;TEAK&#39;, &#39;SWEATER&#39;, &#39;PALM&#39;, &#39;SYDNEY&#39;, &#39;HORNET&#39;], [&#39;WILLOW&#39;, &#39;EUCALYPTUS&#39;, &#39;BONGOS&#39;, &#39;GUITAR&#39;, &#39;HAND&#39;, &#39;WORM&#39;, &#39;LIP&#39;, &#39;LARVA&#39;, &#39;SCORPION&#39;, &#39;ANKLE&#39;, &#39;ASH&#39;, &#39;POPLAR&#39;, &#39;FINGER&#39;, &#39;MONARCH&#39;, &#39;ACCORDION&#39;, &#39;XYLOPHONE&#39;], [&#39;NARCISSUS&#39;, &#39;KNIFE&#39;, &#39;SUNFLOWER&#39;, &#39;DRESS&#39;, &#39;PANTS&#39;, &#39;LILY&#39;, &#39;SKILLET&#39;, &#39;DAISY&#39;, &#39;MAINE&#39;, &#39;GIRDLE&#39;, &#39;ARIZONA&#39;, &#39;MONTANA&#39;, &#39;TOASTER&#39;, &#39;FORK&#39;, &#39;UNDERWEAR&#39;, &#39;UTAH&#39;], [&#39;MUG&#39;, &#39;ARMS&#39;, &#39;HIP&#39;, &#39;BROILER&#39;, &#39;TAMBOURINE&#39;, &#39;PICCOLO&#39;, &#39;THERMOMETER&#39;, &#39;STOMACH&#39;, &#39;TRUMPET&#39;, &#39;TUBA&#39;, &#39;OVEN&#39;, &#39;DALLAS&#39;, &#39;MONTREAL&#39;, &#39;PELVIS&#39;, &#39;ROME&#39;, &#39;PARIS&#39;], [&#39;OKRA&#39;, &#39;PUMPKIN&#39;, &#39;PENNSYLVANIA&#39;, &#39;OHIO&#39;, &#39;RHINOCEROS&#39;, &#39;RUTABAGA&#39;, &#39;CHRYSALIS&#39;, &#39;TERMITE&#39;, &#39;BEETLE&#39;, &#39;TEXAS&#39;, &#39;ALASKA&#39;, &#39;GINGER&#39;, &#39;LLAMA&#39;, &#39;FOX&#39;, &#39;WASP&#39;, &#39;RABBIT&#39;], [&#39;KIDNEY&#39;, &#39;FOOT&#39;, &#39;SQUASH&#39;, &#39;STOCKHOLM&#39;, &#39;BOMBAY&#39;, &#39;ELBOW&#39;, &#39;GOAT&#39;, &#39;SHEEP&#39;, &#39;OLIVE&#39;, &#39;TORONTO&#39;, &#39;SHOULDER&#39;, &#39;MIAMI&#39;, &#39;ZUCCHINI&#39;, &#39;WOLF&#39;, &#39;AUBERGINE&#39;, &#39;PANTHER&#39;], [&#39;SPINACH&#39;, &#39;CAMISOLE&#39;, &#39;IRAN&#39;, &#39;BLOUSE&#39;, &#39;EGYPT&#39;, &#39;CLOSET&#39;, &#39;CHIMNEY&#39;, &#39;POTATO&#39;, &#39;FURNACE&#39;, &#39;LOBBY&#39;, &#39;GERMANY&#39;, &#39;JACKET&#39;, &#39;SUIT&#39;, &#39;CUBA&#39;, &#39;ARTICHOKE&#39;, &#39;GARLIC&#39;], [&#39;GUAVA&#39;, &#39;GIRAFFE&#39;, &#39;HORSE&#39;, &#39;COW&#39;, &#39;SPATULA&#39;, &#39;DOOR&#39;, &#39;POT&#39;, &#39;HALL&#39;, &#39;CORRIDOR&#39;, &#39;WINDOW&#39;, &#39;KIWI&#39;, &#39;GLASS&#39;, &#39;TANGELO&#39;, &#39;REFRIGERATOR&#39;, &#39;STRAWBERRY&#39;, &#39;MOUSE&#39;], [&#39;KNUCKLE&#39;, &#39;KITCHEN&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;HEART&#39;, &#39;DOG&#39;, &#39;BARN&#39;, &#39;DONKEY&#39;, &#39;TIGER&#39;, &#39;EAR&#39;, &#39;TULIP&#39;, &#39;ROSE&#39;, &#39;FACE&#39;, &#39;CARNATION&#39;, &#39;GAZEBO&#39;, &#39;PETUNIA&#39;, &#39;ALCOVE&#39;]], [[&#39;DALLAS&#39;, &#39;OVEN&#39;, &#39;STOMACH&#39;, &#39;THERMOMETER&#39;, &#39;BROILER&#39;, &#39;PARIS&#39;, &#39;PELVIS&#39;, &#39;PICCOLO&#39;, &#39;TAMBOURINE&#39;, &#39;ARMS&#39;, &#39;TRUMPET&#39;, &#39;HIP&#39;, &#39;MUG&#39;, &#39;TUBA&#39;, &#39;ROME&#39;, &#39;MONTREAL&#39;], [&#39;ANTELOPE&#39;, &#39;LEMON&#39;, &#39;CLEMENTINE&#39;, &#39;IOWA&#39;, &#39;KANSAS&#39;, &#39;FLORIDA&#39;, &#39;PEAR&#39;, &#39;POMEGRANATE&#39;, &#39;PANCREAS&#39;, &#39;TONGUE&#39;, &#39;MICHIGAN&#39;, &#39;MONKEY&#39;, &#39;TOOTH&#39;, &#39;MOOSE&#39;, &#39;RIB&#39;, &#39;RACOON&#39;], [&#39;TERMITE&#39;, &#39;TEXAS&#39;, &#39;CHRYSALIS&#39;, &#39;GINGER&#39;, &#39;RHINOCEROS&#39;, &#39;RUTABAGA&#39;, &#39;ALASKA&#39;, &#39;PENNSYLVANIA&#39;, &#39;OHIO&#39;, &#39;BEETLE&#39;, &#39;FOX&#39;, &#39;PUMPKIN&#39;, &#39;OKRA&#39;, &#39;WASP&#39;, &#39;LLAMA&#39;, &#39;RABBIT&#39;], [&#39;EVERGREEN&#39;, &#39;SHIRT&#39;, &#39;BLENDER&#39;, &#39;HARMONICA&#39;, &#39;COTTONWOOD&#39;, &#39;COLANDER&#39;, &#39;MARIMBA&#39;, &#39;OAK&#39;, &#39;BANJO&#39;, &#39;UKULELE&#39;, &#39;ROBE&#39;, &#39;BELT&#39;, &#39;MIXER&#39;, &#39;CUP&#39;, &#39;JUMPER&#39;, &#39;SPRUCE&#39;], [&#39;FRANCE&#39;, &#39;DRUM&#39;, &#39;ENGLAND&#39;, &#39;LEOPARD&#39;, &#39;CHISEL&#39;, &#39;BOLTS&#39;, &#39;SQUIRREL&#39;, &#39;CAT&#39;, &#39;JAPAN&#39;, &#39;SWITZERLAND&#39;, &#39;SAW&#39;, &#39;PROTRACTOR&#39;, &#39;CLARINET&#39;, &#39;PIANO&#39;, &#39;KAZOO&#39;, &#39;FERRET&#39;], [&#39;FOOT&#39;, &#39;WOLF&#39;, &#39;AUBERGINE&#39;, &#39;OLIVE&#39;, &#39;STOCKHOLM&#39;, &#39;ELBOW&#39;, &#39;KIDNEY&#39;, &#39;ZUCCHINI&#39;, &#39;BOMBAY&#39;, &#39;GOAT&#39;, &#39;SHOULDER&#39;, &#39;SQUASH&#39;, &#39;TORONTO&#39;, &#39;PANTHER&#39;, &#39;MIAMI&#39;, &#39;SHEEP&#39;], [&#39;MAINE&#39;, &#39;LILY&#39;, &#39;DAISY&#39;, &#39;KNIFE&#39;, &#39;PANTS&#39;, &#39;SUNFLOWER&#39;, &#39;TOASTER&#39;, &#39;MONTANA&#39;, &#39;FORK&#39;, &#39;SKILLET&#39;, &#39;DRESS&#39;, &#39;ARIZONA&#39;, &#39;UTAH&#39;, &#39;GIRDLE&#39;, &#39;UNDERWEAR&#39;, &#39;NARCISSUS&#39;], [&#39;CAULIFLOWER&#39;, &#39;DAHLIA&#39;, &#39;BUTTERCUP&#39;, &#39;SAUCER&#39;, &#39;PICKLE&#39;, &#39;ELEVATOR&#39;, &#39;GRIDDLE&#39;, &#39;CARPET&#39;, &#39;LOG&#39;, &#39;BROCCOLI&#39;, &#39;STRAINER&#39;, &#39;FLOOR&#39;, &#39;ONION&#39;, &#39;DISH&#39;, &#39;FOUNDATION&#39;, &#39;AZALEA&#39;], [&#39;PINE&#39;, &#39;PLUM&#39;, &#39;CELLO&#39;, &#39;HAMMER&#39;, &#39;TRIANGLE&#39;, &#39;SCREWS&#39;, &#39;WEDGE&#39;, &#39;ELM&#39;, &#39;FIG&#39;, &#39;MAPLE&#39;, &#39;HICKORY&#39;, &#39;RASPBERRY&#39;, &#39;HONEYDEW&#39;, &#39;WIRE&#39;, &#39;VIOLIN&#39;, &#39;SAXOPHONE&#39;], [&#39;MOUSE&#39;, &#39;GIRAFFE&#39;, &#39;GLASS&#39;, &#39;POT&#39;, &#39;STRAWBERRY&#39;, &#39;WINDOW&#39;, &#39;HALL&#39;, &#39;SPATULA&#39;, &#39;HORSE&#39;, &#39;COW&#39;, &#39;REFRIGERATOR&#39;, &#39;DOOR&#39;, &#39;TANGELO&#39;, &#39;CORRIDOR&#39;, &#39;GUAVA&#39;, &#39;KIWI&#39;], [&#39;SYCAMORE&#39;, &#39;TROUSERS&#39;, &#39;RENO&#39;, &#39;PALM&#39;, &#39;MANTIS&#39;, &#39;BRA&#39;, &#39;MOSQUITO&#39;, &#39;BERLIN&#39;, &#39;SYDNEY&#39;, &#39;SWEATER&#39;, &#39;CHICAGO&#39;, &#39;CEDAR&#39;, &#39;GLOVES&#39;, &#39;TEAK&#39;, &#39;MILLIPEDE&#39;, &#39;HORNET&#39;], [&#39;NECTARINE&#39;, &#39;VERMONT&#39;, &#39;HAWAII&#39;, &#39;TOKYO&#39;, &#39;MANGO&#39;, &#39;CALIFORNIA&#39;, &#39;KUMQUAT&#39;, &#39;NUTS&#39;, &#39;GLUE&#39;, &#39;VANCOUVER&#39;, &#39;WISCONSIN&#39;, &#39;JERUSALEM&#39;, &#39;RULER&#39;, &#39;BANANA&#39;, &#39;WASHER&#39;, &#39;PHILADELPHIA&#39;], [&#39;FINGER&#39;, &#39;BONGOS&#39;, &#39;POPLAR&#39;, &#39;MONARCH&#39;, &#39;HAND&#39;, &#39;GUITAR&#39;, &#39;LARVA&#39;, &#39;XYLOPHONE&#39;, &#39;ANKLE&#39;, &#39;WILLOW&#39;, &#39;ASH&#39;, &#39;LIP&#39;, &#39;SCORPION&#39;, &#39;ACCORDION&#39;, &#39;WORM&#39;, &#39;EUCALYPTUS&#39;], [&#39;POTATO&#39;, &#39;JACKET&#39;, &#39;CHIMNEY&#39;, &#39;IRAN&#39;, &#39;SPINACH&#39;, &#39;BLOUSE&#39;, &#39;GERMANY&#39;, &#39;CLOSET&#39;, &#39;FURNACE&#39;, &#39;SUIT&#39;, &#39;LOBBY&#39;, &#39;EGYPT&#39;, &#39;CUBA&#39;, &#39;ARTICHOKE&#39;, &#39;GARLIC&#39;, &#39;CAMISOLE&#39;], [&#39;HIPPOPOTAMUS&#39;, &#39;FACE&#39;, &#39;CARNATION&#39;, &#39;PETUNIA&#39;, &#39;DOG&#39;, &#39;TULIP&#39;, &#39;ROSE&#39;, &#39;HEART&#39;, &#39;KITCHEN&#39;, &#39;KNUCKLE&#39;, &#39;BARN&#39;, &#39;EAR&#39;, &#39;ALCOVE&#39;, &#39;TIGER&#39;, &#39;DONKEY&#39;, &#39;GAZEBO&#39;], [&#39;ETHIOPIA&#39;, &#39;PIG&#39;, &#39;POLAND&#39;, &#39;CARROT&#39;, &#39;BASS&#39;, &#39;ZEBRA&#39;, &#39;YAMS&#39;, &#39;MARACAS&#39;, &#39;TROMBONE&#39;, &#39;LETTUCE&#39;, &#39;ELEPHANT&#39;, &#39;VIOLA&#39;, &#39;LION&#39;, &#39;AUSTRALIA&#39;, &#39;ITALY&#39;, &#39;CELERY&#39;]], [[&#39;TONGUE&#39;, &#39;CLEMENTINE&#39;, &#39;FLORIDA&#39;, &#39;IOWA&#39;, &#39;LEMON&#39;, &#39;RIB&#39;, &#39;MICHIGAN&#39;, &#39;MOOSE&#39;, &#39;PEAR&#39;, &#39;TOOTH&#39;, &#39;PANCREAS&#39;, &#39;RACOON&#39;, &#39;KANSAS&#39;, &#39;ANTELOPE&#39;, &#39;POMEGRANATE&#39;, &#39;MONKEY&#39;], [&#39;GUAVA&#39;, &#39;GIRAFFE&#39;, &#39;KIWI&#39;, &#39;DOOR&#39;, &#39;HORSE&#39;, &#39;COW&#39;, &#39;GLASS&#39;, &#39;STRAWBERRY&#39;, &#39;HALL&#39;, &#39;WINDOW&#39;, &#39;SPATULA&#39;, &#39;REFRIGERATOR&#39;, &#39;TANGELO&#39;, &#39;POT&#39;, &#39;CORRIDOR&#39;, &#39;MOUSE&#39;], [&#39;ACCORDION&#39;, &#39;EUCALYPTUS&#39;, &#39;MONARCH&#39;, &#39;XYLOPHONE&#39;, &#39;ASH&#39;, &#39;LIP&#39;, &#39;ANKLE&#39;, &#39;GUITAR&#39;, &#39;WORM&#39;, &#39;WILLOW&#39;, &#39;SCORPION&#39;, &#39;LARVA&#39;, &#39;HAND&#39;, &#39;FINGER&#39;, &#39;POPLAR&#39;, &#39;BONGOS&#39;], [&#39;ETHIOPIA&#39;, &#39;VIOLA&#39;, &#39;TROMBONE&#39;, &#39;ZEBRA&#39;, &#39;ITALY&#39;, &#39;BASS&#39;, &#39;MARACAS&#39;, &#39;POLAND&#39;, &#39;LION&#39;, &#39;LETTUCE&#39;, &#39;AUSTRALIA&#39;, &#39;PIG&#39;, &#39;CARROT&#39;, &#39;ELEPHANT&#39;, &#39;YAMS&#39;, &#39;CELERY&#39;], [&#39;PINE&#39;, &#39;SCREWS&#39;, &#39;WEDGE&#39;, &#39;TRIANGLE&#39;, &#39;CELLO&#39;, &#39;HAMMER&#39;, &#39;RASPBERRY&#39;, &#39;HONEYDEW&#39;, &#39;FIG&#39;, &#39;VIOLIN&#39;, &#39;HICKORY&#39;, &#39;MAPLE&#39;, &#39;PLUM&#39;, &#39;WIRE&#39;, &#39;SAXOPHONE&#39;, &#39;ELM&#39;], [&#39;GOAT&#39;, &#39;SHEEP&#39;, &#39;ELBOW&#39;, &#39;FOOT&#39;, &#39;MIAMI&#39;, &#39;WOLF&#39;, &#39;STOCKHOLM&#39;, &#39;OLIVE&#39;, &#39;KIDNEY&#39;, &#39;PANTHER&#39;, &#39;AUBERGINE&#39;, &#39;ZUCCHINI&#39;, &#39;TORONTO&#39;, &#39;BOMBAY&#39;, &#39;SQUASH&#39;, &#39;SHOULDER&#39;], [&#39;STRAINER&#39;, &#39;SAUCER&#39;, &#39;GRIDDLE&#39;, &#39;DISH&#39;, &#39;CARPET&#39;, &#39;CAULIFLOWER&#39;, &#39;DAHLIA&#39;, &#39;PICKLE&#39;, &#39;ELEVATOR&#39;, &#39;ONION&#39;, &#39;FLOOR&#39;, &#39;BROCCOLI&#39;, &#39;LOG&#39;, &#39;AZALEA&#39;, &#39;FOUNDATION&#39;, &#39;BUTTERCUP&#39;], [&#39;CHIMNEY&#39;, &#39;POTATO&#39;, &#39;FURNACE&#39;, &#39;EGYPT&#39;, &#39;IRAN&#39;, &#39;CLOSET&#39;, &#39;GERMANY&#39;, &#39;JACKET&#39;, &#39;SUIT&#39;, &#39;BLOUSE&#39;, &#39;GARLIC&#39;, &#39;LOBBY&#39;, &#39;CUBA&#39;, &#39;CAMISOLE&#39;, &#39;SPINACH&#39;, &#39;ARTICHOKE&#39;], [&#39;TIGER&#39;, &#39;KITCHEN&#39;, &#39;ALCOVE&#39;, &#39;CARNATION&#39;, &#39;BARN&#39;, &#39;ROSE&#39;, &#39;DOG&#39;, &#39;DONKEY&#39;, &#39;GAZEBO&#39;, &#39;PETUNIA&#39;, &#39;TULIP&#39;, &#39;HEART&#39;, &#39;EAR&#39;, &#39;FACE&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;KNUCKLE&#39;], [&#39;SAW&#39;, &#39;LEOPARD&#39;, &#39;PIANO&#39;, &#39;ENGLAND&#39;, &#39;KAZOO&#39;, &#39;CLARINET&#39;, &#39;FERRET&#39;, &#39;CHISEL&#39;, &#39;JAPAN&#39;, &#39;BOLTS&#39;, &#39;FRANCE&#39;, &#39;SWITZERLAND&#39;, &#39;SQUIRREL&#39;, &#39;DRUM&#39;, &#39;PROTRACTOR&#39;, &#39;CAT&#39;], [&#39;TOKYO&#39;, &#39;HAWAII&#39;, &#39;VERMONT&#39;, &#39;KUMQUAT&#39;, &#39;BANANA&#39;, &#39;NECTARINE&#39;, &#39;VANCOUVER&#39;, &#39;MANGO&#39;, &#39;PHILADELPHIA&#39;, &#39;JERUSALEM&#39;, &#39;WASHER&#39;, &#39;WISCONSIN&#39;, &#39;RULER&#39;, &#39;CALIFORNIA&#39;, &#39;NUTS&#39;, &#39;GLUE&#39;], [&#39;TAMBOURINE&#39;, &#39;HIP&#39;, &#39;TRUMPET&#39;, &#39;BROILER&#39;, &#39;ROME&#39;, &#39;TUBA&#39;, &#39;ARMS&#39;, &#39;DALLAS&#39;, &#39;PICCOLO&#39;, &#39;PARIS&#39;, &#39;MUG&#39;, &#39;THERMOMETER&#39;, &#39;PELVIS&#39;, &#39;MONTREAL&#39;, &#39;STOMACH&#39;, &#39;OVEN&#39;], [&#39;GINGER&#39;, &#39;BEETLE&#39;, &#39;CHRYSALIS&#39;, &#39;PENNSYLVANIA&#39;, &#39;LLAMA&#39;, &#39;FOX&#39;, &#39;WASP&#39;, &#39;TEXAS&#39;, &#39;OHIO&#39;, &#39;TERMITE&#39;, &#39;RHINOCEROS&#39;, &#39;PUMPKIN&#39;, &#39;RUTABAGA&#39;, &#39;RABBIT&#39;, &#39;OKRA&#39;, &#39;ALASKA&#39;], [&#39;PANTS&#39;, &#39;FORK&#39;, &#39;MONTANA&#39;, &#39;SKILLET&#39;, &#39;NARCISSUS&#39;, &#39;KNIFE&#39;, &#39;DRESS&#39;, &#39;MAINE&#39;, &#39;LILY&#39;, &#39;GIRDLE&#39;, &#39;TOASTER&#39;, &#39;SUNFLOWER&#39;, &#39;UTAH&#39;, &#39;UNDERWEAR&#39;, &#39;ARIZONA&#39;, &#39;DAISY&#39;], [&#39;BELT&#39;, &#39;UKULELE&#39;, &#39;OAK&#39;, &#39;MIXER&#39;, &#39;SPRUCE&#39;, &#39;HARMONICA&#39;, &#39;COLANDER&#39;, &#39;EVERGREEN&#39;, &#39;JUMPER&#39;, &#39;BLENDER&#39;, &#39;MARIMBA&#39;, &#39;SHIRT&#39;, &#39;COTTONWOOD&#39;, &#39;CUP&#39;, &#39;BANJO&#39;, &#39;ROBE&#39;], [&#39;BERLIN&#39;, &#39;SYDNEY&#39;, &#39;HORNET&#39;, &#39;SWEATER&#39;, &#39;CEDAR&#39;, &#39;TROUSERS&#39;, &#39;BRA&#39;, &#39;PALM&#39;, &#39;MOSQUITO&#39;, &#39;CHICAGO&#39;, &#39;TEAK&#39;, &#39;MILLIPEDE&#39;, &#39;SYCAMORE&#39;, &#39;MANTIS&#39;, &#39;GLOVES&#39;, &#39;RENO&#39;]], [[&#39;RASPBERRY&#39;, &#39;MAPLE&#39;, &#39;WIRE&#39;, &#39;HONEYDEW&#39;, &#39;PLUM&#39;, &#39;HICKORY&#39;, &#39;CELLO&#39;, &#39;HAMMER&#39;, &#39;SCREWS&#39;, &#39;PINE&#39;, &#39;FIG&#39;, &#39;VIOLIN&#39;, &#39;ELM&#39;, &#39;WEDGE&#39;, &#39;TRIANGLE&#39;, &#39;SAXOPHONE&#39;], [&#39;FORK&#39;, &#39;DAISY&#39;, &#39;NARCISSUS&#39;, &#39;SKILLET&#39;, &#39;DRESS&#39;, &#39;MONTANA&#39;, &#39;GIRDLE&#39;, &#39;UTAH&#39;, &#39;TOASTER&#39;, &#39;PANTS&#39;, &#39;MAINE&#39;, &#39;UNDERWEAR&#39;, &#39;KNIFE&#39;, &#39;SUNFLOWER&#39;, &#39;ARIZONA&#39;, &#39;LILY&#39;], [&#39;FURNACE&#39;, &#39;GERMANY&#39;, &#39;SPINACH&#39;, &#39;EGYPT&#39;, &#39;BLOUSE&#39;, &#39;GARLIC&#39;, &#39;CAMISOLE&#39;, &#39;CLOSET&#39;, &#39;LOBBY&#39;, &#39;SUIT&#39;, &#39;POTATO&#39;, &#39;CUBA&#39;, &#39;CHIMNEY&#39;, &#39;ARTICHOKE&#39;, &#39;IRAN&#39;, &#39;JACKET&#39;], [&#39;MOUSE&#39;, &#39;TANGELO&#39;, &#39;SPATULA&#39;, &#39;GUAVA&#39;, &#39;GIRAFFE&#39;, &#39;POT&#39;, &#39;HALL&#39;, &#39;GLASS&#39;, &#39;STRAWBERRY&#39;, &#39;WINDOW&#39;, &#39;KIWI&#39;, &#39;CORRIDOR&#39;, &#39;HORSE&#39;, &#39;COW&#39;, &#39;REFRIGERATOR&#39;, &#39;DOOR&#39;], [&#39;GINGER&#39;, &#39;FOX&#39;, &#39;ALASKA&#39;, &#39;PUMPKIN&#39;, &#39;RHINOCEROS&#39;, &#39;WASP&#39;, &#39;OHIO&#39;, &#39;LLAMA&#39;, &#39;TEXAS&#39;, &#39;RABBIT&#39;, &#39;OKRA&#39;, &#39;CHRYSALIS&#39;, &#39;PENNSYLVANIA&#39;, &#39;BEETLE&#39;, &#39;RUTABAGA&#39;, &#39;TERMITE&#39;], [&#39;RENO&#39;, &#39;SYDNEY&#39;, &#39;SWEATER&#39;, &#39;GLOVES&#39;, &#39;MILLIPEDE&#39;, &#39;BERLIN&#39;, &#39;BRA&#39;, &#39;TEAK&#39;, &#39;TROUSERS&#39;, &#39;PALM&#39;, &#39;CEDAR&#39;, &#39;CHICAGO&#39;, &#39;MOSQUITO&#39;, &#39;HORNET&#39;, &#39;MANTIS&#39;, &#39;SYCAMORE&#39;], [&#39;YAMS&#39;, &#39;CARROT&#39;, &#39;CELERY&#39;, &#39;LION&#39;, &#39;ITALY&#39;, &#39;ZEBRA&#39;, &#39;PIG&#39;, &#39;AUSTRALIA&#39;, &#39;LETTUCE&#39;, &#39;VIOLA&#39;, &#39;ELEPHANT&#39;, &#39;MARACAS&#39;, &#39;BASS&#39;, &#39;POLAND&#39;, &#39;ETHIOPIA&#39;, &#39;TROMBONE&#39;], [&#39;ANKLE&#39;, &#39;ASH&#39;, &#39;MONARCH&#39;, &#39;BONGOS&#39;, &#39;FINGER&#39;, &#39;LARVA&#39;, &#39;XYLOPHONE&#39;, &#39;HAND&#39;, &#39;POPLAR&#39;, &#39;LIP&#39;, &#39;SCORPION&#39;, &#39;ACCORDION&#39;, &#39;GUITAR&#39;, &#39;WORM&#39;, &#39;WILLOW&#39;, &#39;EUCALYPTUS&#39;], [&#39;TOOTH&#39;, &#39;RIB&#39;, &#39;LEMON&#39;, &#39;PEAR&#39;, &#39;POMEGRANATE&#39;, &#39;MOOSE&#39;, &#39;CLEMENTINE&#39;, &#39;ANTELOPE&#39;, &#39;KANSAS&#39;, &#39;RACOON&#39;, &#39;IOWA&#39;, &#39;MONKEY&#39;, &#39;TONGUE&#39;, &#39;MICHIGAN&#39;, &#39;PANCREAS&#39;, &#39;FLORIDA&#39;], [&#39;STOMACH&#39;, &#39;MONTREAL&#39;, &#39;PICCOLO&#39;, &#39;BROILER&#39;, &#39;HIP&#39;, &#39;TRUMPET&#39;, &#39;PARIS&#39;, &#39;ROME&#39;, &#39;MUG&#39;, &#39;DALLAS&#39;, &#39;OVEN&#39;, &#39;ARMS&#39;, &#39;TAMBOURINE&#39;, &#39;TUBA&#39;, &#39;THERMOMETER&#39;, &#39;PELVIS&#39;], [&#39;VANCOUVER&#39;, &#39;NECTARINE&#39;, &#39;MANGO&#39;, &#39;WASHER&#39;, &#39;KUMQUAT&#39;, &#39;RULER&#39;, &#39;BANANA&#39;, &#39;CALIFORNIA&#39;, &#39;NUTS&#39;, &#39;HAWAII&#39;, &#39;JERUSALEM&#39;, &#39;GLUE&#39;, &#39;TOKYO&#39;, &#39;VERMONT&#39;, &#39;WISCONSIN&#39;, &#39;PHILADELPHIA&#39;], [&#39;BARN&#39;, &#39;GAZEBO&#39;, &#39;HEART&#39;, &#39;FACE&#39;, &#39;ALCOVE&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;ROSE&#39;, &#39;TIGER&#39;, &#39;KNUCKLE&#39;, &#39;EAR&#39;, &#39;KITCHEN&#39;, &#39;CARNATION&#39;, &#39;DOG&#39;, &#39;TULIP&#39;, &#39;PETUNIA&#39;, &#39;DONKEY&#39;], [&#39;SAUCER&#39;, &#39;ONION&#39;, &#39;DAHLIA&#39;, &#39;LOG&#39;, &#39;CARPET&#39;, &#39;AZALEA&#39;, &#39;FLOOR&#39;, &#39;BUTTERCUP&#39;, &#39;BROCCOLI&#39;, &#39;GRIDDLE&#39;, &#39;DISH&#39;, &#39;PICKLE&#39;, &#39;FOUNDATION&#39;, &#39;CAULIFLOWER&#39;, &#39;ELEVATOR&#39;, &#39;STRAINER&#39;], [&#39;BOMBAY&#39;, &#39;MIAMI&#39;, &#39;SQUASH&#39;, &#39;AUBERGINE&#39;, &#39;TORONTO&#39;, &#39;STOCKHOLM&#39;, &#39;WOLF&#39;, &#39;SHOULDER&#39;, &#39;ELBOW&#39;, &#39;SHEEP&#39;, &#39;GOAT&#39;, &#39;OLIVE&#39;, &#39;KIDNEY&#39;, &#39;ZUCCHINI&#39;, &#39;FOOT&#39;, &#39;PANTHER&#39;], [&#39;FERRET&#39;, &#39;SQUIRREL&#39;, &#39;JAPAN&#39;, &#39;CHISEL&#39;, &#39;CAT&#39;, &#39;CLARINET&#39;, &#39;LEOPARD&#39;, &#39;DRUM&#39;, &#39;SAW&#39;, &#39;FRANCE&#39;, &#39;PIANO&#39;, &#39;SWITZERLAND&#39;, &#39;PROTRACTOR&#39;, &#39;ENGLAND&#39;, &#39;BOLTS&#39;, &#39;KAZOO&#39;], [&#39;BELT&#39;, &#39;HARMONICA&#39;, &#39;CUP&#39;, &#39;BLENDER&#39;, &#39;SHIRT&#39;, &#39;BANJO&#39;, &#39;MARIMBA&#39;, &#39;OAK&#39;, &#39;EVERGREEN&#39;, &#39;COLANDER&#39;, &#39;ROBE&#39;, &#39;MIXER&#39;, &#39;COTTONWOOD&#39;, &#39;UKULELE&#39;, &#39;SPRUCE&#39;, &#39;JUMPER&#39;]], [[&#39;HARMONICA&#39;, &#39;UKULELE&#39;, &#39;COTTONWOOD&#39;, &#39;BLENDER&#39;, &#39;CUP&#39;, &#39;JUMPER&#39;, &#39;MIXER&#39;, &#39;ROBE&#39;, &#39;OAK&#39;, &#39;COLANDER&#39;, &#39;SPRUCE&#39;, &#39;SHIRT&#39;, &#39;MARIMBA&#39;, &#39;BELT&#39;, &#39;BANJO&#39;, &#39;EVERGREEN&#39;], [&#39;LARVA&#39;, &#39;WILLOW&#39;, &#39;GUITAR&#39;, &#39;FINGER&#39;, &#39;XYLOPHONE&#39;, &#39;POPLAR&#39;, &#39;HAND&#39;, &#39;SCORPION&#39;, &#39;ANKLE&#39;, &#39;MONARCH&#39;, &#39;EUCALYPTUS&#39;, &#39;ASH&#39;, &#39;ACCORDION&#39;, &#39;BONGOS&#39;, &#39;LIP&#39;, &#39;WORM&#39;], [&#39;BARN&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;KNUCKLE&#39;, &#39;DONKEY&#39;, &#39;DOG&#39;, &#39;KITCHEN&#39;, &#39;PETUNIA&#39;, &#39;CARNATION&#39;, &#39;ROSE&#39;, &#39;GAZEBO&#39;, &#39;TIGER&#39;, &#39;HEART&#39;, &#39;ALCOVE&#39;, &#39;FACE&#39;, &#39;EAR&#39;, &#39;TULIP&#39;], [&#39;CAMISOLE&#39;, &#39;FURNACE&#39;, &#39;ARTICHOKE&#39;, &#39;IRAN&#39;, &#39;EGYPT&#39;, &#39;CHIMNEY&#39;, &#39;CUBA&#39;, &#39;POTATO&#39;, &#39;LOBBY&#39;, &#39;SPINACH&#39;, &#39;GARLIC&#39;, &#39;GERMANY&#39;, &#39;CLOSET&#39;, &#39;BLOUSE&#39;, &#39;JACKET&#39;, &#39;SUIT&#39;], [&#39;OVEN&#39;, &#39;TRUMPET&#39;, &#39;MONTREAL&#39;, &#39;PARIS&#39;, &#39;TUBA&#39;, &#39;ARMS&#39;, &#39;STOMACH&#39;, &#39;PELVIS&#39;, &#39;THERMOMETER&#39;, &#39;BROILER&#39;, &#39;HIP&#39;, &#39;ROME&#39;, &#39;DALLAS&#39;, &#39;MUG&#39;, &#39;TAMBOURINE&#39;, &#39;PICCOLO&#39;], [&#39;POT&#39;, &#39;TANGELO&#39;, &#39;DOOR&#39;, &#39;SPATULA&#39;, &#39;GUAVA&#39;, &#39;COW&#39;, &#39;KIWI&#39;, &#39;HORSE&#39;, &#39;HALL&#39;, &#39;STRAWBERRY&#39;, &#39;GIRAFFE&#39;, &#39;REFRIGERATOR&#39;, &#39;MOUSE&#39;, &#39;GLASS&#39;, &#39;WINDOW&#39;, &#39;CORRIDOR&#39;], [&#39;DRUM&#39;, &#39;KAZOO&#39;, &#39;FERRET&#39;, &#39;CAT&#39;, &#39;SQUIRREL&#39;, &#39;SWITZERLAND&#39;, &#39;ENGLAND&#39;, &#39;CLARINET&#39;, &#39;BOLTS&#39;, &#39;LEOPARD&#39;, &#39;CHISEL&#39;, &#39;SAW&#39;, &#39;PROTRACTOR&#39;, &#39;FRANCE&#39;, &#39;PIANO&#39;, &#39;JAPAN&#39;], [&#39;TROMBONE&#39;, &#39;CELERY&#39;, &#39;LETTUCE&#39;, &#39;LION&#39;, &#39;CARROT&#39;, &#39;MARACAS&#39;, &#39;POLAND&#39;, &#39;BASS&#39;, &#39;PIG&#39;, &#39;VIOLA&#39;, &#39;AUSTRALIA&#39;, &#39;ETHIOPIA&#39;, &#39;YAMS&#39;, &#39;ZEBRA&#39;, &#39;ELEPHANT&#39;, &#39;ITALY&#39;], [&#39;GLUE&#39;, &#39;TOKYO&#39;, &#39;WASHER&#39;, &#39;NECTARINE&#39;, &#39;NUTS&#39;, &#39;RULER&#39;, &#39;PHILADELPHIA&#39;, &#39;JERUSALEM&#39;, &#39;KUMQUAT&#39;, &#39;VANCOUVER&#39;, &#39;VERMONT&#39;, &#39;BANANA&#39;, &#39;MANGO&#39;, &#39;HAWAII&#39;, &#39;WISCONSIN&#39;, &#39;CALIFORNIA&#39;], [&#39;GINGER&#39;, &#39;TERMITE&#39;, &#39;CHRYSALIS&#39;, &#39;LLAMA&#39;, &#39;OKRA&#39;, &#39;BEETLE&#39;, &#39;TEXAS&#39;, &#39;PUMPKIN&#39;, &#39;ALASKA&#39;, &#39;WASP&#39;, &#39;OHIO&#39;, &#39;RABBIT&#39;, &#39;PENNSYLVANIA&#39;, &#39;RUTABAGA&#39;, &#39;FOX&#39;, &#39;RHINOCEROS&#39;], [&#39;STOCKHOLM&#39;, &#39;WOLF&#39;, &#39;ZUCCHINI&#39;, &#39;ELBOW&#39;, &#39;GOAT&#39;, &#39;KIDNEY&#39;, &#39;AUBERGINE&#39;, &#39;BOMBAY&#39;, &#39;PANTHER&#39;, &#39;FOOT&#39;, &#39;SQUASH&#39;, &#39;OLIVE&#39;, &#39;SHOULDER&#39;, &#39;SHEEP&#39;, &#39;MIAMI&#39;, &#39;TORONTO&#39;], [&#39;SYDNEY&#39;, &#39;GLOVES&#39;, &#39;TEAK&#39;, &#39;PALM&#39;, &#39;SWEATER&#39;, &#39;MILLIPEDE&#39;, &#39;RENO&#39;, &#39;CEDAR&#39;, &#39;BERLIN&#39;, &#39;BRA&#39;, &#39;HORNET&#39;, &#39;CHICAGO&#39;, &#39;MOSQUITO&#39;, &#39;SYCAMORE&#39;, &#39;MANTIS&#39;, &#39;TROUSERS&#39;], [&#39;WEDGE&#39;, &#39;HICKORY&#39;, &#39;ELM&#39;, &#39;PLUM&#39;, &#39;RASPBERRY&#39;, &#39;WIRE&#39;, &#39;SCREWS&#39;, &#39;MAPLE&#39;, &#39;PINE&#39;, &#39;HONEYDEW&#39;, &#39;FIG&#39;, &#39;VIOLIN&#39;, &#39;CELLO&#39;, &#39;HAMMER&#39;, &#39;SAXOPHONE&#39;, &#39;TRIANGLE&#39;], [&#39;UTAH&#39;, &#39;GIRDLE&#39;, &#39;DRESS&#39;, &#39;SKILLET&#39;, &#39;NARCISSUS&#39;, &#39;TOASTER&#39;, &#39;ARIZONA&#39;, &#39;SUNFLOWER&#39;, &#39;FORK&#39;, &#39;UNDERWEAR&#39;, &#39;KNIFE&#39;, &#39;MONTANA&#39;, &#39;MAINE&#39;, &#39;DAISY&#39;, &#39;PANTS&#39;, &#39;LILY&#39;], [&#39;RIB&#39;, &#39;POMEGRANATE&#39;, &#39;CLEMENTINE&#39;, &#39;MICHIGAN&#39;, &#39;PEAR&#39;, &#39;PANCREAS&#39;, &#39;FLORIDA&#39;, &#39;IOWA&#39;, &#39;RACOON&#39;, &#39;TOOTH&#39;, &#39;TONGUE&#39;, &#39;MOOSE&#39;, &#39;MONKEY&#39;, &#39;ANTELOPE&#39;, &#39;KANSAS&#39;, &#39;LEMON&#39;], [&#39;PICKLE&#39;, &#39;ONION&#39;, &#39;FOUNDATION&#39;, &#39;BUTTERCUP&#39;, &#39;FLOOR&#39;, &#39;DISH&#39;, &#39;AZALEA&#39;, &#39;LOG&#39;, &#39;BROCCOLI&#39;, &#39;SAUCER&#39;, &#39;GRIDDLE&#39;, &#39;CARPET&#39;, &#39;STRAINER&#39;, &#39;DAHLIA&#39;, &#39;CAULIFLOWER&#39;, &#39;ELEVATOR&#39;]], [[&#39;SPINACH&#39;, &#39;POTATO&#39;, &#39;EGYPT&#39;, &#39;ARTICHOKE&#39;, &#39;SUIT&#39;, &#39;GARLIC&#39;, &#39;JACKET&#39;, &#39;CUBA&#39;, &#39;CLOSET&#39;, &#39;CAMISOLE&#39;, &#39;IRAN&#39;, &#39;GERMANY&#39;, &#39;FURNACE&#39;, &#39;LOBBY&#39;, &#39;CHIMNEY&#39;, &#39;BLOUSE&#39;], [&#39;DAHLIA&#39;, &#39;CAULIFLOWER&#39;, &#39;FOUNDATION&#39;, &#39;STRAINER&#39;, &#39;BROCCOLI&#39;, &#39;FLOOR&#39;, &#39;PICKLE&#39;, &#39;ELEVATOR&#39;, &#39;GRIDDLE&#39;, &#39;ONION&#39;, &#39;LOG&#39;, &#39;CARPET&#39;, &#39;BUTTERCUP&#39;, &#39;DISH&#39;, &#39;AZALEA&#39;, &#39;SAUCER&#39;], [&#39;DOOR&#39;, &#39;GLASS&#39;, &#39;GUAVA&#39;, &#39;KIWI&#39;, &#39;COW&#39;, &#39;TANGELO&#39;, &#39;STRAWBERRY&#39;, &#39;REFRIGERATOR&#39;, &#39;POT&#39;, &#39;HORSE&#39;, &#39;CORRIDOR&#39;, &#39;GIRAFFE&#39;, &#39;SPATULA&#39;, &#39;WINDOW&#39;, &#39;HALL&#39;, &#39;MOUSE&#39;], [&#39;SHOULDER&#39;, &#39;GOAT&#39;, &#39;KIDNEY&#39;, &#39;BOMBAY&#39;, &#39;WOLF&#39;, &#39;SQUASH&#39;, &#39;ZUCCHINI&#39;, &#39;ELBOW&#39;, &#39;TORONTO&#39;, &#39;OLIVE&#39;, &#39;FOOT&#39;, &#39;STOCKHOLM&#39;, &#39;SHEEP&#39;, &#39;PANTHER&#39;, &#39;AUBERGINE&#39;, &#39;MIAMI&#39;], [&#39;KITCHEN&#39;, &#39;GAZEBO&#39;, &#39;EAR&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;FACE&#39;, &#39;TIGER&#39;, &#39;TULIP&#39;, &#39;DOG&#39;, &#39;CARNATION&#39;, &#39;ALCOVE&#39;, &#39;ROSE&#39;, &#39;KNUCKLE&#39;, &#39;BARN&#39;, &#39;HEART&#39;, &#39;PETUNIA&#39;, &#39;DONKEY&#39;], [&#39;MAINE&#39;, &#39;DAISY&#39;, &#39;UTAH&#39;, &#39;SKILLET&#39;, &#39;FORK&#39;, &#39;NARCISSUS&#39;, &#39;LILY&#39;, &#39;TOASTER&#39;, &#39;PANTS&#39;, &#39;GIRDLE&#39;, &#39;MONTANA&#39;, &#39;UNDERWEAR&#39;, &#39;KNIFE&#39;, &#39;SUNFLOWER&#39;, &#39;DRESS&#39;, &#39;ARIZONA&#39;], [&#39;HORNET&#39;, &#39;TEAK&#39;, &#39;MANTIS&#39;, &#39;TROUSERS&#39;, &#39;BRA&#39;, &#39;CHICAGO&#39;, &#39;RENO&#39;, &#39;MILLIPEDE&#39;, &#39;SYCAMORE&#39;, &#39;SWEATER&#39;, &#39;GLOVES&#39;, &#39;MOSQUITO&#39;, &#39;CEDAR&#39;, &#39;PALM&#39;, &#39;SYDNEY&#39;, &#39;BERLIN&#39;], [&#39;OVEN&#39;, &#39;ROME&#39;, &#39;TRUMPET&#39;, &#39;TAMBOURINE&#39;, &#39;TUBA&#39;, &#39;BROILER&#39;, &#39;PARIS&#39;, &#39;HIP&#39;, &#39;PELVIS&#39;, &#39;PICCOLO&#39;, &#39;STOMACH&#39;, &#39;DALLAS&#39;, &#39;MUG&#39;, &#39;THERMOMETER&#39;, &#39;ARMS&#39;, &#39;MONTREAL&#39;], [&#39;ROBE&#39;, &#39;JUMPER&#39;, &#39;CUP&#39;, &#39;HARMONICA&#39;, &#39;BANJO&#39;, &#39;COTTONWOOD&#39;, &#39;OAK&#39;, &#39;BLENDER&#39;, &#39;MARIMBA&#39;, &#39;COLANDER&#39;, &#39;BELT&#39;, &#39;MIXER&#39;, &#39;UKULELE&#39;, &#39;SPRUCE&#39;, &#39;EVERGREEN&#39;, &#39;SHIRT&#39;], [&#39;ETHIOPIA&#39;, &#39;LETTUCE&#39;, &#39;CELERY&#39;, &#39;ITALY&#39;, &#39;BASS&#39;, &#39;CARROT&#39;, &#39;YAMS&#39;, &#39;LION&#39;, &#39;ZEBRA&#39;, &#39;AUSTRALIA&#39;, &#39;ELEPHANT&#39;, &#39;POLAND&#39;, &#39;PIG&#39;, &#39;MARACAS&#39;, &#39;TROMBONE&#39;, &#39;VIOLA&#39;], [&#39;ENGLAND&#39;, &#39;PIANO&#39;, &#39;CLARINET&#39;, &#39;PROTRACTOR&#39;, &#39;SAW&#39;, &#39;DRUM&#39;, &#39;SQUIRREL&#39;, &#39;KAZOO&#39;, &#39;CHISEL&#39;, &#39;SWITZERLAND&#39;, &#39;LEOPARD&#39;, &#39;FERRET&#39;, &#39;BOLTS&#39;, &#39;FRANCE&#39;, &#39;CAT&#39;, &#39;JAPAN&#39;], [&#39;TOKYO&#39;, &#39;VANCOUVER&#39;, &#39;JERUSALEM&#39;, &#39;RULER&#39;, &#39;BANANA&#39;, &#39;NUTS&#39;, &#39;PHILADELPHIA&#39;, &#39;HAWAII&#39;, &#39;NECTARINE&#39;, &#39;VERMONT&#39;, &#39;WISCONSIN&#39;, &#39;WASHER&#39;, &#39;CALIFORNIA&#39;, &#39;GLUE&#39;, &#39;MANGO&#39;, &#39;KUMQUAT&#39;], [&#39;TRIANGLE&#39;, &#39;RASPBERRY&#39;, &#39;PLUM&#39;, &#39;SAXOPHONE&#39;, &#39;MAPLE&#39;, &#39;HAMMER&#39;, &#39;WEDGE&#39;, &#39;VIOLIN&#39;, &#39;ELM&#39;, &#39;HICKORY&#39;, &#39;PINE&#39;, &#39;SCREWS&#39;, &#39;WIRE&#39;, &#39;HONEYDEW&#39;, &#39;FIG&#39;, &#39;CELLO&#39;], [&#39;RIB&#39;, &#39;MICHIGAN&#39;, &#39;PANCREAS&#39;, &#39;FLORIDA&#39;, &#39;KANSAS&#39;, &#39;MOOSE&#39;, &#39;LEMON&#39;, &#39;PEAR&#39;, &#39;CLEMENTINE&#39;, &#39;POMEGRANATE&#39;, &#39;MONKEY&#39;, &#39;IOWA&#39;, &#39;RACOON&#39;, &#39;TOOTH&#39;, &#39;ANTELOPE&#39;, &#39;TONGUE&#39;], [&#39;ACCORDION&#39;, &#39;ANKLE&#39;, &#39;WORM&#39;, &#39;LARVA&#39;, &#39;HAND&#39;, &#39;GUITAR&#39;, &#39;EUCALYPTUS&#39;, &#39;LIP&#39;, &#39;POPLAR&#39;, &#39;XYLOPHONE&#39;, &#39;MONARCH&#39;, &#39;WILLOW&#39;, &#39;BONGOS&#39;, &#39;SCORPION&#39;, &#39;ASH&#39;, &#39;FINGER&#39;], [&#39;RABBIT&#39;, &#39;BEETLE&#39;, &#39;ALASKA&#39;, &#39;RHINOCEROS&#39;, &#39;GINGER&#39;, &#39;FOX&#39;, &#39;TEXAS&#39;, &#39;OHIO&#39;, &#39;PUMPKIN&#39;, &#39;LLAMA&#39;, &#39;PENNSYLVANIA&#39;, &#39;TERMITE&#39;, &#39;RUTABAGA&#39;, &#39;CHRYSALIS&#39;, &#39;OKRA&#39;, &#39;WASP&#39;]], [[&#39;MICHIGAN&#39;, &#39;PANCREAS&#39;, &#39;IOWA&#39;, &#39;CLEMENTINE&#39;, &#39;KANSAS&#39;, &#39;TOOTH&#39;, &#39;MOOSE&#39;, &#39;MONKEY&#39;, &#39;FLORIDA&#39;, &#39;TONGUE&#39;, &#39;RIB&#39;, &#39;PEAR&#39;, &#39;ANTELOPE&#39;, &#39;LEMON&#39;, &#39;POMEGRANATE&#39;, &#39;RACOON&#39;], [&#39;TIGER&#39;, &#39;KITCHEN&#39;, &#39;FACE&#39;, &#39;ALCOVE&#39;, &#39;KNUCKLE&#39;, &#39;TULIP&#39;, &#39;GAZEBO&#39;, &#39;DOG&#39;, &#39;EAR&#39;, &#39;PETUNIA&#39;, &#39;HEART&#39;, &#39;ROSE&#39;, &#39;CARNATION&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;BARN&#39;, &#39;DONKEY&#39;], [&#39;SCORPION&#39;, &#39;WORM&#39;, &#39;POPLAR&#39;, &#39;GUITAR&#39;, &#39;ASH&#39;, &#39;ANKLE&#39;, &#39;WILLOW&#39;, &#39;XYLOPHONE&#39;, &#39;MONARCH&#39;, &#39;LIP&#39;, &#39;ACCORDION&#39;, &#39;EUCALYPTUS&#39;, &#39;LARVA&#39;, &#39;HAND&#39;, &#39;BONGOS&#39;, &#39;FINGER&#39;], [&#39;CALIFORNIA&#39;, &#39;NECTARINE&#39;, &#39;GLUE&#39;, &#39;MANGO&#39;, &#39;HAWAII&#39;, &#39;WASHER&#39;, &#39;NUTS&#39;, &#39;TOKYO&#39;, &#39;RULER&#39;, &#39;JERUSALEM&#39;, &#39;VANCOUVER&#39;, &#39;PHILADELPHIA&#39;, &#39;KUMQUAT&#39;, &#39;WISCONSIN&#39;, &#39;BANANA&#39;, &#39;VERMONT&#39;], [&#39;MARIMBA&#39;, &#39;COLANDER&#39;, &#39;HARMONICA&#39;, &#39;BLENDER&#39;, &#39;ROBE&#39;, &#39;CUP&#39;, &#39;OAK&#39;, &#39;COTTONWOOD&#39;, &#39;BELT&#39;, &#39;SPRUCE&#39;, &#39;UKULELE&#39;, &#39;EVERGREEN&#39;, &#39;BANJO&#39;, &#39;MIXER&#39;, &#39;SHIRT&#39;, &#39;JUMPER&#39;], [&#39;KAZOO&#39;, &#39;CHISEL&#39;, &#39;PROTRACTOR&#39;, &#39;SQUIRREL&#39;, &#39;SAW&#39;, &#39;JAPAN&#39;, &#39;CLARINET&#39;, &#39;PIANO&#39;, &#39;FRANCE&#39;, &#39;ENGLAND&#39;, &#39;FERRET&#39;, &#39;DRUM&#39;, &#39;BOLTS&#39;, &#39;CAT&#39;, &#39;SWITZERLAND&#39;, &#39;LEOPARD&#39;], [&#39;BASS&#39;, &#39;POLAND&#39;, &#39;CELERY&#39;, &#39;PIG&#39;, &#39;MARACAS&#39;, &#39;TROMBONE&#39;, &#39;LION&#39;, &#39;ETHIOPIA&#39;, &#39;VIOLA&#39;, &#39;ELEPHANT&#39;, &#39;YAMS&#39;, &#39;AUSTRALIA&#39;, &#39;ITALY&#39;, &#39;ZEBRA&#39;, &#39;LETTUCE&#39;, &#39;CARROT&#39;], [&#39;STOMACH&#39;, &#39;ARMS&#39;, &#39;MUG&#39;, &#39;HIP&#39;, &#39;DALLAS&#39;, &#39;TRUMPET&#39;, &#39;ROME&#39;, &#39;PELVIS&#39;, &#39;OVEN&#39;, &#39;PICCOLO&#39;, &#39;THERMOMETER&#39;, &#39;MONTREAL&#39;, &#39;BROILER&#39;, &#39;PARIS&#39;, &#39;TUBA&#39;, &#39;TAMBOURINE&#39;], [&#39;TEXAS&#39;, &#39;CHRYSALIS&#39;, &#39;RUTABAGA&#39;, &#39;RHINOCEROS&#39;, &#39;GINGER&#39;, &#39;PUMPKIN&#39;, &#39;OHIO&#39;, &#39;ALASKA&#39;, &#39;LLAMA&#39;, &#39;FOX&#39;, &#39;RABBIT&#39;, &#39;OKRA&#39;, &#39;PENNSYLVANIA&#39;, &#39;BEETLE&#39;, &#39;WASP&#39;, &#39;TERMITE&#39;], [&#39;ARTICHOKE&#39;, &#39;BLOUSE&#39;, &#39;SPINACH&#39;, &#39;LOBBY&#39;, &#39;IRAN&#39;, &#39;JACKET&#39;, &#39;CUBA&#39;, &#39;POTATO&#39;, &#39;CAMISOLE&#39;, &#39;FURNACE&#39;, &#39;SUIT&#39;, &#39;CLOSET&#39;, &#39;GARLIC&#39;, &#39;EGYPT&#39;, &#39;GERMANY&#39;, &#39;CHIMNEY&#39;], [&#39;MAPLE&#39;, &#39;TRIANGLE&#39;, &#39;SAXOPHONE&#39;, &#39;FIG&#39;, &#39;CELLO&#39;, &#39;PLUM&#39;, &#39;HONEYDEW&#39;, &#39;HICKORY&#39;, &#39;RASPBERRY&#39;, &#39;PINE&#39;, &#39;WEDGE&#39;, &#39;ELM&#39;, &#39;HAMMER&#39;, &#39;WIRE&#39;, &#39;SCREWS&#39;, &#39;VIOLIN&#39;], [&#39;DISH&#39;, &#39;CAULIFLOWER&#39;, &#39;BROCCOLI&#39;, &#39;AZALEA&#39;, &#39;BUTTERCUP&#39;, &#39;STRAINER&#39;, &#39;SAUCER&#39;, &#39;ELEVATOR&#39;, &#39;FOUNDATION&#39;, &#39;FLOOR&#39;, &#39;CARPET&#39;, &#39;GRIDDLE&#39;, &#39;ONION&#39;, &#39;PICKLE&#39;, &#39;DAHLIA&#39;, &#39;LOG&#39;], [&#39;TOASTER&#39;, &#39;MONTANA&#39;, &#39;SKILLET&#39;, &#39;PANTS&#39;, &#39;UTAH&#39;, &#39;DAISY&#39;, &#39;FORK&#39;, &#39;NARCISSUS&#39;, &#39;SUNFLOWER&#39;, &#39;MAINE&#39;, &#39;LILY&#39;, &#39;ARIZONA&#39;, &#39;UNDERWEAR&#39;, &#39;DRESS&#39;, &#39;KNIFE&#39;, &#39;GIRDLE&#39;], [&#39;RENO&#39;, &#39;BERLIN&#39;, &#39;PALM&#39;, &#39;SWEATER&#39;, &#39;CEDAR&#39;, &#39;GLOVES&#39;, &#39;TROUSERS&#39;, &#39;MANTIS&#39;, &#39;TEAK&#39;, &#39;SYDNEY&#39;, &#39;HORNET&#39;, &#39;MOSQUITO&#39;, &#39;SYCAMORE&#39;, &#39;CHICAGO&#39;, &#39;BRA&#39;, &#39;MILLIPEDE&#39;], [&#39;ZUCCHINI&#39;, &#39;OLIVE&#39;, &#39;SHEEP&#39;, &#39;PANTHER&#39;, &#39;STOCKHOLM&#39;, &#39;AUBERGINE&#39;, &#39;WOLF&#39;, &#39;GOAT&#39;, &#39;SQUASH&#39;, &#39;BOMBAY&#39;, &#39;TORONTO&#39;, &#39;MIAMI&#39;, &#39;ELBOW&#39;, &#39;FOOT&#39;, &#39;KIDNEY&#39;, &#39;SHOULDER&#39;], [&#39;STRAWBERRY&#39;, &#39;HALL&#39;, &#39;HORSE&#39;, &#39;DOOR&#39;, &#39;GLASS&#39;, &#39;GUAVA&#39;, &#39;SPATULA&#39;, &#39;TANGELO&#39;, &#39;POT&#39;, &#39;CORRIDOR&#39;, &#39;REFRIGERATOR&#39;, &#39;GIRAFFE&#39;, &#39;MOUSE&#39;, &#39;WINDOW&#39;, &#39;COW&#39;, &#39;KIWI&#39;]], [[&#39;ALASKA&#39;, &#39;FOX&#39;, &#39;TEXAS&#39;, &#39;OKRA&#39;, &#39;RUTABAGA&#39;, &#39;OHIO&#39;, &#39;LLAMA&#39;, &#39;BEETLE&#39;, &#39;WASP&#39;, &#39;PENNSYLVANIA&#39;, &#39;TERMITE&#39;, &#39;RHINOCEROS&#39;, &#39;GINGER&#39;, &#39;CHRYSALIS&#39;, &#39;PUMPKIN&#39;, &#39;RABBIT&#39;], [&#39;SCREWS&#39;, &#39;HAMMER&#39;, &#39;SAXOPHONE&#39;, &#39;CELLO&#39;, &#39;FIG&#39;, &#39;RASPBERRY&#39;, &#39;WEDGE&#39;, &#39;ELM&#39;, &#39;TRIANGLE&#39;, &#39;HONEYDEW&#39;, &#39;PINE&#39;, &#39;VIOLIN&#39;, &#39;PLUM&#39;, &#39;MAPLE&#39;, &#39;HICKORY&#39;, &#39;WIRE&#39;], [&#39;LION&#39;, &#39;TROMBONE&#39;, &#39;POLAND&#39;, &#39;YAMS&#39;, &#39;CELERY&#39;, &#39;ETHIOPIA&#39;, &#39;BASS&#39;, &#39;AUSTRALIA&#39;, &#39;LETTUCE&#39;, &#39;CARROT&#39;, &#39;MARACAS&#39;, &#39;VIOLA&#39;, &#39;ZEBRA&#39;, &#39;ITALY&#39;, &#39;ELEPHANT&#39;, &#39;PIG&#39;], [&#39;COTTONWOOD&#39;, &#39;HARMONICA&#39;, &#39;OAK&#39;, &#39;CUP&#39;, &#39;ROBE&#39;, &#39;SPRUCE&#39;, &#39;EVERGREEN&#39;, &#39;SHIRT&#39;, &#39;JUMPER&#39;, &#39;BANJO&#39;, &#39;BLENDER&#39;, &#39;MIXER&#39;, &#39;MARIMBA&#39;, &#39;UKULELE&#39;, &#39;COLANDER&#39;, &#39;BELT&#39;], [&#39;HORSE&#39;, &#39;HALL&#39;, &#39;GUAVA&#39;, &#39;GLASS&#39;, &#39;KIWI&#39;, &#39;CORRIDOR&#39;, &#39;MOUSE&#39;, &#39;DOOR&#39;, &#39;STRAWBERRY&#39;, &#39;POT&#39;, &#39;WINDOW&#39;, &#39;GIRAFFE&#39;, &#39;SPATULA&#39;, &#39;COW&#39;, &#39;REFRIGERATOR&#39;, &#39;TANGELO&#39;], [&#39;PANCREAS&#39;, &#39;PEAR&#39;, &#39;POMEGRANATE&#39;, &#39;TOOTH&#39;, &#39;MOOSE&#39;, &#39;IOWA&#39;, &#39;TONGUE&#39;, &#39;MICHIGAN&#39;, &#39;LEMON&#39;, &#39;KANSAS&#39;, &#39;RACOON&#39;, &#39;RIB&#39;, &#39;MONKEY&#39;, &#39;CLEMENTINE&#39;, &#39;ANTELOPE&#39;, &#39;FLORIDA&#39;], [&#39;PHILADELPHIA&#39;, &#39;MANGO&#39;, &#39;GLUE&#39;, &#39;NUTS&#39;, &#39;BANANA&#39;, &#39;VANCOUVER&#39;, &#39;CALIFORNIA&#39;, &#39;WASHER&#39;, &#39;WISCONSIN&#39;, &#39;NECTARINE&#39;, &#39;VERMONT&#39;, &#39;HAWAII&#39;, &#39;RULER&#39;, &#39;TOKYO&#39;, &#39;JERUSALEM&#39;, &#39;KUMQUAT&#39;], [&#39;GAZEBO&#39;, &#39;DOG&#39;, &#39;BARN&#39;, &#39;FACE&#39;, &#39;HEART&#39;, &#39;EAR&#39;, &#39;TULIP&#39;, &#39;CARNATION&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;ROSE&#39;, &#39;KNUCKLE&#39;, &#39;DONKEY&#39;, &#39;KITCHEN&#39;, &#39;PETUNIA&#39;, &#39;ALCOVE&#39;, &#39;TIGER&#39;], [&#39;BERLIN&#39;, &#39;CEDAR&#39;, &#39;MILLIPEDE&#39;, &#39;CHICAGO&#39;, &#39;SWEATER&#39;, &#39;BRA&#39;, &#39;GLOVES&#39;, &#39;PALM&#39;, &#39;HORNET&#39;, &#39;RENO&#39;, &#39;TROUSERS&#39;, &#39;SYDNEY&#39;, &#39;SYCAMORE&#39;, &#39;TEAK&#39;, &#39;MOSQUITO&#39;, &#39;MANTIS&#39;], [&#39;PICCOLO&#39;, &#39;TAMBOURINE&#39;, &#39;ROME&#39;, &#39;BROILER&#39;, &#39;MONTREAL&#39;, &#39;TUBA&#39;, &#39;OVEN&#39;, &#39;HIP&#39;, &#39;DALLAS&#39;, &#39;PELVIS&#39;, &#39;STOMACH&#39;, &#39;MUG&#39;, &#39;TRUMPET&#39;, &#39;THERMOMETER&#39;, &#39;PARIS&#39;, &#39;ARMS&#39;], [&#39;PANTS&#39;, &#39;UTAH&#39;, &#39;SKILLET&#39;, &#39;DRESS&#39;, &#39;TOASTER&#39;, &#39;KNIFE&#39;, &#39;UNDERWEAR&#39;, &#39;DAISY&#39;, &#39;GIRDLE&#39;, &#39;MAINE&#39;, &#39;SUNFLOWER&#39;, &#39;FORK&#39;, &#39;ARIZONA&#39;, &#39;MONTANA&#39;, &#39;LILY&#39;, &#39;NARCISSUS&#39;], [&#39;ACCORDION&#39;, &#39;WILLOW&#39;, &#39;XYLOPHONE&#39;, &#39;BONGOS&#39;, &#39;ANKLE&#39;, &#39;ASH&#39;, &#39;FINGER&#39;, &#39;EUCALYPTUS&#39;, &#39;LIP&#39;, &#39;LARVA&#39;, &#39;MONARCH&#39;, &#39;HAND&#39;, &#39;SCORPION&#39;, &#39;GUITAR&#39;, &#39;POPLAR&#39;, &#39;WORM&#39;], [&#39;GERMANY&#39;, &#39;LOBBY&#39;, &#39;CHIMNEY&#39;, &#39;EGYPT&#39;, &#39;SUIT&#39;, &#39;CLOSET&#39;, &#39;CAMISOLE&#39;, &#39;JACKET&#39;, &#39;FURNACE&#39;, &#39;ARTICHOKE&#39;, &#39;IRAN&#39;, &#39;CUBA&#39;, &#39;GARLIC&#39;, &#39;SPINACH&#39;, &#39;POTATO&#39;, &#39;BLOUSE&#39;], [&#39;ELBOW&#39;, &#39;WOLF&#39;, &#39;STOCKHOLM&#39;, &#39;SQUASH&#39;, &#39;AUBERGINE&#39;, &#39;GOAT&#39;, &#39;SHOULDER&#39;, &#39;FOOT&#39;, &#39;OLIVE&#39;, &#39;BOMBAY&#39;, &#39;SHEEP&#39;, &#39;PANTHER&#39;, &#39;MIAMI&#39;, &#39;KIDNEY&#39;, &#39;TORONTO&#39;, &#39;ZUCCHINI&#39;], [&#39;CAULIFLOWER&#39;, &#39;DAHLIA&#39;, &#39;ELEVATOR&#39;, &#39;DISH&#39;, &#39;CARPET&#39;, &#39;FOUNDATION&#39;, &#39;FLOOR&#39;, &#39;BUTTERCUP&#39;, &#39;SAUCER&#39;, &#39;PICKLE&#39;, &#39;ONION&#39;, &#39;AZALEA&#39;, &#39;STRAINER&#39;, &#39;LOG&#39;, &#39;BROCCOLI&#39;, &#39;GRIDDLE&#39;], [&#39;LEOPARD&#39;, &#39;ENGLAND&#39;, &#39;SWITZERLAND&#39;, &#39;JAPAN&#39;, &#39;CLARINET&#39;, &#39;PROTRACTOR&#39;, &#39;SQUIRREL&#39;, &#39;KAZOO&#39;, &#39;FERRET&#39;, &#39;SAW&#39;, &#39;BOLTS&#39;, &#39;CHISEL&#39;, &#39;DRUM&#39;, &#39;CAT&#39;, &#39;PIANO&#39;, &#39;FRANCE&#39;]], [[&#39;BASS&#39;, &#39;ELEPHANT&#39;, &#39;LION&#39;, &#39;ZEBRA&#39;, &#39;CELERY&#39;, &#39;LETTUCE&#39;, &#39;VIOLA&#39;, &#39;PIG&#39;, &#39;ITALY&#39;, &#39;MARACAS&#39;, &#39;CARROT&#39;, &#39;AUSTRALIA&#39;, &#39;TROMBONE&#39;, &#39;POLAND&#39;, &#39;ETHIOPIA&#39;, &#39;YAMS&#39;], [&#39;EGYPT&#39;, &#39;POTATO&#39;, &#39;SUIT&#39;, &#39;BLOUSE&#39;, &#39;GARLIC&#39;, &#39;LOBBY&#39;, &#39;GERMANY&#39;, &#39;JACKET&#39;, &#39;IRAN&#39;, &#39;FURNACE&#39;, &#39;ARTICHOKE&#39;, &#39;SPINACH&#39;, &#39;CHIMNEY&#39;, &#39;CUBA&#39;, &#39;CAMISOLE&#39;, &#39;CLOSET&#39;], [&#39;FOUNDATION&#39;, &#39;BUTTERCUP&#39;, &#39;LOG&#39;, &#39;CAULIFLOWER&#39;, &#39;CARPET&#39;, &#39;SAUCER&#39;, &#39;AZALEA&#39;, &#39;DISH&#39;, &#39;GRIDDLE&#39;, &#39;DAHLIA&#39;, &#39;BROCCOLI&#39;, &#39;STRAINER&#39;, &#39;ELEVATOR&#39;, &#39;ONION&#39;, &#39;FLOOR&#39;, &#39;PICKLE&#39;], [&#39;MIXER&#39;, &#39;BLENDER&#39;, &#39;ROBE&#39;, &#39;JUMPER&#39;, &#39;OAK&#39;, &#39;EVERGREEN&#39;, &#39;SHIRT&#39;, &#39;COLANDER&#39;, &#39;BANJO&#39;, &#39;UKULELE&#39;, &#39;CUP&#39;, &#39;HARMONICA&#39;, &#39;BELT&#39;, &#39;SPRUCE&#39;, &#39;MARIMBA&#39;, &#39;COTTONWOOD&#39;], [&#39;TRUMPET&#39;, &#39;PICCOLO&#39;, &#39;ROME&#39;, &#39;HIP&#39;, &#39;PELVIS&#39;, &#39;ARMS&#39;, &#39;STOMACH&#39;, &#39;BROILER&#39;, &#39;TAMBOURINE&#39;, &#39;PARIS&#39;, &#39;MUG&#39;, &#39;THERMOMETER&#39;, &#39;DALLAS&#39;, &#39;MONTREAL&#39;, &#39;OVEN&#39;, &#39;TUBA&#39;], [&#39;PANTHER&#39;, &#39;SHEEP&#39;, &#39;STOCKHOLM&#39;, &#39;ELBOW&#39;, &#39;TORONTO&#39;, &#39;FOOT&#39;, &#39;BOMBAY&#39;, &#39;WOLF&#39;, &#39;SQUASH&#39;, &#39;KIDNEY&#39;, &#39;OLIVE&#39;, &#39;AUBERGINE&#39;, &#39;GOAT&#39;, &#39;MIAMI&#39;, &#39;ZUCCHINI&#39;, &#39;SHOULDER&#39;], [&#39;SCORPION&#39;, &#39;LIP&#39;, &#39;HAND&#39;, &#39;ASH&#39;, &#39;GUITAR&#39;, &#39;WILLOW&#39;, &#39;XYLOPHONE&#39;, &#39;FINGER&#39;, &#39;WORM&#39;, &#39;ACCORDION&#39;, &#39;POPLAR&#39;, &#39;MONARCH&#39;, &#39;ANKLE&#39;, &#39;BONGOS&#39;, &#39;EUCALYPTUS&#39;, &#39;LARVA&#39;], [&#39;SKILLET&#39;, &#39;KNIFE&#39;, &#39;UNDERWEAR&#39;, &#39;LILY&#39;, &#39;NARCISSUS&#39;, &#39;PANTS&#39;, &#39;MAINE&#39;, &#39;DAISY&#39;, &#39;TOASTER&#39;, &#39;SUNFLOWER&#39;, &#39;DRESS&#39;, &#39;ARIZONA&#39;, &#39;MONTANA&#39;, &#39;GIRDLE&#39;, &#39;FORK&#39;, &#39;UTAH&#39;], [&#39;SCREWS&#39;, &#39;RASPBERRY&#39;, &#39;WIRE&#39;, &#39;WEDGE&#39;, &#39;HICKORY&#39;, &#39;PLUM&#39;, &#39;HAMMER&#39;, &#39;TRIANGLE&#39;, &#39;SAXOPHONE&#39;, &#39;MAPLE&#39;, &#39;FIG&#39;, &#39;CELLO&#39;, &#39;ELM&#39;, &#39;VIOLIN&#39;, &#39;HONEYDEW&#39;, &#39;PINE&#39;], [&#39;MANGO&#39;, &#39;TOKYO&#39;, &#39;HAWAII&#39;, &#39;WASHER&#39;, &#39;RULER&#39;, &#39;PHILADELPHIA&#39;, &#39;GLUE&#39;, &#39;BANANA&#39;, &#39;VERMONT&#39;, &#39;NUTS&#39;, &#39;KUMQUAT&#39;, &#39;CALIFORNIA&#39;, &#39;WISCONSIN&#39;, &#39;JERUSALEM&#39;, &#39;NECTARINE&#39;, &#39;VANCOUVER&#39;], [&#39;FACE&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;KITCHEN&#39;, &#39;PETUNIA&#39;, &#39;KNUCKLE&#39;, &#39;TIGER&#39;, &#39;CARNATION&#39;, &#39;TULIP&#39;, &#39;DOG&#39;, &#39;EAR&#39;, &#39;GAZEBO&#39;, &#39;BARN&#39;, &#39;HEART&#39;, &#39;DONKEY&#39;, &#39;ALCOVE&#39;, &#39;ROSE&#39;], [&#39;PROTRACTOR&#39;, &#39;DRUM&#39;, &#39;LEOPARD&#39;, &#39;CLARINET&#39;, &#39;KAZOO&#39;, &#39;PIANO&#39;, &#39;ENGLAND&#39;, &#39;SWITZERLAND&#39;, &#39;JAPAN&#39;, &#39;FERRET&#39;, &#39;SQUIRREL&#39;, &#39;CHISEL&#39;, &#39;CAT&#39;, &#39;BOLTS&#39;, &#39;FRANCE&#39;, &#39;SAW&#39;], [&#39;SYCAMORE&#39;, &#39;SWEATER&#39;, &#39;GLOVES&#39;, &#39;HORNET&#39;, &#39;PALM&#39;, &#39;SYDNEY&#39;, &#39;BERLIN&#39;, &#39;MILLIPEDE&#39;, &#39;MANTIS&#39;, &#39;MOSQUITO&#39;, &#39;RENO&#39;, &#39;TROUSERS&#39;, &#39;BRA&#39;, &#39;TEAK&#39;, &#39;CEDAR&#39;, &#39;CHICAGO&#39;], [&#39;OHIO&#39;, &#39;ALASKA&#39;, &#39;PUMPKIN&#39;, &#39;TEXAS&#39;, &#39;RHINOCEROS&#39;, &#39;LLAMA&#39;, &#39;FOX&#39;, &#39;CHRYSALIS&#39;, &#39;OKRA&#39;, &#39;BEETLE&#39;, &#39;TERMITE&#39;, &#39;PENNSYLVANIA&#39;, &#39;RABBIT&#39;, &#39;GINGER&#39;, &#39;RUTABAGA&#39;, &#39;WASP&#39;], [&#39;FLORIDA&#39;, &#39;ANTELOPE&#39;, &#39;MONKEY&#39;, &#39;TONGUE&#39;, &#39;MICHIGAN&#39;, &#39;KANSAS&#39;, &#39;PEAR&#39;, &#39;CLEMENTINE&#39;, &#39;POMEGRANATE&#39;, &#39;PANCREAS&#39;, &#39;IOWA&#39;, &#39;MOOSE&#39;, &#39;RACOON&#39;, &#39;RIB&#39;, &#39;TOOTH&#39;, &#39;LEMON&#39;], [&#39;GLASS&#39;, &#39;WINDOW&#39;, &#39;KIWI&#39;, &#39;GUAVA&#39;, &#39;REFRIGERATOR&#39;, &#39;MOUSE&#39;, &#39;DOOR&#39;, &#39;COW&#39;, &#39;GIRAFFE&#39;, &#39;TANGELO&#39;, &#39;SPATULA&#39;, &#39;HORSE&#39;, &#39;STRAWBERRY&#39;, &#39;HALL&#39;, &#39;CORRIDOR&#39;, &#39;POT&#39;]], [[&#39;PETUNIA&#39;, &#39;FACE&#39;, &#39;DONKEY&#39;, &#39;HEART&#39;, &#39;CARNATION&#39;, &#39;BARN&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;EAR&#39;, &#39;KITCHEN&#39;, &#39;TULIP&#39;, &#39;ROSE&#39;, &#39;ALCOVE&#39;, &#39;TIGER&#39;, &#39;KNUCKLE&#39;, &#39;GAZEBO&#39;, &#39;DOG&#39;], [&#39;TERMITE&#39;, &#39;RABBIT&#39;, &#39;OHIO&#39;, &#39;PENNSYLVANIA&#39;, &#39;OKRA&#39;, &#39;ALASKA&#39;, &#39;CHRYSALIS&#39;, &#39;RUTABAGA&#39;, &#39;PUMPKIN&#39;, &#39;RHINOCEROS&#39;, &#39;GINGER&#39;, &#39;LLAMA&#39;, &#39;FOX&#39;, &#39;BEETLE&#39;, &#39;TEXAS&#39;, &#39;WASP&#39;], [&#39;PANTS&#39;, &#39;MONTANA&#39;, &#39;DAISY&#39;, &#39;NARCISSUS&#39;, &#39;MAINE&#39;, &#39;SKILLET&#39;, &#39;KNIFE&#39;, &#39;FORK&#39;, &#39;DRESS&#39;, &#39;LILY&#39;, &#39;ARIZONA&#39;, &#39;TOASTER&#39;, &#39;GIRDLE&#39;, &#39;UTAH&#39;, &#39;UNDERWEAR&#39;, &#39;SUNFLOWER&#39;], [&#39;CHIMNEY&#39;, &#39;FURNACE&#39;, &#39;BLOUSE&#39;, &#39;POTATO&#39;, &#39;EGYPT&#39;, &#39;SPINACH&#39;, &#39;GERMANY&#39;, &#39;CAMISOLE&#39;, &#39;SUIT&#39;, &#39;CLOSET&#39;, &#39;IRAN&#39;, &#39;GARLIC&#39;, &#39;ARTICHOKE&#39;, &#39;JACKET&#39;, &#39;LOBBY&#39;, &#39;CUBA&#39;], [&#39;KAZOO&#39;, &#39;PIANO&#39;, &#39;CHISEL&#39;, &#39;FERRET&#39;, &#39;DRUM&#39;, &#39;JAPAN&#39;, &#39;CLARINET&#39;, &#39;FRANCE&#39;, &#39;CAT&#39;, &#39;PROTRACTOR&#39;, &#39;SQUIRREL&#39;, &#39;LEOPARD&#39;, &#39;ENGLAND&#39;, &#39;SAW&#39;, &#39;BOLTS&#39;, &#39;SWITZERLAND&#39;], [&#39;SCORPION&#39;, &#39;ANKLE&#39;, &#39;WORM&#39;, &#39;POPLAR&#39;, &#39;LARVA&#39;, &#39;XYLOPHONE&#39;, &#39;WILLOW&#39;, &#39;ASH&#39;, &#39;EUCALYPTUS&#39;, &#39;HAND&#39;, &#39;GUITAR&#39;, &#39;ACCORDION&#39;, &#39;FINGER&#39;, &#39;MONARCH&#39;, &#39;LIP&#39;, &#39;BONGOS&#39;], [&#39;RULER&#39;, &#39;WISCONSIN&#39;, &#39;HAWAII&#39;, &#39;TOKYO&#39;, &#39;JERUSALEM&#39;, &#39;GLUE&#39;, &#39;MANGO&#39;, &#39;NECTARINE&#39;, &#39;BANANA&#39;, &#39;CALIFORNIA&#39;, &#39;KUMQUAT&#39;, &#39;VERMONT&#39;, &#39;VANCOUVER&#39;, &#39;PHILADELPHIA&#39;, &#39;WASHER&#39;, &#39;NUTS&#39;], [&#39;TOOTH&#39;, &#39;ANTELOPE&#39;, &#39;RIB&#39;, &#39;IOWA&#39;, &#39;PANCREAS&#39;, &#39;CLEMENTINE&#39;, &#39;PEAR&#39;, &#39;MONKEY&#39;, &#39;LEMON&#39;, &#39;MICHIGAN&#39;, &#39;POMEGRANATE&#39;, &#39;TONGUE&#39;, &#39;FLORIDA&#39;, &#39;RACOON&#39;, &#39;MOOSE&#39;, &#39;KANSAS&#39;], [&#39;DAHLIA&#39;, &#39;FOUNDATION&#39;, &#39;ONION&#39;, &#39;CARPET&#39;, &#39;BROCCOLI&#39;, &#39;FLOOR&#39;, &#39;CAULIFLOWER&#39;, &#39;LOG&#39;, &#39;STRAINER&#39;, &#39;AZALEA&#39;, &#39;ELEVATOR&#39;, &#39;SAUCER&#39;, &#39;DISH&#39;, &#39;BUTTERCUP&#39;, &#39;GRIDDLE&#39;, &#39;PICKLE&#39;], [&#39;MOUSE&#39;, &#39;GLASS&#39;, &#39;STRAWBERRY&#39;, &#39;POT&#39;, &#39;SPATULA&#39;, &#39;CORRIDOR&#39;, &#39;DOOR&#39;, &#39;TANGELO&#39;, &#39;COW&#39;, &#39;KIWI&#39;, &#39;GUAVA&#39;, &#39;REFRIGERATOR&#39;, &#39;WINDOW&#39;, &#39;HORSE&#39;, &#39;GIRAFFE&#39;, &#39;HALL&#39;], [&#39;HICKORY&#39;, &#39;TRIANGLE&#39;, &#39;PINE&#39;, &#39;RASPBERRY&#39;, &#39;WEDGE&#39;, &#39;FIG&#39;, &#39;WIRE&#39;, &#39;MAPLE&#39;, &#39;SCREWS&#39;, &#39;CELLO&#39;, &#39;PLUM&#39;, &#39;ELM&#39;, &#39;VIOLIN&#39;, &#39;SAXOPHONE&#39;, &#39;HAMMER&#39;, &#39;HONEYDEW&#39;], [&#39;VIOLA&#39;, &#39;CARROT&#39;, &#39;ITALY&#39;, &#39;LION&#39;, &#39;BASS&#39;, &#39;LETTUCE&#39;, &#39;TROMBONE&#39;, &#39;YAMS&#39;, &#39;ZEBRA&#39;, &#39;ETHIOPIA&#39;, &#39;POLAND&#39;, &#39;ELEPHANT&#39;, &#39;CELERY&#39;, &#39;MARACAS&#39;, &#39;PIG&#39;, &#39;AUSTRALIA&#39;], [&#39;PICCOLO&#39;, &#39;TRUMPET&#39;, &#39;TAMBOURINE&#39;, &#39;DALLAS&#39;, &#39;ROME&#39;, &#39;MONTREAL&#39;, &#39;TUBA&#39;, &#39;HIP&#39;, &#39;PARIS&#39;, &#39;THERMOMETER&#39;, &#39;BROILER&#39;, &#39;PELVIS&#39;, &#39;STOMACH&#39;, &#39;OVEN&#39;, &#39;ARMS&#39;, &#39;MUG&#39;], [&#39;FOOT&#39;, &#39;KIDNEY&#39;, &#39;ZUCCHINI&#39;, &#39;ELBOW&#39;, &#39;BOMBAY&#39;, &#39;OLIVE&#39;, &#39;GOAT&#39;, &#39;SHEEP&#39;, &#39;SHOULDER&#39;, &#39;MIAMI&#39;, &#39;AUBERGINE&#39;, &#39;TORONTO&#39;, &#39;STOCKHOLM&#39;, &#39;WOLF&#39;, &#39;SQUASH&#39;, &#39;PANTHER&#39;], [&#39;SPRUCE&#39;, &#39;COTTONWOOD&#39;, &#39;CUP&#39;, &#39;MARIMBA&#39;, &#39;SHIRT&#39;, &#39;JUMPER&#39;, &#39;HARMONICA&#39;, &#39;UKULELE&#39;, &#39;BLENDER&#39;, &#39;COLANDER&#39;, &#39;EVERGREEN&#39;, &#39;OAK&#39;, &#39;MIXER&#39;, &#39;ROBE&#39;, &#39;BELT&#39;, &#39;BANJO&#39;], [&#39;CHICAGO&#39;, &#39;MOSQUITO&#39;, &#39;MILLIPEDE&#39;, &#39;SWEATER&#39;, &#39;RENO&#39;, &#39;PALM&#39;, &#39;GLOVES&#39;, &#39;MANTIS&#39;, &#39;BRA&#39;, &#39;CEDAR&#39;, &#39;SYCAMORE&#39;, &#39;BERLIN&#39;, &#39;HORNET&#39;, &#39;TROUSERS&#39;, &#39;TEAK&#39;, &#39;SYDNEY&#39;]], [[&#39;MIXER&#39;, &#39;BELT&#39;, &#39;CUP&#39;, &#39;ROBE&#39;, &#39;COLANDER&#39;, &#39;EVERGREEN&#39;, &#39;OAK&#39;, &#39;COTTONWOOD&#39;, &#39;UKULELE&#39;, &#39;BANJO&#39;, &#39;HARMONICA&#39;, &#39;BLENDER&#39;, &#39;MARIMBA&#39;, &#39;SHIRT&#39;, &#39;JUMPER&#39;, &#39;SPRUCE&#39;], [&#39;BONGOS&#39;, &#39;WILLOW&#39;, &#39;MONARCH&#39;, &#39;ACCORDION&#39;, &#39;WORM&#39;, &#39;HAND&#39;, &#39;GUITAR&#39;, &#39;LIP&#39;, &#39;FINGER&#39;, &#39;EUCALYPTUS&#39;, &#39;ANKLE&#39;, &#39;POPLAR&#39;, &#39;XYLOPHONE&#39;, &#39;ASH&#39;, &#39;LARVA&#39;, &#39;SCORPION&#39;], [&#39;POMEGRANATE&#39;, &#39;RIB&#39;, &#39;FLORIDA&#39;, &#39;MONKEY&#39;, &#39;ANTELOPE&#39;, &#39;TOOTH&#39;, &#39;IOWA&#39;, &#39;MICHIGAN&#39;, &#39;PEAR&#39;, &#39;LEMON&#39;, &#39;PANCREAS&#39;, &#39;CLEMENTINE&#39;, &#39;TONGUE&#39;, &#39;KANSAS&#39;, &#39;RACOON&#39;, &#39;MOOSE&#39;], [&#39;PALM&#39;, &#39;TEAK&#39;, &#39;CEDAR&#39;, &#39;CHICAGO&#39;, &#39;GLOVES&#39;, &#39;SYDNEY&#39;, &#39;BERLIN&#39;, &#39;MILLIPEDE&#39;, &#39;SYCAMORE&#39;, &#39;HORNET&#39;, &#39;SWEATER&#39;, &#39;TROUSERS&#39;, &#39;BRA&#39;, &#39;MOSQUITO&#39;, &#39;MANTIS&#39;, &#39;RENO&#39;], [&#39;TORONTO&#39;, &#39;SHOULDER&#39;, &#39;ELBOW&#39;, &#39;SHEEP&#39;, &#39;STOCKHOLM&#39;, &#39;FOOT&#39;, &#39;OLIVE&#39;, &#39;MIAMI&#39;, &#39;PANTHER&#39;, &#39;GOAT&#39;, &#39;ZUCCHINI&#39;, &#39;KIDNEY&#39;, &#39;BOMBAY&#39;, &#39;AUBERGINE&#39;, &#39;SQUASH&#39;, &#39;WOLF&#39;], [&#39;EAR&#39;, &#39;PETUNIA&#39;, &#39;FACE&#39;, &#39;KITCHEN&#39;, &#39;HEART&#39;, &#39;ALCOVE&#39;, &#39;KNUCKLE&#39;, &#39;GAZEBO&#39;, &#39;ROSE&#39;, &#39;BARN&#39;, &#39;CARNATION&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;DONKEY&#39;, &#39;DOG&#39;, &#39;TULIP&#39;, &#39;TIGER&#39;], [&#39;TROMBONE&#39;, &#39;ETHIOPIA&#39;, &#39;BASS&#39;, &#39;POLAND&#39;, &#39;ZEBRA&#39;, &#39;ITALY&#39;, &#39;CELERY&#39;, &#39;ELEPHANT&#39;, &#39;LION&#39;, &#39;CARROT&#39;, &#39;AUSTRALIA&#39;, &#39;MARACAS&#39;, &#39;PIG&#39;, &#39;LETTUCE&#39;, &#39;YAMS&#39;, &#39;VIOLA&#39;], [&#39;FOX&#39;, &#39;WASP&#39;, &#39;TERMITE&#39;, &#39;TEXAS&#39;, &#39;BEETLE&#39;, &#39;GINGER&#39;, &#39;ALASKA&#39;, &#39;RUTABAGA&#39;, &#39;RHINOCEROS&#39;, &#39;LLAMA&#39;, &#39;OHIO&#39;, &#39;PUMPKIN&#39;, &#39;OKRA&#39;, &#39;RABBIT&#39;, &#39;CHRYSALIS&#39;, &#39;PENNSYLVANIA&#39;], [&#39;SKILLET&#39;, &#39;FORK&#39;, &#39;MAINE&#39;, &#39;ARIZONA&#39;, &#39;KNIFE&#39;, &#39;PANTS&#39;, &#39;DAISY&#39;, &#39;GIRDLE&#39;, &#39;NARCISSUS&#39;, &#39;LILY&#39;, &#39;SUNFLOWER&#39;, &#39;DRESS&#39;, &#39;UTAH&#39;, &#39;MONTANA&#39;, &#39;TOASTER&#39;, &#39;UNDERWEAR&#39;], [&#39;DOOR&#39;, &#39;CORRIDOR&#39;, &#39;GUAVA&#39;, &#39;POT&#39;, &#39;WINDOW&#39;, &#39;REFRIGERATOR&#39;, &#39;GIRAFFE&#39;, &#39;SPATULA&#39;, &#39;TANGELO&#39;, &#39;HORSE&#39;, &#39;STRAWBERRY&#39;, &#39;COW&#39;, &#39;GLASS&#39;, &#39;KIWI&#39;, &#39;MOUSE&#39;, &#39;HALL&#39;], [&#39;CAMISOLE&#39;, &#39;POTATO&#39;, &#39;LOBBY&#39;, &#39;SUIT&#39;, &#39;IRAN&#39;, &#39;GARLIC&#39;, &#39;EGYPT&#39;, &#39;BLOUSE&#39;, &#39;CUBA&#39;, &#39;FURNACE&#39;, &#39;CLOSET&#39;, &#39;CHIMNEY&#39;, &#39;GERMANY&#39;, &#39;JACKET&#39;, &#39;SPINACH&#39;, &#39;ARTICHOKE&#39;], [&#39;WIRE&#39;, &#39;VIOLIN&#39;, &#39;WEDGE&#39;, &#39;ELM&#39;, &#39;SAXOPHONE&#39;, &#39;TRIANGLE&#39;, &#39;HONEYDEW&#39;, &#39;CELLO&#39;, &#39;HICKORY&#39;, &#39;PINE&#39;, &#39;MAPLE&#39;, &#39;HAMMER&#39;, &#39;RASPBERRY&#39;, &#39;PLUM&#39;, &#39;FIG&#39;, &#39;SCREWS&#39;], [&#39;TAMBOURINE&#39;, &#39;DALLAS&#39;, &#39;PARIS&#39;, &#39;ARMS&#39;, &#39;MUG&#39;, &#39;MONTREAL&#39;, &#39;HIP&#39;, &#39;TUBA&#39;, &#39;TRUMPET&#39;, &#39;PICCOLO&#39;, &#39;OVEN&#39;, &#39;PELVIS&#39;, &#39;THERMOMETER&#39;, &#39;ROME&#39;, &#39;STOMACH&#39;, &#39;BROILER&#39;], [&#39;FLOOR&#39;, &#39;BUTTERCUP&#39;, &#39;LOG&#39;, &#39;PICKLE&#39;, &#39;GRIDDLE&#39;, &#39;STRAINER&#39;, &#39;AZALEA&#39;, &#39;DAHLIA&#39;, &#39;ELEVATOR&#39;, &#39;ONION&#39;, &#39;DISH&#39;, &#39;CARPET&#39;, &#39;BROCCOLI&#39;, &#39;CAULIFLOWER&#39;, &#39;SAUCER&#39;, &#39;FOUNDATION&#39;], [&#39;PIANO&#39;, &#39;SWITZERLAND&#39;, &#39;BOLTS&#39;, &#39;SQUIRREL&#39;, &#39;PROTRACTOR&#39;, &#39;CHISEL&#39;, &#39;CLARINET&#39;, &#39;KAZOO&#39;, &#39;FRANCE&#39;, &#39;SAW&#39;, &#39;FERRET&#39;, &#39;CAT&#39;, &#39;LEOPARD&#39;, &#39;DRUM&#39;, &#39;ENGLAND&#39;, &#39;JAPAN&#39;], [&#39;CALIFORNIA&#39;, &#39;MANGO&#39;, &#39;VERMONT&#39;, &#39;NUTS&#39;, &#39;KUMQUAT&#39;, &#39;JERUSALEM&#39;, &#39;PHILADELPHIA&#39;, &#39;GLUE&#39;, &#39;WISCONSIN&#39;, &#39;WASHER&#39;, &#39;NECTARINE&#39;, &#39;HAWAII&#39;, &#39;VANCOUVER&#39;, &#39;TOKYO&#39;, &#39;BANANA&#39;, &#39;RULER&#39;]], [[&#39;FRANCE&#39;, &#39;CHISEL&#39;, &#39;KAZOO&#39;, &#39;SWITZERLAND&#39;, &#39;SAW&#39;, &#39;JAPAN&#39;, &#39;LEOPARD&#39;, &#39;PROTRACTOR&#39;, &#39;FERRET&#39;, &#39;CAT&#39;, &#39;CLARINET&#39;, &#39;DRUM&#39;, &#39;SQUIRREL&#39;, &#39;PIANO&#39;, &#39;BOLTS&#39;, &#39;ENGLAND&#39;], [&#39;KITCHEN&#39;, &#39;HEART&#39;, &#39;ALCOVE&#39;, &#39;ROSE&#39;, &#39;CARNATION&#39;, &#39;PETUNIA&#39;, &#39;EAR&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;GAZEBO&#39;, &#39;BARN&#39;, &#39;TIGER&#39;, &#39;KNUCKLE&#39;, &#39;DONKEY&#39;, &#39;FACE&#39;, &#39;TULIP&#39;, &#39;DOG&#39;], [&#39;PELVIS&#39;, &#39;TAMBOURINE&#39;, &#39;OVEN&#39;, &#39;STOMACH&#39;, &#39;MONTREAL&#39;, &#39;ARMS&#39;, &#39;BROILER&#39;, &#39;ROME&#39;, &#39;MUG&#39;, &#39;TUBA&#39;, &#39;PICCOLO&#39;, &#39;TRUMPET&#39;, &#39;PARIS&#39;, &#39;THERMOMETER&#39;, &#39;HIP&#39;, &#39;DALLAS&#39;], [&#39;CAMISOLE&#39;, &#39;CHIMNEY&#39;, &#39;FURNACE&#39;, &#39;GERMANY&#39;, &#39;SPINACH&#39;, &#39;EGYPT&#39;, &#39;CLOSET&#39;, &#39;JACKET&#39;, &#39;POTATO&#39;, &#39;SUIT&#39;, &#39;CUBA&#39;, &#39;GARLIC&#39;, &#39;ARTICHOKE&#39;, &#39;IRAN&#39;, &#39;LOBBY&#39;, &#39;BLOUSE&#39;], [&#39;VIOLIN&#39;, &#39;SCREWS&#39;, &#39;MAPLE&#39;, &#39;PINE&#39;, &#39;HICKORY&#39;, &#39;WEDGE&#39;, &#39;SAXOPHONE&#39;, &#39;WIRE&#39;, &#39;PLUM&#39;, &#39;RASPBERRY&#39;, &#39;TRIANGLE&#39;, &#39;HAMMER&#39;, &#39;ELM&#39;, &#39;HONEYDEW&#39;, &#39;FIG&#39;, &#39;CELLO&#39;], [&#39;HALL&#39;, &#39;GLASS&#39;, &#39;GUAVA&#39;, &#39;COW&#39;, &#39;HORSE&#39;, &#39;POT&#39;, &#39;TANGELO&#39;, &#39;WINDOW&#39;, &#39;MOUSE&#39;, &#39;SPATULA&#39;, &#39;DOOR&#39;, &#39;STRAWBERRY&#39;, &#39;GIRAFFE&#39;, &#39;CORRIDOR&#39;, &#39;KIWI&#39;, &#39;REFRIGERATOR&#39;], [&#39;FLOOR&#39;, &#39;FOUNDATION&#39;, &#39;CAULIFLOWER&#39;, &#39;LOG&#39;, &#39;ONION&#39;, &#39;BROCCOLI&#39;, &#39;AZALEA&#39;, &#39;GRIDDLE&#39;, &#39;PICKLE&#39;, &#39;BUTTERCUP&#39;, &#39;STRAINER&#39;, &#39;SAUCER&#39;, &#39;DAHLIA&#39;, &#39;ELEVATOR&#39;, &#39;CARPET&#39;, &#39;DISH&#39;], [&#39;CALIFORNIA&#39;, &#39;VERMONT&#39;, &#39;GLUE&#39;, &#39;NECTARINE&#39;, &#39;VANCOUVER&#39;, &#39;WISCONSIN&#39;, &#39;JERUSALEM&#39;, &#39;TOKYO&#39;, &#39;BANANA&#39;, &#39;PHILADELPHIA&#39;, &#39;HAWAII&#39;, &#39;WASHER&#39;, &#39;RULER&#39;, &#39;NUTS&#39;, &#39;MANGO&#39;, &#39;KUMQUAT&#39;], [&#39;RIB&#39;, &#39;FLORIDA&#39;, &#39;CLEMENTINE&#39;, &#39;ANTELOPE&#39;, &#39;TOOTH&#39;, &#39;POMEGRANATE&#39;, &#39;RACOON&#39;, &#39;MONKEY&#39;, &#39;LEMON&#39;, &#39;IOWA&#39;, &#39;MOOSE&#39;, &#39;MICHIGAN&#39;, &#39;PANCREAS&#39;, &#39;PEAR&#39;, &#39;KANSAS&#39;, &#39;TONGUE&#39;], [&#39;MARACAS&#39;, &#39;YAMS&#39;, &#39;AUSTRALIA&#39;, &#39;CARROT&#39;, &#39;ETHIOPIA&#39;, &#39;CELERY&#39;, &#39;ZEBRA&#39;, &#39;BASS&#39;, &#39;LETTUCE&#39;, &#39;ITALY&#39;, &#39;ELEPHANT&#39;, &#39;PIG&#39;, &#39;VIOLA&#39;, &#39;POLAND&#39;, &#39;TROMBONE&#39;, &#39;LION&#39;], [&#39;ELBOW&#39;, &#39;STOCKHOLM&#39;, &#39;TORONTO&#39;, &#39;GOAT&#39;, &#39;FOOT&#39;, &#39;ZUCCHINI&#39;, &#39;MIAMI&#39;, &#39;OLIVE&#39;, &#39;SQUASH&#39;, &#39;AUBERGINE&#39;, &#39;WOLF&#39;, &#39;SHEEP&#39;, &#39;SHOULDER&#39;, &#39;BOMBAY&#39;, &#39;PANTHER&#39;, &#39;KIDNEY&#39;], [&#39;MOSQUITO&#39;, &#39;CHICAGO&#39;, &#39;PALM&#39;, &#39;RENO&#39;, &#39;SYCAMORE&#39;, &#39;BERLIN&#39;, &#39;MANTIS&#39;, &#39;HORNET&#39;, &#39;MILLIPEDE&#39;, &#39;SWEATER&#39;, &#39;SYDNEY&#39;, &#39;CEDAR&#39;, &#39;GLOVES&#39;, &#39;TROUSERS&#39;, &#39;TEAK&#39;, &#39;BRA&#39;], [&#39;RUTABAGA&#39;, &#39;CHRYSALIS&#39;, &#39;LLAMA&#39;, &#39;ALASKA&#39;, &#39;FOX&#39;, &#39;RABBIT&#39;, &#39;OHIO&#39;, &#39;TEXAS&#39;, &#39;TERMITE&#39;, &#39;BEETLE&#39;, &#39;GINGER&#39;, &#39;PENNSYLVANIA&#39;, &#39;RHINOCEROS&#39;, &#39;OKRA&#39;, &#39;PUMPKIN&#39;, &#39;WASP&#39;], [&#39;MONTANA&#39;, &#39;UTAH&#39;, &#39;SUNFLOWER&#39;, &#39;KNIFE&#39;, &#39;GIRDLE&#39;, &#39;ARIZONA&#39;, &#39;FORK&#39;, &#39;MAINE&#39;, &#39;PANTS&#39;, &#39;UNDERWEAR&#39;, &#39;SKILLET&#39;, &#39;DRESS&#39;, &#39;TOASTER&#39;, &#39;LILY&#39;, &#39;DAISY&#39;, &#39;NARCISSUS&#39;], [&#39;JUMPER&#39;, &#39;COTTONWOOD&#39;, &#39;BELT&#39;, &#39;EVERGREEN&#39;, &#39;MIXER&#39;, &#39;MARIMBA&#39;, &#39;SHIRT&#39;, &#39;SPRUCE&#39;, &#39;ROBE&#39;, &#39;BANJO&#39;, &#39;BLENDER&#39;, &#39;OAK&#39;, &#39;CUP&#39;, &#39;UKULELE&#39;, &#39;COLANDER&#39;, &#39;HARMONICA&#39;], [&#39;ASH&#39;, &#39;SCORPION&#39;, &#39;WORM&#39;, &#39;ACCORDION&#39;, &#39;XYLOPHONE&#39;, &#39;WILLOW&#39;, &#39;BONGOS&#39;, &#39;FINGER&#39;, &#39;MONARCH&#39;, &#39;LARVA&#39;, &#39;LIP&#39;, &#39;EUCALYPTUS&#39;, &#39;POPLAR&#39;, &#39;GUITAR&#39;, &#39;HAND&#39;, &#39;ANKLE&#39;]], [[&#39;POPLAR&#39;, &#39;LARVA&#39;, &#39;ANKLE&#39;, &#39;ACCORDION&#39;, &#39;WORM&#39;, &#39;FINGER&#39;, &#39;MONARCH&#39;, &#39;ASH&#39;, &#39;WILLOW&#39;, &#39;HAND&#39;, &#39;GUITAR&#39;, &#39;EUCALYPTUS&#39;, &#39;LIP&#39;, &#39;SCORPION&#39;, &#39;XYLOPHONE&#39;, &#39;BONGOS&#39;], [&#39;CELERY&#39;, &#39;POLAND&#39;, &#39;VIOLA&#39;, &#39;ZEBRA&#39;, &#39;YAMS&#39;, &#39;LETTUCE&#39;, &#39;ITALY&#39;, &#39;PIG&#39;, &#39;ETHIOPIA&#39;, &#39;BASS&#39;, &#39;TROMBONE&#39;, &#39;MARACAS&#39;, &#39;AUSTRALIA&#39;, &#39;CARROT&#39;, &#39;LION&#39;, &#39;ELEPHANT&#39;], [&#39;GLASS&#39;, &#39;DOOR&#39;, &#39;SPATULA&#39;, &#39;GIRAFFE&#39;, &#39;POT&#39;, &#39;GUAVA&#39;, &#39;REFRIGERATOR&#39;, &#39;MOUSE&#39;, &#39;KIWI&#39;, &#39;WINDOW&#39;, &#39;STRAWBERRY&#39;, &#39;HORSE&#39;, &#39;CORRIDOR&#39;, &#39;HALL&#39;, &#39;COW&#39;, &#39;TANGELO&#39;], [&#39;JAPAN&#39;, &#39;SWITZERLAND&#39;, &#39;CAT&#39;, &#39;CLARINET&#39;, &#39;DRUM&#39;, &#39;FERRET&#39;, &#39;LEOPARD&#39;, &#39;BOLTS&#39;, &#39;PIANO&#39;, &#39;KAZOO&#39;, &#39;CHISEL&#39;, &#39;FRANCE&#39;, &#39;SQUIRREL&#39;, &#39;ENGLAND&#39;, &#39;SAW&#39;, &#39;PROTRACTOR&#39;], [&#39;BLENDER&#39;, &#39;MIXER&#39;, &#39;HARMONICA&#39;, &#39;COTTONWOOD&#39;, &#39;BELT&#39;, &#39;MARIMBA&#39;, &#39;COLANDER&#39;, &#39;OAK&#39;, &#39;UKULELE&#39;, &#39;BANJO&#39;, &#39;SHIRT&#39;, &#39;JUMPER&#39;, &#39;ROBE&#39;, &#39;EVERGREEN&#39;, &#39;SPRUCE&#39;, &#39;CUP&#39;], [&#39;CAMISOLE&#39;, &#39;GARLIC&#39;, &#39;CLOSET&#39;, &#39;POTATO&#39;, &#39;SUIT&#39;, &#39;BLOUSE&#39;, &#39;EGYPT&#39;, &#39;LOBBY&#39;, &#39;CUBA&#39;, &#39;ARTICHOKE&#39;, &#39;SPINACH&#39;, &#39;JACKET&#39;, &#39;CHIMNEY&#39;, &#39;IRAN&#39;, &#39;FURNACE&#39;, &#39;GERMANY&#39;], [&#39;BOMBAY&#39;, &#39;FOOT&#39;, &#39;SQUASH&#39;, &#39;KIDNEY&#39;, &#39;TORONTO&#39;, &#39;ZUCCHINI&#39;, &#39;PANTHER&#39;, &#39;STOCKHOLM&#39;, &#39;SHEEP&#39;, &#39;GOAT&#39;, &#39;OLIVE&#39;, &#39;MIAMI&#39;, &#39;AUBERGINE&#39;, &#39;WOLF&#39;, &#39;SHOULDER&#39;, &#39;ELBOW&#39;], [&#39;PETUNIA&#39;, &#39;KITCHEN&#39;, &#39;EAR&#39;, &#39;GAZEBO&#39;, &#39;TULIP&#39;, &#39;DONKEY&#39;, &#39;HEART&#39;, &#39;ALCOVE&#39;, &#39;FACE&#39;, &#39;TIGER&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;KNUCKLE&#39;, &#39;DOG&#39;, &#39;CARNATION&#39;, &#39;ROSE&#39;, &#39;BARN&#39;], [&#39;ROME&#39;, &#39;TRUMPET&#39;, &#39;MUG&#39;, &#39;PARIS&#39;, &#39;OVEN&#39;, &#39;STOMACH&#39;, &#39;DALLAS&#39;, &#39;MONTREAL&#39;, &#39;THERMOMETER&#39;, &#39;HIP&#39;, &#39;ARMS&#39;, &#39;BROILER&#39;, &#39;PELVIS&#39;, &#39;TAMBOURINE&#39;, &#39;TUBA&#39;, &#39;PICCOLO&#39;], [&#39;ARIZONA&#39;, &#39;SKILLET&#39;, &#39;NARCISSUS&#39;, &#39;KNIFE&#39;, &#39;SUNFLOWER&#39;, &#39;LILY&#39;, &#39;UNDERWEAR&#39;, &#39;MONTANA&#39;, &#39;UTAH&#39;, &#39;PANTS&#39;, &#39;DRESS&#39;, &#39;TOASTER&#39;, &#39;DAISY&#39;, &#39;GIRDLE&#39;, &#39;FORK&#39;, &#39;MAINE&#39;], [&#39;SYDNEY&#39;, &#39;MILLIPEDE&#39;, &#39;TROUSERS&#39;, &#39;TEAK&#39;, &#39;BRA&#39;, &#39;CEDAR&#39;, &#39;SWEATER&#39;, &#39;BERLIN&#39;, &#39;HORNET&#39;, &#39;PALM&#39;, &#39;CHICAGO&#39;, &#39;RENO&#39;, &#39;GLOVES&#39;, &#39;SYCAMORE&#39;, &#39;MANTIS&#39;, &#39;MOSQUITO&#39;], [&#39;CLEMENTINE&#39;, &#39;ANTELOPE&#39;, &#39;TOOTH&#39;, &#39;TONGUE&#39;, &#39;MOOSE&#39;, &#39;MICHIGAN&#39;, &#39;LEMON&#39;, &#39;RIB&#39;, &#39;KANSAS&#39;, &#39;IOWA&#39;, &#39;PANCREAS&#39;, &#39;RACOON&#39;, &#39;PEAR&#39;, &#39;FLORIDA&#39;, &#39;POMEGRANATE&#39;, &#39;MONKEY&#39;], [&#39;NUTS&#39;, &#39;JERUSALEM&#39;, &#39;MANGO&#39;, &#39;VANCOUVER&#39;, &#39;TOKYO&#39;, &#39;WASHER&#39;, &#39;KUMQUAT&#39;, &#39;GLUE&#39;, &#39;PHILADELPHIA&#39;, &#39;WISCONSIN&#39;, &#39;NECTARINE&#39;, &#39;BANANA&#39;, &#39;HAWAII&#39;, &#39;VERMONT&#39;, &#39;CALIFORNIA&#39;, &#39;RULER&#39;], [&#39;MAPLE&#39;, &#39;PLUM&#39;, &#39;HONEYDEW&#39;, &#39;PINE&#39;, &#39;WIRE&#39;, &#39;SCREWS&#39;, &#39;SAXOPHONE&#39;, &#39;ELM&#39;, &#39;VIOLIN&#39;, &#39;FIG&#39;, &#39;TRIANGLE&#39;, &#39;CELLO&#39;, &#39;WEDGE&#39;, &#39;HAMMER&#39;, &#39;RASPBERRY&#39;, &#39;HICKORY&#39;], [&#39;RUTABAGA&#39;, &#39;TERMITE&#39;, &#39;TEXAS&#39;, &#39;ALASKA&#39;, &#39;CHRYSALIS&#39;, &#39;GINGER&#39;, &#39;LLAMA&#39;, &#39;OHIO&#39;, &#39;PUMPKIN&#39;, &#39;RABBIT&#39;, &#39;FOX&#39;, &#39;PENNSYLVANIA&#39;, &#39;WASP&#39;, &#39;RHINOCEROS&#39;, &#39;OKRA&#39;, &#39;BEETLE&#39;], [&#39;SAUCER&#39;, &#39;STRAINER&#39;, &#39;DISH&#39;, &#39;FOUNDATION&#39;, &#39;BROCCOLI&#39;, &#39;DAHLIA&#39;, &#39;ONION&#39;, &#39;CARPET&#39;, &#39;AZALEA&#39;, &#39;ELEVATOR&#39;, &#39;FLOOR&#39;, &#39;BUTTERCUP&#39;, &#39;CAULIFLOWER&#39;, &#39;LOG&#39;, &#39;GRIDDLE&#39;, &#39;PICKLE&#39;]], [[&#39;DAHLIA&#39;, &#39;FLOOR&#39;, &#39;BROCCOLI&#39;, &#39;ONION&#39;, &#39;DISH&#39;, &#39;SAUCER&#39;, &#39;PICKLE&#39;, &#39;GRIDDLE&#39;, &#39;LOG&#39;, &#39;STRAINER&#39;, &#39;ELEVATOR&#39;, &#39;CAULIFLOWER&#39;, &#39;FOUNDATION&#39;, &#39;BUTTERCUP&#39;, &#39;CARPET&#39;, &#39;AZALEA&#39;], [&#39;BASS&#39;, &#39;YAMS&#39;, &#39;VIOLA&#39;, &#39;TROMBONE&#39;, &#39;CELERY&#39;, &#39;ELEPHANT&#39;, &#39;PIG&#39;, &#39;POLAND&#39;, &#39;CARROT&#39;, &#39;ETHIOPIA&#39;, &#39;AUSTRALIA&#39;, &#39;LION&#39;, &#39;MARACAS&#39;, &#39;ZEBRA&#39;, &#39;ITALY&#39;, &#39;LETTUCE&#39;], [&#39;UTAH&#39;, &#39;FORK&#39;, &#39;TOASTER&#39;, &#39;GIRDLE&#39;, &#39;MAINE&#39;, &#39;SUNFLOWER&#39;, &#39;UNDERWEAR&#39;, &#39;DAISY&#39;, &#39;LILY&#39;, &#39;MONTANA&#39;, &#39;NARCISSUS&#39;, &#39;ARIZONA&#39;, &#39;PANTS&#39;, &#39;KNIFE&#39;, &#39;SKILLET&#39;, &#39;DRESS&#39;], [&#39;HAMMER&#39;, &#39;HICKORY&#39;, &#39;MAPLE&#39;, &#39;CELLO&#39;, &#39;PINE&#39;, &#39;PLUM&#39;, &#39;RASPBERRY&#39;, &#39;ELM&#39;, &#39;HONEYDEW&#39;, &#39;WEDGE&#39;, &#39;SCREWS&#39;, &#39;SAXOPHONE&#39;, &#39;VIOLIN&#39;, &#39;WIRE&#39;, &#39;FIG&#39;, &#39;TRIANGLE&#39;], [&#39;WASP&#39;, &#39;FOX&#39;, &#39;GINGER&#39;, &#39;PENNSYLVANIA&#39;, &#39;TERMITE&#39;, &#39;OHIO&#39;, &#39;OKRA&#39;, &#39;ALASKA&#39;, &#39;PUMPKIN&#39;, &#39;RABBIT&#39;, &#39;RHINOCEROS&#39;, &#39;LLAMA&#39;, &#39;CHRYSALIS&#39;, &#39;BEETLE&#39;, &#39;TEXAS&#39;, &#39;RUTABAGA&#39;], [&#39;CUBA&#39;, &#39;ARTICHOKE&#39;, &#39;CLOSET&#39;, &#39;POTATO&#39;, &#39;CHIMNEY&#39;, &#39;SUIT&#39;, &#39;EGYPT&#39;, &#39;FURNACE&#39;, &#39;LOBBY&#39;, &#39;SPINACH&#39;, &#39;IRAN&#39;, &#39;BLOUSE&#39;, &#39;CAMISOLE&#39;, &#39;JACKET&#39;, &#39;GARLIC&#39;, &#39;GERMANY&#39;], [&#39;CLEMENTINE&#39;, &#39;ANTELOPE&#39;, &#39;IOWA&#39;, &#39;RACOON&#39;, &#39;MOOSE&#39;, &#39;PEAR&#39;, &#39;MONKEY&#39;, &#39;FLORIDA&#39;, &#39;RIB&#39;, &#39;TOOTH&#39;, &#39;PANCREAS&#39;, &#39;KANSAS&#39;, &#39;LEMON&#39;, &#39;POMEGRANATE&#39;, &#39;TONGUE&#39;, &#39;MICHIGAN&#39;], [&#39;PETUNIA&#39;, &#39;HEART&#39;, &#39;KNUCKLE&#39;, &#39;DONKEY&#39;, &#39;ROSE&#39;, &#39;TULIP&#39;, &#39;KITCHEN&#39;, &#39;EAR&#39;, &#39;FACE&#39;, &#39;CARNATION&#39;, &#39;GAZEBO&#39;, &#39;BARN&#39;, &#39;ALCOVE&#39;, &#39;TIGER&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;DOG&#39;], [&#39;PICCOLO&#39;, &#39;PELVIS&#39;, &#39;MUG&#39;, &#39;TAMBOURINE&#39;, &#39;PARIS&#39;, &#39;BROILER&#39;, &#39;TRUMPET&#39;, &#39;OVEN&#39;, &#39;STOMACH&#39;, &#39;MONTREAL&#39;, &#39;THERMOMETER&#39;, &#39;HIP&#39;, &#39;ARMS&#39;, &#39;ROME&#39;, &#39;TUBA&#39;, &#39;DALLAS&#39;], [&#39;FOOT&#39;, &#39;AUBERGINE&#39;, &#39;PANTHER&#39;, &#39;SQUASH&#39;, &#39;ELBOW&#39;, &#39;WOLF&#39;, &#39;GOAT&#39;, &#39;TORONTO&#39;, &#39;MIAMI&#39;, &#39;KIDNEY&#39;, &#39;BOMBAY&#39;, &#39;OLIVE&#39;, &#39;SHOULDER&#39;, &#39;SHEEP&#39;, &#39;STOCKHOLM&#39;, &#39;ZUCCHINI&#39;], [&#39;RULER&#39;, &#39;KUMQUAT&#39;, &#39;JERUSALEM&#39;, &#39;HAWAII&#39;, &#39;PHILADELPHIA&#39;, &#39;NECTARINE&#39;, &#39;CALIFORNIA&#39;, &#39;TOKYO&#39;, &#39;NUTS&#39;, &#39;WASHER&#39;, &#39;MANGO&#39;, &#39;GLUE&#39;, &#39;BANANA&#39;, &#39;VANCOUVER&#39;, &#39;VERMONT&#39;, &#39;WISCONSIN&#39;], [&#39;FINGER&#39;, &#39;LARVA&#39;, &#39;WORM&#39;, &#39;XYLOPHONE&#39;, &#39;HAND&#39;, &#39;GUITAR&#39;, &#39;MONARCH&#39;, &#39;ACCORDION&#39;, &#39;LIP&#39;, &#39;ASH&#39;, &#39;SCORPION&#39;, &#39;POPLAR&#39;, &#39;EUCALYPTUS&#39;, &#39;ANKLE&#39;, &#39;WILLOW&#39;, &#39;BONGOS&#39;], [&#39;BELT&#39;, &#39;SHIRT&#39;, &#39;EVERGREEN&#39;, &#39;JUMPER&#39;, &#39;COLANDER&#39;, &#39;OAK&#39;, &#39;MARIMBA&#39;, &#39;UKULELE&#39;, &#39;BANJO&#39;, &#39;CUP&#39;, &#39;ROBE&#39;, &#39;COTTONWOOD&#39;, &#39;MIXER&#39;, &#39;SPRUCE&#39;, &#39;HARMONICA&#39;, &#39;BLENDER&#39;], [&#39;SWITZERLAND&#39;, &#39;SQUIRREL&#39;, &#39;LEOPARD&#39;, &#39;SAW&#39;, &#39;DRUM&#39;, &#39;CHISEL&#39;, &#39;BOLTS&#39;, &#39;ENGLAND&#39;, &#39;JAPAN&#39;, &#39;KAZOO&#39;, &#39;CAT&#39;, &#39;CLARINET&#39;, &#39;FERRET&#39;, &#39;PROTRACTOR&#39;, &#39;FRANCE&#39;, &#39;PIANO&#39;], [&#39;KIWI&#39;, &#39;TANGELO&#39;, &#39;POT&#39;, &#39;SPATULA&#39;, &#39;GLASS&#39;, &#39;GUAVA&#39;, &#39;HALL&#39;, &#39;MOUSE&#39;, &#39;COW&#39;, &#39;REFRIGERATOR&#39;, &#39;CORRIDOR&#39;, &#39;WINDOW&#39;, &#39;DOOR&#39;, &#39;GIRAFFE&#39;, &#39;HORSE&#39;, &#39;STRAWBERRY&#39;], [&#39;CHICAGO&#39;, &#39;SYCAMORE&#39;, &#39;TROUSERS&#39;, &#39;MOSQUITO&#39;, &#39;BERLIN&#39;, &#39;TEAK&#39;, &#39;SYDNEY&#39;, &#39;SWEATER&#39;, &#39;GLOVES&#39;, &#39;HORNET&#39;, &#39;CEDAR&#39;, &#39;PALM&#39;, &#39;RENO&#39;, &#39;MILLIPEDE&#39;, &#39;MANTIS&#39;, &#39;BRA&#39;]], [[&#39;HAND&#39;, &#39;GUITAR&#39;, &#39;POPLAR&#39;, &#39;EUCALYPTUS&#39;, &#39;LIP&#39;, &#39;ASH&#39;, &#39;WORM&#39;, &#39;SCORPION&#39;, &#39;XYLOPHONE&#39;, &#39;LARVA&#39;, &#39;WILLOW&#39;, &#39;ANKLE&#39;, &#39;BONGOS&#39;, &#39;FINGER&#39;, &#39;MONARCH&#39;, &#39;ACCORDION&#39;, &#39;STOCKHOLM&#39;, &#39;MIAMI&#39;, &#39;OLIVE&#39;, &#39;PANTHER&#39;, &#39;ZUCCHINI&#39;, &#39;FOOT&#39;, &#39;SHOULDER&#39;, &#39;ELBOW&#39;, &#39;TORONTO&#39;, &#39;GOAT&#39;, &#39;SQUASH&#39;, &#39;BOMBAY&#39;, &#39;KIDNEY&#39;, &#39;AUBERGINE&#39;, &#39;SHEEP&#39;, &#39;WOLF&#39;], [&#39;LEOPARD&#39;, &#39;SWITZERLAND&#39;, &#39;ENGLAND&#39;, &#39;BOLTS&#39;, &#39;FERRET&#39;, &#39;SQUIRREL&#39;, &#39;JAPAN&#39;, &#39;PROTRACTOR&#39;, &#39;DRUM&#39;, &#39;CAT&#39;, &#39;CHISEL&#39;, &#39;PIANO&#39;, &#39;CLARINET&#39;, &#39;SAW&#39;, &#39;KAZOO&#39;, &#39;FRANCE&#39;, &#39;BROILER&#39;, &#39;TAMBOURINE&#39;, &#39;DALLAS&#39;, &#39;PICCOLO&#39;, &#39;TUBA&#39;, &#39;OVEN&#39;, &#39;PARIS&#39;, &#39;TRUMPET&#39;, &#39;MONTREAL&#39;, &#39;MUG&#39;, &#39;ROME&#39;, &#39;ARMS&#39;, &#39;THERMOMETER&#39;, &#39;HIP&#39;, &#39;STOMACH&#39;, &#39;PELVIS&#39;], [&#39;BANANA&#39;, &#39;JERUSALEM&#39;, &#39;RULER&#39;, &#39;VERMONT&#39;, &#39;HAWAII&#39;, &#39;TOKYO&#39;, &#39;MANGO&#39;, &#39;VANCOUVER&#39;, &#39;GLUE&#39;, &#39;CALIFORNIA&#39;, &#39;NUTS&#39;, &#39;WISCONSIN&#39;, &#39;KUMQUAT&#39;, &#39;WASHER&#39;, &#39;PHILADELPHIA&#39;, &#39;NECTARINE&#39;, &#39;MOUSE&#39;, &#39;TANGELO&#39;, &#39;REFRIGERATOR&#39;, &#39;GUAVA&#39;, &#39;COW&#39;, &#39;GIRAFFE&#39;, &#39;HALL&#39;, &#39;CORRIDOR&#39;, &#39;POT&#39;, &#39;KIWI&#39;, &#39;STRAWBERRY&#39;, &#39;GLASS&#39;, &#39;HORSE&#39;, &#39;WINDOW&#39;, &#39;SPATULA&#39;, &#39;DOOR&#39;], [&#39;DOOR&#39;, &#39;MOUSE&#39;, &#39;COW&#39;, &#39;REFRIGERATOR&#39;, &#39;STRAWBERRY&#39;, &#39;GLASS&#39;, &#39;WINDOW&#39;, &#39;KIWI&#39;, &#39;TANGELO&#39;, &#39;HORSE&#39;, &#39;POT&#39;, &#39;GUAVA&#39;, &#39;SPATULA&#39;, &#39;GIRAFFE&#39;, &#39;CORRIDOR&#39;, &#39;HALL&#39;, &#39;CEDAR&#39;, &#39;BERLIN&#39;, &#39;MOSQUITO&#39;, &#39;MANTIS&#39;, &#39;GLOVES&#39;, &#39;TROUSERS&#39;, &#39;MILLIPEDE&#39;, &#39;PALM&#39;, &#39;SWEATER&#39;, &#39;SYCAMORE&#39;, &#39;TEAK&#39;, &#39;CHICAGO&#39;, &#39;BRA&#39;, &#39;HORNET&#39;, &#39;SYDNEY&#39;, &#39;RENO&#39;], [&#39;SUNFLOWER&#39;, &#39;GIRDLE&#39;, &#39;LILY&#39;, &#39;UTAH&#39;, &#39;DAISY&#39;, &#39;DRESS&#39;, &#39;KNIFE&#39;, &#39;FORK&#39;, &#39;SKILLET&#39;, &#39;NARCISSUS&#39;, &#39;MONTANA&#39;, &#39;PANTS&#39;, &#39;ARIZONA&#39;, &#39;TOASTER&#39;, &#39;MAINE&#39;, &#39;UNDERWEAR&#39;, &#39;VIOLIN&#39;, &#39;PINE&#39;, &#39;RASPBERRY&#39;, &#39;HONEYDEW&#39;, &#39;PLUM&#39;, &#39;ELM&#39;, &#39;HICKORY&#39;, &#39;CELLO&#39;, &#39;FIG&#39;, &#39;WIRE&#39;, &#39;HAMMER&#39;, &#39;SAXOPHONE&#39;, &#39;SCREWS&#39;, &#39;MAPLE&#39;, &#39;WEDGE&#39;, &#39;TRIANGLE&#39;], [&#39;VIOLA&#39;, &#39;YAMS&#39;, &#39;ETHIOPIA&#39;, &#39;PIG&#39;, &#39;ITALY&#39;, &#39;LETTUCE&#39;, &#39;ZEBRA&#39;, &#39;ELEPHANT&#39;, &#39;TROMBONE&#39;, &#39;AUSTRALIA&#39;, &#39;MARACAS&#39;, &#39;CELERY&#39;, &#39;POLAND&#39;, &#39;BASS&#39;, &#39;CARROT&#39;, &#39;LION&#39;, &#39;LEOPARD&#39;, &#39;KAZOO&#39;, &#39;CHISEL&#39;, &#39;CAT&#39;, &#39;DRUM&#39;, &#39;CLARINET&#39;, &#39;FERRET&#39;, &#39;PROTRACTOR&#39;, &#39;SAW&#39;, &#39;SWITZERLAND&#39;, &#39;JAPAN&#39;, &#39;FRANCE&#39;, &#39;BOLTS&#39;, &#39;SQUIRREL&#39;, &#39;PIANO&#39;, &#39;ENGLAND&#39;], [&#39;PENNSYLVANIA&#39;, &#39;TERMITE&#39;, &#39;RUTABAGA&#39;, &#39;WASP&#39;, &#39;ALASKA&#39;, &#39;TEXAS&#39;, &#39;FOX&#39;, &#39;LLAMA&#39;, &#39;OHIO&#39;, &#39;PUMPKIN&#39;, &#39;CHRYSALIS&#39;, &#39;OKRA&#39;, &#39;RABBIT&#39;, &#39;RHINOCEROS&#39;, &#39;GINGER&#39;, &#39;BEETLE&#39;, &#39;DAISY&#39;, &#39;GIRDLE&#39;, &#39;KNIFE&#39;, &#39;LILY&#39;, &#39;SUNFLOWER&#39;, &#39;DRESS&#39;, &#39;TOASTER&#39;, &#39;MONTANA&#39;, &#39;PANTS&#39;, &#39;FORK&#39;, &#39;UNDERWEAR&#39;, &#39;UTAH&#39;, &#39;ARIZONA&#39;, &#39;NARCISSUS&#39;, &#39;MAINE&#39;, &#39;SKILLET&#39;], [&#39;GRIDDLE&#39;, &#39;DAHLIA&#39;, &#39;DISH&#39;, &#39;AZALEA&#39;, &#39;BUTTERCUP&#39;, &#39;FOUNDATION&#39;, &#39;LOG&#39;, &#39;ONION&#39;, &#39;STRAINER&#39;, &#39;PICKLE&#39;, &#39;SAUCER&#39;, &#39;BROCCOLI&#39;, &#39;CAULIFLOWER&#39;, &#39;ELEVATOR&#39;, &#39;CARPET&#39;, &#39;FLOOR&#39;, &#39;GINGER&#39;, &#39;WASP&#39;, &#39;ALASKA&#39;, &#39;OKRA&#39;, &#39;RABBIT&#39;, &#39;LLAMA&#39;, &#39;PUMPKIN&#39;, &#39;TEXAS&#39;, &#39;TERMITE&#39;, &#39;RUTABAGA&#39;, &#39;OHIO&#39;, &#39;CHRYSALIS&#39;, &#39;BEETLE&#39;, &#39;PENNSYLVANIA&#39;, &#39;RHINOCEROS&#39;, &#39;FOX&#39;], [&#39;BERLIN&#39;, &#39;CHICAGO&#39;, &#39;TROUSERS&#39;, &#39;RENO&#39;, &#39;TEAK&#39;, &#39;MANTIS&#39;, &#39;PALM&#39;, &#39;MILLIPEDE&#39;, &#39;MOSQUITO&#39;, &#39;BRA&#39;, &#39;CEDAR&#39;, &#39;SYCAMORE&#39;, &#39;GLOVES&#39;, &#39;SWEATER&#39;, &#39;SYDNEY&#39;, &#39;HORNET&#39;, &#39;GERMANY&#39;, &#39;CAMISOLE&#39;, &#39;ARTICHOKE&#39;, &#39;FURNACE&#39;, &#39;SUIT&#39;, &#39;CHIMNEY&#39;, &#39;GARLIC&#39;, &#39;CLOSET&#39;, &#39;BLOUSE&#39;, &#39;CUBA&#39;, &#39;EGYPT&#39;, &#39;SPINACH&#39;, &#39;LOBBY&#39;, &#39;JACKET&#39;, &#39;IRAN&#39;, &#39;POTATO&#39;], [&#39;HAMMER&#39;, &#39;PLUM&#39;, &#39;CELLO&#39;, &#39;WIRE&#39;, &#39;TRIANGLE&#39;, &#39;SCREWS&#39;, &#39;VIOLIN&#39;, &#39;FIG&#39;, &#39;HONEYDEW&#39;, &#39;RASPBERRY&#39;, &#39;HICKORY&#39;, &#39;SAXOPHONE&#39;, &#39;ELM&#39;, &#39;PINE&#39;, &#39;MAPLE&#39;, &#39;WEDGE&#39;, &#39;TULIP&#39;, &#39;DONKEY&#39;, &#39;KITCHEN&#39;, &#39;ALCOVE&#39;, &#39;HEART&#39;, &#39;EAR&#39;, &#39;PETUNIA&#39;, &#39;TIGER&#39;, &#39;GAZEBO&#39;, &#39;DOG&#39;, &#39;BARN&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;FACE&#39;, &#39;CARNATION&#39;, &#39;KNUCKLE&#39;, &#39;ROSE&#39;], [&#39;KITCHEN&#39;, &#39;TIGER&#39;, &#39;HEART&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;ALCOVE&#39;, &#39;ROSE&#39;, &#39;KNUCKLE&#39;, &#39;PETUNIA&#39;, &#39;DONKEY&#39;, &#39;FACE&#39;, &#39;TULIP&#39;, &#39;CARNATION&#39;, &#39;GAZEBO&#39;, &#39;BARN&#39;, &#39;EAR&#39;, &#39;DOG&#39;, &#39;TOKYO&#39;, &#39;BANANA&#39;, &#39;PHILADELPHIA&#39;, &#39;WASHER&#39;, &#39;NECTARINE&#39;, &#39;CALIFORNIA&#39;, &#39;WISCONSIN&#39;, &#39;JERUSALEM&#39;, &#39;KUMQUAT&#39;, &#39;HAWAII&#39;, &#39;RULER&#39;, &#39;NUTS&#39;, &#39;VANCOUVER&#39;, &#39;VERMONT&#39;, &#39;MANGO&#39;, &#39;GLUE&#39;], [&#39;SHIRT&#39;, &#39;UKULELE&#39;, &#39;COTTONWOOD&#39;, &#39;SPRUCE&#39;, &#39;CUP&#39;, &#39;BANJO&#39;, &#39;MARIMBA&#39;, &#39;EVERGREEN&#39;, &#39;COLANDER&#39;, &#39;HARMONICA&#39;, &#39;JUMPER&#39;, &#39;BELT&#39;, &#39;OAK&#39;, &#39;BLENDER&#39;, &#39;MIXER&#39;, &#39;ROBE&#39;, &#39;MOOSE&#39;, &#39;FLORIDA&#39;, &#39;MONKEY&#39;, &#39;CLEMENTINE&#39;, &#39;RACOON&#39;, &#39;KANSAS&#39;, &#39;ANTELOPE&#39;, &#39;PANCREAS&#39;, &#39;POMEGRANATE&#39;, &#39;TOOTH&#39;, &#39;PEAR&#39;, &#39;RIB&#39;, &#39;TONGUE&#39;, &#39;IOWA&#39;, &#39;MICHIGAN&#39;, &#39;LEMON&#39;], [&#39;MIAMI&#39;, &#39;BOMBAY&#39;, &#39;KIDNEY&#39;, &#39;TORONTO&#39;, &#39;PANTHER&#39;, &#39;OLIVE&#39;, &#39;FOOT&#39;, &#39;GOAT&#39;, &#39;SHEEP&#39;, &#39;ZUCCHINI&#39;, &#39;SHOULDER&#39;, &#39;SQUASH&#39;, &#39;STOCKHOLM&#39;, &#39;ELBOW&#39;, &#39;WOLF&#39;, &#39;AUBERGINE&#39;, &#39;PIG&#39;, &#39;BASS&#39;, &#39;ZEBRA&#39;, &#39;LION&#39;, &#39;CELERY&#39;, &#39;VIOLA&#39;, &#39;AUSTRALIA&#39;, &#39;ITALY&#39;, &#39;MARACAS&#39;, &#39;LETTUCE&#39;, &#39;YAMS&#39;, &#39;ELEPHANT&#39;, &#39;CARROT&#39;, &#39;ETHIOPIA&#39;, &#39;POLAND&#39;, &#39;TROMBONE&#39;], [&#39;LOBBY&#39;, &#39;BLOUSE&#39;, &#39;ARTICHOKE&#39;, &#39;CUBA&#39;, &#39;SPINACH&#39;, &#39;JACKET&#39;, &#39;SUIT&#39;, &#39;CHIMNEY&#39;, &#39;CLOSET&#39;, &#39;CAMISOLE&#39;, &#39;POTATO&#39;, &#39;GERMANY&#39;, &#39;FURNACE&#39;, &#39;EGYPT&#39;, &#39;GARLIC&#39;, &#39;IRAN&#39;, &#39;WILLOW&#39;, &#39;GUITAR&#39;, &#39;XYLOPHONE&#39;, &#39;SCORPION&#39;, &#39;WORM&#39;, &#39;POPLAR&#39;, &#39;LIP&#39;, &#39;ANKLE&#39;, &#39;EUCALYPTUS&#39;, &#39;FINGER&#39;, &#39;LARVA&#39;, &#39;ASH&#39;, &#39;MONARCH&#39;, &#39;HAND&#39;, &#39;ACCORDION&#39;, &#39;BONGOS&#39;], [&#39;FLORIDA&#39;, &#39;PEAR&#39;, &#39;MICHIGAN&#39;, &#39;IOWA&#39;, &#39;MOOSE&#39;, &#39;ANTELOPE&#39;, &#39;RACOON&#39;, &#39;POMEGRANATE&#39;, &#39;RIB&#39;, &#39;TOOTH&#39;, &#39;KANSAS&#39;, &#39;PANCREAS&#39;, &#39;TONGUE&#39;, &#39;CLEMENTINE&#39;, &#39;MONKEY&#39;, &#39;LEMON&#39;, &#39;SHIRT&#39;, &#39;COTTONWOOD&#39;, &#39;BELT&#39;, &#39;EVERGREEN&#39;, &#39;CUP&#39;, &#39;OAK&#39;, &#39;ROBE&#39;, &#39;UKULELE&#39;, &#39;HARMONICA&#39;, &#39;BLENDER&#39;, &#39;COLANDER&#39;, &#39;MARIMBA&#39;, &#39;SPRUCE&#39;, &#39;MIXER&#39;, &#39;BANJO&#39;, &#39;JUMPER&#39;], [&#39;ROME&#39;, &#39;DALLAS&#39;, &#39;TRUMPET&#39;, &#39;BROILER&#39;, &#39;TUBA&#39;, &#39;HIP&#39;, &#39;PARIS&#39;, &#39;MONTREAL&#39;, &#39;TAMBOURINE&#39;, &#39;STOMACH&#39;, &#39;THERMOMETER&#39;, &#39;ARMS&#39;, &#39;PELVIS&#39;, &#39;PICCOLO&#39;, &#39;MUG&#39;, &#39;OVEN&#39;, &#39;FOUNDATION&#39;, &#39;CARPET&#39;, &#39;DISH&#39;, &#39;DAHLIA&#39;, &#39;GRIDDLE&#39;, &#39;PICKLE&#39;, &#39;FLOOR&#39;, &#39;LOG&#39;, &#39;BUTTERCUP&#39;, &#39;ONION&#39;, &#39;CAULIFLOWER&#39;, &#39;SAUCER&#39;, &#39;BROCCOLI&#39;, &#39;STRAINER&#39;, &#39;ELEVATOR&#39;, &#39;AZALEA&#39;]], [[&#39;TRIANGLE&#39;, &#39;HICKORY&#39;, &#39;HONEYDEW&#39;, &#39;WEDGE&#39;, &#39;WIRE&#39;, &#39;PINE&#39;, &#39;SAXOPHONE&#39;, &#39;FIG&#39;, &#39;VIOLIN&#39;, &#39;PLUM&#39;, &#39;ELM&#39;, &#39;MAPLE&#39;, &#39;CELLO&#39;, &#39;SCREWS&#39;, &#39;HAMMER&#39;, &#39;RASPBERRY&#39;], [&#39;WILLOW&#39;, &#39;MONARCH&#39;, &#39;ANKLE&#39;, &#39;BONGOS&#39;, &#39;XYLOPHONE&#39;, &#39;HAND&#39;, &#39;ACCORDION&#39;, &#39;WORM&#39;, &#39;POPLAR&#39;, &#39;EUCALYPTUS&#39;, &#39;SCORPION&#39;, &#39;LARVA&#39;, &#39;FINGER&#39;, &#39;ASH&#39;, &#39;GUITAR&#39;, &#39;LIP&#39;], [&#39;PIG&#39;, &#39;AUSTRALIA&#39;, &#39;ZEBRA&#39;, &#39;BASS&#39;, &#39;ITALY&#39;, &#39;LETTUCE&#39;, &#39;LION&#39;, &#39;ELEPHANT&#39;, &#39;VIOLA&#39;, &#39;TROMBONE&#39;, &#39;POLAND&#39;, &#39;YAMS&#39;, &#39;MARACAS&#39;, &#39;CARROT&#39;, &#39;CELERY&#39;, &#39;ETHIOPIA&#39;], [&#39;CUP&#39;, &#39;JUMPER&#39;, &#39;BANJO&#39;, &#39;BELT&#39;, &#39;BLENDER&#39;, &#39;EVERGREEN&#39;, &#39;COTTONWOOD&#39;, &#39;SPRUCE&#39;, &#39;MIXER&#39;, &#39;ROBE&#39;, &#39;COLANDER&#39;, &#39;MARIMBA&#39;, &#39;SHIRT&#39;, &#39;OAK&#39;, &#39;HARMONICA&#39;, &#39;UKULELE&#39;], [&#39;CORRIDOR&#39;, &#39;POT&#39;, &#39;HORSE&#39;, &#39;COW&#39;, &#39;GLASS&#39;, &#39;GIRAFFE&#39;, &#39;STRAWBERRY&#39;, &#39;KIWI&#39;, &#39;SPATULA&#39;, &#39;MOUSE&#39;, &#39;REFRIGERATOR&#39;, &#39;WINDOW&#39;, &#39;HALL&#39;, &#39;DOOR&#39;, &#39;GUAVA&#39;, &#39;TANGELO&#39;], [&#39;PUMPKIN&#39;, &#39;FOX&#39;, &#39;GINGER&#39;, &#39;RABBIT&#39;, &#39;TEXAS&#39;, &#39;TERMITE&#39;, &#39;BEETLE&#39;, &#39;LLAMA&#39;, &#39;OHIO&#39;, &#39;WASP&#39;, &#39;PENNSYLVANIA&#39;, &#39;RHINOCEROS&#39;, &#39;RUTABAGA&#39;, &#39;CHRYSALIS&#39;, &#39;OKRA&#39;, &#39;ALASKA&#39;], [&#39;STOMACH&#39;, &#39;HIP&#39;, &#39;THERMOMETER&#39;, &#39;TUBA&#39;, &#39;PELVIS&#39;, &#39;ARMS&#39;, &#39;MONTREAL&#39;, &#39;MUG&#39;, &#39;BROILER&#39;, &#39;PARIS&#39;, &#39;TRUMPET&#39;, &#39;PICCOLO&#39;, &#39;DALLAS&#39;, &#39;TAMBOURINE&#39;, &#39;OVEN&#39;, &#39;ROME&#39;], [&#39;ALCOVE&#39;, &#39;HIPPOPOTAMUS&#39;, &#39;PETUNIA&#39;, &#39;FACE&#39;, &#39;ROSE&#39;, &#39;DOG&#39;, &#39;KITCHEN&#39;, &#39;BARN&#39;, &#39;GAZEBO&#39;, &#39;HEART&#39;, &#39;DONKEY&#39;, &#39;KNUCKLE&#39;, &#39;EAR&#39;, &#39;CARNATION&#39;, &#39;TIGER&#39;, &#39;TULIP&#39;], [&#39;EGYPT&#39;, &#39;SUIT&#39;, &#39;JACKET&#39;, &#39;SPINACH&#39;, &#39;ARTICHOKE&#39;, &#39;CHIMNEY&#39;, &#39;LOBBY&#39;, &#39;IRAN&#39;, &#39;POTATO&#39;, &#39;CAMISOLE&#39;, &#39;CLOSET&#39;, &#39;GARLIC&#39;, &#39;CUBA&#39;, &#39;GERMANY&#39;, &#39;BLOUSE&#39;, &#39;FURNACE&#39;], [&#39;MONTANA&#39;, &#39;SUNFLOWER&#39;, &#39;NARCISSUS&#39;, &#39;DAISY&#39;, &#39;DRESS&#39;, &#39;KNIFE&#39;, &#39;LILY&#39;, &#39;FORK&#39;, &#39;MAINE&#39;, &#39;PANTS&#39;, &#39;UTAH&#39;, &#39;ARIZONA&#39;, &#39;GIRDLE&#39;, &#39;TOASTER&#39;, &#39;SKILLET&#39;, &#39;UNDERWEAR&#39;], [&#39;MANTIS&#39;, &#39;MOSQUITO&#39;, &#39;PALM&#39;, &#39;SWEATER&#39;, &#39;HORNET&#39;, &#39;RENO&#39;, &#39;GLOVES&#39;, &#39;MILLIPEDE&#39;, &#39;TEAK&#39;, &#39;CEDAR&#39;, &#39;BERLIN&#39;, &#39;TROUSERS&#39;, &#39;SYDNEY&#39;, &#39;CHICAGO&#39;, &#39;SYCAMORE&#39;, &#39;BRA&#39;], [&#39;VERMONT&#39;, &#39;BANANA&#39;, &#39;RULER&#39;, &#39;CALIFORNIA&#39;, &#39;KUMQUAT&#39;, &#39;JERUSALEM&#39;, &#39;MANGO&#39;, &#39;GLUE&#39;, &#39;NECTARINE&#39;, &#39;NUTS&#39;, &#39;PHILADELPHIA&#39;, &#39;WISCONSIN&#39;, &#39;TOKYO&#39;, &#39;VANCOUVER&#39;, &#39;HAWAII&#39;, &#39;WASHER&#39;], [&#39;RACOON&#39;, &#39;ANTELOPE&#39;, &#39;KANSAS&#39;, &#39;TONGUE&#39;, &#39;PANCREAS&#39;, &#39;MONKEY&#39;, &#39;PEAR&#39;, &#39;LEMON&#39;, &#39;TOOTH&#39;, &#39;POMEGRANATE&#39;, &#39;MICHIGAN&#39;, &#39;CLEMENTINE&#39;, &#39;RIB&#39;, &#39;MOOSE&#39;, &#39;IOWA&#39;, &#39;FLORIDA&#39;], [&#39;SWITZERLAND&#39;, &#39;FERRET&#39;, &#39;SQUIRREL&#39;, &#39;PROTRACTOR&#39;, &#39;ENGLAND&#39;, &#39;FRANCE&#39;, &#39;JAPAN&#39;, &#39;PIANO&#39;, &#39;KAZOO&#39;, &#39;DRUM&#39;, &#39;BOLTS&#39;, &#39;SAW&#39;, &#39;CLARINET&#39;, &#39;CAT&#39;, &#39;LEOPARD&#39;, &#39;CHISEL&#39;], [&#39;PANTHER&#39;, &#39;SQUASH&#39;, &#39;STOCKHOLM&#39;, &#39;AUBERGINE&#39;, &#39;ZUCCHINI&#39;, &#39;ELBOW&#39;, &#39;SHOULDER&#39;, &#39;FOOT&#39;, &#39;SHEEP&#39;, &#39;KIDNEY&#39;, &#39;OLIVE&#39;, &#39;TORONTO&#39;, &#39;MIAMI&#39;, &#39;BOMBAY&#39;, &#39;WOLF&#39;, &#39;GOAT&#39;], [&#39;AZALEA&#39;, &#39;FOUNDATION&#39;, &#39;CAULIFLOWER&#39;, &#39;BROCCOLI&#39;, &#39;STRAINER&#39;, &#39;DISH&#39;, &#39;DAHLIA&#39;, &#39;LOG&#39;, &#39;SAUCER&#39;, &#39;ONION&#39;, &#39;ELEVATOR&#39;, &#39;PICKLE&#39;, &#39;GRIDDLE&#39;, &#39;FLOOR&#39;, &#39;CARPET&#39;, &#39;BUTTERCUP&#39;]], [[&#39;PARIS&#39;, &#39;MUG&#39;, &#39;TUBA&#39;, &#39;BROILER&#39;, &#39;MONTREAL&#39;, &#39;PELVIS&#39;, &#39;OVEN&#39;, &#39;STOMACH&#39;, &#39;ARMS&#39;, &#39;THERMOMETER&#39;, &#39;ROME&#39;, &#39;DALLAS&#39;, &#39;TRUMPET&#39;, &#39;HIP&#39;, &#39;TAMBOURINE&#39;, &#39;PICCOLO&#39;], [&#39;ANTELOPE&#39;, &#39;IOWA&#39;, &#39;POMEGRANATE&#39;, &#39;KANSAS&#39;, &#39;PANCREAS&#39;, &#39;FLORIDA&#39;, &#39;MICHIGAN&#39;, &#39;MONKEY&#39;, &#39;PEAR&#39;, &#39;TOOTH&#39;, &#39;RIB&#39;, &#39;MOOSE&#39;, &#39;TONGUE&#39;, &#39;CLEMENTINE&#39;, &#39;LEMON&#39;, &#39;RACOON&#39;], [&#39;TERMITE&#39;, &#39;PENNSYLVANIA&#39;, &#39;OKRA&#39;, &#39;OHIO&#39;, &#39;WASP&#39;, &#39;FOX&#39;, &#39;RHINOCEROS&#39;, &#39;PUMPKIN&#39;, &#39;LLAMA&#39;, &#39;RUTABAGA&#39;, &#39;RABBIT&#39;, &#39;GINGER&#39;, &#39;ALASKA&#39;, &#39;BEETLE&#39;, &#39;CHRYSALIS&#39;, &#39;TEXAS&#39;], [&#39;AZALEA&#39;, &#39;PICKLE&#39;, &#39;FOUNDATION&#39;, &#39;ONION&#39;, &#39;BUTTERCUP&#39;, &#39;ELEVATOR&#39;, &#39;DAHLIA&#39;, &#39;STRAINER&#39;, &#39;DISH&#39;, &#39;BROCCOLI&#39;, &#39;GRIDDLE&#39;, &#39;SAUCER&#39;, &#39;FLOOR&#39;, &#39;LOG&#39;, &#39;CAULIFLOWER&#39;, &#39;CARPET&#39;], [&#39;BASS&#39;, &#39;CARROT&#39;, &#39;MARACAS&#39;, &#39;ETHIOPIA&#39;, &#39;ELEPHANT&#39;, &#39;VIOLA&#39;, &#39;TROMBONE&#39;, &#39;PIG&#39;, &#39;ZEBRA&#39;, &#39;AUSTRALIA&#39;, &#39;ITALY&#39;, &#39;YAMS&#39;, &#39;LETTUCE&#39;, &#39;CELERY&#39;, &#39;POLAND&#39;, &#39;LION&#39;], [&#39;ANKLE&#39;, &#39;FINGER&#39;, &#39;GUITAR&#39;, &#39;LARVA&#39;, &#39;SCORPION&#39;, &#39;POPLAR&#39;, &#39;ASH&#39;, &#39;WILLOW&#39;, &#39;ACCORDION&#39;, &#39;WORM&#39;, &#39;MONARCH&#39;, &#39;EUCALYPTUS&#39;, &#39;LIP&#39;, &#39;HAND&#39;, &#39;BONGOS&#39;, &#39;XYLOPHONE&#39;], [&#39;MILLIPEDE&#39;, &#39;PALM&#39;, &#39;SYCAMORE&#39;, &#39;CEDAR&#39;, &#39;SWEATER&#39;, &#39;CHICAGO&#39;, &#39;RENO&#39;, &#39;HORNET&#39;, &#39;SYDNEY&#39;, &#39;GLOVES&#39;, &#39;TROUSERS&#39;, &#39;TEAK&#39;, &#39;BERLIN&#39;, &#39;MOSQUITO&#39;, &#39;BRA&#39;, &#39;MANTIS&#39;], [&#39;GOAT&#39;, &#39;AUBERGINE&#39;, &#39;MIAMI&#39;, &#39;ELBOW&#39;, &#39;STOCKHOLM&#39;, &#39;BOMBAY&#39;, &#39;FOOT&#39;, &#39;OLIVE&#39;, &#39;SQUASH&#39;, &#39;WOLF&#39;, &#39;SHOULDER&#39;, &#39;PANTHER&#39;, &#39;TORONTO&#39;, &#39;SHEEP&#39;, &#39;ZUCCHINI&#39;, &#39;KIDNEY&#39;], [&#39;EVERGREEN&#39;, &#39;COTTONWOOD&#39;, &#39;BANJO&#39;, &#39;SPRUCE&#39;, &#39;HARMONICA&#39;, &#39;UKULELE&#39;, &#39;SHIRT&#39;, &#39;BELT&#39;, &#39;COLANDER&#39;, &#39;JUMPER&#39;, &#39;BLENDER&#39;, &#39;MARIMBA&#39;, &#39;ROBE&#39;, &#39;OAK&#39;, &#39;MIXER&#39;, &#39;CUP&#39;], [&#39;PETUNIA&#39;, &#39;ALCOVE&#39;, &#39;ROSE&#39;, &#39;KITCHEN&#39;, &#39;GAZEBO&#39;, &#39;TIGER&#39;, &#39;DOG&#39;, &#39;TULIP&#39;, &#39;BARN&#39;, &#39;KNUCKLE&#39;, &#39;DONKEY&#39;, &#39;EAR&#39;, &#39;CARNATION&#39;, &#39;HEART&#39;, &#39;FACE&#39;, &#39;HIPPOPOTAMUS&#39;], [&#39;TRIANGLE&#39;, &#39;HONEYDEW&#39;, &#39;WIRE&#39;, &#39;VIOLIN&#39;, &#39;CELLO&#39;, &#39;PLUM&#39;, &#39;PINE&#39;, &#39;HICKORY&#39;, &#39;RASPBERRY&#39;, &#39;WEDGE&#39;, &#39;ELM&#39;, &#39;FIG&#39;, &#39;SAXOPHONE&#39;, &#39;SCREWS&#39;, &#39;HAMMER&#39;, &#39;MAPLE&#39;], [&#39;CLOSET&#39;, &#39;EGYPT&#39;, &#39;GERMANY&#39;, &#39;ARTICHOKE&#39;, &#39;POTATO&#39;, &#39;CAMISOLE&#39;, &#39;CHIMNEY&#39;, &#39;CUBA&#39;, &#39;JACKET&#39;, &#39;LOBBY&#39;, &#39;IRAN&#39;, &#39;SUIT&#39;, &#39;FURNACE&#39;, &#39;BLOUSE&#39;, &#39;GARLIC&#39;, &#39;SPINACH&#39;], [&#39;WASHER&#39;, &#39;GLUE&#39;, &#39;MANGO&#39;, &#39;CALIFORNIA&#39;, &#39;HAWAII&#39;, &#39;JERUSALEM&#39;, &#39;WISCONSIN&#39;, &#39;NUTS&#39;, &#39;KUMQUAT&#39;, &#39;BANANA&#39;, &#39;RULER&#39;, &#39;NECTARINE&#39;, &#39;TOKYO&#39;, &#39;VERMONT&#39;, &#39;VANCOUVER&#39;, &#39;PHILADELPHIA&#39;], [&#39;CHISEL&#39;, &#39;BOLTS&#39;, &#39;KAZOO&#39;, &#39;DRUM&#39;, &#39;SQUIRREL&#39;, &#39;JAPAN&#39;, &#39;PROTRACTOR&#39;, &#39;PIANO&#39;, &#39;ENGLAND&#39;, &#39;CLARINET&#39;, &#39;SAW&#39;, &#39;FRANCE&#39;, &#39;FERRET&#39;, &#39;CAT&#39;, &#39;LEOPARD&#39;, &#39;SWITZERLAND&#39;], [&#39;GLASS&#39;, &#39;SPATULA&#39;, &#39;HALL&#39;, &#39;CORRIDOR&#39;, &#39;GIRAFFE&#39;, &#39;TANGELO&#39;, &#39;REFRIGERATOR&#39;, &#39;WINDOW&#39;, &#39;GUAVA&#39;, &#39;HORSE&#39;, &#39;KIWI&#39;, &#39;POT&#39;, &#39;STRAWBERRY&#39;, &#39;MOUSE&#39;, &#39;COW&#39;, &#39;DOOR&#39;], [&#39;NARCISSUS&#39;, &#39;UTAH&#39;, &#39;PANTS&#39;, &#39;GIRDLE&#39;, &#39;UNDERWEAR&#39;, &#39;ARIZONA&#39;, &#39;LILY&#39;, &#39;DAISY&#39;, &#39;KNIFE&#39;, &#39;FORK&#39;, &#39;SKILLET&#39;, &#39;SUNFLOWER&#39;, &#39;MONTANA&#39;, &#39;MAINE&#39;, &#39;DRESS&#39;, &#39;TOASTER&#39;]]]
 </pre>
 </div>
 </div>
@@ -12232,7 +12232,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[109]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">pres2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
@@ -12240,9 +12240,6 @@ div#notebook {
     <span class="k">def</span> <span class="nf">indexing</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
     
         <span class="n">subs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
-    <span class="c1">#   lists = len(all_presented[0])</span>
-    <span class="c1">#   words_per = len(all_presented[0][0])</span>
-        <span class="c1">#assumes all subs do equal lists and all lists have equal words</span>
 
         <span class="n">subs_idx</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">lsts_idx</span> <span class="o">=</span> <span class="p">[]</span>
@@ -12268,22 +12265,32 @@ div#notebook {
     <span class="c1">#####################</span>
     
     <span class="c1">#Make dataframe</span>
+    <span class="n">longest</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">))</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">indexing</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span><span class="n">indexing</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">longest</span><span class="p">))</span>
+    <span class="n">all_lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">all_presented</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
     
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">indexing</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span><span class="n">indexing</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">16</span><span class="p">)))</span>
+    <span class="c1">###FIRST ATTEMPTS </span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span>
     
     <span class="k">for</span> <span class="n">indx</span><span class="p">,</span><span class="n">subject</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">lst</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subject</span><span class="p">):</span>
-            <span class="c1">#pd.series(lst)</span>
-            <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">indx</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> 
-            <span class="bp">True</span>
+            <span class="c1">#for x in range(0, len(lst)):</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indx</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
     
     <span class="k">return</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="c1">###SUGGESTED</span>
+<span class="c1">#     for sub in all_presented:</span>
+<span class="c1">#         subs_list_of_dfs = [pd.DataFrame (lst) for lst in sub]</span>
+<span class="c1">#         subs_df = pd.concat(subs_list_of_dfs)</span>
     
-    <span class="c1">#return(indexing(all_presented))</span>
+<span class="c1">#     return(subs_df)</span>
     
     
-    
-<span class="n">pres2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
+<span class="n">tester</span> <span class="o">=</span> <span class="n">pres2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
+<span class="n">tester</span>
+
             
 </pre></div>
 
@@ -12295,7 +12302,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[109]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[39]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12327,326 +12334,326 @@ div#notebook {
       <th rowspan="16" valign="top">0</th>
       <th>0</th>
       <td>OAK</td>
-      <td>SAW</td>
-      <td>LOG</td>
-      <td>WASHER</td>
-      <td>SCREWS</td>
-      <td>LEMON</td>
-      <td>POLAND</td>
-      <td>GLOVES</td>
-      <td>WILLOW</td>
-      <td>NARCISSUS</td>
-      <td>MUG</td>
-      <td>OKRA</td>
-      <td>KIDNEY</td>
-      <td>SPINACH</td>
-      <td>GUAVA</td>
-      <td>KNUCKLE</td>
+      <td>CLARINET</td>
+      <td>CARPET</td>
+      <td>VANCOUVER</td>
+      <td>RASPBERRY</td>
+      <td>RIB</td>
+      <td>ELEPHANT</td>
+      <td>RENO</td>
+      <td>SCORPION</td>
+      <td>GIRDLE</td>
+      <td>OVEN</td>
+      <td>GINGER</td>
+      <td>ZUCCHINI</td>
+      <td>CUBA</td>
+      <td>STRAWBERRY</td>
+      <td>ALCOVE</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>JUMPER</td>
-      <td>CLARINET</td>
-      <td>BROCCOLI</td>
-      <td>WISCONSIN</td>
-      <td>HONEYDEW</td>
-      <td>IOWA</td>
-      <td>YAMS</td>
-      <td>MANTIS</td>
-      <td>EUCALYPTUS</td>
-      <td>KNIFE</td>
-      <td>ARMS</td>
-      <td>PUMPKIN</td>
-      <td>FOOT</td>
-      <td>CAMISOLE</td>
-      <td>GIRAFFE</td>
-      <td>KITCHEN</td>
+      <td>DALLAS</td>
+      <td>LEMON</td>
+      <td>CHRYSALIS</td>
+      <td>HARMONICA</td>
+      <td>CHISEL</td>
+      <td>ELBOW</td>
+      <td>TOASTER</td>
+      <td>CARPET</td>
+      <td>FIG</td>
+      <td>COW</td>
+      <td>CHICAGO</td>
+      <td>JERUSALEM</td>
+      <td>SCORPION</td>
+      <td>ARTICHOKE</td>
+      <td>DONKEY</td>
+      <td>CELERY</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>MARIMBA</td>
-      <td>PIANO</td>
-      <td>CARPET</td>
-      <td>MANGO</td>
-      <td>PINE</td>
-      <td>MICHIGAN</td>
-      <td>ETHIOPIA</td>
-      <td>MILLIPEDE</td>
-      <td>BONGOS</td>
-      <td>SUNFLOWER</td>
-      <td>HIP</td>
-      <td>PENNSYLVANIA</td>
-      <td>SQUASH</td>
-      <td>IRAN</td>
-      <td>HORSE</td>
-      <td>HIPPOPOTAMUS</td>
+      <td>TONGUE</td>
+      <td>GIRAFFE</td>
+      <td>MONARCH</td>
+      <td>ZEBRA</td>
+      <td>CELLO</td>
+      <td>WOLF</td>
+      <td>DAHLIA</td>
+      <td>JACKET</td>
+      <td>GAZEBO</td>
+      <td>BOLTS</td>
+      <td>WASHER</td>
+      <td>THERMOMETER</td>
+      <td>RUTABAGA</td>
+      <td>UNDERWEAR</td>
+      <td>BANJO</td>
+      <td>RENO</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>ROBE</td>
-      <td>KAZOO</td>
-      <td>PICKLE</td>
-      <td>VANCOUVER</td>
-      <td>ELM</td>
-      <td>POMEGRANATE</td>
-      <td>ZEBRA</td>
-      <td>SYCAMORE</td>
-      <td>GUITAR</td>
-      <td>DRESS</td>
-      <td>BROILER</td>
-      <td>OHIO</td>
-      <td>STOCKHOLM</td>
-      <td>BLOUSE</td>
-      <td>COW</td>
-      <td>HEART</td>
+      <td>RASPBERRY</td>
+      <td>DAISY</td>
+      <td>SPINACH</td>
+      <td>GUAVA</td>
+      <td>RHINOCEROS</td>
+      <td>BERLIN</td>
+      <td>PIG</td>
+      <td>HAND</td>
+      <td>KANSAS</td>
+      <td>DALLAS</td>
+      <td>JERUSALEM</td>
+      <td>CARNATION</td>
+      <td>FOUNDATION</td>
+      <td>ZUCCHINI</td>
+      <td>BOLTS</td>
+      <td>JUMPER</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>COLANDER</td>
-      <td>FERRET</td>
-      <td>GRIDDLE</td>
-      <td>VERMONT</td>
-      <td>RASPBERRY</td>
+      <td>HARMONICA</td>
+      <td>WILLOW</td>
+      <td>KNUCKLE</td>
+      <td>IRAN</td>
+      <td>TUBA</td>
+      <td>COW</td>
+      <td>ENGLAND</td>
+      <td>BASS</td>
+      <td>KUMQUAT</td>
+      <td>WASP</td>
+      <td>SQUASH</td>
+      <td>CHICAGO</td>
+      <td>CELLO</td>
+      <td>DAISY</td>
       <td>KANSAS</td>
-      <td>TROMBONE</td>
-      <td>BRA</td>
-      <td>HAND</td>
-      <td>PANTS</td>
-      <td>TAMBOURINE</td>
-      <td>RHINOCEROS</td>
-      <td>BOMBAY</td>
-      <td>EGYPT</td>
-      <td>SPATULA</td>
-      <td>DOG</td>
+      <td>ELEVATOR</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>BLENDER</td>
-      <td>CHISEL</td>
-      <td>DISH</td>
-      <td>HAWAII</td>
-      <td>HAMMER</td>
-      <td>RIB</td>
-      <td>BASS</td>
-      <td>BERLIN</td>
-      <td>WORM</td>
-      <td>LILY</td>
-      <td>PICCOLO</td>
-      <td>RUTABAGA</td>
-      <td>ELBOW</td>
-      <td>CLOSET</td>
-      <td>DOOR</td>
-      <td>BARN</td>
+      <td>SPINACH</td>
+      <td>CAULIFLOWER</td>
+      <td>GUAVA</td>
+      <td>BOMBAY</td>
+      <td>FACE</td>
+      <td>NARCISSUS</td>
+      <td>RENO</td>
+      <td>HIP</td>
+      <td>MARIMBA</td>
+      <td>AUSTRALIA</td>
+      <td>LEOPARD</td>
+      <td>WASHER</td>
+      <td>WIRE</td>
+      <td>TOOTH</td>
+      <td>ASH</td>
+      <td>WASP</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>COTTONWOOD</td>
-      <td>SQUIRREL</td>
-      <td>AZALEA</td>
-      <td>TOKYO</td>
-      <td>FIG</td>
-      <td>MONKEY</td>
-      <td>ELEPHANT</td>
-      <td>MOSQUITO</td>
-      <td>LIP</td>
-      <td>SKILLET</td>
-      <td>THERMOMETER</td>
-      <td>CHRYSALIS</td>
-      <td>GOAT</td>
-      <td>CHIMNEY</td>
-      <td>POT</td>
-      <td>DONKEY</td>
+      <td>MICHIGAN</td>
+      <td>KITCHEN</td>
+      <td>POPLAR</td>
+      <td>MANGO</td>
+      <td>ROBE</td>
+      <td>JAPAN</td>
+      <td>LION</td>
+      <td>PELVIS</td>
+      <td>LLAMA</td>
+      <td>FURNACE</td>
+      <td>WEDGE</td>
+      <td>GRIDDLE</td>
+      <td>UNDERWEAR</td>
+      <td>CHICAGO</td>
+      <td>KIDNEY</td>
+      <td>KIWI</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>EVERGREEN</td>
-      <td>ENGLAND</td>
-      <td>STRAINER</td>
-      <td>JERUSALEM</td>
-      <td>HICKORY</td>
-      <td>RACOON</td>
-      <td>CARROT</td>
-      <td>RENO</td>
-      <td>LARVA</td>
-      <td>DAISY</td>
-      <td>STOMACH</td>
-      <td>TERMITE</td>
-      <td>SHEEP</td>
-      <td>POTATO</td>
-      <td>HALL</td>
-      <td>TIGER</td>
+      <td>ALASKA</td>
+      <td>HAMMER</td>
+      <td>POLAND</td>
+      <td>CUP</td>
+      <td>KIWI</td>
+      <td>IOWA</td>
+      <td>CALIFORNIA</td>
+      <td>CARNATION</td>
+      <td>HORNET</td>
+      <td>PELVIS</td>
+      <td>SUNFLOWER</td>
+      <td>HAND</td>
+      <td>GARLIC</td>
+      <td>KIDNEY</td>
+      <td>BROCCOLI</td>
+      <td>FRANCE</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>HARMONICA</td>
-      <td>DRUM</td>
-      <td>BUTTERCUP</td>
-      <td>KUMQUAT</td>
+      <td>BASS</td>
+      <td>POTATO</td>
+      <td>LOG</td>
+      <td>JUMPER</td>
+      <td>PELVIS</td>
+      <td>FOOT</td>
+      <td>XYLOPHONE</td>
+      <td>DAISY</td>
       <td>SAXOPHONE</td>
-      <td>CLEMENTINE</td>
-      <td>ITALY</td>
-      <td>CEDAR</td>
-      <td>SCORPION</td>
-      <td>MAINE</td>
-      <td>TRUMPET</td>
-      <td>BEETLE</td>
-      <td>OLIVE</td>
-      <td>FURNACE</td>
-      <td>CORRIDOR</td>
-      <td>EAR</td>
+      <td>NUTS</td>
+      <td>GAZEBO</td>
+      <td>CHISEL</td>
+      <td>BRA</td>
+      <td>GINGER</td>
+      <td>TOOTH</td>
+      <td>POT</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>BANJO</td>
-      <td>LEOPARD</td>
-      <td>SAUCER</td>
-      <td>RULER</td>
+      <td>PETUNIA</td>
+      <td>RABBIT</td>
+      <td>DAISY</td>
+      <td>POTATO</td>
+      <td>DRUM</td>
+      <td>XYLOPHONE</td>
+      <td>MANGO</td>
+      <td>MONKEY</td>
+      <td>STRAINER</td>
+      <td>KIWI</td>
       <td>PLUM</td>
-      <td>MOOSE</td>
-      <td>CELERY</td>
-      <td>CHICAGO</td>
-      <td>ANKLE</td>
-      <td>GIRDLE</td>
-      <td>TUBA</td>
-      <td>TEXAS</td>
-      <td>TORONTO</td>
-      <td>LOBBY</td>
-      <td>WINDOW</td>
-      <td>TULIP</td>
+      <td>ELEPHANT</td>
+      <td>STOMACH</td>
+      <td>WOLF</td>
+      <td>BELT</td>
+      <td>SYDNEY</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>BELT</td>
-      <td>CAT</td>
-      <td>FOUNDATION</td>
-      <td>PHILADELPHIA</td>
-      <td>WIRE</td>
+      <td>MIXER</td>
+      <td>WILLOW</td>
       <td>FLORIDA</td>
-      <td>VIOLA</td>
-      <td>TROUSERS</td>
-      <td>ASH</td>
-      <td>ARIZONA</td>
-      <td>OVEN</td>
-      <td>ALASKA</td>
-      <td>SHOULDER</td>
-      <td>GERMANY</td>
-      <td>KIWI</td>
-      <td>ROSE</td>
+      <td>CHICAGO</td>
+      <td>STOCKHOLM</td>
+      <td>ALCOVE</td>
+      <td>CELERY</td>
+      <td>RUTABAGA</td>
+      <td>NARCISSUS</td>
+      <td>HORSE</td>
+      <td>CLOSET</td>
+      <td>HAMMER</td>
+      <td>THERMOMETER</td>
+      <td>CAULIFLOWER</td>
+      <td>ENGLAND</td>
+      <td>RULER</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>UKULELE</td>
-      <td>BOLTS</td>
-      <td>FLOOR</td>
-      <td>NECTARINE</td>
-      <td>TRIANGLE</td>
-      <td>TONGUE</td>
-      <td>MARACAS</td>
-      <td>TEAK</td>
-      <td>POPLAR</td>
-      <td>MONTANA</td>
-      <td>DALLAS</td>
-      <td>GINGER</td>
-      <td>MIAMI</td>
-      <td>JACKET</td>
-      <td>GLASS</td>
-      <td>FACE</td>
+      <td>FRANCE</td>
+      <td>HEART</td>
+      <td>OVEN</td>
+      <td>GERMANY</td>
+      <td>HICKORY</td>
+      <td>POT</td>
+      <td>AZALEA</td>
+      <td>TOKYO</td>
+      <td>LEMON</td>
+      <td>ITALY</td>
+      <td>WOLF</td>
+      <td>CEDAR</td>
+      <td>RHINOCEROS</td>
+      <td>LILY</td>
+      <td>COLANDER</td>
+      <td>ANKLE</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>SPRUCE</td>
-      <td>FRANCE</td>
-      <td>ONION</td>
-      <td>CALIFORNIA</td>
-      <td>MAPLE</td>
-      <td>TOOTH</td>
-      <td>PIG</td>
-      <td>SWEATER</td>
-      <td>FINGER</td>
-      <td>TOASTER</td>
-      <td>MONTREAL</td>
-      <td>LLAMA</td>
-      <td>ZUCCHINI</td>
-      <td>SUIT</td>
-      <td>TANGELO</td>
-      <td>CARNATION</td>
+      <td>POPLAR</td>
+      <td>POLAND</td>
+      <td>SPATULA</td>
+      <td>CLARINET</td>
+      <td>BELT</td>
+      <td>BLOUSE</td>
+      <td>PANTHER</td>
+      <td>ALCOVE</td>
+      <td>THERMOMETER</td>
+      <td>PANTS</td>
+      <td>CHICAGO</td>
+      <td>RACOON</td>
+      <td>HAWAII</td>
+      <td>HAMMER</td>
+      <td>OKRA</td>
+      <td>PICKLE</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>CUP</td>
-      <td>JAPAN</td>
-      <td>ELEVATOR</td>
-      <td>GLUE</td>
-      <td>WEDGE</td>
-      <td>PEAR</td>
-      <td>LETTUCE</td>
-      <td>PALM</td>
-      <td>MONARCH</td>
-      <td>FORK</td>
-      <td>PELVIS</td>
-      <td>FOX</td>
-      <td>WOLF</td>
-      <td>CUBA</td>
-      <td>REFRIGERATOR</td>
-      <td>GAZEBO</td>
+      <td>DAHLIA</td>
+      <td>YAMS</td>
+      <td>TOASTER</td>
+      <td>CELLO</td>
+      <td>TERMITE</td>
+      <td>SUIT</td>
+      <td>MONKEY</td>
+      <td>EAR</td>
+      <td>STOMACH</td>
+      <td>KIDNEY</td>
+      <td>MANGO</td>
+      <td>POPLAR</td>
+      <td>MIXER</td>
+      <td>PROTRACTOR</td>
+      <td>HORSE</td>
+      <td>BRA</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>SHIRT</td>
-      <td>PROTRACTOR</td>
-      <td>CAULIFLOWER</td>
-      <td>BANANA</td>
-      <td>VIOLIN</td>
-      <td>ANTELOPE</td>
-      <td>LION</td>
-      <td>SYDNEY</td>
-      <td>ACCORDION</td>
-      <td>UNDERWEAR</td>
-      <td>ROME</td>
-      <td>WASP</td>
-      <td>AUBERGINE</td>
-      <td>ARTICHOKE</td>
-      <td>STRAWBERRY</td>
-      <td>PETUNIA</td>
+      <td>HAND</td>
+      <td>SWITZERLAND</td>
+      <td>RULER</td>
+      <td>REFRIGERATOR</td>
+      <td>DAISY</td>
+      <td>LETTUCE</td>
+      <td>FOX</td>
+      <td>ONION</td>
+      <td>MOSQUITO</td>
+      <td>RASPBERRY</td>
+      <td>TULIP</td>
+      <td>BELT</td>
+      <td>STOCKHOLM</td>
+      <td>EGYPT</td>
+      <td>MONKEY</td>
+      <td>OVEN</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>MIXER</td>
-      <td>SWITZERLAND</td>
-      <td>DAHLIA</td>
-      <td>NUTS</td>
-      <td>CELLO</td>
-      <td>PANCREAS</td>
-      <td>AUSTRALIA</td>
-      <td>HORNET</td>
-      <td>XYLOPHONE</td>
-      <td>UTAH</td>
-      <td>PARIS</td>
-      <td>RABBIT</td>
-      <td>PANTHER</td>
-      <td>GARLIC</td>
-      <td>MOUSE</td>
-      <td>ALCOVE</td>
+      <td>TRIANGLE</td>
+      <td>MONARCH</td>
+      <td>ZEBRA</td>
+      <td>BELT</td>
+      <td>GLASS</td>
+      <td>TERMITE</td>
+      <td>MONTREAL</td>
+      <td>BARN</td>
+      <td>POTATO</td>
+      <td>PANTS</td>
+      <td>BERLIN</td>
+      <td>WISCONSIN</td>
+      <td>RIB</td>
+      <td>CAT</td>
+      <td>WOLF</td>
+      <td>BUTTERCUP</td>
     </tr>
     <tr>
       <th rowspan="14" valign="top">1</th>
       <th>0</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>PARIS</td>
+      <td>IOWA</td>
+      <td>OKRA</td>
+      <td>ONION</td>
+      <td>ELEPHANT</td>
+      <td>POPLAR</td>
+      <td>RENO</td>
+      <td>OLIVE</td>
+      <td>COLANDER</td>
+      <td>KNUCKLE</td>
+      <td>ELM</td>
+      <td>SUIT</td>
+      <td>TOKYO</td>
+      <td>CAT</td>
+      <td>COW</td>
+      <td>TOASTER</td>
     </tr>
     <tr>
       <th>1</th>
@@ -13489,7 +13496,76 @@ div#notebook {
     </tr>
   </tbody>
 </table>
-<p>256 rows × 16 columns</p>
+<p>4608 rows × 16 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[207]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="p">[[[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;carrot&quot;</span><span class="p">,</span> <span class="s2">&quot;cucumber&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]],[[</span><span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bag&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;celery&quot;</span><span class="p">,</span> <span class="s2">&quot;parsnip&quot;</span><span class="p">,</span> <span class="s2">&quot;pear&quot;</span><span class="p">]]]</span>
+<span class="n">subs_list_of_dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">]</span>
+<span class="n">subs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">subs_list_of_dfs</span><span class="p">)</span>
+<span class="n">subs_df</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[207]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>apple</td>
+      <td>banana</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>carrot</td>
+      <td>cucumber</td>
+      <td>orange</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>ant</td>
+      <td>bag</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>celery</td>
+      <td>parsnip</td>
+      <td>pear</td>
+    </tr>
+  </tbody>
+</table>
 </div>
 </div>
 

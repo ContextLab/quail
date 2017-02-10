@@ -1,10 +1,4 @@
 
-# coding: utf-8
-
-# <h1>Pyrororobocop</h1>
-
-# In[3]:
-
 import pandas as pd
 from analysis import recall_matrix
 
@@ -49,12 +43,7 @@ class Pyro(object):
 
 
 
-# In[5]:
-
 Pyro()
-
-
-# In[6]:
 
 from sqlalchemy import create_engine, MetaData, Table
 import json
@@ -69,11 +58,6 @@ import matplotlib.pyplot as plt
 import numpy.ma as ma
 from itertools import izip_longest
 from collections import Counter
-
-
-# <h1> Load data in dataframe</h1>
-
-# In[13]:
 
 db_url = "sqlite:///participants.db"
 table_name = 'turkdemo'
@@ -128,11 +112,6 @@ filtered_data = [{k:v for (k,v) in part.items() if isNotNumber(k)} for part in d
 # 'pandas' python library: one option among many for analysis
 data_frame = pd.DataFrame(filtered_data)
 
-
-# <h1> Track Experiement Number</h1>
-
-# In[14]:
-
 db_url = "sqlite:///participants.db"
 table_name = 'turkdemo'
 data_column_name = 'codeversion'
@@ -157,18 +136,8 @@ for idx,sub in enumerate(data_frame['uniqueid'].unique()):
         version_col.append(versions[idx])
 data_frame['exp_version']=version_col
 
-
-# <h1>Word Pool</h1>
-
-# In[20]:
-
 # read in stimulus library
 wordpool = pd.read_csv('cut_wordpool.csv')
-
-
-# <h1>Select Experiment</h1>
-
-# In[34]:
 
 subids = list(data_frame[data_frame['listNumber']==15]['uniqueid'].unique())
 
@@ -200,11 +169,6 @@ exp1.remove('debugKUWU41:debug9FG9EP')
 ##################
 
 print(exp1)
-
-
-# <h1>Processing Functions</h1>
-
-# In[32]:
 
 # this function takes the data frame and returns subject specific data based on the subid variable
 def filterData(data_frame,subid):
@@ -268,15 +232,10 @@ def computeListAcc(stimDict,recalledWords):
         accVec.append(acc/len(stim))
     return accVec
 
-
-# <h1>Create presentedWords and recalledWords</h1>
-
-# In[61]:
-
 experiment=[]
 all_recalled=[]
 all_presented=[]
-for idx,sub in enumerate(exp1[0:1]):
+for idx,sub in enumerate(exp1):
 
     filteredStimData = filterData(data_frame,sub)
     stimDict = createStimDict(filteredStimData)
@@ -295,19 +254,11 @@ for idx,sub in enumerate(exp1[0:1]):
 print(len(all_presented))
 print(all_presented)
 
-
-# <h1>Create Presented DataFrame</h1>
-
-# In[109]:
-
 def pres2pd(all_presented):
     
     def indexing(all_presented):
     
         subs = len(all_presented)
-    #   lists = len(all_presented[0])
-    #   words_per = len(all_presented[0][0])
-        #assumes all subs do equal lists and all lists have equal words
 
         subs_idx = []
         lsts_idx = []
@@ -333,26 +284,42 @@ def pres2pd(all_presented):
     #####################
     
     #Make dataframe
+    longest = len(max(all_presented,key=len))
+    index = [indexing(all_presented)[0],indexing(all_presented)[1]]
+    columns = list(range(0,longest))
+    all_lists = [item for sublist in all_presented for item in sublist]
     
-    df = pd.DataFrame(index = [indexing(all_presented)[0],indexing(all_presented)[1]], columns = list(range(0,16)))
+    ###FIRST ATTEMPTS 
+    df = pd.DataFrame(index = index, columns = columns)
     
     for indx,subject in enumerate(all_presented):
         for idx,lst in enumerate(subject):
-            #pd.series(lst)
-            df.loc[indx][idx] = pd.Series(lst) 
-            True
+            df.iloc[indx][idx] = lst[0]
     
     return(df)
+
+#     for sub in all_presented:
+#         subs_list_of_dfs = [pd.DataFrame (lst) for lst in sub]
+#         subs_df = pd.concat(subs_list_of_dfs)
     
-    #return(indexing(all_presented))
+#     return(subs_df)
+
+
+
+
     
     
     
-pres2pd(all_presented)
+tester = pres2pd(all_presented)
+
+tester
+
             
 
-
-# In[ ]:
-
+import pandas as pd
+subs = [[["apple", "banana"], ["carrot", "cucumber", "orange"]],[["ant", "bag"], ["celery", "parsnip", "pear"]]]
+subs_list_of_dfs = [pd.DataFrame (sub) for sub in subs]
+subs_df = pd.concat(subs_list_of_dfs)
+subs_df
 
 
