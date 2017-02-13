@@ -69,6 +69,7 @@ import matplotlib.pyplot as plt
 import numpy.ma as ma
 from itertools import izip_longest
 from collections import Counter
+from analysis import recall_matrix
 
 
 # <h1> Load data in dataframe</h1>
@@ -296,76 +297,63 @@ print(len(all_presented))
 print(all_presented)
 
 
-# <h1>Create Presented DataFrame</h1>
+# <h1>Create Presented & Recalled DataFrames</h1>
 
-# In[39]:
+# In[10]:
 
-def pres2pd(all_presented):
+def list2pd(all_data):
     
-    def indexing(all_presented):
+    def make_multi_index(sub_data, isub):
+        return pd.MultiIndex.from_tuples([(sub_num,lst_num) for lst_num,lst in enumerate(sub_data)], names = ['Subject', 'List'])
     
-        subs = len(all_presented)
+    subs_list_of_dfs = [pd.DataFrame(sub_data, index=make_multi_index(sub_data, sub_num)) for sub_num,sub_data in enumerate(all_data)]
+    return pd.concat(subs_list_of_dfs)
 
-        subs_idx = []
-        lsts_idx = []
-        for idx,subs in enumerate(all_presented):
+list2pd(all_presented)
 
-            for idx2,sub in enumerate(subs):
-                sub_idx = []
-                lst_idx = []
 
-                for idx3,lst in enumerate(sub):
-                    lst_idx.append(idx3)
+# <h1>Create Recall Matrix Dataframe</h1>
 
-                sub_idx = [idx2]*len(lst_idx)
+# In[48]:
 
-                subs_idx.append(sub_idx)
-                lsts_idx.append(lst_idx)
-
-        subs_index = [item for sublist in subs_idx for item in sublist]
-        lsts_index = [item for sublist in lsts_idx for item in sublist]
+def lists2rec_pd(all_presented, all_recalled):
+    
+    def make_multi_index(sub_data, isub):
+        return pd.MultiIndex.from_tuples([(sub_num,lst_num) for lst_num,lst in enumerate(sub_data)], names = ['Subject', 'List'])
+    
+    def make_rec_mat(all_presented, all_recalled):
+        all_recall_mats=[]
+        if len(all_presented) == len(all_recalled):
+            for x in range(0, len(all_presented)):
+                rec_mat = recall_matrix(all_presented[x], all_recalled[x])
+                all_recall_mats.append(rec_mat)
         
-        return(subs_index, lsts_index)
+        return(all_recall_mats)
     
-    #####################
+    rec_data = make_rec_mat(all_presented, all_recalled)
+    subs_list_of_recs = [pd.DataFrame(sub_data, index=make_multi_index(sub_data, sub_num)) for sub_num,sub_data in enumerate(rec_data)]
     
-    #Make dataframe
-    longest = len(max(all_presented,key=len))
-    index = [indexing(all_presented)[0],indexing(all_presented)[1]]
-    columns = list(range(0,longest))
-    all_lists = [item for sublist in all_presented for item in sublist]
-    
-    ###FIRST ATTEMPTS 
-    df = pd.DataFrame(index = index, columns = columns)
-    
-    for indx,subject in enumerate(all_presented):
-        for idx,lst in enumerate(subject):
-            #for x in range(0, len(lst)):
-            df.iloc[indx][idx] = lst[idx]
-    
-    return(df)
-
-    ###SUGGESTED
-#     for sub in all_presented:
-#         subs_list_of_dfs = [pd.DataFrame (lst) for lst in sub]
-#         subs_df = pd.concat(subs_list_of_dfs)
-    
-#     return(subs_df)
-    
-    
-tester = pres2pd(all_presented)
-tester
-
-            
+    return(pd.concat(subs_list_of_recs))
 
 
-# In[207]:
+# In[49]:
 
-import pandas as pd
-subs = [[["apple", "banana"], ["carrot", "cucumber", "orange"]],[["ant", "bag"], ["celery", "parsnip", "pear"]]]
-subs_list_of_dfs = [pd.DataFrame (sub) for sub in subs]
-subs_df = pd.concat(subs_list_of_dfs)
-subs_df
+lists2rec_pd(all_presented, all_recalled)
+
+
+# In[33]:
+
+
+
+
+# In[ ]:
+
+
+
+
+# In[ ]:
+
+
 
 
 # In[ ]:

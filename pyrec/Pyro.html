@@ -11828,7 +11828,7 @@ div#notebook {
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;__main__.Pyro at 0x106020a90&gt;</pre>
+<pre>&lt;__main__.Pyro at 0x105e82bd0&gt;</pre>
 </div>
 
 </div>
@@ -11855,6 +11855,7 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="kn">as</span> <span class="nn">ma</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip_longest</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">analysis</span> <span class="kn">import</span> <span class="n">recall_matrix</span>
 </pre></div>
 
 </div>
@@ -12226,72 +12227,24 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1>Create Presented DataFrame</h1>
+<h1>Create Presented & Recalled DataFrames</h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">pres2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">list2pd</span><span class="p">(</span><span class="n">all_data</span><span class="p">):</span>
     
-    <span class="k">def</span> <span class="nf">indexing</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">make_multi_index</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">isub</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">([(</span><span class="n">sub_num</span><span class="p">,</span><span class="n">lst_num</span><span class="p">)</span> <span class="k">for</span> <span class="n">lst_num</span><span class="p">,</span><span class="n">lst</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub_data</span><span class="p">)],</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="s1">&#39;List&#39;</span><span class="p">])</span>
     
-        <span class="n">subs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
+    <span class="n">subs_list_of_dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">make_multi_index</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">sub_num</span><span class="p">))</span> <span class="k">for</span> <span class="n">sub_num</span><span class="p">,</span><span class="n">sub_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_data</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">subs_list_of_dfs</span><span class="p">)</span>
 
-        <span class="n">subs_idx</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">lsts_idx</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">subs</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
-
-            <span class="k">for</span> <span class="n">idx2</span><span class="p">,</span><span class="n">sub</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subs</span><span class="p">):</span>
-                <span class="n">sub_idx</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="n">lst_idx</span> <span class="o">=</span> <span class="p">[]</span>
-
-                <span class="k">for</span> <span class="n">idx3</span><span class="p">,</span><span class="n">lst</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub</span><span class="p">):</span>
-                    <span class="n">lst_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx3</span><span class="p">)</span>
-
-                <span class="n">sub_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx2</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">lst_idx</span><span class="p">)</span>
-
-                <span class="n">subs_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_idx</span><span class="p">)</span>
-                <span class="n">lsts_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lst_idx</span><span class="p">)</span>
-
-        <span class="n">subs_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">subs_idx</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
-        <span class="n">lsts_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">lsts_idx</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
-        
-        <span class="k">return</span><span class="p">(</span><span class="n">subs_index</span><span class="p">,</span> <span class="n">lsts_index</span><span class="p">)</span>
-    
-    <span class="c1">#####################</span>
-    
-    <span class="c1">#Make dataframe</span>
-    <span class="n">longest</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">))</span>
-    <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">indexing</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span><span class="n">indexing</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">longest</span><span class="p">))</span>
-    <span class="n">all_lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">all_presented</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span>
-    
-    <span class="c1">###FIRST ATTEMPTS </span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span><span class="p">)</span>
-    
-    <span class="k">for</span> <span class="n">indx</span><span class="p">,</span><span class="n">subject</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_presented</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">lst</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subject</span><span class="p">):</span>
-            <span class="c1">#for x in range(0, len(lst)):</span>
-            <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">indx</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">lst</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-    
-    <span class="k">return</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-    <span class="c1">###SUGGESTED</span>
-<span class="c1">#     for sub in all_presented:</span>
-<span class="c1">#         subs_list_of_dfs = [pd.DataFrame (lst) for lst in sub]</span>
-<span class="c1">#         subs_df = pd.concat(subs_list_of_dfs)</span>
-    
-<span class="c1">#     return(subs_df)</span>
-    
-    
-<span class="n">tester</span> <span class="o">=</span> <span class="n">pres2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
-<span class="n">tester</span>
-
-            
+<span class="n">list2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12302,7 +12255,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[39]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -12321,12 +12274,42 @@ div#notebook {
       <th>7</th>
       <th>8</th>
       <th>9</th>
-      <th>10</th>
-      <th>11</th>
-      <th>12</th>
-      <th>13</th>
-      <th>14</th>
-      <th>15</th>
+      <th>...</th>
+      <th>22</th>
+      <th>23</th>
+      <th>24</th>
+      <th>25</th>
+      <th>26</th>
+      <th>27</th>
+      <th>28</th>
+      <th>29</th>
+      <th>30</th>
+      <th>31</th>
+    </tr>
+    <tr>
+      <th>Subject</th>
+      <th>List</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -12334,430 +12317,545 @@ div#notebook {
       <th rowspan="16" valign="top">0</th>
       <th>0</th>
       <td>OAK</td>
-      <td>CLARINET</td>
-      <td>CARPET</td>
-      <td>VANCOUVER</td>
-      <td>RASPBERRY</td>
-      <td>RIB</td>
-      <td>ELEPHANT</td>
-      <td>RENO</td>
-      <td>SCORPION</td>
-      <td>GIRDLE</td>
-      <td>OVEN</td>
-      <td>GINGER</td>
-      <td>ZUCCHINI</td>
-      <td>CUBA</td>
-      <td>STRAWBERRY</td>
-      <td>ALCOVE</td>
+      <td>JUMPER</td>
+      <td>MARIMBA</td>
+      <td>ROBE</td>
+      <td>COLANDER</td>
+      <td>BLENDER</td>
+      <td>COTTONWOOD</td>
+      <td>EVERGREEN</td>
+      <td>HARMONICA</td>
+      <td>BANJO</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>DALLAS</td>
-      <td>LEMON</td>
-      <td>CHRYSALIS</td>
-      <td>HARMONICA</td>
+      <td>SAW</td>
+      <td>CLARINET</td>
+      <td>PIANO</td>
+      <td>KAZOO</td>
+      <td>FERRET</td>
       <td>CHISEL</td>
-      <td>ELBOW</td>
-      <td>TOASTER</td>
-      <td>CARPET</td>
-      <td>FIG</td>
-      <td>COW</td>
-      <td>CHICAGO</td>
-      <td>JERUSALEM</td>
-      <td>SCORPION</td>
-      <td>ARTICHOKE</td>
-      <td>DONKEY</td>
-      <td>CELERY</td>
+      <td>SQUIRREL</td>
+      <td>ENGLAND</td>
+      <td>DRUM</td>
+      <td>LEOPARD</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>TONGUE</td>
-      <td>GIRAFFE</td>
-      <td>MONARCH</td>
-      <td>ZEBRA</td>
-      <td>CELLO</td>
-      <td>WOLF</td>
-      <td>DAHLIA</td>
-      <td>JACKET</td>
-      <td>GAZEBO</td>
-      <td>BOLTS</td>
-      <td>WASHER</td>
-      <td>THERMOMETER</td>
-      <td>RUTABAGA</td>
-      <td>UNDERWEAR</td>
-      <td>BANJO</td>
-      <td>RENO</td>
+      <td>LOG</td>
+      <td>BROCCOLI</td>
+      <td>CARPET</td>
+      <td>PICKLE</td>
+      <td>GRIDDLE</td>
+      <td>DISH</td>
+      <td>AZALEA</td>
+      <td>STRAINER</td>
+      <td>BUTTERCUP</td>
+      <td>SAUCER</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>RASPBERRY</td>
-      <td>DAISY</td>
-      <td>SPINACH</td>
-      <td>GUAVA</td>
-      <td>RHINOCEROS</td>
-      <td>BERLIN</td>
-      <td>PIG</td>
-      <td>HAND</td>
-      <td>KANSAS</td>
-      <td>DALLAS</td>
+      <td>WASHER</td>
+      <td>WISCONSIN</td>
+      <td>MANGO</td>
+      <td>VANCOUVER</td>
+      <td>VERMONT</td>
+      <td>HAWAII</td>
+      <td>TOKYO</td>
       <td>JERUSALEM</td>
-      <td>CARNATION</td>
-      <td>FOUNDATION</td>
-      <td>ZUCCHINI</td>
-      <td>BOLTS</td>
-      <td>JUMPER</td>
+      <td>KUMQUAT</td>
+      <td>RULER</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>HARMONICA</td>
-      <td>WILLOW</td>
-      <td>KNUCKLE</td>
-      <td>IRAN</td>
-      <td>TUBA</td>
-      <td>COW</td>
-      <td>ENGLAND</td>
-      <td>BASS</td>
-      <td>KUMQUAT</td>
-      <td>WASP</td>
-      <td>SQUASH</td>
-      <td>CHICAGO</td>
-      <td>CELLO</td>
-      <td>DAISY</td>
-      <td>KANSAS</td>
-      <td>ELEVATOR</td>
+      <td>SCREWS</td>
+      <td>HONEYDEW</td>
+      <td>PINE</td>
+      <td>ELM</td>
+      <td>RASPBERRY</td>
+      <td>HAMMER</td>
+      <td>FIG</td>
+      <td>HICKORY</td>
+      <td>SAXOPHONE</td>
+      <td>PLUM</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>SPINACH</td>
-      <td>CAULIFLOWER</td>
-      <td>GUAVA</td>
-      <td>BOMBAY</td>
-      <td>FACE</td>
-      <td>NARCISSUS</td>
-      <td>RENO</td>
-      <td>HIP</td>
-      <td>MARIMBA</td>
-      <td>AUSTRALIA</td>
-      <td>LEOPARD</td>
-      <td>WASHER</td>
-      <td>WIRE</td>
-      <td>TOOTH</td>
-      <td>ASH</td>
-      <td>WASP</td>
+      <td>LEMON</td>
+      <td>IOWA</td>
+      <td>MICHIGAN</td>
+      <td>POMEGRANATE</td>
+      <td>KANSAS</td>
+      <td>RIB</td>
+      <td>MONKEY</td>
+      <td>RACOON</td>
+      <td>CLEMENTINE</td>
+      <td>MOOSE</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>MICHIGAN</td>
-      <td>KITCHEN</td>
-      <td>POPLAR</td>
-      <td>MANGO</td>
-      <td>ROBE</td>
-      <td>JAPAN</td>
-      <td>LION</td>
-      <td>PELVIS</td>
-      <td>LLAMA</td>
-      <td>FURNACE</td>
-      <td>WEDGE</td>
-      <td>GRIDDLE</td>
-      <td>UNDERWEAR</td>
-      <td>CHICAGO</td>
-      <td>KIDNEY</td>
-      <td>KIWI</td>
+      <td>POLAND</td>
+      <td>YAMS</td>
+      <td>ETHIOPIA</td>
+      <td>ZEBRA</td>
+      <td>TROMBONE</td>
+      <td>BASS</td>
+      <td>ELEPHANT</td>
+      <td>CARROT</td>
+      <td>ITALY</td>
+      <td>CELERY</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>ALASKA</td>
-      <td>HAMMER</td>
-      <td>POLAND</td>
-      <td>CUP</td>
-      <td>KIWI</td>
-      <td>IOWA</td>
-      <td>CALIFORNIA</td>
-      <td>CARNATION</td>
-      <td>HORNET</td>
-      <td>PELVIS</td>
-      <td>SUNFLOWER</td>
-      <td>HAND</td>
-      <td>GARLIC</td>
-      <td>KIDNEY</td>
-      <td>BROCCOLI</td>
-      <td>FRANCE</td>
+      <td>GLOVES</td>
+      <td>MANTIS</td>
+      <td>MILLIPEDE</td>
+      <td>SYCAMORE</td>
+      <td>BRA</td>
+      <td>BERLIN</td>
+      <td>MOSQUITO</td>
+      <td>RENO</td>
+      <td>CEDAR</td>
+      <td>CHICAGO</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>BASS</td>
-      <td>POTATO</td>
-      <td>LOG</td>
-      <td>JUMPER</td>
-      <td>PELVIS</td>
-      <td>FOOT</td>
-      <td>XYLOPHONE</td>
-      <td>DAISY</td>
-      <td>SAXOPHONE</td>
-      <td>NUTS</td>
-      <td>GAZEBO</td>
-      <td>CHISEL</td>
-      <td>BRA</td>
-      <td>GINGER</td>
-      <td>TOOTH</td>
-      <td>POT</td>
+      <td>WILLOW</td>
+      <td>EUCALYPTUS</td>
+      <td>BONGOS</td>
+      <td>GUITAR</td>
+      <td>HAND</td>
+      <td>WORM</td>
+      <td>LIP</td>
+      <td>LARVA</td>
+      <td>SCORPION</td>
+      <td>ANKLE</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>PETUNIA</td>
-      <td>RABBIT</td>
+      <td>NARCISSUS</td>
+      <td>KNIFE</td>
+      <td>SUNFLOWER</td>
+      <td>DRESS</td>
+      <td>PANTS</td>
+      <td>LILY</td>
+      <td>SKILLET</td>
       <td>DAISY</td>
-      <td>POTATO</td>
-      <td>DRUM</td>
-      <td>XYLOPHONE</td>
-      <td>MANGO</td>
-      <td>MONKEY</td>
-      <td>STRAINER</td>
-      <td>KIWI</td>
-      <td>PLUM</td>
-      <td>ELEPHANT</td>
-      <td>STOMACH</td>
-      <td>WOLF</td>
-      <td>BELT</td>
-      <td>SYDNEY</td>
+      <td>MAINE</td>
+      <td>GIRDLE</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>MIXER</td>
-      <td>WILLOW</td>
-      <td>FLORIDA</td>
-      <td>CHICAGO</td>
-      <td>STOCKHOLM</td>
-      <td>ALCOVE</td>
-      <td>CELERY</td>
-      <td>RUTABAGA</td>
-      <td>NARCISSUS</td>
-      <td>HORSE</td>
-      <td>CLOSET</td>
-      <td>HAMMER</td>
+      <td>MUG</td>
+      <td>ARMS</td>
+      <td>HIP</td>
+      <td>BROILER</td>
+      <td>TAMBOURINE</td>
+      <td>PICCOLO</td>
       <td>THERMOMETER</td>
-      <td>CAULIFLOWER</td>
-      <td>ENGLAND</td>
-      <td>RULER</td>
+      <td>STOMACH</td>
+      <td>TRUMPET</td>
+      <td>TUBA</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>FRANCE</td>
-      <td>HEART</td>
-      <td>OVEN</td>
-      <td>GERMANY</td>
-      <td>HICKORY</td>
-      <td>POT</td>
-      <td>AZALEA</td>
-      <td>TOKYO</td>
-      <td>LEMON</td>
-      <td>ITALY</td>
-      <td>WOLF</td>
-      <td>CEDAR</td>
+      <td>OKRA</td>
+      <td>PUMPKIN</td>
+      <td>PENNSYLVANIA</td>
+      <td>OHIO</td>
       <td>RHINOCEROS</td>
-      <td>LILY</td>
-      <td>COLANDER</td>
-      <td>ANKLE</td>
+      <td>RUTABAGA</td>
+      <td>CHRYSALIS</td>
+      <td>TERMITE</td>
+      <td>BEETLE</td>
+      <td>TEXAS</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>POPLAR</td>
-      <td>POLAND</td>
-      <td>SPATULA</td>
-      <td>CLARINET</td>
-      <td>BELT</td>
-      <td>BLOUSE</td>
-      <td>PANTHER</td>
-      <td>ALCOVE</td>
-      <td>THERMOMETER</td>
-      <td>PANTS</td>
-      <td>CHICAGO</td>
-      <td>RACOON</td>
-      <td>HAWAII</td>
-      <td>HAMMER</td>
-      <td>OKRA</td>
-      <td>PICKLE</td>
+      <td>KIDNEY</td>
+      <td>FOOT</td>
+      <td>SQUASH</td>
+      <td>STOCKHOLM</td>
+      <td>BOMBAY</td>
+      <td>ELBOW</td>
+      <td>GOAT</td>
+      <td>SHEEP</td>
+      <td>OLIVE</td>
+      <td>TORONTO</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>DAHLIA</td>
-      <td>YAMS</td>
-      <td>TOASTER</td>
-      <td>CELLO</td>
-      <td>TERMITE</td>
-      <td>SUIT</td>
-      <td>MONKEY</td>
-      <td>EAR</td>
-      <td>STOMACH</td>
-      <td>KIDNEY</td>
-      <td>MANGO</td>
-      <td>POPLAR</td>
-      <td>MIXER</td>
-      <td>PROTRACTOR</td>
-      <td>HORSE</td>
-      <td>BRA</td>
+      <td>SPINACH</td>
+      <td>CAMISOLE</td>
+      <td>IRAN</td>
+      <td>BLOUSE</td>
+      <td>EGYPT</td>
+      <td>CLOSET</td>
+      <td>CHIMNEY</td>
+      <td>POTATO</td>
+      <td>FURNACE</td>
+      <td>LOBBY</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>HAND</td>
-      <td>SWITZERLAND</td>
-      <td>RULER</td>
-      <td>REFRIGERATOR</td>
-      <td>DAISY</td>
-      <td>LETTUCE</td>
-      <td>FOX</td>
-      <td>ONION</td>
-      <td>MOSQUITO</td>
-      <td>RASPBERRY</td>
-      <td>TULIP</td>
-      <td>BELT</td>
-      <td>STOCKHOLM</td>
-      <td>EGYPT</td>
-      <td>MONKEY</td>
-      <td>OVEN</td>
+      <td>GUAVA</td>
+      <td>GIRAFFE</td>
+      <td>HORSE</td>
+      <td>COW</td>
+      <td>SPATULA</td>
+      <td>DOOR</td>
+      <td>POT</td>
+      <td>HALL</td>
+      <td>CORRIDOR</td>
+      <td>WINDOW</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>TRIANGLE</td>
-      <td>MONARCH</td>
-      <td>ZEBRA</td>
-      <td>BELT</td>
-      <td>GLASS</td>
-      <td>TERMITE</td>
-      <td>MONTREAL</td>
+      <td>KNUCKLE</td>
+      <td>KITCHEN</td>
+      <td>HIPPOPOTAMUS</td>
+      <td>HEART</td>
+      <td>DOG</td>
       <td>BARN</td>
-      <td>POTATO</td>
-      <td>PANTS</td>
-      <td>BERLIN</td>
-      <td>WISCONSIN</td>
-      <td>RIB</td>
-      <td>CAT</td>
-      <td>WOLF</td>
-      <td>BUTTERCUP</td>
+      <td>DONKEY</td>
+      <td>TIGER</td>
+      <td>EAR</td>
+      <td>TULIP</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th rowspan="14" valign="top">1</th>
       <th>0</th>
+      <td>DALLAS</td>
+      <td>OVEN</td>
+      <td>STOMACH</td>
+      <td>THERMOMETER</td>
+      <td>BROILER</td>
       <td>PARIS</td>
+      <td>PELVIS</td>
+      <td>PICCOLO</td>
+      <td>TAMBOURINE</td>
+      <td>ARMS</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>ANTELOPE</td>
+      <td>LEMON</td>
+      <td>CLEMENTINE</td>
       <td>IOWA</td>
-      <td>OKRA</td>
-      <td>ONION</td>
-      <td>ELEPHANT</td>
-      <td>POPLAR</td>
-      <td>RENO</td>
-      <td>OLIVE</td>
+      <td>KANSAS</td>
+      <td>FLORIDA</td>
+      <td>PEAR</td>
+      <td>POMEGRANATE</td>
+      <td>PANCREAS</td>
+      <td>TONGUE</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>TERMITE</td>
+      <td>TEXAS</td>
+      <td>CHRYSALIS</td>
+      <td>GINGER</td>
+      <td>RHINOCEROS</td>
+      <td>RUTABAGA</td>
+      <td>ALASKA</td>
+      <td>PENNSYLVANIA</td>
+      <td>OHIO</td>
+      <td>BEETLE</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>EVERGREEN</td>
+      <td>SHIRT</td>
+      <td>BLENDER</td>
+      <td>HARMONICA</td>
+      <td>COTTONWOOD</td>
       <td>COLANDER</td>
-      <td>KNUCKLE</td>
-      <td>ELM</td>
-      <td>SUIT</td>
-      <td>TOKYO</td>
+      <td>MARIMBA</td>
+      <td>OAK</td>
+      <td>BANJO</td>
+      <td>UKULELE</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>FRANCE</td>
+      <td>DRUM</td>
+      <td>ENGLAND</td>
+      <td>LEOPARD</td>
+      <td>CHISEL</td>
+      <td>BOLTS</td>
+      <td>SQUIRREL</td>
       <td>CAT</td>
-      <td>COW</td>
+      <td>JAPAN</td>
+      <td>SWITZERLAND</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>FOOT</td>
+      <td>WOLF</td>
+      <td>AUBERGINE</td>
+      <td>OLIVE</td>
+      <td>STOCKHOLM</td>
+      <td>ELBOW</td>
+      <td>KIDNEY</td>
+      <td>ZUCCHINI</td>
+      <td>BOMBAY</td>
+      <td>GOAT</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>MAINE</td>
+      <td>LILY</td>
+      <td>DAISY</td>
+      <td>KNIFE</td>
+      <td>PANTS</td>
+      <td>SUNFLOWER</td>
       <td>TOASTER</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>MONTANA</td>
+      <td>FORK</td>
+      <td>SKILLET</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12771,12 +12869,17 @@ div#notebook {
     </tr>
     <tr>
       <th>7</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>CAULIFLOWER</td>
+      <td>DAHLIA</td>
+      <td>BUTTERCUP</td>
+      <td>SAUCER</td>
+      <td>PICKLE</td>
+      <td>ELEVATOR</td>
+      <td>GRIDDLE</td>
+      <td>CARPET</td>
+      <td>LOG</td>
+      <td>BROCCOLI</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12790,12 +12893,17 @@ div#notebook {
     </tr>
     <tr>
       <th>8</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>PINE</td>
+      <td>PLUM</td>
+      <td>CELLO</td>
+      <td>HAMMER</td>
+      <td>TRIANGLE</td>
+      <td>SCREWS</td>
+      <td>WEDGE</td>
+      <td>ELM</td>
+      <td>FIG</td>
+      <td>MAPLE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12809,12 +12917,17 @@ div#notebook {
     </tr>
     <tr>
       <th>9</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>MOUSE</td>
+      <td>GIRAFFE</td>
+      <td>GLASS</td>
+      <td>POT</td>
+      <td>STRAWBERRY</td>
+      <td>WINDOW</td>
+      <td>HALL</td>
+      <td>SPATULA</td>
+      <td>HORSE</td>
+      <td>COW</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12828,12 +12941,17 @@ div#notebook {
     </tr>
     <tr>
       <th>10</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>SYCAMORE</td>
+      <td>TROUSERS</td>
+      <td>RENO</td>
+      <td>PALM</td>
+      <td>MANTIS</td>
+      <td>BRA</td>
+      <td>MOSQUITO</td>
+      <td>BERLIN</td>
+      <td>SYDNEY</td>
+      <td>SWEATER</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12847,12 +12965,17 @@ div#notebook {
     </tr>
     <tr>
       <th>11</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>NECTARINE</td>
+      <td>VERMONT</td>
+      <td>HAWAII</td>
+      <td>TOKYO</td>
+      <td>MANGO</td>
+      <td>CALIFORNIA</td>
+      <td>KUMQUAT</td>
+      <td>NUTS</td>
+      <td>GLUE</td>
+      <td>VANCOUVER</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12866,12 +12989,17 @@ div#notebook {
     </tr>
     <tr>
       <th>12</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>FINGER</td>
+      <td>BONGOS</td>
+      <td>POPLAR</td>
+      <td>MONARCH</td>
+      <td>HAND</td>
+      <td>GUITAR</td>
+      <td>LARVA</td>
+      <td>XYLOPHONE</td>
+      <td>ANKLE</td>
+      <td>WILLOW</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12885,12 +13013,17 @@ div#notebook {
     </tr>
     <tr>
       <th>13</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>POTATO</td>
+      <td>JACKET</td>
+      <td>CHIMNEY</td>
+      <td>IRAN</td>
+      <td>SPINACH</td>
+      <td>BLOUSE</td>
+      <td>GERMANY</td>
+      <td>CLOSET</td>
+      <td>FURNACE</td>
+      <td>SUIT</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12921,16 +13054,26 @@ div#notebook {
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
-      <th rowspan="14" valign="top">14</th>
+      <th rowspan="14" valign="top">15</th>
       <th>2</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>PIG</td>
+      <td>AUSTRALIA</td>
+      <td>ZEBRA</td>
+      <td>BASS</td>
+      <td>ITALY</td>
+      <td>LETTUCE</td>
+      <td>LION</td>
+      <td>ELEPHANT</td>
+      <td>VIOLA</td>
+      <td>TROMBONE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12944,12 +13087,17 @@ div#notebook {
     </tr>
     <tr>
       <th>3</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>CUP</td>
+      <td>JUMPER</td>
+      <td>BANJO</td>
+      <td>BELT</td>
+      <td>BLENDER</td>
+      <td>EVERGREEN</td>
+      <td>COTTONWOOD</td>
+      <td>SPRUCE</td>
+      <td>MIXER</td>
+      <td>ROBE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12963,12 +13111,17 @@ div#notebook {
     </tr>
     <tr>
       <th>4</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>CORRIDOR</td>
+      <td>POT</td>
+      <td>HORSE</td>
+      <td>COW</td>
+      <td>GLASS</td>
+      <td>GIRAFFE</td>
+      <td>STRAWBERRY</td>
+      <td>KIWI</td>
+      <td>SPATULA</td>
+      <td>MOUSE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -12982,12 +13135,17 @@ div#notebook {
     </tr>
     <tr>
       <th>5</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>PUMPKIN</td>
+      <td>FOX</td>
+      <td>GINGER</td>
+      <td>RABBIT</td>
+      <td>TEXAS</td>
+      <td>TERMITE</td>
+      <td>BEETLE</td>
+      <td>LLAMA</td>
+      <td>OHIO</td>
+      <td>WASP</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13001,12 +13159,17 @@ div#notebook {
     </tr>
     <tr>
       <th>6</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>STOMACH</td>
+      <td>HIP</td>
+      <td>THERMOMETER</td>
+      <td>TUBA</td>
+      <td>PELVIS</td>
+      <td>ARMS</td>
+      <td>MONTREAL</td>
+      <td>MUG</td>
+      <td>BROILER</td>
+      <td>PARIS</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13020,12 +13183,17 @@ div#notebook {
     </tr>
     <tr>
       <th>7</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>ALCOVE</td>
+      <td>HIPPOPOTAMUS</td>
+      <td>PETUNIA</td>
+      <td>FACE</td>
+      <td>ROSE</td>
+      <td>DOG</td>
+      <td>KITCHEN</td>
+      <td>BARN</td>
+      <td>GAZEBO</td>
+      <td>HEART</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13039,12 +13207,17 @@ div#notebook {
     </tr>
     <tr>
       <th>8</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>EGYPT</td>
+      <td>SUIT</td>
+      <td>JACKET</td>
+      <td>SPINACH</td>
+      <td>ARTICHOKE</td>
+      <td>CHIMNEY</td>
+      <td>LOBBY</td>
+      <td>IRAN</td>
+      <td>POTATO</td>
+      <td>CAMISOLE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13058,12 +13231,17 @@ div#notebook {
     </tr>
     <tr>
       <th>9</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>MONTANA</td>
+      <td>SUNFLOWER</td>
+      <td>NARCISSUS</td>
+      <td>DAISY</td>
+      <td>DRESS</td>
+      <td>KNIFE</td>
+      <td>LILY</td>
+      <td>FORK</td>
+      <td>MAINE</td>
+      <td>PANTS</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13077,12 +13255,17 @@ div#notebook {
     </tr>
     <tr>
       <th>10</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>MANTIS</td>
+      <td>MOSQUITO</td>
+      <td>PALM</td>
+      <td>SWEATER</td>
+      <td>HORNET</td>
+      <td>RENO</td>
+      <td>GLOVES</td>
+      <td>MILLIPEDE</td>
+      <td>TEAK</td>
+      <td>CEDAR</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13096,12 +13279,17 @@ div#notebook {
     </tr>
     <tr>
       <th>11</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>VERMONT</td>
+      <td>BANANA</td>
+      <td>RULER</td>
+      <td>CALIFORNIA</td>
+      <td>KUMQUAT</td>
+      <td>JERUSALEM</td>
+      <td>MANGO</td>
+      <td>GLUE</td>
+      <td>NECTARINE</td>
+      <td>NUTS</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13115,12 +13303,17 @@ div#notebook {
     </tr>
     <tr>
       <th>12</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>RACOON</td>
+      <td>ANTELOPE</td>
+      <td>KANSAS</td>
+      <td>TONGUE</td>
+      <td>PANCREAS</td>
+      <td>MONKEY</td>
+      <td>PEAR</td>
+      <td>LEMON</td>
+      <td>TOOTH</td>
+      <td>POMEGRANATE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13134,12 +13327,17 @@ div#notebook {
     </tr>
     <tr>
       <th>13</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>SWITZERLAND</td>
+      <td>FERRET</td>
+      <td>SQUIRREL</td>
+      <td>PROTRACTOR</td>
+      <td>ENGLAND</td>
+      <td>FRANCE</td>
+      <td>JAPAN</td>
+      <td>PIANO</td>
+      <td>KAZOO</td>
+      <td>DRUM</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13153,12 +13351,17 @@ div#notebook {
     </tr>
     <tr>
       <th>14</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>PANTHER</td>
+      <td>SQUASH</td>
+      <td>STOCKHOLM</td>
+      <td>AUBERGINE</td>
+      <td>ZUCCHINI</td>
+      <td>ELBOW</td>
+      <td>SHOULDER</td>
+      <td>FOOT</td>
+      <td>SHEEP</td>
+      <td>KIDNEY</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13172,12 +13375,17 @@ div#notebook {
     </tr>
     <tr>
       <th>15</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>AZALEA</td>
+      <td>FOUNDATION</td>
+      <td>CAULIFLOWER</td>
+      <td>BROCCOLI</td>
+      <td>STRAINER</td>
+      <td>DISH</td>
+      <td>DAHLIA</td>
+      <td>LOG</td>
+      <td>SAUCER</td>
+      <td>ONION</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13190,14 +13398,19 @@ div#notebook {
       <td>NaN</td>
     </tr>
     <tr>
-      <th rowspan="16" valign="top">15</th>
+      <th rowspan="16" valign="top">16</th>
       <th>0</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>PARIS</td>
+      <td>MUG</td>
+      <td>TUBA</td>
+      <td>BROILER</td>
+      <td>MONTREAL</td>
+      <td>PELVIS</td>
+      <td>OVEN</td>
+      <td>STOMACH</td>
+      <td>ARMS</td>
+      <td>THERMOMETER</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13211,12 +13424,17 @@ div#notebook {
     </tr>
     <tr>
       <th>1</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>ANTELOPE</td>
+      <td>IOWA</td>
+      <td>POMEGRANATE</td>
+      <td>KANSAS</td>
+      <td>PANCREAS</td>
+      <td>FLORIDA</td>
+      <td>MICHIGAN</td>
+      <td>MONKEY</td>
+      <td>PEAR</td>
+      <td>TOOTH</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13230,12 +13448,17 @@ div#notebook {
     </tr>
     <tr>
       <th>2</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>TERMITE</td>
+      <td>PENNSYLVANIA</td>
+      <td>OKRA</td>
+      <td>OHIO</td>
+      <td>WASP</td>
+      <td>FOX</td>
+      <td>RHINOCEROS</td>
+      <td>PUMPKIN</td>
+      <td>LLAMA</td>
+      <td>RUTABAGA</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13249,12 +13472,17 @@ div#notebook {
     </tr>
     <tr>
       <th>3</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>AZALEA</td>
+      <td>PICKLE</td>
+      <td>FOUNDATION</td>
+      <td>ONION</td>
+      <td>BUTTERCUP</td>
+      <td>ELEVATOR</td>
+      <td>DAHLIA</td>
+      <td>STRAINER</td>
+      <td>DISH</td>
+      <td>BROCCOLI</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13268,12 +13496,17 @@ div#notebook {
     </tr>
     <tr>
       <th>4</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>BASS</td>
+      <td>CARROT</td>
+      <td>MARACAS</td>
+      <td>ETHIOPIA</td>
+      <td>ELEPHANT</td>
+      <td>VIOLA</td>
+      <td>TROMBONE</td>
+      <td>PIG</td>
+      <td>ZEBRA</td>
+      <td>AUSTRALIA</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13287,12 +13520,17 @@ div#notebook {
     </tr>
     <tr>
       <th>5</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>ANKLE</td>
+      <td>FINGER</td>
+      <td>GUITAR</td>
+      <td>LARVA</td>
+      <td>SCORPION</td>
+      <td>POPLAR</td>
+      <td>ASH</td>
+      <td>WILLOW</td>
+      <td>ACCORDION</td>
+      <td>WORM</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13306,12 +13544,17 @@ div#notebook {
     </tr>
     <tr>
       <th>6</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>MILLIPEDE</td>
+      <td>PALM</td>
+      <td>SYCAMORE</td>
+      <td>CEDAR</td>
+      <td>SWEATER</td>
+      <td>CHICAGO</td>
+      <td>RENO</td>
+      <td>HORNET</td>
+      <td>SYDNEY</td>
+      <td>GLOVES</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13325,12 +13568,17 @@ div#notebook {
     </tr>
     <tr>
       <th>7</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>GOAT</td>
+      <td>AUBERGINE</td>
+      <td>MIAMI</td>
+      <td>ELBOW</td>
+      <td>STOCKHOLM</td>
+      <td>BOMBAY</td>
+      <td>FOOT</td>
+      <td>OLIVE</td>
+      <td>SQUASH</td>
+      <td>WOLF</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13344,12 +13592,17 @@ div#notebook {
     </tr>
     <tr>
       <th>8</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>EVERGREEN</td>
+      <td>COTTONWOOD</td>
+      <td>BANJO</td>
+      <td>SPRUCE</td>
+      <td>HARMONICA</td>
+      <td>UKULELE</td>
+      <td>SHIRT</td>
+      <td>BELT</td>
+      <td>COLANDER</td>
+      <td>JUMPER</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13363,12 +13616,17 @@ div#notebook {
     </tr>
     <tr>
       <th>9</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>PETUNIA</td>
+      <td>ALCOVE</td>
+      <td>ROSE</td>
+      <td>KITCHEN</td>
+      <td>GAZEBO</td>
+      <td>TIGER</td>
+      <td>DOG</td>
+      <td>TULIP</td>
+      <td>BARN</td>
+      <td>KNUCKLE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13382,12 +13640,17 @@ div#notebook {
     </tr>
     <tr>
       <th>10</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>TRIANGLE</td>
+      <td>HONEYDEW</td>
+      <td>WIRE</td>
+      <td>VIOLIN</td>
+      <td>CELLO</td>
+      <td>PLUM</td>
+      <td>PINE</td>
+      <td>HICKORY</td>
+      <td>RASPBERRY</td>
+      <td>WEDGE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13401,12 +13664,17 @@ div#notebook {
     </tr>
     <tr>
       <th>11</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>CLOSET</td>
+      <td>EGYPT</td>
+      <td>GERMANY</td>
+      <td>ARTICHOKE</td>
+      <td>POTATO</td>
+      <td>CAMISOLE</td>
+      <td>CHIMNEY</td>
+      <td>CUBA</td>
+      <td>JACKET</td>
+      <td>LOBBY</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13420,12 +13688,17 @@ div#notebook {
     </tr>
     <tr>
       <th>12</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>WASHER</td>
+      <td>GLUE</td>
+      <td>MANGO</td>
+      <td>CALIFORNIA</td>
+      <td>HAWAII</td>
+      <td>JERUSALEM</td>
+      <td>WISCONSIN</td>
+      <td>NUTS</td>
+      <td>KUMQUAT</td>
+      <td>BANANA</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13439,12 +13712,17 @@ div#notebook {
     </tr>
     <tr>
       <th>13</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>CHISEL</td>
+      <td>BOLTS</td>
+      <td>KAZOO</td>
+      <td>DRUM</td>
+      <td>SQUIRREL</td>
+      <td>JAPAN</td>
+      <td>PROTRACTOR</td>
+      <td>PIANO</td>
+      <td>ENGLAND</td>
+      <td>CLARINET</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13458,12 +13736,17 @@ div#notebook {
     </tr>
     <tr>
       <th>14</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>GLASS</td>
+      <td>SPATULA</td>
+      <td>HALL</td>
+      <td>CORRIDOR</td>
+      <td>GIRAFFE</td>
+      <td>TANGELO</td>
+      <td>REFRIGERATOR</td>
+      <td>WINDOW</td>
+      <td>GUAVA</td>
+      <td>HORSE</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13477,12 +13760,17 @@ div#notebook {
     </tr>
     <tr>
       <th>15</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>NARCISSUS</td>
+      <td>UTAH</td>
+      <td>PANTS</td>
+      <td>GIRDLE</td>
+      <td>UNDERWEAR</td>
+      <td>ARIZONA</td>
+      <td>LILY</td>
+      <td>DAISY</td>
+      <td>KNIFE</td>
+      <td>FORK</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -13496,7 +13784,1601 @@ div#notebook {
     </tr>
   </tbody>
 </table>
-<p>4608 rows × 16 columns</p>
+<p>272 rows × 32 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1>Create Recall Matrix Dataframe</h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">lists2rec_pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span> <span class="n">all_recalled</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">make_multi_index</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">isub</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">([(</span><span class="n">sub_num</span><span class="p">,</span><span class="n">lst_num</span><span class="p">)</span> <span class="k">for</span> <span class="n">lst_num</span><span class="p">,</span><span class="n">lst</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub_data</span><span class="p">)],</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="s1">&#39;List&#39;</span><span class="p">])</span>
+    
+    <span class="k">def</span> <span class="nf">make_rec_mat</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span> <span class="n">all_recalled</span><span class="p">):</span>
+        <span class="n">all_recall_mats</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_recalled</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)):</span>
+                <span class="n">rec_mat</span> <span class="o">=</span> <span class="n">recall_matrix</span><span class="p">(</span><span class="n">all_presented</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">all_recalled</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+                <span class="n">all_recall_mats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_mat</span><span class="p">)</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">all_recall_mats</span><span class="p">)</span>
+    
+    <span class="n">rec_data</span> <span class="o">=</span> <span class="n">make_rec_mat</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span> <span class="n">all_recalled</span><span class="p">)</span>
+    <span class="n">subs_list_of_recs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">make_multi_index</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">sub_num</span><span class="p">))</span> <span class="k">for</span> <span class="n">sub_num</span><span class="p">,</span><span class="n">sub_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rec_data</span><span class="p">)]</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">subs_list_of_recs</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">lists2rec_pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span> <span class="n">all_recalled</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[49]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>...</th>
+      <th>13</th>
+      <th>14</th>
+      <th>15</th>
+      <th>16</th>
+      <th>17</th>
+      <th>18</th>
+      <th>19</th>
+      <th>20</th>
+      <th>21</th>
+      <th>22</th>
+    </tr>
+    <tr>
+      <th>Subject</th>
+      <th>List</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="16" valign="top">0</th>
+      <th>0</th>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>15.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>6.0</td>
+      <td>3.0</td>
+      <td>2.0</td>
+      <td>8.0</td>
+      <td>12.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.0</td>
+      <td>15.0</td>
+      <td>8.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>-1.0</td>
+      <td>NaN</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2.0</td>
+      <td>5.0</td>
+      <td>8.0</td>
+      <td>7.0</td>
+      <td>6.0</td>
+      <td>14.0</td>
+      <td>-2.0</td>
+      <td>NaN</td>
+      <td>9.0</td>
+      <td>15.0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>13.0</td>
+      <td>7.0</td>
+      <td>3.0</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>7.0</td>
+      <td>1.0</td>
+      <td>10.0</td>
+      <td>11.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>13.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>-6.0</td>
+      <td>NaN</td>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>7.0</td>
+      <td>16.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9.0</td>
+      <td>10.0</td>
+      <td>14.0</td>
+      <td>15.0</td>
+      <td>12.0</td>
+      <td>-1.0</td>
+      <td>NaN</td>
+      <td>-6.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>-10.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>16.0</td>
+      <td>5.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>9.0</td>
+      <td>-1.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>-11.0</td>
+      <td>NaN</td>
+      <td>15.0</td>
+      <td>7.0</td>
+      <td>16.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>12.0</td>
+      <td>-10.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>3.0</td>
+      <td>5.0</td>
+      <td>11.0</td>
+      <td>6.0</td>
+      <td>-5.0</td>
+      <td>NaN</td>
+      <td>-1.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>10.0</td>
+      <td>12.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>9.0</td>
+      <td>3.0</td>
+      <td>-10.0</td>
+      <td>NaN</td>
+      <td>-2.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>8.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th rowspan="14" valign="top">1</th>
+      <th>0</th>
+      <td>1.0</td>
+      <td>6.0</td>
+      <td>10.0</td>
+      <td>15.0</td>
+      <td>16.0</td>
+      <td>12.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>11.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>12.0</td>
+      <td>16.0</td>
+      <td>11.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>15.0</td>
+      <td>8.0</td>
+      <td>11.0</td>
+      <td>16.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>5.0</td>
+      <td>13.0</td>
+      <td>14.0</td>
+      <td>15.0</td>
+      <td>10.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>15.0</td>
+      <td>9.0</td>
+      <td>11.0</td>
+      <td>14.0</td>
+      <td>6.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>13.0</td>
+      <td>10.0</td>
+      <td>16.0</td>
+      <td>15.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3.0</td>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>7.0</td>
+      <td>1.0</td>
+      <td>8.0</td>
+      <td>12.0</td>
+      <td>15.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>NaN</td>
+      <td>6.0</td>
+      <td>8.0</td>
+      <td>15.0</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>6.0</td>
+      <td>9.0</td>
+      <td>15.0</td>
+      <td>14.0</td>
+      <td>16.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2.0</td>
+      <td>6.0</td>
+      <td>7.0</td>
+      <td>4.0</td>
+      <td>10.0</td>
+      <td>11.0</td>
+      <td>14.0</td>
+      <td>15.0</td>
+      <td>16.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>-9.0</td>
+      <td>NaN</td>
+      <td>-10.0</td>
+      <td>NaN</td>
+      <td>6.0</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>3.0</td>
+      <td>5.0</td>
+      <td>4.0</td>
+      <td>10.0</td>
+      <td>11.0</td>
+      <td>6.0</td>
+      <td>13.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1.0</td>
+      <td>5.0</td>
+      <td>9.0</td>
+      <td>6.0</td>
+      <td>4.0</td>
+      <td>14.0</td>
+      <td>13.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>7.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th rowspan="14" valign="top">15</th>
+      <th>2</th>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>15.0</td>
+      <td>11.0</td>
+      <td>16.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>15.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>13.0</td>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>12.0</td>
+      <td>14.0</td>
+      <td>1.0</td>
+      <td>7.0</td>
+      <td>15.0</td>
+      <td>4.0</td>
+      <td>3.0</td>
+      <td>10.0</td>
+      <td>6.0</td>
+      <td>11.0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>13.0</td>
+      <td>14.0</td>
+      <td>5.0</td>
+      <td>16.0</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7.0</td>
+      <td>16.0</td>
+      <td>12.0</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>15.0</td>
+      <td>16.0</td>
+      <td>14.0</td>
+      <td>2.0</td>
+      <td>3.0</td>
+      <td>7.0</td>
+      <td>8.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1.0</td>
+      <td>8.0</td>
+      <td>14.0</td>
+      <td>5.0</td>
+      <td>10.0</td>
+      <td>4.0</td>
+      <td>3.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>12.0</td>
+      <td>16.0</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>6.0</td>
+      <td>8.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>16.0</td>
+      <td>11.0</td>
+      <td>15.0</td>
+      <td>3.0</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>10.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>15.0</td>
+      <td>1.0</td>
+      <td>4.0</td>
+      <td>13.0</td>
+      <td>11.0</td>
+      <td>8.0</td>
+      <td>9.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>16.0</td>
+      <td>8.0</td>
+      <td>2.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>16.0</td>
+      <td>13.0</td>
+      <td>10.0</td>
+      <td>5.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>15.0</td>
+      <td>16.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>16.0</td>
+      <td>1.0</td>
+      <td>6.0</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th rowspan="16" valign="top">16</th>
+      <th>0</th>
+      <td>16.0</td>
+      <td>3.0</td>
+      <td>13.0</td>
+      <td>6.0</td>
+      <td>14.0</td>
+      <td>9.0</td>
+      <td>1.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>7.0</td>
+      <td>6.0</td>
+      <td>9.0</td>
+      <td>10.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>16.0</td>
+      <td>10.0</td>
+      <td>3.0</td>
+      <td>12.0</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>6.0</td>
+      <td>16.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7.0</td>
+      <td>1.0</td>
+      <td>5.0</td>
+      <td>6.0</td>
+      <td>13.0</td>
+      <td>4.0</td>
+      <td>15.0</td>
+      <td>9.0</td>
+      <td>12.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>16.0</td>
+      <td>9.0</td>
+      <td>5.0</td>
+      <td>11.0</td>
+      <td>13.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1.0</td>
+      <td>16.0</td>
+      <td>6.0</td>
+      <td>12.0</td>
+      <td>4.0</td>
+      <td>11.0</td>
+      <td>5.0</td>
+      <td>-1.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>16.0</td>
+      <td>1.0</td>
+      <td>12.0</td>
+      <td>6.0</td>
+      <td>3.0</td>
+      <td>-1.0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+      <td>-4.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>10.0</td>
+      <td>12.0</td>
+      <td>9.0</td>
+      <td>15.0</td>
+      <td>13.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>15.0</td>
+      <td>9.0</td>
+      <td>8.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>-6.0</td>
+      <td>NaN</td>
+      <td>6.0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>8.0</td>
+      <td>4.0</td>
+      <td>5.0</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>8.0</td>
+      <td>13.0</td>
+      <td>15.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>16.0</td>
+      <td>4.0</td>
+      <td>6.0</td>
+      <td>9.0</td>
+      <td>14.0</td>
+      <td>12.0</td>
+      <td>1.0</td>
+      <td>3.0</td>
+      <td>2.0</td>
+      <td>7.0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>15.0</td>
+      <td>13.0</td>
+      <td>5.0</td>
+      <td>3.0</td>
+      <td>16.0</td>
+      <td>7.0</td>
+      <td>14.0</td>
+      <td>9.0</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>6.0</td>
+      <td>5.0</td>
+      <td>12.0</td>
+      <td>13.0</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>11.0</td>
+      <td>7.0</td>
+      <td>16.0</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>16.0</td>
+      <td>4.0</td>
+      <td>14.0</td>
+      <td>NaN</td>
+      <td>11.0</td>
+      <td>8.0</td>
+      <td>1.0</td>
+      <td>7.0</td>
+      <td>12.0</td>
+      <td>13.0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>16.0</td>
+      <td>2.0</td>
+      <td>6.0</td>
+      <td>13.0</td>
+      <td>14.0</td>
+      <td>5.0</td>
+      <td>3.0</td>
+      <td>10.0</td>
+      <td>16.0</td>
+      <td>7.0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>272 rows × 23 columns</p>
 </div>
 </div>
 
@@ -13508,69 +15390,39 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[207]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="n">subs</span> <span class="o">=</span> <span class="p">[[[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;carrot&quot;</span><span class="p">,</span> <span class="s2">&quot;cucumber&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]],[[</span><span class="s2">&quot;ant&quot;</span><span class="p">,</span> <span class="s2">&quot;bag&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;celery&quot;</span><span class="p">,</span> <span class="s2">&quot;parsnip&quot;</span><span class="p">,</span> <span class="s2">&quot;pear&quot;</span><span class="p">]]]</span>
-<span class="n">subs_list_of_dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">]</span>
-<span class="n">subs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">subs_list_of_dfs</span><span class="p">)</span>
-<span class="n">subs_df</span>
+<div class=" highlight hl-ipython2"><pre><span></span> 
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
 
-
-<div class="output_area"><div class="prompt output_prompt">Out[207]:</div>
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>apple</td>
-      <td>banana</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>carrot</td>
-      <td>cucumber</td>
-      <td>orange</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>ant</td>
-      <td>bag</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>celery</td>
-      <td>parsnip</td>
-      <td>pear</td>
-    </tr>
-  </tbody>
-</table>
+</div>
 </div>
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span> 
+</pre></div>
 
+</div>
 </div>
 </div>
 
