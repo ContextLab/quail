@@ -11757,7 +11757,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
@@ -11794,13 +11794,13 @@ div#notebook {
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pres</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(),</span> <span class="n">features</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(),</span> <span class="n">rec</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(),</span> <span class="n">meta</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pres</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(),</span> <span class="n">rec</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(),</span> <span class="n">meta</span><span class="o">=</span><span class="p">{}):</span><span class="c1">#features=pd.DataFrame(),</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">=</span><span class="n">pres</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="o">=</span><span class="n">features</span>
+        <span class="c1">#self.features=features</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="o">=</span><span class="n">rec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">=</span><span class="n">meta</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_recall_mtx</span> <span class="o">=</span> <span class="n">recall_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="p">)</span>
+        <span class="c1">#self._recall_mtx = recall_matrix(self.pres, self.rec)</span>
 </pre></div>
 
 </div>
@@ -11810,7 +11810,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">Pyro</span><span class="p">()</span>
@@ -11824,11 +11824,11 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[44]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;__main__.Pyro at 0x105e82bd0&gt;</pre>
+<pre>&lt;__main__.Pyro at 0x1108fb850&gt;</pre>
 </div>
 
 </div>
@@ -11839,7 +11839,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">Table</span>
@@ -11862,21 +11862,6 @@ div#notebook {
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/Users/kirstenziman/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/matplotlib/font_manager.py:273: UserWarning: Matplotlib is building the font cache using fc-list. This may take a moment.
-  warnings.warn(&#39;Matplotlib is building the font cache using fc-list. This may take a moment.&#39;)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -11889,7 +11874,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">db_url</span> <span class="o">=</span> <span class="s2">&quot;sqlite:///participants.db&quot;</span>
@@ -11962,7 +11947,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">db_url</span> <span class="o">=</span> <span class="s2">&quot;sqlite:///participants.db&quot;</span>
@@ -12006,7 +11991,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># read in stimulus library</span>
@@ -12029,7 +12014,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">subids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_frame</span><span class="p">[</span><span class="n">data_frame</span><span class="p">[</span><span class="s1">&#39;listNumber&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">15</span><span class="p">][</span><span class="s1">&#39;uniqueid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
@@ -12094,7 +12079,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[50]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># this function takes the data frame and returns subject specific data based on the subid variable</span>
@@ -12176,7 +12161,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[134]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">experiment</span><span class="o">=</span><span class="p">[]</span>
@@ -12233,10 +12218,28 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[245]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">list2pd</span><span class="p">(</span><span class="n">all_data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes multi-indexed dataframe of subject data </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    all_data : list of lists of strings</span>
+<span class="sd">        strings are either all presented or all recalled items, in the order of presentation or recall </span>
+<span class="sd">        *should also work for presented / recalled ints and floats, if desired</span>
+<span class="sd">        </span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subs_list_of_dfs : multi-indexed dataframe </span>
+<span class="sd">        dataframe of subject data (presented or recalled words/items), indexed by subject and list number</span>
+<span class="sd">        cell populated by the term presented or recalled in the position indicated by the column number</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     
     <span class="k">def</span> <span class="nf">make_multi_index</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">isub</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">([(</span><span class="n">sub_num</span><span class="p">,</span><span class="n">lst_num</span><span class="p">)</span> <span class="k">for</span> <span class="n">lst_num</span><span class="p">,</span><span class="n">lst</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub_data</span><span class="p">)],</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="s1">&#39;List&#39;</span><span class="p">])</span>
@@ -12244,7 +12247,32 @@ div#notebook {
     <span class="n">subs_list_of_dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">make_multi_index</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">sub_num</span><span class="p">))</span> <span class="k">for</span> <span class="n">sub_num</span><span class="p">,</span><span class="n">sub_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_data</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">subs_list_of_dfs</span><span class="p">)</span>
 
-<span class="n">list2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
+<span class="n">datum</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span>
+<span class="c1"># print(type(list(datum.loc[0,0])))</span>
+<span class="c1"># x = list(datum.loc[0,1])</span>
+<span class="c1"># #[subj, list]</span>
+<span class="c1"># #print(x)</span>
+
+<span class="c1"># for row in datum.iterrows():</span>
+<span class="c1"># # #     for lst in subject.iterrows():</span>
+<span class="c1">#      print(list(row))</span>
+<span class="c1">#      print(&quot;space&quot;)</span>
+
+<span class="c1"># #     print</span>
+<span class="c1"># #     print</span>
+<span class="c1"># #     print()</span>
+<span class="c1"># #     print</span>
+<span class="c1"># #     print</span>
+<span class="c1"># #     print</span>
+<span class="c1"># datum[0][0].count()</span>
+
+<span class="c1"># #datum[column][Row][row]</span>
+<span class="c1"># print</span>
+<span class="c1"># datum</span>
+
+<span class="nb">len</span><span class="p">(</span><span class="n">datum</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="c1">#datum.values.tolist()</span>
+<span class="n">datum</span>
 </pre></div>
 
 </div>
@@ -12255,7 +12283,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[245]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div>
@@ -13805,10 +13833,16 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[48]:</div>
+<div class="prompt input_prompt">In&nbsp;[261]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">lists2rec_pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span> <span class="n">all_recalled</span><span class="p">):</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">lists2rec_pd</span><span class="p">(</span><span class="n">pres_df</span><span class="p">,</span> <span class="n">rec_df</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">pd2lists</span><span class="p">(</span><span class="n">pres_df</span><span class="p">,</span> <span class="n">rec_df</span><span class="p">):</span>
+        <span class="n">presented</span> <span class="o">=</span> <span class="n">pres_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">recalled</span> <span class="o">=</span> <span class="n">rec_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        
+        <span class="k">return</span><span class="p">(</span><span class="n">presented</span><span class="p">,</span> <span class="n">recalled</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="nf">make_multi_index</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">isub</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">([(</span><span class="n">sub_num</span><span class="p">,</span><span class="n">lst_num</span><span class="p">)</span> <span class="k">for</span> <span class="n">lst_num</span><span class="p">,</span><span class="n">lst</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sub_data</span><span class="p">)],</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="s1">&#39;List&#39;</span><span class="p">])</span>
@@ -13822,10 +13856,13 @@ div#notebook {
         
         <span class="k">return</span><span class="p">(</span><span class="n">all_recall_mats</span><span class="p">)</span>
     
-    <span class="n">rec_data</span> <span class="o">=</span> <span class="n">make_rec_mat</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span> <span class="n">all_recalled</span><span class="p">)</span>
-    <span class="n">subs_list_of_recs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">make_multi_index</span><span class="p">(</span><span class="n">sub_data</span><span class="p">,</span> <span class="n">sub_num</span><span class="p">))</span> <span class="k">for</span> <span class="n">sub_num</span><span class="p">,</span><span class="n">sub_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rec_data</span><span class="p">)]</span>
+    <span class="n">lsts</span> <span class="o">=</span> <span class="n">pd2lists</span><span class="p">(</span><span class="n">pres_df</span><span class="p">,</span> <span class="n">rec_df</span><span class="p">)</span>
+    <span class="n">rec_data</span> <span class="o">=</span> <span class="n">make_rec_mat</span><span class="p">(</span><span class="n">pres_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">rec_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+    <span class="c1">#subs_list_of_recs = [pd.DataFrame(sub_data, index=make_multi_index(sub_data, sub_num)) for sub_num,sub_data in enumerate(rec_data)]</span>
     
-    <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">subs_list_of_recs</span><span class="p">))</span>
+    
+    <span class="c1">#return(pd.concat(subs_list_of_recs))</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rec_data</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -13835,10 +13872,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[49]:</div>
+<div class="prompt input_prompt">In&nbsp;[262]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">lists2rec_pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">,</span> <span class="n">all_recalled</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">lists2rec_pd</span><span class="p">(</span><span class="n">list2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">),</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">all_recalled</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -13849,1539 +13886,37 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[49]:</div>
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-262-d6e88399e3bd&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>lists2rec_pd<span class="ansi-blue-fg">(</span>list2pd<span class="ansi-blue-fg">(</span>all_presented<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> list2pd<span class="ansi-blue-fg">(</span>all_recalled<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-      <th>4</th>
-      <th>5</th>
-      <th>6</th>
-      <th>7</th>
-      <th>8</th>
-      <th>9</th>
-      <th>...</th>
-      <th>13</th>
-      <th>14</th>
-      <th>15</th>
-      <th>16</th>
-      <th>17</th>
-      <th>18</th>
-      <th>19</th>
-      <th>20</th>
-      <th>21</th>
-      <th>22</th>
-    </tr>
-    <tr>
-      <th>Subject</th>
-      <th>List</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="16" valign="top">0</th>
-      <th>0</th>
-      <td>1.0</td>
-      <td>2.0</td>
-      <td>3.0</td>
-      <td>9.0</td>
-      <td>14.0</td>
-      <td>15.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1.0</td>
-      <td>6.0</td>
-      <td>3.0</td>
-      <td>2.0</td>
-      <td>8.0</td>
-      <td>12.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2.0</td>
-      <td>15.0</td>
-      <td>8.0</td>
-      <td>3.0</td>
-      <td>1.0</td>
-      <td>-1.0</td>
-      <td>NaN</td>
-      <td>9.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2.0</td>
-      <td>5.0</td>
-      <td>8.0</td>
-      <td>7.0</td>
-      <td>6.0</td>
-      <td>14.0</td>
-      <td>-2.0</td>
-      <td>NaN</td>
-      <td>9.0</td>
-      <td>15.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>1.0</td>
-      <td>2.0</td>
-      <td>13.0</td>
-      <td>7.0</td>
-      <td>3.0</td>
-      <td>9.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>2.0</td>
-      <td>3.0</td>
-      <td>5.0</td>
-      <td>6.0</td>
-      <td>7.0</td>
-      <td>1.0</td>
-      <td>10.0</td>
-      <td>11.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>5.0</td>
-      <td>2.0</td>
-      <td>3.0</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>13.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>1.0</td>
-      <td>2.0</td>
-      <td>3.0</td>
-      <td>-6.0</td>
-      <td>NaN</td>
-      <td>10.0</td>
-      <td>5.0</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>1.0</td>
-      <td>2.0</td>
-      <td>3.0</td>
-      <td>4.0</td>
-      <td>5.0</td>
-      <td>7.0</td>
-      <td>16.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>9.0</td>
-      <td>10.0</td>
-      <td>14.0</td>
-      <td>15.0</td>
-      <td>12.0</td>
-      <td>-1.0</td>
-      <td>NaN</td>
-      <td>-6.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>-10.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>16.0</td>
-      <td>5.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>9.0</td>
-      <td>-1.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>-11.0</td>
-      <td>NaN</td>
-      <td>15.0</td>
-      <td>7.0</td>
-      <td>16.0</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>12.0</td>
-      <td>-10.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>3.0</td>
-      <td>5.0</td>
-      <td>11.0</td>
-      <td>6.0</td>
-      <td>-5.0</td>
-      <td>NaN</td>
-      <td>-1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>8.0</td>
-      <td>9.0</td>
-      <td>10.0</td>
-      <td>12.0</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>9.0</td>
-      <td>3.0</td>
-      <td>-10.0</td>
-      <td>NaN</td>
-      <td>-2.0</td>
-      <td>NaN</td>
-      <td>5.0</td>
-      <td>8.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th rowspan="14" valign="top">1</th>
-      <th>0</th>
-      <td>1.0</td>
-      <td>6.0</td>
-      <td>10.0</td>
-      <td>15.0</td>
-      <td>16.0</td>
-      <td>12.0</td>
-      <td>NaN</td>
-      <td>5.0</td>
-      <td>11.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>12.0</td>
-      <td>16.0</td>
-      <td>11.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>15.0</td>
-      <td>8.0</td>
-      <td>11.0</td>
-      <td>16.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>1.0</td>
-      <td>3.0</td>
-      <td>5.0</td>
-      <td>13.0</td>
-      <td>14.0</td>
-      <td>15.0</td>
-      <td>10.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>1.0</td>
-      <td>3.0</td>
-      <td>15.0</td>
-      <td>9.0</td>
-      <td>11.0</td>
-      <td>14.0</td>
-      <td>6.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>13.0</td>
-      <td>10.0</td>
-      <td>16.0</td>
-      <td>15.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>3.0</td>
-      <td>6.0</td>
-      <td>5.0</td>
-      <td>7.0</td>
-      <td>1.0</td>
-      <td>8.0</td>
-      <td>12.0</td>
-      <td>15.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>NaN</td>
-      <td>6.0</td>
-      <td>8.0</td>
-      <td>15.0</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>6.0</td>
-      <td>9.0</td>
-      <td>15.0</td>
-      <td>14.0</td>
-      <td>16.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>2.0</td>
-      <td>6.0</td>
-      <td>7.0</td>
-      <td>4.0</td>
-      <td>10.0</td>
-      <td>11.0</td>
-      <td>14.0</td>
-      <td>15.0</td>
-      <td>16.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>-9.0</td>
-      <td>NaN</td>
-      <td>-10.0</td>
-      <td>NaN</td>
-      <td>6.0</td>
-      <td>9.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>3.0</td>
-      <td>5.0</td>
-      <td>4.0</td>
-      <td>10.0</td>
-      <td>11.0</td>
-      <td>6.0</td>
-      <td>13.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>1.0</td>
-      <td>5.0</td>
-      <td>9.0</td>
-      <td>6.0</td>
-      <td>4.0</td>
-      <td>14.0</td>
-      <td>13.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>7.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th rowspan="14" valign="top">15</th>
-      <th>2</th>
-      <td>1.0</td>
-      <td>3.0</td>
-      <td>15.0</td>
-      <td>11.0</td>
-      <td>16.0</td>
-      <td>5.0</td>
-      <td>2.0</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>15.0</td>
-      <td>NaN</td>
-      <td>5.0</td>
-      <td>13.0</td>
-      <td>4.0</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>12.0</td>
-      <td>14.0</td>
-      <td>1.0</td>
-      <td>7.0</td>
-      <td>15.0</td>
-      <td>4.0</td>
-      <td>3.0</td>
-      <td>10.0</td>
-      <td>6.0</td>
-      <td>11.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>13.0</td>
-      <td>14.0</td>
-      <td>5.0</td>
-      <td>16.0</td>
-      <td>9.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>7.0</td>
-      <td>16.0</td>
-      <td>12.0</td>
-      <td>9.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>15.0</td>
-      <td>16.0</td>
-      <td>14.0</td>
-      <td>2.0</td>
-      <td>3.0</td>
-      <td>7.0</td>
-      <td>8.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>1.0</td>
-      <td>8.0</td>
-      <td>14.0</td>
-      <td>5.0</td>
-      <td>10.0</td>
-      <td>4.0</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>12.0</td>
-      <td>16.0</td>
-      <td>2.0</td>
-      <td>7.0</td>
-      <td>6.0</td>
-      <td>8.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>16.0</td>
-      <td>11.0</td>
-      <td>15.0</td>
-      <td>3.0</td>
-      <td>1.0</td>
-      <td>2.0</td>
-      <td>9.0</td>
-      <td>14.0</td>
-      <td>10.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>15.0</td>
-      <td>1.0</td>
-      <td>4.0</td>
-      <td>13.0</td>
-      <td>11.0</td>
-      <td>8.0</td>
-      <td>9.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>16.0</td>
-      <td>8.0</td>
-      <td>2.0</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>16.0</td>
-      <td>13.0</td>
-      <td>10.0</td>
-      <td>5.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>15.0</td>
-      <td>16.0</td>
-      <td>5.0</td>
-      <td>2.0</td>
-      <td>1.0</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>16.0</td>
-      <td>1.0</td>
-      <td>6.0</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th rowspan="16" valign="top">16</th>
-      <th>0</th>
-      <td>16.0</td>
-      <td>3.0</td>
-      <td>13.0</td>
-      <td>6.0</td>
-      <td>14.0</td>
-      <td>9.0</td>
-      <td>1.0</td>
-      <td>5.0</td>
-      <td>2.0</td>
-      <td>7.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>7.0</td>
-      <td>6.0</td>
-      <td>9.0</td>
-      <td>10.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>16.0</td>
-      <td>10.0</td>
-      <td>3.0</td>
-      <td>12.0</td>
-      <td>2.0</td>
-      <td>7.0</td>
-      <td>6.0</td>
-      <td>16.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>7.0</td>
-      <td>1.0</td>
-      <td>5.0</td>
-      <td>6.0</td>
-      <td>13.0</td>
-      <td>4.0</td>
-      <td>15.0</td>
-      <td>9.0</td>
-      <td>12.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>16.0</td>
-      <td>9.0</td>
-      <td>5.0</td>
-      <td>11.0</td>
-      <td>13.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>1.0</td>
-      <td>16.0</td>
-      <td>6.0</td>
-      <td>12.0</td>
-      <td>4.0</td>
-      <td>11.0</td>
-      <td>5.0</td>
-      <td>-1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>16.0</td>
-      <td>1.0</td>
-      <td>12.0</td>
-      <td>6.0</td>
-      <td>3.0</td>
-      <td>-1.0</td>
-      <td>NaN</td>
-      <td>1.0</td>
-      <td>-4.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>NaN</td>
-      <td>5.0</td>
-      <td>10.0</td>
-      <td>12.0</td>
-      <td>9.0</td>
-      <td>15.0</td>
-      <td>13.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>4.0</td>
-      <td>2.0</td>
-      <td>15.0</td>
-      <td>9.0</td>
-      <td>8.0</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>10.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.0</td>
-      <td>2.0</td>
-      <td>1.0</td>
-      <td>3.0</td>
-      <td>-6.0</td>
-      <td>NaN</td>
-      <td>6.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>8.0</td>
-      <td>4.0</td>
-      <td>5.0</td>
-      <td>2.0</td>
-      <td>1.0</td>
-      <td>8.0</td>
-      <td>13.0</td>
-      <td>15.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>16.0</td>
-      <td>4.0</td>
-      <td>6.0</td>
-      <td>9.0</td>
-      <td>14.0</td>
-      <td>12.0</td>
-      <td>1.0</td>
-      <td>3.0</td>
-      <td>2.0</td>
-      <td>7.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>15.0</td>
-      <td>13.0</td>
-      <td>5.0</td>
-      <td>3.0</td>
-      <td>16.0</td>
-      <td>7.0</td>
-      <td>14.0</td>
-      <td>9.0</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>6.0</td>
-      <td>5.0</td>
-      <td>12.0</td>
-      <td>13.0</td>
-      <td>1.0</td>
-      <td>2.0</td>
-      <td>11.0</td>
-      <td>7.0</td>
-      <td>16.0</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>16.0</td>
-      <td>4.0</td>
-      <td>14.0</td>
-      <td>NaN</td>
-      <td>11.0</td>
-      <td>8.0</td>
-      <td>1.0</td>
-      <td>7.0</td>
-      <td>12.0</td>
-      <td>13.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>16.0</td>
-      <td>2.0</td>
-      <td>6.0</td>
-      <td>13.0</td>
-      <td>14.0</td>
-      <td>5.0</td>
-      <td>3.0</td>
-      <td>10.0</td>
-      <td>16.0</td>
-      <td>7.0</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-<p>272 rows × 23 columns</p>
-</div>
-</div>
+<span class="ansi-green-fg">&lt;ipython-input-261-bcc37575e1ab&gt;</span> in <span class="ansi-cyan-fg">lists2rec_pd</span><span class="ansi-blue-fg">(pres_df, rec_df)</span>
+<span class="ansi-green-intense-fg ansi-bold">     20</span> 
+<span class="ansi-green-intense-fg ansi-bold">     21</span>     lsts <span class="ansi-blue-fg">=</span> pd2lists<span class="ansi-blue-fg">(</span>pres_df<span class="ansi-blue-fg">,</span> rec_df<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">---&gt; 22</span><span class="ansi-red-fg">     </span>rec_data <span class="ansi-blue-fg">=</span> make_rec_mat<span class="ansi-blue-fg">(</span>pres_df<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">.</span>tolist<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> rec_df<span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">.</span>tolist<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     23</span>     <span class="ansi-red-fg">#subs_list_of_recs = [pd.DataFrame(sub_data, index=make_multi_index(sub_data, sub_num)) for sub_num,sub_data in enumerate(rec_data)]</span>
+<span class="ansi-green-intense-fg ansi-bold">     24</span> 
 
+<span class="ansi-green-fg">&lt;ipython-input-261-bcc37575e1ab&gt;</span> in <span class="ansi-cyan-fg">make_rec_mat</span><span class="ansi-blue-fg">(all_presented, all_recalled)</span>
+<span class="ansi-green-intense-fg ansi-bold">     14</span>         <span class="ansi-green-fg">if</span> len<span class="ansi-blue-fg">(</span>all_presented<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">==</span> len<span class="ansi-blue-fg">(</span>all_recalled<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     15</span>             <span class="ansi-green-fg">for</span> x <span class="ansi-green-fg">in</span> range<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> len<span class="ansi-blue-fg">(</span>all_presented<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 16</span><span class="ansi-red-fg">                 </span>rec_mat <span class="ansi-blue-fg">=</span> recall_matrix<span class="ansi-blue-fg">(</span>all_presented<span class="ansi-blue-fg">[</span>x<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> all_recalled<span class="ansi-blue-fg">[</span>x<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     17</span>                 all_recall_mats<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>rec_mat<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     18</span> 
+
+<span class="ansi-green-fg">&lt;ipython-input-76-0f9c368ed9bc&gt;</span> in <span class="ansi-cyan-fg">recall_matrix</span><span class="ansi-blue-fg">(presented, recalled)</span>
+<span class="ansi-green-intense-fg ansi-bold">     23</span> 
+<span class="ansi-green-intense-fg ansi-bold">     24</span>     <span class="ansi-green-fg">for</span> idx<span class="ansi-blue-fg">,</span>wordList <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>recalled<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 25</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">for</span> word <span class="ansi-green-fg">in</span> wordList<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     26</span>             <span class="ansi-green-fg">if</span> word <span class="ansi-green-fg">in</span> presented<span class="ansi-blue-fg">[</span>idx<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     27</span>                 recall_matrix<span class="ansi-blue-fg">[</span>idx<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>presented<span class="ansi-blue-fg">[</span>idx<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">.</span>index<span class="ansi-blue-fg">(</span>word<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">+</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">TypeError</span>: &#39;NoneType&#39; object is not iterable</pre>
+</div>
 </div>
 
 </div>
@@ -15390,10 +13925,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[119]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span> 
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#filtered_data</span>
 </pre></div>
 
 </div>
@@ -15410,6 +13945,1662 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[172]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">Pyro</span><span class="p">(</span><span class="n">list2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">),</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">all_recalled</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">list2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>16
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[268]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">recall_matrix2</span><span class="p">(</span><span class="n">pres_df</span><span class="p">,</span> <span class="n">rec_df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes recall matrix given df of presented and recalled words</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    presented : multi indexed dataframe of strings</span>
+<span class="sd">      data indexed by subject number and list number</span>
+<span class="sd">      each cell contains the word presented in the location indicated by column number, as a string</span>
+<span class="sd">    </span>
+<span class="sd">    recalled : multi indexed dataframe of strings</span>
+<span class="sd">      data indexed by subject number and list number</span>
+<span class="sd">      each cell contains the word recalled in the location indicated by column number, as a string</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    recall_matrix : multi indexed dataframe of ints and Nans </span>
+<span class="sd">      indexed by subject and list number</span>
+<span class="sd">      each integer represents the presentation position of the recalled word in a given list in order of recall</span>
+<span class="sd">      0s represent recalled words not presented</span>
+<span class="sd">      negative ints represent words recalled from previous lists</span>
+<span class="sd">      Nans are filler for blank spaces where no word was recalled (number of columns equal to longest recall list)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#x = list(datum.loc[0,1])</span>
+    <span class="c1">#[subj, list]</span>
+    
+    <span class="c1">############</span>
+    <span class="c1">#def pd2list(pres_df, rec_df):</span>
+    <span class="n">presented</span> <span class="o">=</span> <span class="n">pres_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">recalled</span> <span class="o">=</span> <span class="n">rec_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        
+        <span class="c1">#return(presented, recalled)</span>
+        
+        
+    <span class="n">recall_matrix</span><span class="o">=</span><span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">recalled</span><span class="p">))]</span><span class="c1">#range(0, rec_df[0][0].count())]</span>
+    <span class="c1">#check that this gives number of subjects and not number of words per list.. </span>
+        
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">wordList</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">recalled</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">wordList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">presented</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
+                <span class="n">recall_matrix</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">presented</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="c1">#if the recalled word was presented, add to the recall matrix its presentation position</span>
+
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">presented</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">==</span> <span class="nb">float</span><span class="p">:</span>
+                    <span class="n">recall_matrix</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">idx</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">presented</span><span class="p">[</span><span class="n">z</span><span class="p">]:</span>
+                        <span class="n">recall_matrix</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="n">idx</span><span class="p">)</span>
+                        <span class="c1">#note, verify that by using [idx] here, we prevent positive value for &quot;future&quot; word</span>
+                        <span class="c1">#puts a negative number for word recalled from previous list</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">recall_matrix</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>       
+            <span class="c1">#if recalled word was not presented, append zero</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">recall_matrix</span><span class="p">))</span>
+    
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1>Create EL Explabels and Last Labels</h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[266]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#come back to this</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><h1></h1></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[269]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">recall_matrix2</span><span class="p">(</span><span class="n">list2pd</span><span class="p">(</span><span class="n">all_presented</span><span class="p">),</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">all_recalled</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[269]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+      <th>...</th>
+      <th>926</th>
+      <th>927</th>
+      <th>928</th>
+      <th>929</th>
+      <th>930</th>
+      <th>931</th>
+      <th>932</th>
+      <th>933</th>
+      <th>934</th>
+      <th>935</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>9</td>
+      <td>14</td>
+      <td>15</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>6</td>
+      <td>3</td>
+      <td>2</td>
+      <td>8</td>
+      <td>12</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>15</td>
+      <td>8</td>
+      <td>3</td>
+      <td>1</td>
+      <td>-1</td>
+      <td>0</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>5</td>
+      <td>8</td>
+      <td>7</td>
+      <td>6</td>
+      <td>14</td>
+      <td>-2</td>
+      <td>0</td>
+      <td>9</td>
+      <td>15</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>2</td>
+      <td>13</td>
+      <td>7</td>
+      <td>3</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2</td>
+      <td>3</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>1</td>
+      <td>10</td>
+      <td>11</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>5</td>
+      <td>2</td>
+      <td>3</td>
+      <td>14</td>
+      <td>0</td>
+      <td>13</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>-6</td>
+      <td>0</td>
+      <td>10</td>
+      <td>5</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>7</td>
+      <td>16</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>9</td>
+      <td>10</td>
+      <td>14</td>
+      <td>15</td>
+      <td>12</td>
+      <td>-1</td>
+      <td>0</td>
+      <td>-6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>-10</td>
+      <td>0</td>
+      <td>0</td>
+      <td>16</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>-1</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>-11</td>
+      <td>0</td>
+      <td>15</td>
+      <td>7</td>
+      <td>16</td>
+      <td>14</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>12</td>
+      <td>-10</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>3</td>
+      <td>5</td>
+      <td>11</td>
+      <td>6</td>
+      <td>-5</td>
+      <td>0</td>
+      <td>-1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>12</td>
+      <td>14</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>9</td>
+      <td>3</td>
+      <td>-10</td>
+      <td>0</td>
+      <td>-2</td>
+      <td>0</td>
+      <td>5</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>1</td>
+      <td>6</td>
+      <td>10</td>
+      <td>15</td>
+      <td>16</td>
+      <td>12</td>
+      <td>-13</td>
+      <td>0</td>
+      <td>5</td>
+      <td>11</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>12</td>
+      <td>16</td>
+      <td>11</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>2</td>
+      <td>-18</td>
+      <td>0</td>
+      <td>15</td>
+      <td>8</td>
+      <td>11</td>
+      <td>16</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1</td>
+      <td>3</td>
+      <td>5</td>
+      <td>13</td>
+      <td>14</td>
+      <td>15</td>
+      <td>10</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1</td>
+      <td>3</td>
+      <td>15</td>
+      <td>9</td>
+      <td>11</td>
+      <td>14</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>13</td>
+      <td>10</td>
+      <td>16</td>
+      <td>15</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>3</td>
+      <td>6</td>
+      <td>5</td>
+      <td>7</td>
+      <td>1</td>
+      <td>8</td>
+      <td>12</td>
+      <td>15</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>-15</td>
+      <td>0</td>
+      <td>6</td>
+      <td>8</td>
+      <td>15</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>6</td>
+      <td>9</td>
+      <td>15</td>
+      <td>14</td>
+      <td>16</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>2</td>
+      <td>6</td>
+      <td>7</td>
+      <td>4</td>
+      <td>10</td>
+      <td>11</td>
+      <td>14</td>
+      <td>15</td>
+      <td>16</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>-21</td>
+      <td>-9</td>
+      <td>0</td>
+      <td>-16</td>
+      <td>-10</td>
+      <td>0</td>
+      <td>6</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>3</td>
+      <td>5</td>
+      <td>4</td>
+      <td>10</td>
+      <td>11</td>
+      <td>6</td>
+      <td>13</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1</td>
+      <td>5</td>
+      <td>9</td>
+      <td>6</td>
+      <td>4</td>
+      <td>14</td>
+      <td>13</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>7</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>242</th>
+      <td>1</td>
+      <td>3</td>
+      <td>15</td>
+      <td>11</td>
+      <td>16</td>
+      <td>5</td>
+      <td>2</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>243</th>
+      <td>15</td>
+      <td>-234</td>
+      <td>-221</td>
+      <td>-198</td>
+      <td>-194</td>
+      <td>-166</td>
+      <td>-158</td>
+      <td>-135</td>
+      <td>-121</td>
+      <td>-108</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>244</th>
+      <td>12</td>
+      <td>14</td>
+      <td>1</td>
+      <td>7</td>
+      <td>15</td>
+      <td>4</td>
+      <td>3</td>
+      <td>10</td>
+      <td>6</td>
+      <td>11</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>245</th>
+      <td>13</td>
+      <td>14</td>
+      <td>5</td>
+      <td>16</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>246</th>
+      <td>7</td>
+      <td>16</td>
+      <td>12</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>247</th>
+      <td>15</td>
+      <td>16</td>
+      <td>14</td>
+      <td>2</td>
+      <td>3</td>
+      <td>7</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>248</th>
+      <td>1</td>
+      <td>8</td>
+      <td>14</td>
+      <td>5</td>
+      <td>10</td>
+      <td>4</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>249</th>
+      <td>12</td>
+      <td>16</td>
+      <td>2</td>
+      <td>7</td>
+      <td>6</td>
+      <td>8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>250</th>
+      <td>16</td>
+      <td>11</td>
+      <td>15</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>9</td>
+      <td>14</td>
+      <td>10</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>251</th>
+      <td>15</td>
+      <td>1</td>
+      <td>4</td>
+      <td>13</td>
+      <td>11</td>
+      <td>8</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>252</th>
+      <td>16</td>
+      <td>8</td>
+      <td>2</td>
+      <td>14</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>253</th>
+      <td>16</td>
+      <td>13</td>
+      <td>10</td>
+      <td>5</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>254</th>
+      <td>15</td>
+      <td>16</td>
+      <td>5</td>
+      <td>2</td>
+      <td>1</td>
+      <td>14</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>255</th>
+      <td>16</td>
+      <td>1</td>
+      <td>6</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>256</th>
+      <td>16</td>
+      <td>3</td>
+      <td>13</td>
+      <td>6</td>
+      <td>14</td>
+      <td>9</td>
+      <td>1</td>
+      <td>5</td>
+      <td>2</td>
+      <td>7</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>257</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>7</td>
+      <td>6</td>
+      <td>9</td>
+      <td>10</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>258</th>
+      <td>16</td>
+      <td>10</td>
+      <td>3</td>
+      <td>12</td>
+      <td>2</td>
+      <td>7</td>
+      <td>6</td>
+      <td>16</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>259</th>
+      <td>7</td>
+      <td>1</td>
+      <td>5</td>
+      <td>6</td>
+      <td>13</td>
+      <td>4</td>
+      <td>15</td>
+      <td>9</td>
+      <td>12</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>260</th>
+      <td>16</td>
+      <td>9</td>
+      <td>5</td>
+      <td>11</td>
+      <td>13</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>261</th>
+      <td>1</td>
+      <td>16</td>
+      <td>6</td>
+      <td>12</td>
+      <td>4</td>
+      <td>11</td>
+      <td>5</td>
+      <td>-255</td>
+      <td>-230</td>
+      <td>-226</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>262</th>
+      <td>16</td>
+      <td>1</td>
+      <td>12</td>
+      <td>6</td>
+      <td>3</td>
+      <td>-254</td>
+      <td>-234</td>
+      <td>-228</td>
+      <td>-207</td>
+      <td>-197</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>263</th>
+      <td>-250</td>
+      <td>-234</td>
+      <td>-224</td>
+      <td>-213</td>
+      <td>-196</td>
+      <td>-183</td>
+      <td>-158</td>
+      <td>-139</td>
+      <td>-134</td>
+      <td>-116</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>264</th>
+      <td>4</td>
+      <td>2</td>
+      <td>15</td>
+      <td>9</td>
+      <td>8</td>
+      <td>14</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>265</th>
+      <td>10</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>1</td>
+      <td>3</td>
+      <td>-263</td>
+      <td>-242</td>
+      <td>-227</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>266</th>
+      <td>8</td>
+      <td>4</td>
+      <td>5</td>
+      <td>2</td>
+      <td>1</td>
+      <td>8</td>
+      <td>13</td>
+      <td>15</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>267</th>
+      <td>16</td>
+      <td>4</td>
+      <td>6</td>
+      <td>9</td>
+      <td>14</td>
+      <td>12</td>
+      <td>1</td>
+      <td>3</td>
+      <td>2</td>
+      <td>7</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>268</th>
+      <td>15</td>
+      <td>13</td>
+      <td>5</td>
+      <td>3</td>
+      <td>16</td>
+      <td>7</td>
+      <td>14</td>
+      <td>9</td>
+      <td>4</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>269</th>
+      <td>6</td>
+      <td>5</td>
+      <td>12</td>
+      <td>13</td>
+      <td>1</td>
+      <td>2</td>
+      <td>11</td>
+      <td>7</td>
+      <td>16</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>270</th>
+      <td>16</td>
+      <td>4</td>
+      <td>14</td>
+      <td>0</td>
+      <td>11</td>
+      <td>8</td>
+      <td>1</td>
+      <td>7</td>
+      <td>12</td>
+      <td>13</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>271</th>
+      <td>16</td>
+      <td>2</td>
+      <td>6</td>
+      <td>13</td>
+      <td>14</td>
+      <td>5</td>
+      <td>3</td>
+      <td>10</td>
+      <td>16</td>
+      <td>7</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>272 rows × 936 columns</p>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
