@@ -37,9 +37,9 @@ class Pyro(object):
 
     def __init__(self, pres=pd.DataFrame(), rec=pd.DataFrame(), meta={}):#features=pd.DataFrame(),
 
-        self.pres=pres
+        self.pres=list2pd(pres)
         #self.features=features
-        self.rec=rec
+        self.rec=list2pd(rec)
         self.meta=meta
         #self._recall_mtx = recall_matrix(self.pres, self.rec)
 
