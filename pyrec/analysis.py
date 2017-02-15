@@ -91,7 +91,7 @@ def recall_matrix(presented, recalled):
         result.append([recall_pos(pres_list, rec_list) for pres_list, rec_list in zip(pres_subj,rec_subj)])
     return list2pd(result)
 
-def serial_pos(recall_matrix):
+def spc_helper(recall_matrix):
     """
     Computes probability of a word being recalled (in the appropriate recall list), given its presentation position
 
@@ -131,7 +131,7 @@ def serial_pos(recall_matrix):
 
 #PROB FIRST RECALL######
 
-def pfr(recall_matrix):
+def pfr_helper(recall_matrix):
 
     """
     Computes probability of a word being recalled first (in the appropriate recall list), given its presentation position
@@ -169,7 +169,7 @@ def pfr(recall_matrix):
 
 ##NOTES:
 
-def plr(recall_matrix):
+def plr_helper(recall_matrix):
     """
     Computes probability of a word being recalled last (in the appropriate recall list), given its presentation position
 
@@ -207,7 +207,7 @@ def plr(recall_matrix):
 
     return prob
 
-def crp(recall_matrix):
+def crp_helper(recall_matrix):
     """
     Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)
 
@@ -280,3 +280,15 @@ def crp(recall_matrix):
         #if actual and possible are both zero, append zero; otherwise, divide
 
     return list_crp
+
+def spc(data, subjgroup=None, listgroup=None):
+    return analyze(data, subjgroup, listgroup, analysis=spc_helper)
+
+def pfr(data, subjgroup=None, listgroup=None):
+    return analyze(data, subjgroup, listgroup, analysis=pfr_helper)
+
+def plr(data, subjgroup=None, listgroup=None):
+    return analyze(data, subjgroup, listgroup, analysis=plr_helper)
+
+def lag_crp(data, subjgroup=None, listgroup=None):
+    return analyze(data, subjgroup, listgroup, analysis=crp_helper)
