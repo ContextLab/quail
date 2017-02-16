@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from pyrec.analysis import analyze
-from pyrec.analysis import recall_matrix
-from pyrec.helpers import mldf2list
-from pyrec.pyro import Pyro
-import numpy as np
-import pytest
+# from pyrec.analysis import analyze
+# from pyrec.analysis import recall_matrix
+# from pyrec.helpers import mldf2list
+# from pyrec.pyro import Pyro
+# import numpy as np
+# import pytest
 
 # def test_recall_matrix():
 #     pres = [[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']],[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]

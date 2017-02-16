@@ -3,9 +3,9 @@
 from __future__ import division
 import numpy as np
 import pandas as pd
-from helpers import *
+from .helpers import *
 
-def analyze(data, subjgroup=None, listgroup=None, analysis=None):
+def analyze(data, subjgroup=None, subjname='Subject', listname='List', listgroup=None, analysis=None):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -31,7 +31,7 @@ def analyze(data, subjgroup=None, listgroup=None, analysis=None):
         Pyro containing the analysis results
 
     """
-    # if no grouping, set default to average over all
+    # if no grouping, set default to iterate over each list independently
     subjgroup = subjgroup if subjgroup else data.pres.index.levels[0].values
     listgroup = listgroup if listgroup else data.pres.index.levels[1].values
 
@@ -45,16 +45,22 @@ def analyze(data, subjgroup=None, listgroup=None, analysis=None):
         for lst in listdict:
 
             # get data slice for presentation and recall
-            pres_data = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
-            rec_data = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
+            pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
+            rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
 
             # compute recall_matrix for data slice
-            recall = recall_matrix(pres_data, rec_data)
+            recall = recall_matrix(pres_slice, rec_slice)
+
+            # generate index
+            index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
 
             # perform analysis for each data chunk
-            analyzed_data.append(analysis(recall))
+            analyzed = pd.DataFrame([analysis(recall)], index=index)
 
-    return analyzed_data
+            # append analyzed data
+            analyzed_data.append(analyzed)
+
+    return pd.concat(analyzed_data)
 
 ##RECALL MATRIX#######
 
@@ -80,16 +86,15 @@ def recall_matrix(presented, recalled):
     """
 
     def recall_pos(pres_list,rec_list):
+        pres_list = list(pres_list)
+        rec_list = list(rec_list)
         return [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]
 
-    if type(presented) is pd.DataFrame:
-        presented = mldf2list(presented)
-        recalled = mldf2list(recalled)
-
     result = []
-    for pres_subj, rec_subj in zip(presented,recalled):
-        result.append([recall_pos(pres_list, rec_list) for pres_list, rec_list in zip(pres_subj,rec_subj)])
-    return list2pd(result)
+    for pres_list, rec_list in zip(presented.values, recalled.values):
+        result.append(recall_pos(pres_list, rec_list))
+
+    return result
 
 def spc_helper(recall_matrix):
     """
@@ -109,25 +114,15 @@ def spc_helper(recall_matrix):
 
     """
 
-    recalled=np.zeros((len(recall_matrix),len(recall_matrix[0])),dtype=np.int)
-    #empty array, one row per trial, one column for each presented word
+    # simple function that returns 1 if item encoded in position n is in recall list
+    def pos_in_list(pos,lst):
+        return 1 if pos in lst else 0
 
-    for idx,trial in enumerate(recall_matrix):
-        #for each trial in recall matrix
-        for position in range(1,len(recall_matrix[0])+1):
-            #for each position number (1 indexed)
-            if position in trial:
-                recalled[idx][position-1]=1
-            else:
-                recalled[idx][position-1]=0
-            #if that position was recllaed in a given trial, add 1 to that position in the appropriate row of recalled
-            #else, add zero
-            #this ignores negative numbers (words from previous lists) and zeros (words not presented)
+    # get spc for each row in recall matrix
+    spc_matrix = [[pos_in_list(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall_matrix]
 
-    prob=np.mean(recalled, axis=0)
-    #take the mean of each column
-
-    return prob
+    # average over rows
+    return np.mean(spc_matrix,axis=0)
 
 #PROB FIRST RECALL######
 
@@ -150,24 +145,15 @@ def pfr_helper(recall_matrix):
 
     """
 
-    recalled=np.zeros((len(recall_matrix),len(recall_matrix[0])),dtype=np.int)
-    #empty array, one row per trial, one column for each presented word
-    for idx,trial in enumerate(recall_matrix):
-        #for each trial in recall matrix
-        for position in range(1,len(recall_matrix[0])+1):
-            #for each possible position (1 indexed)
-            if trial[0]==position:
-                #if that position is first in the given trial
-                recalled[idx][position-1]=1
-                #append recalled appropriate row and position
+    # simple function that returns 1 if item encoded in position n is recalled first
+    def pos_recalled_first(pos,lst):
+        return 1 if pos==lst[0] else 0
 
-    prob=np.mean(recalled, axis=0)
-    return prob
+    # get pfr for each row in recall matrix
+    pfr_matrix = [[pos_recalled_first(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall_matrix]
 
-
-#PROB LAST RECALL#######
-
-##NOTES:
+    # average over rows
+    return np.mean(pfr_matrix,axis=0)
 
 def plr_helper(recall_matrix):
     """
@@ -186,26 +172,19 @@ def plr_helper(recall_matrix):
       each int represents the probability of last recall for a word presented in given position/index
 
     """
-    recalled=np.zeros((len(recall_matrix),len(recall_matrix[0])),dtype=np.int)
-    #empty array, one row per trial, one column for each presented word
-    for idx,trial in enumerate(recall_matrix):
-        #for each trial in recall matrix
 
-        z=trial[-1]
-        while (type(z)==float or z<=0):
-            new=trial.index(z)-1
-            z=trial[new]
-            print(z)
+    # simple function that returns 1 if item encoded in position n is recalled last
+    def pos_recalled_last(pos,lst):
+        idx=-1
+        while np.isnan(lst[idx]):
+            idx-=1
+        return 1 if pos==lst[idx] else 0
 
-        ##what if entire recall matrix is nans?
-        #(subject recalls no words)
+    # get plr for each row in recall matrix
+    plr_matrix = [[pos_recalled_last(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall_matrix]
 
-        if z in range(1,len(recall_matrix[0])+1):
-            recalled[idx][z-1]+=1
-
-    prob=np.mean(recalled, axis=0)
-
-    return prob
+    # average over rows
+    return np.mean(plr_matrix,axis=0)
 
 def crp_helper(recall_matrix):
     """
@@ -244,28 +223,33 @@ def crp_helper(recall_matrix):
         return arr
 
     def compute_possible(recall_list):
+
         length=len(recall_list)
         arr=pd.Series(data=np.zeros((length-1)*2), index=list(range(1-length,0))+list(range(1,length)))
 
         recalled=[]
         for trial in recall_list:
 
-            low_bound=1-trial
-            up_bound=length-trial
+            if np.isnan(trial):
+                pass
+            else:
 
-            chances=range(low_bound,0)+range(1,up_bound+1)
-            #ALL transitions
+                low_bound=1-trial
+                up_bound=length-trial
+
+                chances=list(range(low_bound,0))+list(range(1,up_bound+1))
+                #ALL transitions
 
 
-            #remove transitions not possible
-            for each in recalled:
-                chances.remove(each-trial)
+                #remove transitions not possible
+                for each in recalled:
+                    chances.remove(each-trial)
 
 
-            #update array with possible transitions
-            arr[chances]+=1
+                #update array with possible transitions
+                arr[chances]+=1
 
-            recalled.append(trial)
+                recalled.append(trial)
 
         return arr
 
@@ -281,14 +265,14 @@ def crp_helper(recall_matrix):
 
     return list_crp
 
-def spc(data, subjgroup=None, listgroup=None):
-    return analyze(data, subjgroup, listgroup, analysis=spc_helper)
+def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper)
 
-def pfr(data, subjgroup=None, listgroup=None):
-    return analyze(data, subjgroup, listgroup, analysis=pfr_helper)
+def pfr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper)
 
-def plr(data, subjgroup=None, listgroup=None):
-    return analyze(data, subjgroup, listgroup, analysis=plr_helper)
+def plr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper)
 
-def lag_crp(data, subjgroup=None, listgroup=None):
-    return analyze(data, subjgroup, listgroup, analysis=crp_helper)
+def lag_crp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=crp_helper)
