@@ -1,6 +1,7 @@
 import pandas as pd
+import numpy as np
 
-def list2pd(all_data):
+def list2pd(all_data, subjindex=None, listindex=None):
     """
     Makes multi-indexed dataframe of subject data
 
@@ -18,19 +19,13 @@ def list2pd(all_data):
         cell populated by the term presented or recalled in the position indicated by the column number
 
     """
+    # set default index if it is not defined
+    listindex = [idx for idx,lst in enumerate(all_data[0])] if not listindex else listindex
+    subjindex = [idx for idx,subj in enumerate(all_data)] if not subjindex else subjindex
 
-    def make_multi_index(sub_data, isub):
-        return pd.MultiIndex.from_tuples([(sub_num,lst_num) for lst_num,lst in enumerate(sub_data)], names = ['Subject', 'List'])
+    def make_multi_index(listindex, sub_num):
+        return pd.MultiIndex.from_tuples([(sub_num,lst) for lst in listindex], names = ['Subject', 'List'])
 
-    subs_list_of_dfs = [pd.DataFrame(sub_data, index=make_multi_index(sub_data, sub_num)) for sub_num,sub_data in enumerate(all_data)]
+    subs_list_of_dfs = [pd.DataFrame(sub_data, index=make_multi_index(listindex, subjindex[sub_num])) for sub_num,sub_data in enumerate(all_data)]
+
     return pd.concat(subs_list_of_dfs)
-
-def mldf2list(mldf):
-    """
-    Turn multi-indexed dataframes into lists of lists
-    """
-
-    result = []
-    for subj in mldf.index.levels[0].values:
-        result.append([list(mldf.loc[subj,lst].values) for lst in mldf.index.levels[1].values])
-    return result
