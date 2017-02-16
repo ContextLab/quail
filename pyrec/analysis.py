@@ -3,9 +3,9 @@
 from __future__ import division
 import numpy as np
 import pandas as pd
-from helpers import *
+from .helpers import *
 
-def analyze(data, subjgroup=None, subjname=None, listname=None, listgroup=None, analysis=None):
+def analyze(data, subjgroup=None, subjname='Subject', listname='List', listgroup=None, analysis=None):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -31,7 +31,7 @@ def analyze(data, subjgroup=None, subjname=None, listname=None, listgroup=None, 
         Pyro containing the analysis results
 
     """
-    # if no grouping, set default to average over all
+    # if no grouping, set default to iterate over each list independently
     subjgroup = subjgroup if subjgroup else data.pres.index.levels[0].values
     listgroup = listgroup if listgroup else data.pres.index.levels[1].values
 
@@ -43,17 +43,24 @@ def analyze(data, subjgroup=None, subjname=None, listname=None, listgroup=None, 
     analyzed_data = []
     for subj in subjdict:
         for lst in listdict:
+
             # get data slice for presentation and recall
             pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
             rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
 
             # compute recall_matrix for data slice
-            recall = recall_matrix(pres_slice.values, rec_slice.values)
+            recall = recall_matrix(pres_slice, rec_slice)
+
+            # generate index
+            index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
 
             # perform analysis for each data chunk
-            analyzed_data.append(analysis(recall))
+            analyzed = pd.DataFrame([analysis(recall)], index=index)
 
-    return list2pd([analyzed_data],subjindex=subjdict.keys(), listindex=listdict.keys())
+            # append analyzed data
+            analyzed_data.append(analyzed)
+
+    return pd.concat(analyzed_data)
 
 ##RECALL MATRIX#######
 
@@ -83,11 +90,9 @@ def recall_matrix(presented, recalled):
         rec_list = list(rec_list)
         return [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]
 
-    # if type(presented) is pd.DataFrame:
-    #     presented = mldf2list(presented)
-    #     recalled = mldf2list(recalled)
-
-    result = [recall_pos(pres_list, rec_list) for pres_list, rec_list in zip(presented,recalled)]
+    result = []
+    for pres_list, rec_list in zip(presented.values, recalled.values):
+        result.append(recall_pos(pres_list, rec_list))
 
     return result
 
@@ -232,7 +237,7 @@ def crp_helper(recall_matrix):
                 low_bound=1-trial
                 up_bound=length-trial
 
-                chances=range(low_bound,0)+range(1,up_bound+1)
+                chances=list(range(low_bound,0))+list(range(1,up_bound+1))
                 #ALL transitions
 
 

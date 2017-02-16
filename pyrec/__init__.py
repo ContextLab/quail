@@ -1,5 +1,5 @@
-from pyro import Pyro
-from analysis import spc,pfr,plr,lag_crp
+from .pyro import Pyro
+from .analysis import spc,pfr,plr,lag_crp
 
 class Pyrec(object):
     '''Pyrec module'''

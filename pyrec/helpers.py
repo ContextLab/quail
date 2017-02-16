@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pandas as pd
 import numpy as np
 
@@ -26,6 +28,17 @@ def list2pd(all_data, subjindex=None, listindex=None):
     def make_multi_index(listindex, sub_num):
         return pd.MultiIndex.from_tuples([(sub_num,lst) for lst in listindex], names = ['Subject', 'List'])
 
+    listindex = list(listindex)
+    subjindex = list(subjindex)
+
     subs_list_of_dfs = [pd.DataFrame(sub_data, index=make_multi_index(listindex, subjindex[sub_num])) for sub_num,sub_data in enumerate(all_data)]
 
     return pd.concat(subs_list_of_dfs)
+
+def multi2tidy(df):
+
+    melted_df = pd.melt(df.T)
+    base = list(df.columns)
+    melted_df['position'] = base * (melted_df.shape[0] / len(base))
+
+    return melted_df

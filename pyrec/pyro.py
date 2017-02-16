@@ -1,7 +1,8 @@
+#!/usr/bin/env python
 
 import pandas as pd
-from analysis import recall_matrix
-from helpers import list2pd
+from .analysis import recall_matrix
+from .helpers import list2pd
 
 
 class Pyro(object):
