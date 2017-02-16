@@ -5,8 +5,10 @@ from pyrec.analysis import serial_pos
 from pyrec.analysis import pfr
 from pyrec.analysis import plr
 from pyrec.analysis import crp
+from pyrec.pyro import Pyro
 import numpy as np
 import pytest
+import pandas as pd
 
 def test_analysis_recall_matrix():
 	presented=[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
@@ -38,5 +40,10 @@ def test_analysis_crp():
 	myList=[[8, 7, 1, 2, 3, 5, 6, 4],[8, 7, 1, 2, 3, 5, 6, 4]]
 	assert crp(myList)==[[0.0, 0.5, 0.0, 0.0, 0.0, 0.33333333333333331, 0.33333333333333331, 0.75, 0.33333333333333331, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.5, 0.0, 0.0, 0.0, 0.33333333333333331, 0.33333333333333331, 0.75, 0.33333333333333331, 0.0, 0.0, 0.0, 0.0, 0.0]]
 
+def test_pyro():
+	list1 = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+ 	list2 = [[[10, 20], [30, 40]], [[50, 60], [70, 80]]]
 
-
+ 	pyro = Pyro(pres = list1, rec = list2)
+ 	assert type(pyro.pres) == pd.core.frame.DataFrame
+ 	assert type(pyro.rec) == pd.core.frame.DataFrame

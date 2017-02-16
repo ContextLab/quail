@@ -35,7 +35,7 @@ class Pyro(object):
     """
 
 
-    def __init__(self, pres=pd.DataFrame(), rec=pd.DataFrame(), meta={}):#features=pd.DataFrame(),
+    def __init__(self, pres=pd.DataFrame(), rec=pd.DataFrame(), meta={}): #features=pd.DataFrame(),
 
         self.pres=list2pd(pres)
         #self.features=features
