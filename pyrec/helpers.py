@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import division
 import pandas as pd
 import numpy as np
 
@@ -36,9 +37,11 @@ def list2pd(all_data, subjindex=None, listindex=None):
     return pd.concat(subs_list_of_dfs)
 
 def multi2tidy(df):
-
     melted_df = pd.melt(df.T)
-    base = list(df.columns)
+    if df.type in ['spc','pfr','plr']
+        base = list(df.columns)
+    elif df.type is 'lag_crp':
+        # change this to reflect lag_crp x
+        base = list(df.columns)
     melted_df['position'] = base * (melted_df.shape[0] / len(base))
-
     return melted_df

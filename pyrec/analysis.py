@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from .helpers import *
 
-def analyze(data, subjgroup=None, subjname='Subject', listname='List', listgroup=None, analysis=None, analysis_type=None):
+def analyze(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
