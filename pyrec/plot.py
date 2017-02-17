@@ -1,7 +1,9 @@
 from __future__ import division
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from .helpers import *
+import matplotlib.pyplot as plt
 
 def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List'):
     """
@@ -29,31 +31,28 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
         Pyro containing the analysis results
 
     """
+
     # if no grouping, set default to iterate over each list independently
-    subjgroup = subjgroup if subjgroup else data.pres.index.levels[0].values
-    listgroup = listgroup if listgroup else data.pres.index.levels[1].values
+    subjgroup = subjgroup if subjgroup else data.index.levels[0].values
+    listgroup = listgroup if listgroup else data.index.levels[1].values
 
     # create a dictionary for grouping
-    subjdict = {subj : data.pres.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
-    listdict = {lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
+    subjdict = {subj : data.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
+    listdict = {lst : data.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
 
     # perform the analysis
-    analyzed_data = []
+    averaged_data = []
     for subj in subjdict:
         for lst in listdict:
 
             # get data slice for presentation and recall
-            pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
-            rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
-
-            # compute recall_matrix for data slice
-            recall = recall_matrix(pres_slice, rec_slice)
+            data_slice = data.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
 
             # generate index
             index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
 
             # perform analysis for each data chunk
-            averaged = pd.DataFrame([np.mean(recall, axis=0)], index=index)
+            averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index)
 
             # append analyzed data
             averaged_data.append(averaged)
@@ -61,4 +60,10 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
     # concatenate slices
     averaged_data = pd.concat(averaged_data)
 
+    # convert to tiny and format for plotting
+    tidy_data = format2tidy(averaged_data, analysis_type=data.analysis_type)
+
     #plot!
+    ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition='List')
+    ax.set_ylim(0,1)
+    plt.show()

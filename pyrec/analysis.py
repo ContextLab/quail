@@ -64,7 +64,7 @@ def analyze(data, subjgroup=None, subjname='Subject', listgroup=None, listname='
     analyzed_data = pd.concat(analyzed_data)
 
     # add the analysis type for smart plotting
-    analyzed_data.type = analysis_type
+    analyzed_data.analysis_type = analysis_type
 
     return analyzed_data
 
@@ -269,7 +269,7 @@ def crp_helper(recall_matrix):
         list_crp.append([0.0 if i==0 and j==0 else i/j for i,j in zip(actual,possible)])
         #if actual and possible are both zero, append zero; otherwise, divide
 
-    return list_crp
+    return np.mean(list_crp, axis=0)
 
 def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
