@@ -5,7 +5,7 @@ import seaborn as sns
 from .helpers import *
 import matplotlib.pyplot as plt
 
-def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List'):
+def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', grid=False):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
@@ -64,6 +64,11 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
     tidy_data = format2tidy(averaged_data, analysis_type=data.analysis_type)
 
     #plot!
-    ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition='List')
-    ax.set_ylim(0,1)
-    plt.show()
+    if grid:
+        ax = sns.FacetGrid(tidy_data, col="Subject",  row="List")
+        ax = ax.map(sns.tsplot, "Value")
+        plt.show()
+    else:
+        ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List")
+        ax.set_ylim(0,1)
+        plt.show()
