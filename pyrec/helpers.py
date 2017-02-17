@@ -38,7 +38,7 @@ def list2pd(all_data, subjindex=None, listindex=None):
 
 def multi2tidy(df):
     melted_df = pd.melt(df.T)
-    if df.type in ['spc','pfr','plr']
+    if df.type in ['spc','pfr','plr']:
         base = list(df.columns)
     elif df.type is 'lag_crp':
         # change this to reflect lag_crp x
