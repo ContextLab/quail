@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from .helpers import *
 
-def analyze(data, subjgroup=None, subjname='Subject', listname='List', listgroup=None, analysis=None):
+def analyze(data, subjgroup=None, subjname='Subject', listname='List', listgroup=None, analysis=None, analysis_type=None):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -60,7 +60,13 @@ def analyze(data, subjgroup=None, subjname='Subject', listname='List', listgroup
             # append analyzed data
             analyzed_data.append(analyzed)
 
-    return pd.concat(analyzed_data)
+    # concatenate slices
+    analyzed_data = pd.concat(analyzed_data)
+
+    # add the analysis type for smart plotting
+    analyzed_data.type = analysis_type
+
+    return analyzed_data
 
 ##RECALL MATRIX#######
 
@@ -266,13 +272,13 @@ def crp_helper(recall_matrix):
     return list_crp
 
 def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper)
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
 
 def pfr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper)
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
 
 def plr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper)
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper, analysis_type='plr')
 
 def lag_crp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=crp_helper)
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=crp_helper, analysis_type='lag_crp')
