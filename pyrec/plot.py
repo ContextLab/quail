@@ -53,12 +53,12 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
             index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
 
             # perform analysis for each data chunk
-            analyzed = pd.DataFrame([analysis(recall)], index=index)
+            averaged = pd.DataFrame([np.mean(recall, axis=0)], index=index)
 
             # append analyzed data
-            analyzed_data.append(analyzed)
+            averaged_data.append(averaged)
 
     # concatenate slices
-    analyzed_data = pd.concat(analyzed_data)
+    averaged_data = pd.concat(averaged_data)
 
     #plot!
