@@ -94,7 +94,14 @@ def recall_matrix(presented, recalled):
     def recall_pos(pres_list,rec_list):
         pres_list = list(pres_list)
         rec_list = list(rec_list)
-        return [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]
+        result = np.zeros(len(pres_list))
+        result.fill(np.nan)
+        for idx,rec_word in enumerate(rec_list):
+            if rec_word in pres_list:
+                result[idx]=int(pres_list.index(rec_word)+1)
+
+        # [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]
+        return result
 
     result = []
     for pres_list, rec_list in zip(presented.values, recalled.values):
