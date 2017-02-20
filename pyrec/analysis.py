@@ -64,7 +64,7 @@ def analyze(data, subjgroup=None, subjname='Subject', listgroup=None, listname='
     analyzed_data = pd.concat(analyzed_data)
 
     # add the analysis type for smart plotting
-    analyzed_data.type = analysis_type
+    analyzed_data.analysis_type = analysis_type
 
     return analyzed_data
 
@@ -94,7 +94,14 @@ def recall_matrix(presented, recalled):
     def recall_pos(pres_list,rec_list):
         pres_list = list(pres_list)
         rec_list = list(rec_list)
-        return [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]
+        result = np.zeros(len(pres_list))
+        result.fill(np.nan)
+        for idx,rec_word in enumerate(rec_list):
+            if rec_word in pres_list:
+                result[idx]=int(pres_list.index(rec_word)+1)
+
+        # [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]
+        return result
 
     result = []
     for pres_list, rec_list in zip(presented.values, recalled.values):
@@ -192,7 +199,7 @@ def plr_helper(recall_matrix):
     # average over rows
     return np.mean(plr_matrix,axis=0)
 
-def crp_helper(recall_matrix):
+def lagcrp_helper(recall_matrix):
     """
     Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)
 
@@ -240,16 +247,16 @@ def crp_helper(recall_matrix):
                 pass
             else:
 
-                low_bound=1-trial
-                up_bound=length-trial
+                low_bound=int(1-trial)
+                up_bound=int(length-trial)
 
                 chances=list(range(low_bound,0))+list(range(1,up_bound+1))
                 #ALL transitions
 
-
                 #remove transitions not possible
                 for each in recalled:
-                    chances.remove(each-trial)
+                    if each-trial in chances:
+                        chances.remove(each-trial)
 
 
                 #update array with possible transitions
@@ -265,11 +272,11 @@ def crp_helper(recall_matrix):
     for n_list in recall_matrix:
         actual = compute_actual(n_list)
         possible = compute_possible(n_list)
-
-        list_crp.append([0.0 if i==0 and j==0 else i/j for i,j in zip(actual,possible)])
+        crp = [0.0 if i==0 and j==0 else i/j for i,j in zip(actual,possible)]
+        crp = crp[:int(round(len(crp)/2))]+[np.nan]+crp[int(round(len(crp)/2)):]
+        list_crp.append(crp)
         #if actual and possible are both zero, append zero; otherwise, divide
-
-    return list_crp
+    return np.mean(list_crp, axis=0)
 
 def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
@@ -280,5 +287,5 @@ def pfr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List
 def plr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper, analysis_type='plr')
 
-def lag_crp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=crp_helper, analysis_type='lag_crp')
+def lagcrp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lag_crp')

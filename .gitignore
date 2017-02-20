@@ -1,3 +1,4 @@
 *.pyc
 .cache/
 .idea/
+pyrec.egg-info/
