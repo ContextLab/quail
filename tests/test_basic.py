@@ -4,7 +4,7 @@ from pyrec.analysis import recall_matrix
 from pyrec.analysis import spc
 from pyrec.analysis import pfr
 from pyrec.analysis import plr
-from pyrec.analysis import lag_crp
+from pyrec.analysis import lagcrp
 
 from pyrec.pyro import Pyro
 import numpy as np

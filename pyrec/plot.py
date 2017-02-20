@@ -70,9 +70,10 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
         plt.show()
     elif plot_type is 'subject':
         ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="List", condition="Subject", **kwargs)
-        ax.set_ylim(0,1)
+        # ax.set_ylim(0,1)
         plt.show()
     elif plot_type is 'list':
         ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List", **kwargs)
-        ax.set_ylim(0,1)
+        # ax.set_ylim(0,1)
         plt.show()
+    return ax

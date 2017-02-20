@@ -41,7 +41,7 @@ def format2tidy(df, analysis_type=None):
     if analysis_type in ['spc','pfr','plr']:
         base = list(df.columns)
     elif analysis_type is 'lag_crp':
-        base = range(int(-len(df.columns.values)/2),0)+range(1,int(len(df.columns.values)/2)+1)
+        base = range(int(-len(df.columns.values)/2),0)+[0]+range(1,int(len(df.columns.values)/2)+1)
     melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
     melted_df.columns = ['Subject', 'List', 'Value', 'Position']
     return melted_df
