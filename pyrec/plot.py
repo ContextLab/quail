@@ -67,13 +67,16 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
     if plot_type is 'grid':
         ax = sns.FacetGrid(tidy_data, row="Subject", col="List")
         ax = ax.map(sns.tsplot, "Value")
-        plt.show()
     elif plot_type is 'subject':
         ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="List", condition="Subject", **kwargs)
-        # ax.set_ylim(0,1)
-        plt.show()
     elif plot_type is 'list':
         ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List", **kwargs)
-        # ax.set_ylim(0,1)
-        plt.show()
+
+    if data.analysis_type=='lag_crp':
+        ax.set_xlim(-15,15)
+    else:
+        ax.set_xlim(0,15)
+
+    plt.show()
+
     return ax

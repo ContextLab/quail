@@ -94,11 +94,12 @@ def recall_matrix(presented, recalled):
     def recall_pos(pres_list,rec_list):
         pres_list = list(pres_list)
         rec_list = list(rec_list)
-        result = np.zeros(len(pres_list))
+        result = np.zeros(len(pres_list)) if len(pres_list)>=len(rec_list) else np.zeros(len(rec_list))
         result.fill(np.nan)
         for idx,rec_word in enumerate(rec_list):
             if rec_word in pres_list:
-                result[idx]=int(pres_list.index(rec_word)+1)
+                if type(rec_word) is str:
+                    result[idx]=int(pres_list.index(rec_word)+1)
 
         # [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]
         return result
@@ -106,7 +107,6 @@ def recall_matrix(presented, recalled):
     result = []
     for pres_list, rec_list in zip(presented.values, recalled.values):
         result.append(recall_pos(pres_list, rec_list))
-
     return result
 
 def spc_helper(recall_matrix):
@@ -187,14 +187,16 @@ def plr_helper(recall_matrix):
     """
 
     # simple function that returns 1 if item encoded in position n is recalled last
-    def pos_recalled_last(pos,lst):
-        idx=-1
-        while np.isnan(lst[idx]):
-            idx-=1
-        return 1 if pos==lst[idx] else 0
+    def pos_recalled_last(lst):
+        plr = np.zeros(len(lst))
+        lst = [item for item in lst if not np.isnan(item)]
+        lst = [item for item in lst if not item==None]
+        if lst:
+            plr[lst[-1]-1]=1
+        return list(plr)
 
     # get plr for each row in recall matrix
-    plr_matrix = [[pos_recalled_last(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall_matrix]
+    plr_matrix = [pos_recalled_last(lst) for lst in recall_matrix]
 
     # average over rows
     return np.mean(plr_matrix,axis=0)
