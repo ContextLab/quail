@@ -192,7 +192,7 @@ def plr_helper(recall_matrix):
         lst = [item for item in lst if not np.isnan(item)]
         lst = [item for item in lst if not item==None]
         if lst:
-            plr[lst[-1]-1]=1
+            plr[int(lst[-1]-1)]=1
         return list(plr)
 
     # get plr for each row in recall matrix
