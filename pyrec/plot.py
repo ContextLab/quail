@@ -56,7 +56,7 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
                 averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index, columns=data_slice.columns)
             else:
                 averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index)
-                
+
             # append analyzed data
             averaged_data.append(averaged)
 
@@ -68,7 +68,11 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
 
     #plot!
     if data.analysis_type is 'fingerprint':
-        ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", **kwargs)
+        if plot_type is 'split_list':
+            ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
+        else:
+            ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", **kwargs)
+        ax.set_ylim(0,1)
     else:
         if plot_type is 'grid':
             ax = sns.FacetGrid(tidy_data, row="Subject", col="List")

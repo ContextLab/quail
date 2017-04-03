@@ -1,10 +1,13 @@
 #import
 import pyrec as pyr
 
-
+# presentation data
 presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
+
+# recall data
 recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
 
+# presentation data features
 features = [
     [
         [
@@ -49,9 +52,8 @@ features = [
 # create pyro object
 pyro = pyr.Pyro(pres=presented,rec=recalled, features=features)
 
-#analysis
+# analysis
 analyzed_data = pyr.fingerprint(pyro)
 
-print(analyzed_data)
-
+# plot
 pyr.plot(analyzed_data)
