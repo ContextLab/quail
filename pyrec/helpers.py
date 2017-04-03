@@ -40,10 +40,17 @@ def format2tidy(df, analysis_type=None):
     melted_df = pd.melt(df.T)
     if analysis_type in ['spc','pfr','plr']:
         base = list(df.columns)
+        melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
+        melted_df.columns = ['Subject', 'List', 'Value', 'Position']
     elif analysis_type is 'lag_crp':
         base = range(int(-len(df.columns.values)/2),0)+[0]+range(1,int(len(df.columns.values)/2)+1)
-    melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-    melted_df.columns = ['Subject', 'List', 'Value', 'Position']
+        melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
+        melted_df.columns = ['Subject', 'List', 'Value', 'Position']
+    elif analysis_type is 'fingerprint':
+        base = list(df.columns.values)
+        melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
+        melted_df.columns = ['Subject', 'List', 'Value', 'Feature']
+
     return melted_df
 
 def recmat2pyro(recmat):

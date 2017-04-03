@@ -52,8 +52,11 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
             index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
 
             # perform analysis for each data chunk
-            averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index)
-
+            if data.analysis_type is 'fingerprint':
+                averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index, columns=data_slice.columns)
+            else:
+                averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index)
+                
             # append analyzed data
             averaged_data.append(averaged)
 
@@ -64,17 +67,20 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
     tidy_data = format2tidy(averaged_data, analysis_type=data.analysis_type)
 
     #plot!
-    if plot_type is 'grid':
-        ax = sns.FacetGrid(tidy_data, row="Subject", col="List")
-        ax = ax.map(sns.tsplot, "Value")
-    elif plot_type is 'subject':
-        ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="List", condition="Subject", **kwargs)
-    elif plot_type is 'list':
-        ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List", **kwargs)
+    if data.analysis_type is 'fingerprint':
+        ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", **kwargs)
+    else:
+        if plot_type is 'grid':
+            ax = sns.FacetGrid(tidy_data, row="Subject", col="List")
+            ax = ax.map(sns.tsplot, "Value")
+        elif plot_type is 'subject':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="List", condition="Subject", **kwargs)
+        elif plot_type is 'list':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List", **kwargs)
 
     if data.analysis_type=='lag_crp':
         ax.set_xlim(-5,5)
-    else:
+    elif data.analysis_type in ['spc','pfr','plr']:
         ax.set_xlim(0,data.shape[1]-1)
 
     plt.show()

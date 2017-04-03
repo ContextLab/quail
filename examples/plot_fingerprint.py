@@ -49,4 +49,9 @@ features = [
 # create pyro object
 pyro = pyr.Pyro(pres=presented,rec=recalled, features=features)
 
-print(pyr.fingerprint(pyro))
+#analysis
+analyzed_data = pyr.fingerprint(pyro)
+
+print(analyzed_data)
+
+pyr.plot(analyzed_data)

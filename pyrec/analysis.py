@@ -416,8 +416,6 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     # compute fingerprint for each list within a chunk
     fingerprint_matrix = [get_fingerprint(list(p), list(r), list(f), dist_funcs) for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix())]
 
-    print(fingerprint_matrix)
-
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
