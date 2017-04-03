@@ -57,7 +57,7 @@ def analyze(data, subjgroup=None, subjname='Subject', listgroup=None, listname='
 
             # perform analysis for each data chunk
             if pass_features:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs)], index=index)
+                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0]])
             else:
                 analyzed = pd.DataFrame([analysis(pres_slice, rec_slice)], index=index)
 
@@ -406,7 +406,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
         for feature in listWeights:
             listWeights[feature] = np.mean(listWeights[feature])
 
-        return listWeights
+        return [listWeights[key] for key in listWeights]
 
     # given a stimulus list and recalled words, compute the weights
     def get_fingerprint(pres_list, rec_list, feature_list, dist_funcs):
