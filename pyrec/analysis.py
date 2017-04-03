@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from .helpers import *
 
-def analyze(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None):
+def analyze(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -48,14 +48,18 @@ def analyze(data, subjgroup=None, subjname='Subject', listgroup=None, listname='
             pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
             rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
 
-            # compute recall_matrix for data slice
-            recall = recall_matrix(pres_slice, rec_slice)
+            # if features are need for analysis, get the features for this slice of data
+            if pass_features:
+                feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
 
             # generate index
             index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
 
             # perform analysis for each data chunk
-            analyzed = pd.DataFrame([analysis(recall)], index=index)
+            if pass_features:
+                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0]])
+            else:
+                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice)], index=index)
 
             # append analyzed data
             analyzed_data.append(analyzed)
@@ -109,7 +113,7 @@ def recall_matrix(presented, recalled):
         result.append(recall_pos(pres_list, rec_list))
     return result
 
-def spc_helper(recall_matrix):
+def spc_helper(pres_slice, rec_slice):
     """
     Computes probability of a word being recalled (in the appropriate recall list), given its presentation position
 
@@ -127,19 +131,22 @@ def spc_helper(recall_matrix):
 
     """
 
+    # compute recall_matrix for data slice
+    recall = recall_matrix(pres_slice, rec_slice)
+
     # simple function that returns 1 if item encoded in position n is in recall list
     def pos_in_list(pos,lst):
         return 1 if pos in lst else 0
 
     # get spc for each row in recall matrix
-    spc_matrix = [[pos_in_list(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall_matrix]
+    spc_matrix = [[pos_in_list(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]
 
     # average over rows
     return np.mean(spc_matrix,axis=0)
 
 #PROB FIRST RECALL######
 
-def pfr_helper(recall_matrix):
+def pfr_helper(pres_slice, rec_slice):
 
     """
     Computes probability of a word being recalled first (in the appropriate recall list), given its presentation position
@@ -158,17 +165,20 @@ def pfr_helper(recall_matrix):
 
     """
 
+    # compute recall_matrix for data slice
+    recall = recall_matrix(pres_slice, rec_slice)
+
     # simple function that returns 1 if item encoded in position n is recalled first
     def pos_recalled_first(pos,lst):
         return 1 if pos==lst[0] else 0
 
     # get pfr for each row in recall matrix
-    pfr_matrix = [[pos_recalled_first(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall_matrix]
+    pfr_matrix = [[pos_recalled_first(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]
 
     # average over rows
     return np.mean(pfr_matrix,axis=0)
 
-def plr_helper(recall_matrix):
+def plr_helper(pres_slice, rec_slice):
     """
     Computes probability of a word being recalled last (in the appropriate recall list), given its presentation position
 
@@ -186,6 +196,9 @@ def plr_helper(recall_matrix):
 
     """
 
+    # compute recall_matrix for data slice
+    recall = recall_matrix(pres_slice, rec_slice)
+
     # simple function that returns 1 if item encoded in position n is recalled last
     def pos_recalled_last(lst):
         plr = np.zeros(len(lst))
@@ -196,12 +209,12 @@ def plr_helper(recall_matrix):
         return list(plr)
 
     # get plr for each row in recall matrix
-    plr_matrix = [pos_recalled_last(lst) for lst in recall_matrix]
+    plr_matrix = [pos_recalled_last(lst) for lst in recall]
 
     # average over rows
     return np.mean(plr_matrix,axis=0)
 
-def lagcrp_helper(recall_matrix):
+def lagcrp_helper(pres_slice, rec_slice):
     """
     Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)
 
@@ -218,6 +231,9 @@ def lagcrp_helper(recall_matrix):
       each float is the probability of transition distance (distnaces indexed by position, from -(n-1) to (n-1), excluding zero
 
     """
+
+    # compute recall_matrix for data slice
+    recall = recall_matrix(pres_slice, rec_slice)
 
     def check_pair(a, b):
         if (a>0 and b>0) and (a!=b):
@@ -271,7 +287,7 @@ def lagcrp_helper(recall_matrix):
     ########
 
     list_crp = []
-    for n_list in recall_matrix:
+    for n_list in recall:
         actual = compute_actual(n_list)
         possible = compute_possible(n_list)
         crp = [0.0 if i==0 and j==0 else i/j for i,j in zip(actual,possible)]
@@ -279,6 +295,129 @@ def lagcrp_helper(recall_matrix):
         list_crp.append(crp)
         #if actual and possible are both zero, append zero; otherwise, divide
     return np.mean(list_crp, axis=0)
+
+
+def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
+    """
+    Computes clustering along a set of feature dimensions
+
+    Parameters
+    ----------
+    recall_matrix : list of lists of ints
+      each integer represents the presentation position of the recalled word in a given list in order of recall
+      0s represent recalled words not presented
+      negative ints represent words recalled from previous lists
+
+    Returns
+    ----------
+    probabilities : numpy array
+      each number represents clustering along a different feature dimension
+
+    """
+
+    def compute_distances(pres_list, feature_list, dist_funcs):
+
+        # initialize distance dictionary
+        distances = []
+        for idx,word in enumerate(pres_list):
+            stimulus = {}
+            stimulus['word'] = word
+            stimulus['distances'] = {}
+            for feature in feature_list[idx]:
+                stimulus['distances'][feature] = []
+            distances.append(stimulus)
+
+        # loop over the lists to create distance matrices
+        for i,stimulus1 in enumerate(feature_list):
+            for j,stimulus2 in enumerate(feature_list):
+                for feature in stimulus1:
+                    distances[i]['distances'][feature].append({
+                            'word' : distances[j]['word'],
+                            'dist' : dist_funcs[feature](stimulus1[feature],stimulus2[feature])
+                        })
+
+        return distances
+
+    def compute_feature_weights(pres_list, rec_list, feature_list, distances):
+
+        # initialize the weights object for just this list
+        listWeights = {}
+        for feature in feature_list[0]:
+            listWeights[feature] = []
+
+        # return default list if there is not enough data to compute the fingerprint
+        if len(rec_list) <= 2:
+            print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
+            for feature in feature_list[0]:
+                listWeights[feature] = .5
+            return listWeights
+
+        # initialize pastWords list
+        pastWords = []
+
+        # finger print analysis
+        for i in range(0,len(rec_list)-1):
+
+            # grab current word
+            currentWord = rec_list[i]
+
+            # grab the next word
+            nextWord = rec_list[i + 1]
+
+            # grab the words from the encoding list
+            encodingWords = pres_list
+
+            # append current word to past words log
+            # pastWords.append(currentWord)
+
+            # if both recalled words are in the encoding list
+            if (currentWord in encodingWords and nextWord in encodingWords) and (currentWord not in pastWords and nextWord not in pastWords):
+                # print(currentWord,nextWord,encodingWords,pastWords)
+
+                for feature in feature_list[0]:
+
+                    # get the distance vector for the current word
+                    distVec = distances[encodingWords.index(currentWord)]['distances'][feature]
+
+                    # filter distVec removing the words that have already been analyzed from future calculations
+                    filteredDistVec = []
+                    for word in distVec:
+                        if word['word'] in pastWords:
+                            pass
+                        else:
+                            filteredDistVec.append(word)
+
+                    # sort distWords by distances
+                    filteredDistVec = sorted(filteredDistVec, key=lambda item:item['dist'])
+
+                    # compute the category listWeights
+                    nextWordIdx = [word['word'] for word in filteredDistVec].index(nextWord)
+
+                    # not sure about this part
+                    idxs = []
+                    for idx,word in enumerate(filteredDistVec):
+                        if filteredDistVec[nextWordIdx]['dist'] == word['dist']:
+                            idxs.append(idx)
+
+                    listWeights[feature].append(1 - (sum(idxs)/len(idxs) / len(filteredDistVec)))
+
+                pastWords.append(currentWord)
+
+        for feature in listWeights:
+            listWeights[feature] = np.mean(listWeights[feature])
+
+        return [listWeights[key] for key in listWeights]
+
+    # given a stimulus list and recalled words, compute the weights
+    def get_fingerprint(pres_list, rec_list, feature_list, dist_funcs):
+        distances = compute_distances(pres_list, feature_list, dist_funcs)
+        return compute_feature_weights(pres_list, rec_list, feature_list, distances)
+
+    # compute fingerprint for each list within a chunk
+    fingerprint_matrix = [get_fingerprint(list(p), list(r), list(f), dist_funcs) for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix())]
+
+    # return average over rows
+    return np.mean(fingerprint_matrix, axis=0)
 
 def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
@@ -291,3 +430,6 @@ def plr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List
 
 def lagcrp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lag_crp')
+
+def fingerprint(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
+    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)

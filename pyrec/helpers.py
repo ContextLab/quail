@@ -40,8 +40,53 @@ def format2tidy(df, analysis_type=None):
     melted_df = pd.melt(df.T)
     if analysis_type in ['spc','pfr','plr']:
         base = list(df.columns)
+        melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
+        melted_df.columns = ['Subject', 'List', 'Value', 'Position']
     elif analysis_type is 'lag_crp':
         base = range(int(-len(df.columns.values)/2),0)+[0]+range(1,int(len(df.columns.values)/2)+1)
-    melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-    melted_df.columns = ['Subject', 'List', 'Value', 'Position']
+        melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
+        melted_df.columns = ['Subject', 'List', 'Value', 'Position']
+    elif analysis_type is 'fingerprint':
+        base = list(df.columns.values)
+        melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
+        melted_df.columns = ['Subject', 'List', 'Value', 'Feature']
+
     return melted_df
+
+def recmat2pyro(recmat):
+        """
+        Creates pyro data object from zero-indexed recall matrix
+
+        Parameters
+        ----------
+        recmat : list of lists (subs) of lists (encoding lists) of ints or 2D numpy array
+            recall matrix representing serial positions of freely recalled words \
+            e.g. [[[16, 15, 1, 2, 3, None, None...], [16, 4, 5, 6, 1, None, None...]]]
+
+
+        Returns
+        ----------
+        pyro : Pyro data object
+            pyro data object computed from the recall matrix
+        """
+        from .pyro import Pyro as Pyro
+
+        pres = [[[str(word) for word in list(range(0,len(reclist)))] for reclist in recsub] for recsub in recmat]
+        rec = [[[str(word) for word in reclist if word is not None] for reclist in recsub] for recsub in recmat]
+
+        return Pyro(pres=pres,rec=rec)
+
+def default_dist_funcs(dist_funcs, feature_example):
+        """
+        Fills in default distance metrics for fingerprint analyses
+        """
+        
+        for key in feature_example:
+            if key in dist_funcs:
+                pass
+            elif type(feature_example[key]) is str:
+                dist_funcs[key] = lambda a, b: int(a!=b)
+            elif isinstance(feature_example[key], (int, long, float)) or all([isinstance(i, (int, long, float)) for i in feature_example[key]]):
+                dist_funcs[key] = lambda a, b: np.linalg.norm(a-b)
+
+        return dist_funcs
