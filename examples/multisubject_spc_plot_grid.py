@@ -14,7 +14,7 @@ recalled = [sub1_recalled, sub2_recalled]
 pyro = pyr.Pyro(pres=presented,rec=recalled)
 
 #analysis
-analyzed_data = pyr.pfr(pyro, listgroup=['early','late'])
+analyzed_data = pyr.analyze(pyro, listgroup=['early','late'], analysis='spc')
 
 #plot
 pyr.plot(analyzed_data, grid=True)

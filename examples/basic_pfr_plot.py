@@ -7,7 +7,7 @@ recalled=[[['bat', 'cat', 'goat', 'hat'],['zebra', 'horse', 'zoo']]]
 pyro = pyr.Pyro(pres=presented,rec=recalled)
 
 #analysis
-analyzed_data = pyr.pfr(pyro)
+analyzed_data = pyr.analyze(pyro, analysis='pfr')
 
 #plot
 pyr.plot(analyzed_data)

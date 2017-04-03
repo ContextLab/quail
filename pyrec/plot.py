@@ -82,7 +82,7 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
         elif plot_type is 'list':
             ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List", **kwargs)
 
-    if data.analysis_type=='lag_crp':
+    if data.analysis_type=='lagcrp':
         ax.set_xlim(-5,5)
     elif data.analysis_type in ['spc','pfr','plr']:
         ax.set_xlim(0,data.shape[1]-1)

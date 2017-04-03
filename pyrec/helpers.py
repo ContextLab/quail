@@ -42,7 +42,7 @@ def format2tidy(df, analysis_type=None):
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', 'List', 'Value', 'Position']
-    elif analysis_type is 'lag_crp':
+    elif analysis_type is 'lagcrp':
         base = range(int(-len(df.columns.values)/2),0)+[0]+range(1,int(len(df.columns.values)/2)+1)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', 'List', 'Value', 'Position']
@@ -80,7 +80,7 @@ def default_dist_funcs(dist_funcs, feature_example):
         """
         Fills in default distance metrics for fingerprint analyses
         """
-        
+
         for key in feature_example:
             if key in dist_funcs:
                 pass

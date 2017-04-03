@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from .helpers import *
 
-def analyze(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False):
+def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -420,16 +420,35 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     return np.mean(fingerprint_matrix, axis=0)
 
 def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
+    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
 
 def pfr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
+    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
 
 def plr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper, analysis_type='plr')
+    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper, analysis_type='plr')
 
 def lagcrp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lag_crp')
+    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lagcrp')
 
 def fingerprint(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)
+    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)
+
+def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None):
+    '''
+    Analysis wrapper function
+    '''
+
+    if analysis is None:
+        raise ValueError('You must pass an analysis type.')
+
+    if analysis is 'spc':
+        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
+    elif analysis is 'pfr':
+        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
+    elif analysis is 'plr':
+        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper, analysis_type='plr')
+    elif analysis is 'lagcrp':
+        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lagcrp')
+    elif analysis is 'fingerprint':
+        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)

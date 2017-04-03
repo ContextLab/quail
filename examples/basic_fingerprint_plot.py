@@ -53,7 +53,7 @@ features = [
 pyro = pyr.Pyro(pres=presented,rec=recalled, features=features)
 
 # analysis
-analyzed_data = pyr.fingerprint(pyro)
+analyzed_data = pyr.analyze(pyro, analysis='fingerprint')
 
 # plot
 pyr.plot(analyzed_data)
