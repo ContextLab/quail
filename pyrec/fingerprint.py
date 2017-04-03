@@ -3,7 +3,7 @@ import math
 import numpy as np
 
 # given a stimulus list and recalled words, compute the weights
-def get_fingerprint(current_list, recalled_words):
+def get_fingerprint(current_list, recalled_words, features):
     current_list = compute_distance(current_list)
     return compute_feature_weights(current_list, recalled_words, features)
 

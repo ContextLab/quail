@@ -49,4 +49,4 @@ features = [
 # create pyro object
 pyro = pyr.Pyro(pres=presented,rec=recalled, features=features)
 
-print(pyro.pres)
+print(pyr.fingerprint(pyro))
