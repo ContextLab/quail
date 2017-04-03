@@ -73,9 +73,9 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
         ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List", **kwargs)
 
     if data.analysis_type=='lag_crp':
-        ax.set_xlim(-15,15)
+        ax.set_xlim(-5,5)
     else:
-        ax.set_xlim(0,15)
+        ax.set_xlim(0,data.shape[1]-1)
 
     plt.show()
 

@@ -45,3 +45,42 @@ def format2tidy(df, analysis_type=None):
     melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
     melted_df.columns = ['Subject', 'List', 'Value', 'Position']
     return melted_df
+
+def recmat2pyro(recmat):
+        """
+        Creates pyro data object from zero-indexed recall matrix
+
+        Parameters
+        ----------
+        recmat : list of lists (subs) of lists (encoding lists) of ints or 2D numpy array
+            recall matrix representing serial positions of freely recalled words \
+            e.g. [[[16, 15, 1, 2, 3, None, None...], [16, 4, 5, 6, 1, None, None...]]]
+
+
+        Returns
+        ----------
+        pyro : Pyro data object
+            pyro data object computed from the recall matrix
+        """
+        from .pyro import Pyro as Pyro
+
+        pres = [[[str(word) for word in list(range(0,len(reclist)))] for reclist in recsub] for recsub in recmat]
+        rec = [[[str(word) for word in reclist if word is not None] for reclist in recsub] for recsub in recmat]
+
+        return Pyro(pres=pres,rec=rec)
+
+def default_dist_funcs(dist_funcs, feature_example):
+        """
+        Fills in default distance metrics for fingerprint analyses
+        """
+        import math
+
+        for key in feature_example:
+            if key in dist_funcs:
+                pass
+            elif type(feature_example[key]) is str:
+                dist_funcs[key] = lambda a, b: int(a!=b)
+            elif isinstance(feature_example[key], (int, long, float)):
+                dist_funcs[key] = lambda a, b: math.sqrt((a-b)**2)
+
+        return dist_funcs
