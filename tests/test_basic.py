@@ -3,7 +3,6 @@
 from pyrec.analysis import recall_matrix
 from pyrec.analysis import spc
 from pyrec.analysis import pfr
-from pyrec.analysis import plr
 from pyrec.analysis import lagcrp
 
 from pyrec.pyro import Pyro
@@ -26,12 +25,6 @@ def test_analysis_pfr():
 
 def test_analysis_pfr_listgroup():
 	assert np.array_equal(pfr(pyro, listgroup=['one','one']).values,np.array([[ 0.,  1.,  0.,  0.]]))
-
-def test_analysis_plr():
-	assert np.array_equal(plr(pyro).values,[np.array([ 0.,  0.,  1.,  0.]), np.array([ 1.,  0.,  0.,  0.])])
-
-def test_analysis_plr_listgroup():
-	assert np.array_equal(plr(pyro, listgroup=[1,1]).values,np.array([[ 0.5,  0.,  0.5,  0.]]))
 
 # def test_analysis_lag_crp():
 # 	assert np.array_equal(lag_crp(pyro).values,np.array([[0.0, 0.0, 1.0, 0.0, 0.0, 1.0],[1.0, 0.0, 0.0, 0.0, 0.5, 0.0]]))

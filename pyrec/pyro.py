@@ -40,7 +40,7 @@ class Pyro(object):
     """
 
 
-    def __init__(self, pres=[[[]]], rec=[[[]]], features=[[[]]], dist_funcs=dict(), meta={}):
+    def __init__(self, pres=[[[]]], rec=[[[]]], features=[[[]]], dist_funcs=dict(), meta={}, list_length=None):
 
         self.pres = list2pd(pres)
         self.rec = list2pd(rec)
@@ -53,3 +53,8 @@ class Pyro(object):
         else:
             self.features = None
             self.dist_funcs = None
+
+        if list_length is None:
+            self.list_length = len(pres[0][0])-1
+        else:
+            self.list_length = list_length
