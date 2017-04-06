@@ -62,7 +62,7 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
     averaged_data = pd.concat(averaged_data)
 
     # convert to tiny and format for plotting
-    tidy_data = format2tidy(averaged_data, analysis_type=data.analysis_type)
+    tidy_data = format2tidy(averaged_data, subjname, listname, analysis_type=data.analysis_type)
 
     #plot!
     if data.analysis_type is 'accuracy':
@@ -72,62 +72,74 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
 
         if plot_style is 'bar':
             if plot_type is 'list':
-                ax = sns.barplot(data=tidy_data, x="List", y="Accuracy", hue="List", **kwargs)
+                ax = sns.barplot(data=tidy_data, x=listname, y="Accuracy", hue=listname, **kwargs)
             elif plot_type is 'subject':
-                ax = sns.barplot(data=tidy_data, x="Subject", y="Accuracy", hue="Subject", **kwargs)
+                ax = sns.barplot(data=tidy_data, x=subjname, y="Accuracy", hue=subjname, **kwargs)
             else:
                 ax = sns.barplot(data=tidy_data, y="Accuracy", **kwargs)
         elif plot_style is 'swarm':
             if plot_type is 'list':
-                ax = sns.swarmplot(data=tidy_data, x="List", y="Accuracy", hue="List", **kwargs)
+                ax = sns.swarmplot(data=tidy_data, x=listname, y="Accuracy", hue=listname, **kwargs)
             elif plot_type is 'subject':
-                ax = sns.swarmplot(data=tidy_data, x="Subject", y="Accuracy", hue="Subject", **kwargs)
+                ax = sns.swarmplot(data=tidy_data, x=subjname, y="Accuracy", hue=subjname, **kwargs)
             else:
                 ax = sns.swarmplot(data=tidy_data, y="Accuracy", **kwargs)
         elif plot_style is 'violin':
             if plot_type is 'list':
-                ax = sns.violinplot(data=tidy_data, x="List", y="Accuracy", hue="List", **kwargs)
+                ax = sns.violinplot(data=tidy_data, x=listname, y="Accuracy", hue=listname, **kwargs)
             elif plot_type is 'subject':
-                ax = sns.violinplot(data=tidy_data, x="Subject", y="Accuracy", hue="Subject", **kwargs)
+                ax = sns.violinplot(data=tidy_data, x=subjname, y="Accuracy", hue=subjname, **kwargs)
             else:
                 ax = sns.violinplot(data=tidy_data, y="Accuracy", **kwargs)
 
     elif data.analysis_type is 'fingerprint':
+
+        # set defaul style to violin
+        plot_style = plot_style if plot_style is not None else 'violin'
+
         if plot_style is 'bar':
             if plot_type is 'list':
-                ax = sns.barplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
+                ax = sns.barplot(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
             elif plot_type is 'subject':
-                ax = sns.barplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
+                ax = sns.barplot(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
             else:
-                ax = sns.barplot(data=tidy_data, x="Feature", y="Value", **kwargs)
+                ax = sns.barplot(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
         elif plot_style is 'swarm':
             if plot_type is 'list':
-                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
+                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
             elif plot_type is 'subject':
-                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
+                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
             else:
-                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", **kwargs)
+                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
         else:
             if plot_type is 'list':
-                ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
+                ax = sns.violinplot(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
             elif plot_type is 'subject':
-                ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
+                ax = sns.violinplot(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
             else:
-                ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", **kwargs)
+                ax = sns.violinplot(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
         ax.set_ylim(0,1)
-    else:
-        if plot_type is 'grid':
-            ax = sns.FacetGrid(tidy_data, row="Subject", col="List")
-            ax = ax.map(sns.tsplot, "Value")
-        elif plot_type is 'subject':
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="List", condition="Subject", **kwargs)
+
+    elif data.analysis_type is 'spc':
+        if plot_type is 'subject':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit=listname, condition=subjname, **kwargs)
         else:
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List", **kwargs)
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit=subjname, condition=listname, **kwargs)
+        ax.set_xlim(0,data.list_length)
+
+    elif data.analysis_type is 'pfr':
+        if plot_type is 'subject':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit=listname, condition=subjname, **kwargs)
+        else:
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit=subjname, condition=listname, **kwargs)
+        ax.set_xlim(0,data.list_length)
 
     if data.analysis_type=='lagcrp':
+        if plot_type is 'subject':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit=listname, condition=subjname, **kwargs)
+        else:
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit=subjname, condition=listname, **kwargs)
         ax.set_xlim(-5,5)
-    elif data.analysis_type in ['spc','pfr','plr']:
-        ax.set_xlim(0,data.list_length)
 
     plt.show()
 
