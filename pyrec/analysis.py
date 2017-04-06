@@ -118,19 +118,19 @@ def recall_matrix(presented, recalled):
 
 def accuracy_helper(pres_slice, rec_slice):
     """
-    Computes probability of a word being recalled (in the appropriate recall list), given its presentation position
+    Computes proportion of words recalled
 
     Parameters
     ----------
-    recall_matrix : list of lists of ints
-      each integer represents the presentation position of the recalled word in a given list in order of recall
-      0s represent recalled words not presented
-      negative ints represent words recalled from previous lists
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
 
     Returns
     ----------
-    probabilities : numpy array of ints
-      each int represents the probability of recall for a word presented in given position/index
+    prop_recalled : numpy array
+      proportion of words recalled
 
     """
 
@@ -145,7 +145,9 @@ def accuracy_helper(pres_slice, rec_slice):
     acc_matrix = [compute_acc(lst) for lst in recall]
 
     # average over rows
-    return np.mean(acc_matrix,axis=0)
+    prop_recalled = np.mean(acc_matrix,axis=0)
+
+    return prop_recalled
 
 def spc_helper(pres_slice, rec_slice):
     """
@@ -160,8 +162,8 @@ def spc_helper(pres_slice, rec_slice):
 
     Returns
     ----------
-    probabilities : numpy array of ints
-      each int represents the probability of recall for a word presented in given position/index
+    prop_recalled : numpy array
+      each number represents the probability of recall for a word presented in given position/index
 
     """
 
@@ -176,7 +178,9 @@ def spc_helper(pres_slice, rec_slice):
     spc_matrix = [[pos_in_list(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]
 
     # average over rows
-    return np.mean(spc_matrix,axis=0)
+    prop_recalled = np.mean(spc_matrix,axis=0)
+
+    return prop_recalled
 
 #PROB FIRST RECALL######
 
@@ -194,8 +198,8 @@ def pfr_helper(pres_slice, rec_slice):
 
     Returns
     ----------
-    probabilities : numpy array of ints
-      each int represents the probability of first recall for a word presented in given position/index
+    prob_recalled : numpy array
+      each number represents the probability of first recall for a word presented in given position/index
 
     """
 
@@ -210,7 +214,9 @@ def pfr_helper(pres_slice, rec_slice):
     pfr_matrix = [[pos_recalled_first(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]
 
     # average over rows
-    return np.mean(pfr_matrix,axis=0)
+    prob_recalled = np.mean(pfr_matrix,axis=0)
+
+    return prob_recalled
 
 def lagcrp_helper(pres_slice, rec_slice):
     """
@@ -225,7 +231,7 @@ def lagcrp_helper(pres_slice, rec_slice):
 
     Returns
     ----------
-    probabilities : list of floats
+    prob_recalled : numpy array
       each float is the probability of transition distance (distnaces indexed by position, from -(n-1) to (n-1), excluding zero
 
     """
@@ -291,8 +297,10 @@ def lagcrp_helper(pres_slice, rec_slice):
         crp = [0.0 if i==0 and j==0 else i/j for i,j in zip(actual,possible)]
         crp = crp[:int(round(len(crp)/2))]+[np.nan]+crp[int(round(len(crp)/2)):]
         list_crp.append(crp)
-        #if actual and possible are both zero, append zero; otherwise, divide
-    return np.mean(list_crp, axis=0)
+
+    prob_recalled = np.mean(list_crp, axis=0)
+
+    return prob_recalled
 
 
 def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
@@ -417,6 +425,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
+# THESE FUNCTIONS WILL BE DEPRECATED
 def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
 
@@ -429,6 +438,7 @@ def lagcrp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='L
 def fingerprint(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)
 
+# THIS FUNCTION REPLACES THE ANALYSIS FUNCTIONS ABOVE
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None):
     '''
     Analysis wrapper function

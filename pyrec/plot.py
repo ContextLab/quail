@@ -22,8 +22,6 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
         String/int variables indicating how to group over list.  Must be
         the length of the number of lists
 
-    analysis : function
-        This function analyzes data and returns it
 
     Returns
     ----------
@@ -69,8 +67,8 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
     #plot!
     if data.analysis_type is 'accuracy':
 
+        # set defaul style to bar
         plot_style = plot_style if plot_style is not None else 'bar'
-        # plot_type = plot_type if plot_type is not None else 'subject'
 
         if plot_style is 'bar':
             if plot_type is 'list':
@@ -95,24 +93,24 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
                 ax = sns.violinplot(data=tidy_data, y="Accuracy", **kwargs)
 
     elif data.analysis_type is 'fingerprint':
-        if plot_type is 'bar':
-            if hue is 'list':
+        if plot_style is 'bar':
+            if plot_type is 'list':
                 ax = sns.barplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
-            elif hue is 'subject':
+            elif plot_type is 'subject':
                 ax = sns.barplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
             else:
                 ax = sns.barplot(data=tidy_data, x="Feature", y="Value", **kwargs)
-        elif plot_type is 'swarm':
-            if hue is 'list':
+        elif plot_style is 'swarm':
+            if plot_type is 'list':
                 ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
-            elif hue is 'subject':
+            elif plot_type is 'subject':
                 ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
             else:
                 ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", **kwargs)
         else:
-            if hue is 'list':
+            if plot_type is 'list':
                 ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
-            elif hue is 'subject':
+            elif plot_type is 'subject':
                 ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
             else:
                 ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", **kwargs)

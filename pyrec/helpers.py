@@ -36,23 +36,27 @@ def list2pd(all_data, subjindex=None, listindex=None):
 
     return pd.concat(subs_list_of_dfs)
 
-def format2tidy(df, analysis_type=None):
+def format2tidy(df, subjname, listname, analysis_type=None):
     melted_df = pd.melt(df.T)
-    if analysis_type in ['spc','pfr','plr']:
+    if analysis_type in ['spc']:
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', 'List', 'Value', 'Position']
+        melted_df.columns = [subjname, listname, 'Proportion Recalled', 'Position']
+    elif analysis_type in ['pfr']:
+        base = list(df.columns)
+        melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
+        melted_df.columns = [subjname, listname, 'Probability of First Recall', 'Position']
     elif analysis_type is 'lagcrp':
         base = range(int(-len(df.columns.values)/2),0)+[0]+range(1,int(len(df.columns.values)/2)+1)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', 'List', 'Value', 'Position']
+        melted_df.columns = [subjname, listname, 'Conditional Response Probability', 'Position']
     elif analysis_type is 'fingerprint':
         base = list(df.columns.values)
         melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', 'List', 'Value', 'Feature']
+        melted_df.columns = [subjname, listname, 'Clustering Score', 'Feature']
     elif analysis_type is 'accuracy':
         base = list(df.columns.values)
-        melted_df.columns = ['Subject', 'List', 'Accuracy']
+        melted_df.columns = [subjname, listname, 'Accuracy']
 
     return melted_df
 
