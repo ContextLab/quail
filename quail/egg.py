@@ -5,11 +5,11 @@ from .analysis import recall_matrix
 from .helpers import list2pd
 from .helpers import default_dist_funcs
 
-class Pyro(object):
+class Egg(object):
     """
-    Data object for the pyrec package
+    Data object for the quail package
 
-    This class contains free recall data and metadata that will be used by pyrec
+    This class contains free recall data and metadata that will be used by quail
 
     Attributes
     ----------

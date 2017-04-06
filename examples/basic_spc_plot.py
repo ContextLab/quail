@@ -1,13 +1,13 @@
 #import
-import pyrec as pyr
+import quail
 
-#create pyro object
+#create egg object
 presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
 recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
-pyro = pyr.Pyro(pres=presented,rec=recalled)
+egg = quail.Egg(pres=presented,rec=recalled)
 
 #analysis
-analyzed_data = pyr.analyze(pyro, analysis='spc')
+analyzed_data = quail.analyze(egg, analysis='spc')
 
 #plot
-pyr.plot(analyzed_data)
+quail.plot(analyzed_data)

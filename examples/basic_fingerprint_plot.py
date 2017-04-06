@@ -1,5 +1,5 @@
 #import
-import pyrec as pyr
+import quail
 
 # presentation data
 presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
@@ -49,11 +49,11 @@ features = [
     ]
 ]
 
-# create pyro object
-pyro = pyr.Pyro(pres=presented,rec=recalled, features=features)
+# create egg object
+egg = quail.Egg(pres=presented,rec=recalled, features=features)
 
 # analysis
-analyzed_data = pyr.analyze(pyro, analysis='fingerprint')
+analyzed_data = quail.analyze(egg, analysis='fingerprint')
 
 # plot
-pyr.plot(analyzed_data)
+quail.plot(analyzed_data)

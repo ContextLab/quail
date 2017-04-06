@@ -11,7 +11,7 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
     Parameters
     ----------
-    data : pyro data object
+    data : egg data object
         The data to be analyzed
 
     subjgroup : list of strings or ints
@@ -27,8 +27,8 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
     Returns
     ----------
-    analyzed_data : pyro data object
-        Pyro containing the analysis results
+    analyzed_data : egg data object
+        Egg containing the analysis results
 
     """
     # if no grouping, set default to iterate over each list independently

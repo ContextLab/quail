@@ -60,9 +60,9 @@ def format2tidy(df, subjname, listname, analysis_type=None):
 
     return melted_df
 
-def recmat2pyro(recmat):
+def recmat2egg(recmat):
         """
-        Creates pyro data object from zero-indexed recall matrix
+        Creates egg data object from zero-indexed recall matrix
 
         Parameters
         ----------
@@ -73,15 +73,15 @@ def recmat2pyro(recmat):
 
         Returns
         ----------
-        pyro : Pyro data object
-            pyro data object computed from the recall matrix
+        egg : Egg data object
+            egg data object computed from the recall matrix
         """
-        from .pyro import Pyro as Pyro
+        from .egg import Egg as Egg
 
         pres = [[[str(word) for word in list(range(0,len(reclist)))] for reclist in recsub] for recsub in recmat]
         rec = [[[str(word) for word in reclist if word is not None] for reclist in recsub] for recsub in recmat]
 
-        return Pyro(pres=pres,rec=rec)
+        return Egg(pres=pres,rec=rec)
 
 def default_dist_funcs(dist_funcs, feature_example):
         """

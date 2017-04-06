@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# from pyrec.analysis import analyze
-# from pyrec.analysis import recall_matrix
-# from pyrec.helpers import mldf2list
-# from pyrec.pyro import Pyro
+# from quail.analysis import analyze
+# from quail.analysis import recall_matrix
+# from quail.helpers import mldf2list
+# from quail.egg import Egg
 # import numpy as np
 # import pytest
 
@@ -15,8 +15,8 @@
 # def test_analysis_analyze():
 #     pres = [[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']],[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
 #     rec = [[['bat', 'bat', 'cat', 'popsicle'],['animal', 'horse', 'cat']],[['bat', 'bat', 'cat', 'popsicle'],['animal', 'horse', 'cat']]]
-#     pyro = Pyro(pres=pres, rec=rec)
-#     analyze(pyro, subjgroup=[0,1])
+#     egg = Egg(pres=pres, rec=rec)
+#     analyze(egg, subjgroup=[0,1])
 
 # def test_analysis_recall_matrix():
 # 	presented=[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
