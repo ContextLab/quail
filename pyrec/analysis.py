@@ -57,7 +57,7 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
             # perform analysis for each data chunk
             if pass_features:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0]])
+                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
             else:
                 analyzed = pd.DataFrame([analysis(pres_slice, rec_slice)], index=index)
 
@@ -69,6 +69,9 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
     # add the analysis type for smart plotting
     analyzed_data.analysis_type = analysis_type
+
+    # add the analysis type for smart plotting
+    analyzed_data.list_length = data.list_length
 
     return analyzed_data
 
@@ -112,6 +115,37 @@ def recall_matrix(presented, recalled):
     for pres_list, rec_list in zip(presented.values, recalled.values):
         result.append(recall_pos(pres_list, rec_list))
     return result
+
+def accuracy_helper(pres_slice, rec_slice):
+    """
+    Computes probability of a word being recalled (in the appropriate recall list), given its presentation position
+
+    Parameters
+    ----------
+    recall_matrix : list of lists of ints
+      each integer represents the presentation position of the recalled word in a given list in order of recall
+      0s represent recalled words not presented
+      negative ints represent words recalled from previous lists
+
+    Returns
+    ----------
+    probabilities : numpy array of ints
+      each int represents the probability of recall for a word presented in given position/index
+
+    """
+
+    # compute recall_matrix for data slice
+    recall = recall_matrix(pres_slice, rec_slice)
+
+    # simple function that returns 1 if item encoded in position n is in recall list
+    def compute_acc(lst):
+        return len([i for i in lst if i>0])/len(lst)
+
+    # get spc for each row in recall matrix
+    acc_matrix = [compute_acc(lst) for lst in recall]
+
+    # average over rows
+    return np.mean(acc_matrix,axis=0)
 
 def spc_helper(pres_slice, rec_slice):
     """
@@ -177,42 +211,6 @@ def pfr_helper(pres_slice, rec_slice):
 
     # average over rows
     return np.mean(pfr_matrix,axis=0)
-
-def plr_helper(pres_slice, rec_slice):
-    """
-    Computes probability of a word being recalled last (in the appropriate recall list), given its presentation position
-
-    Parameters
-    ----------
-    recall_matrix : list of lists of ints
-      each integer represents the presentation position of the recalled word in a given list in order of recall
-      0s represent recalled words not presented
-      negative ints represent words recalled from previous lists
-
-    Returns
-    ----------
-    probabilities : numpy array of ints
-      each int represents the probability of last recall for a word presented in given position/index
-
-    """
-
-    # compute recall_matrix for data slice
-    recall = recall_matrix(pres_slice, rec_slice)
-
-    # simple function that returns 1 if item encoded in position n is recalled last
-    def pos_recalled_last(lst):
-        plr = np.zeros(len(lst))
-        lst = [item for item in lst if not np.isnan(item)]
-        lst = [item for item in lst if not item==None]
-        if lst:
-            plr[int(lst[-1]-1)]=1
-        return list(plr)
-
-    # get plr for each row in recall matrix
-    plr_matrix = [pos_recalled_last(lst) for lst in recall]
-
-    # average over rows
-    return np.mean(plr_matrix,axis=0)
 
 def lagcrp_helper(pres_slice, rec_slice):
     """
@@ -425,9 +423,6 @@ def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List
 def pfr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
 
-def plr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper, analysis_type='plr')
-
 def lagcrp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
     return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lagcrp')
 
@@ -441,13 +436,12 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
 
     if analysis is None:
         raise ValueError('You must pass an analysis type.')
-
+    if analysis is 'accuracy':
+        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=accuracy_helper, analysis_type='accuracy')
     if analysis is 'spc':
         return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
     elif analysis is 'pfr':
         return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
-    elif analysis is 'plr':
-        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=plr_helper, analysis_type='plr')
     elif analysis is 'lagcrp':
         return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lagcrp')
     elif analysis is 'fingerprint':

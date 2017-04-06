@@ -50,6 +50,9 @@ def format2tidy(df, analysis_type=None):
         base = list(df.columns.values)
         melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', 'List', 'Value', 'Feature']
+    elif analysis_type is 'accuracy':
+        base = list(df.columns.values)
+        melted_df.columns = ['Subject', 'List', 'Accuracy']
 
     return melted_df
 
@@ -87,6 +90,6 @@ def default_dist_funcs(dist_funcs, feature_example):
             elif type(feature_example[key]) is str:
                 dist_funcs[key] = lambda a, b: int(a!=b)
             elif isinstance(feature_example[key], (int, long, float)) or all([isinstance(i, (int, long, float)) for i in feature_example[key]]):
-                dist_funcs[key] = lambda a, b: np.linalg.norm(a-b)
+                dist_funcs[key] = lambda a, b: np.linalg.norm(np.subtract(a,b))
 
         return dist_funcs

@@ -5,7 +5,7 @@ import seaborn as sns
 from .helpers import *
 import matplotlib.pyplot as plt
 
-def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', plot_type='list', **kwargs):
+def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', plot_type=None, plot_style=None, **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
@@ -67,11 +67,55 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
     tidy_data = format2tidy(averaged_data, analysis_type=data.analysis_type)
 
     #plot!
-    if data.analysis_type is 'fingerprint':
-        if plot_type is 'split_list':
-            ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
+    if data.analysis_type is 'accuracy':
+
+        plot_style = plot_style if plot_style is not None else 'bar'
+        # plot_type = plot_type if plot_type is not None else 'subject'
+
+        if plot_style is 'bar':
+            if plot_type is 'list':
+                ax = sns.barplot(data=tidy_data, x="List", y="Accuracy", hue="List", **kwargs)
+            elif plot_type is 'subject':
+                ax = sns.barplot(data=tidy_data, x="Subject", y="Accuracy", hue="Subject", **kwargs)
+            else:
+                ax = sns.barplot(data=tidy_data, y="Accuracy", **kwargs)
+        elif plot_style is 'swarm':
+            if plot_type is 'list':
+                ax = sns.swarmplot(data=tidy_data, x="List", y="Accuracy", hue="List", **kwargs)
+            elif plot_type is 'subject':
+                ax = sns.swarmplot(data=tidy_data, x="Subject", y="Accuracy", hue="Subject", **kwargs)
+            else:
+                ax = sns.swarmplot(data=tidy_data, y="Accuracy", **kwargs)
+        elif plot_style is 'violin':
+            if plot_type is 'list':
+                ax = sns.violinplot(data=tidy_data, x="List", y="Accuracy", hue="List", **kwargs)
+            elif plot_type is 'subject':
+                ax = sns.violinplot(data=tidy_data, x="Subject", y="Accuracy", hue="Subject", **kwargs)
+            else:
+                ax = sns.violinplot(data=tidy_data, y="Accuracy", **kwargs)
+
+    elif data.analysis_type is 'fingerprint':
+        if plot_type is 'bar':
+            if hue is 'list':
+                ax = sns.barplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
+            elif hue is 'subject':
+                ax = sns.barplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
+            else:
+                ax = sns.barplot(data=tidy_data, x="Feature", y="Value", **kwargs)
+        elif plot_type is 'swarm':
+            if hue is 'list':
+                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
+            elif hue is 'subject':
+                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
+            else:
+                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Value", **kwargs)
         else:
-            ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", **kwargs)
+            if hue is 'list':
+                ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", hue="List", **kwargs)
+            elif hue is 'subject':
+                ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", hue="Subject", **kwargs)
+            else:
+                ax = sns.violinplot(data=tidy_data, x="Feature", y="Value", **kwargs)
         ax.set_ylim(0,1)
     else:
         if plot_type is 'grid':
@@ -79,13 +123,13 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
             ax = ax.map(sns.tsplot, "Value")
         elif plot_type is 'subject':
             ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="List", condition="Subject", **kwargs)
-        elif plot_type is 'list':
+        else:
             ax = sns.tsplot(data = tidy_data, time="Position", value="Value", unit="Subject", condition="List", **kwargs)
 
     if data.analysis_type=='lagcrp':
         ax.set_xlim(-5,5)
     elif data.analysis_type in ['spc','pfr','plr']:
-        ax.set_xlim(0,data.shape[1]-1)
+        ax.set_xlim(0,data.list_length)
 
     plt.show()
 

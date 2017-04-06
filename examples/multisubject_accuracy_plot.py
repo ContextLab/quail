@@ -14,7 +14,7 @@ recalled = [sub1_recalled, sub2_recalled]
 pyro = pyr.Pyro(pres=presented,rec=recalled)
 
 #analysis
-analyzed_data = pyr.analyze(pyro, analysis='spc', listgroup=['average']*2)
+analyzed_data = pyr.analyze(pyro, analysis='accuracy', listgroup=['average']*2)
 
 #plot
 pyr.plot(analyzed_data)
