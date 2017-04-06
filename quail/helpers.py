@@ -36,27 +36,29 @@ def list2pd(all_data, subjindex=None, listindex=None):
 
     return pd.concat(subs_list_of_dfs)
 
-def format2tidy(df, subjname, listname, analysis_type=None):
+def format2tidy(df, subjname, listname, subjgroup, analysis_type=None):
     melted_df = pd.melt(df.T)
+    melted_df[subjname]=""
+    for idx,sub in enumerate(melted_df['Subject'].unique()):
+        melted_df.loc[melted_df['Subject']==sub,subjname]=subjgroup[idx]
     if analysis_type in ['spc']:
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = [subjname, listname, 'Proportion Recalled', 'Position']
+        melted_df.columns = ['Subject', listname, 'Proportion Recalled', subjname, 'Position']
     elif analysis_type in ['pfr']:
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = [subjname, listname, 'Probability of First Recall', 'Position']
+        melted_df.columns = ['Subject', listname, 'Probability of First Recall', subjname, 'Position']
     elif analysis_type is 'lagcrp':
         base = range(int(-len(df.columns.values)/2),0)+[0]+range(1,int(len(df.columns.values)/2)+1)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = [subjname, listname, 'Conditional Response Probability', 'Position']
+        melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
     elif analysis_type is 'fingerprint':
         base = list(df.columns.values)
         melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = [subjname, listname, 'Clustering Score', 'Feature']
+        melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
     elif analysis_type is 'accuracy':
-        base = list(df.columns.values)
-        melted_df.columns = [subjname, listname, 'Accuracy']
+        melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
 
     return melted_df
 

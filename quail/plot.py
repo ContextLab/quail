@@ -5,7 +5,7 @@ import seaborn as sns
 from .helpers import *
 import matplotlib.pyplot as plt
 
-def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', plot_type=None, plot_style=None, **kwargs):
+def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None, listname='List', plot_type=None, plot_style=None, title=None, legend=True, ylim=None, **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
@@ -34,112 +34,120 @@ def plot(data, subjgroup=None, subjname='Subject', listgroup=None, listname='Lis
     subjgroup = subjgroup if subjgroup else data.index.levels[0].values
     listgroup = listgroup if listgroup else data.index.levels[1].values
 
-    # create a dictionary for grouping
-    subjdict = {subj : data.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
-    listdict = {lst : data.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
-
-    # perform the analysis
-    averaged_data = []
-    for subj in subjdict:
-        for lst in listdict:
-
-            # get data slice for presentation and recall
-            data_slice = data.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
-
-            # generate index
-            index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
-
-            # perform analysis for each data chunk
-            if data.analysis_type is 'fingerprint':
-                averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index, columns=data_slice.columns)
-            else:
-                averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index)
-
-            # append analyzed data
-            averaged_data.append(averaged)
-
-    # concatenate slices
-    averaged_data = pd.concat(averaged_data)
+    # # create a dictionary for grouping
+    # subjdict = {subj : data.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
+    # listdict = {lst : data.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
+    #
+    # # perform the analysis
+    # averaged_data = []
+    # for subj in subjdict:
+    #     for lst in listdict:
+    #
+    #         # get data slice for presentation and recall
+    #         data_slice = data.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
+    #
+    #         # generate index
+    #         index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
+    #
+    #         # perform analysis for each data chunk
+    #         if data.analysis_type is 'fingerprint':
+    #             averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index, columns=data_slice.columns)
+    #         else:
+    #             averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index)
+    #
+    #         # append analyzed data
+    #         averaged_data.append(averaged)
+    #
+    # # concatenate slices
+    # averaged_data = pd.concat(averaged_data)
 
     # convert to tiny and format for plotting
-    tidy_data = format2tidy(averaged_data, subjname, listname, analysis_type=data.analysis_type)
+    tidy_data = format2tidy(data, subjname, listname, subjgroup, analysis_type=data.analysis_type)
 
     #plot!
     if data.analysis_type is 'accuracy':
 
         # set defaul style to bar
         plot_style = plot_style if plot_style is not None else 'bar'
+        plot_type = plot_type if plot_type is not None else 'list'
 
         if plot_style is 'bar':
-            if plot_type is 'list':
-                ax = sns.barplot(data=tidy_data, x=listname, y="Accuracy", hue=listname, **kwargs)
-            elif plot_type is 'subject':
-                ax = sns.barplot(data=tidy_data, x=subjname, y="Accuracy", hue=subjname, **kwargs)
-            else:
-                ax = sns.barplot(data=tidy_data, y="Accuracy", **kwargs)
+            plot_func = sns.barplot
         elif plot_style is 'swarm':
-            if plot_type is 'list':
-                ax = sns.swarmplot(data=tidy_data, x=listname, y="Accuracy", hue=listname, **kwargs)
-            elif plot_type is 'subject':
-                ax = sns.swarmplot(data=tidy_data, x=subjname, y="Accuracy", hue=subjname, **kwargs)
-            else:
-                ax = sns.swarmplot(data=tidy_data, y="Accuracy", **kwargs)
+            plot_func = sns.swarmplot
         elif plot_style is 'violin':
-            if plot_type is 'list':
-                ax = sns.violinplot(data=tidy_data, x=listname, y="Accuracy", hue=listname, **kwargs)
-            elif plot_type is 'subject':
-                ax = sns.violinplot(data=tidy_data, x=subjname, y="Accuracy", hue=subjname, **kwargs)
-            else:
-                ax = sns.violinplot(data=tidy_data, y="Accuracy", **kwargs)
+            plot_func = sns.violinplot
+
+        if plot_type is 'list':
+            ax = plot_func(data=tidy_data, x=listname, y="Accuracy", **kwargs)
+        elif plot_type is 'subject':
+            ax = plot_func(data=tidy_data, x=subjname, y="Accuracy", **kwargs)
+        elif plot_type is 'split':
+            ax = plot_func(data=tidy_data, x=subjname, y="Accuracy", hue=listname, **kwargs)
 
     elif data.analysis_type is 'fingerprint':
 
-        # set defaul style to violin
+        # set default style to violin
         plot_style = plot_style if plot_style is not None else 'violin'
+        plot_type = plot_type if plot_type is not None else 'list'
 
         if plot_style is 'bar':
-            if plot_type is 'list':
-                ax = sns.barplot(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
-            elif plot_type is 'subject':
-                ax = sns.barplot(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
-            else:
-                ax = sns.barplot(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
+            plot_func = sns.barplot
         elif plot_style is 'swarm':
-            if plot_type is 'list':
-                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
-            elif plot_type is 'subject':
-                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
-            else:
-                ax = sns.swarmplot(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
+            plot_func = sns.swarmplot
+        elif plot_style is 'violin':
+            plot_func = sns.violinplot
+
+
+        if plot_type is 'list':
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
+        elif plot_type is 'subject':
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
         else:
-            if plot_type is 'list':
-                ax = sns.violinplot(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
-            elif plot_type is 'subject':
-                ax = sns.violinplot(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
-            else:
-                ax = sns.violinplot(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
-        ax.set_ylim(0,1)
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
 
     elif data.analysis_type is 'spc':
+
+        plot_type = plot_type if plot_type is not None else 'list'
+
         if plot_type is 'subject':
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit=listname, condition=subjname, **kwargs)
-        else:
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit=subjname, condition=listname, **kwargs)
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
+        elif plot_type is 'list':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
         ax.set_xlim(0,data.list_length)
 
     elif data.analysis_type is 'pfr':
+
+        plot_type = plot_type if plot_type is not None else 'list'
+
         if plot_type is 'subject':
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit=listname, condition=subjname, **kwargs)
-        else:
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit=subjname, condition=listname, **kwargs)
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit="Subject", condition=subjname, **kwargs)
+        elif plot_type is 'list':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit="Subject", condition=listname, **kwargs)
         ax.set_xlim(0,data.list_length)
 
     if data.analysis_type=='lagcrp':
+
+        plot_type = plot_type if plot_type is not None else 'list'
+
         if plot_type is 'subject':
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit=listname, condition=subjname, **kwargs)
-        else:
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit=subjname, condition=listname, **kwargs)
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit="Subject", condition=subjname, **kwargs)
+        elif plot_type is 'list':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit="Subject", condition=listname, **kwargs)
         ax.set_xlim(-5,5)
+
+    # add title
+    if title:
+        plt.title(title)
+
+    if legend is False:
+        try:
+            ax.legend_.remove()
+        except:
+            pass
+
+    if ylim:
+        plt.ylim(ylim)
 
     plt.show()
 

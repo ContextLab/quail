@@ -14,7 +14,7 @@ recalled = [sub1_recalled, sub2_recalled]
 egg = quail.Egg(pres=presented,rec=recalled)
 
 #analysis
-analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*2)
+analyzed_data = quail.analyze(egg, analysis='accuracy')
 
 #plot
-quail.plot(analyzed_data)
+quail.plot(analyzed_data, subjgroup=[1,2], subjname='Experiment')
