@@ -34,33 +34,6 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None, listnam
     subjgroup = subjgroup if subjgroup else data.index.levels[0].values
     listgroup = listgroup if listgroup else data.index.levels[1].values
 
-    # # create a dictionary for grouping
-    # subjdict = {subj : data.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
-    # listdict = {lst : data.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
-    #
-    # # perform the analysis
-    # averaged_data = []
-    # for subj in subjdict:
-    #     for lst in listdict:
-    #
-    #         # get data slice for presentation and recall
-    #         data_slice = data.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
-    #
-    #         # generate index
-    #         index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
-    #
-    #         # perform analysis for each data chunk
-    #         if data.analysis_type is 'fingerprint':
-    #             averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index, columns=data_slice.columns)
-    #         else:
-    #             averaged = pd.DataFrame([np.mean(data_slice.values, axis=0)], index=index)
-    #
-    #         # append analyzed data
-    #         averaged_data.append(averaged)
-    #
-    # # concatenate slices
-    # averaged_data = pd.concat(averaged_data)
-
     # convert to tiny and format for plotting
     tidy_data = format2tidy(data, subjname, listname, subjgroup, analysis_type=data.analysis_type)
 

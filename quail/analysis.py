@@ -443,16 +443,36 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
     '''
     Analysis wrapper function
     '''
-
     if analysis is None:
         raise ValueError('You must pass an analysis type.')
-    if analysis is 'accuracy':
-        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=accuracy_helper, analysis_type='accuracy')
-    if analysis is 'spc':
-        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
-    elif analysis is 'pfr':
-        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
-    elif analysis is 'lagcrp':
-        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lagcrp')
-    elif analysis is 'fingerprint':
-        return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)
+
+    if type(data) != list:
+        data = [data]
+
+    if type(analysis) != list:
+        analysis = [analysis]
+
+    result = [[] for d in range(len(data))]
+
+    for idx,d in enumerate(data):
+        for a in analysis:
+
+            if a is 'accuracy':
+                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=accuracy_helper, analysis_type='accuracy')
+            elif a is 'spc':
+                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
+            elif a is 'pfr':
+                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
+            elif a is 'lagcrp':
+                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lagcrp')
+            elif a is 'fingerprint':
+                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)
+
+            result[idx].append(r)
+
+    if len(data)>1 and len(analysis)>1:
+        return result
+    elif len(data)>1 and len(analysis)==1:
+        return [item[0] for item in result]
+    else:
+        return result[0][0]
