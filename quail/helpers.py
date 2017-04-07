@@ -99,3 +99,22 @@ def default_dist_funcs(dist_funcs, feature_example):
                 dist_funcs[key] = lambda a, b: np.linalg.norm(np.subtract(a,b))
 
         return dist_funcs
+
+def stack_eggs(eggs):
+    '''
+    Takes a list of eggs, stacks them and reindexes the subject number
+    '''
+    from .egg import Egg
+    
+    pres = [egg.pres.loc[sub,:].values.tolist() for egg in eggs for sub in egg.pres.index.levels[0].values.tolist()]
+    rec = [egg.rec.loc[sub,:].values.tolist()  for egg in eggs for sub in egg.rec.index.levels[0].values.tolist()]
+
+    all_have_features = any([egg.features is not None for egg in eggs])
+
+    if all_have_features:
+        features = [egg.features.loc[sub,:].values.tolist() for egg in eggs for sub in egg.features.index.levels[0].values.tolist()]
+        new_egg = Egg(pres=pres, rec=rec, features=features)
+    else:
+        new_egg = Egg(pres=pres, rec=rec, features=features)
+
+    return new_egg
