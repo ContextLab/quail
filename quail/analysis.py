@@ -29,7 +29,7 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
         Name of the list grouping variable
 
     analysis : function
-        This function analyzes data and returns it
+        This function analyzes data and returns it.
 
     pass_features : bool
         Logical indicating whether the analyses uses the features field of the Egg
@@ -467,8 +467,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
     listname : string
         Name of the list grouping variable
 
-    analysis : function
-        This function analyzes data and returns it
+    analysis : string
+        This is the analysis you want to run.  Can be accuracy, spc, pfr or
+        fingerprint
 
 
     Returns
