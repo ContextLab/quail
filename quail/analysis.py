@@ -470,6 +470,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
     analysis : function
         This function analyzes data and returns it
 
+
     Returns
     ----------
     analyzed_data : Pandas DataFrame

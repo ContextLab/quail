@@ -11,22 +11,49 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None, listnam
 
     Parameters
     ----------
-    data : egg data object
-        The data to be analyzed
+    data : Pandas DataFrame
+        The result of a quail analysis
 
     subjgroup : list of strings or ints
         String/int variables indicating how to group over subjects.  Must be
         the length of the number of subjects
 
+    subjname : string
+        Name of the subject grouping variable
+
     listgroup : list of strings or ints
         String/int variables indicating how to group over list.  Must be
         the length of the number of lists
 
+    listname : string
+        Name of the list grouping variable
+
+    plot_type : string
+        Specifies the type of plot. If list (default), the list groupings (listgroup)
+        will determine the plot grouping. If subject, the subject groupings
+        (subjgroup) will determine the plot grouping. If split (currenty just
+        works for accuracy plots), both listgroup and subjgroup will determine
+        the plot groupings
+
+    plot_style : string
+        Specifies the style of the plot.  This currently works only for
+        accuracy and fingerprint plots. The plot style can be bar (default for
+        accruacy plot), violin (default for fingerprint plots) or swarm.
+
+    title : string
+        The title of the plot
+
+    legend : bool
+        If true (default), a legend is plotted.
+
+    ylim : list of numbers
+        A ymin/max can be specified by a list of the form [ymin, ymax]
+
 
     Returns
     ----------
-    analyzed_data : egg data object
-        Egg containing the analysis results
+    ax : matplotlib.Axes.Axis
+        An axis handle for the figure
 
     """
 
