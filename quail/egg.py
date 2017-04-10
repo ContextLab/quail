@@ -9,7 +9,16 @@ class Egg(object):
     """
     Data object for the quail package
 
-    This class contains free recall data and metadata that will be used by quail
+    An Egg data object contains the data you need to analyze free recall experiments.
+    This can be a single subject's data, or a group of subjects.  An Egg is comprised of
+    a number of fields: the pres field contains the words/stimuli presented to the subject.
+    The rec field contains the words/stimuli recalled by the subject. The feature field
+    is optional, but may contain a dictionary of features for each stimulus.  This
+    field is necessary to run the fingerprint analyses. Related to the features
+    is the dist_funcs dictionary (also optional).  This dictionary specifies
+    a set of distance functions required for the fingerprint analyses.  Finally,
+    the meta field is an optional dictionary that contains any details useful for
+    identifying the egg object
 
     Attributes
     ----------

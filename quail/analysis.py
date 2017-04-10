@@ -5,30 +5,39 @@ import numpy as np
 import pandas as pd
 from .helpers import *
 
-def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False):
+def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, pass_features=False):
     """
-    General analysis function that groups data by subject/list number and performs analysis.
+    Private function that groups data by subject/list number and performs analysis for a chunk of data.
 
     Parameters
     ----------
-    data : egg data object
+    data : Egg data object
         The data to be analyzed
 
     subjgroup : list of strings or ints
         String/int variables indicating how to group over subjects.  Must be
         the length of the number of subjects
 
+    subjname : string
+        Name of the subject grouping variable
+
     listgroup : list of strings or ints
         String/int variables indicating how to group over list.  Must be
         the length of the number of lists
 
+    listname : string
+        Name of the list grouping variable
+
     analysis : function
         This function analyzes data and returns it
 
+    pass_features : bool
+        Logical indicating whether the analyses uses the features field of the Egg
+
     Returns
     ----------
-    analyzed_data : egg data object
-        Egg containing the analysis results
+    analyzed_data : Pandas DataFrame
+        DataFrame containing the analysis results
 
     """
     # if no grouping, set default to iterate over each list independently
@@ -161,10 +170,10 @@ def spc_helper(pres_slice, rec_slice):
 
     Parameters
     ----------
-    recall_matrix : list of lists of ints
-      each integer represents the presentation position of the recalled word in a given list in order of recall
-      0s represent recalled words not presented
-      negative ints represent words recalled from previous lists
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
 
     Returns
     ----------
@@ -197,10 +206,10 @@ def pfr_helper(pres_slice, rec_slice):
 
     Parameters
     ----------
-    recall_matrix : list of lists of ints
-      each integer represents the presentation position of the recalled word in a given list in order of recall
-      0s represent recalled words not presented
-      negative ints represent words recalled from previous lists
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
 
     Returns
     ----------
@@ -230,10 +239,10 @@ def lagcrp_helper(pres_slice, rec_slice):
 
     Parameters
     ----------
-    recall_matrix : list of lists of ints
-      each integer represents the presentation position of the recalled word in a given list in order of recall
-      0s represent recalled words not presented
-      negative ints represent words recalled from previous lists
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
 
     Returns
     ----------
@@ -315,10 +324,14 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
 
     Parameters
     ----------
-    recall_matrix : list of lists of ints
-      each integer represents the presentation position of the recalled word in a given list in order of recall
-      0s represent recalled words not presented
-      negative ints represent words recalled from previous lists
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
+    feature_slice : Pandas Dataframe
+        chunk of features data to be analyzed
+    dist_funcs : dict
+        Dictionary of distance functions for feature clustering analyses
 
     Returns
     ----------
@@ -432,9 +445,38 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     return np.mean(fingerprint_matrix, axis=0)
 
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None):
-    '''
-    Analysis wrapper function
-    '''
+    """
+    General analysis function that groups data by subject/list number and performs analysis.
+
+    Parameters
+    ----------
+    data : Egg data object
+        The data to be analyzed
+
+    subjgroup : list of strings or ints
+        String/int variables indicating how to group over subjects.  Must be
+        the length of the number of subjects
+
+    subjname : string
+        Name of the subject grouping variable
+
+    listgroup : list of strings or ints
+        String/int variables indicating how to group over list.  Must be
+        the length of the number of lists
+
+    listname : string
+        Name of the list grouping variable
+
+    analysis : function
+        This function analyzes data and returns it
+
+    Returns
+    ----------
+    analyzed_data : Pandas DataFrame
+        DataFrame containing the analysis results
+
+    """
+
     if analysis is None:
         raise ValueError('You must pass an analysis type.')
 
