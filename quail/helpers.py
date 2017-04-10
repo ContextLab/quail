@@ -103,9 +103,21 @@ def default_dist_funcs(dist_funcs, feature_example):
 def stack_eggs(eggs):
     '''
     Takes a list of eggs, stacks them and reindexes the subject number
+
+    Parameters
+    ----------
+    eggs : list of Egg data objects
+        A list of Eggs that you want to combine
+
+
+    Returns
+    ----------
+    new_egg : Egg data object
+        A mega egg comprised of the input eggs stacked together
+
     '''
     from .egg import Egg
-    
+
     pres = [egg.pres.loc[sub,:].values.tolist() for egg in eggs for sub in egg.pres.index.levels[0].values.tolist()]
     rec = [egg.rec.loc[sub,:].values.tolist()  for egg in eggs for sub in egg.rec.index.levels[0].values.tolist()]
 

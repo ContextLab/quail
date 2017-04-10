@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from .helpers import *
 
-def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, pass_features=False):
+def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False):
     """
     Private function that groups data by subject/list number and performs analysis for a chunk of data.
 
