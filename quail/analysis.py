@@ -37,22 +37,28 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
     # create a dictionary for grouping
     subjdict = {subj : data.pres.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
-    listdict = {lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
+    # listdict = {lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
+
+    # allow for lists of listgroup arguments
+    if all(isinstance(el, list) for el in listgroup):
+        listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgrpsub)] for lst in set(listgrpsub)} for listgrpsub in listgroup]
+    else:
+        listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
 
     # perform the analysis
     analyzed_data = []
     for subj in subjdict:
-        for lst in listdict:
+        for lst in listdict[0]:
 
             # get data slice for presentation and recall
-            pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
-            rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
+            pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst]]]
+            rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst]]]
 
             # if features are need for analysis, get the features for this slice of data
             if pass_features:
-                feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[lst]]]
+                feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst]]]
 
-            # generate index
+            # generate indices
             index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
 
             # perform analysis for each data chunk
@@ -425,20 +431,6 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
-# THESE FUNCTIONS WILL BE DEPRECATED
-def spc(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
-
-def pfr(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
-
-def lagcrp(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lagcrp')
-
-def fingerprint(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List'):
-    return analyze_chunk(data, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)
-
-# THIS FUNCTION REPLACES THE ANALYSIS FUNCTIONS ABOVE
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None):
     '''
     Analysis wrapper function
