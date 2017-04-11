@@ -1,5 +1,4 @@
+sphinx>=1.5.5
 sphinx_bootstrap_theme
 sphinx-gallery
 numpydoc
-sphinx-autobuild
-sphinx_rtd_theme>=0.2.4
