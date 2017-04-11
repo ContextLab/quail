@@ -38,6 +38,8 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx_gallery.gen_gallery',
     'nbsphinx']
 
+nbsphinx_allow_errors = True
+
 # Generate the API documentation when building
 autosummary_generate = True
 
