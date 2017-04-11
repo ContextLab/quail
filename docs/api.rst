@@ -13,7 +13,7 @@ Egg data object
 .. autosummary::
   :toctree:
 
-  Egg
+  quail.Egg
 
 Analyze
 ------------------
@@ -21,7 +21,7 @@ Analyze
 .. autosummary::
   :toctree:
 
-  analyze
+  quail.analyze
 
 Plot
 ------------------
@@ -29,7 +29,7 @@ Plot
 .. autosummary::
   :toctree:
 
-  plot
+  quail.plot
 
 Stack eggs
 ------------------
@@ -37,4 +37,4 @@ Stack eggs
 .. autosummary::
   :toctree:
 
-  stack_eggs
+  quail.stack_eggs
