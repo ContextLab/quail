@@ -1,3 +1,4 @@
 sphinx_bootstrap_theme
 sphinx-gallery
 numpydoc
+sphinx-autobuild
