@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quail.analysis &#8212; quail 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          quail</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../auto_examples/index.html">Gallery</a></li>
+                <li><a href="../../tutorial.html">Tutorials</a></li>
+                <li><a href="http://www.github.com/ContextLab/pyrec">Download</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for quail.analysis</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="k">def</span> <span class="nf">analyze_chunk</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Private function that groups data by subject/list number and performs analysis for a chunk of data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : Egg data object</span>
+<span class="sd">        The data to be analyzed</span>
+
+<span class="sd">    subjgroup : list of strings or ints</span>
+<span class="sd">        String/int variables indicating how to group over subjects.  Must be</span>
+<span class="sd">        the length of the number of subjects</span>
+
+<span class="sd">    subjname : string</span>
+<span class="sd">        Name of the subject grouping variable</span>
+
+<span class="sd">    listgroup : list of strings or ints</span>
+<span class="sd">        String/int variables indicating how to group over list.  Must be</span>
+<span class="sd">        the length of the number of lists</span>
+
+<span class="sd">    listname : string</span>
+<span class="sd">        Name of the list grouping variable</span>
+
+<span class="sd">    analysis : function</span>
+<span class="sd">        This function analyzes data and returns it.</span>
+
+<span class="sd">    pass_features : bool</span>
+<span class="sd">        Logical indicating whether the analyses uses the features field of the Egg</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    analyzed_data : Pandas DataFrame</span>
+<span class="sd">        DataFrame containing the analysis results</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if no grouping, set default to iterate over each list independently</span>
+    <span class="n">subjgroup</span> <span class="o">=</span> <span class="n">subjgroup</span> <span class="k">if</span> <span class="n">subjgroup</span> <span class="k">else</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">listgroup</span> <span class="o">=</span> <span class="n">listgroup</span> <span class="k">if</span> <span class="n">listgroup</span> <span class="k">else</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># create a dictionary for grouping</span>
+    <span class="n">subjdict</span> <span class="o">=</span> <span class="p">{</span><span class="n">subj</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">subj</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">subjgroup</span><span class="p">)]</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">subjgroup</span><span class="p">)}</span>
+    <span class="c1"># listdict = {lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}</span>
+
+    <span class="c1"># allow for lists of listgroup arguments</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">listgroup</span><span class="p">):</span>
+        <span class="n">listdict</span> <span class="o">=</span> <span class="p">[{</span><span class="n">lst</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">lst</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listgrpsub</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">listgrpsub</span><span class="p">)}</span> <span class="k">for</span> <span class="n">listgrpsub</span> <span class="ow">in</span> <span class="n">listgroup</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">listdict</span> <span class="o">=</span> <span class="p">[{</span><span class="n">lst</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">lst</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)}</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">]</span>
+
+    <span class="c1"># perform the analysis</span>
+    <span class="n">analyzed_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+
+            <span class="c1"># get data slice for presentation and recall</span>
+            <span class="n">pres_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]]]</span>
+            <span class="n">rec_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]]]</span>
+
+            <span class="c1"># if features are need for analysis, get the features for this slice of data</span>
+            <span class="k">if</span> <span class="n">pass_features</span><span class="p">:</span>
+                <span class="n">feature_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]]]</span>
+
+            <span class="c1"># generate indices</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">([[</span><span class="n">subj</span><span class="p">],[</span><span class="n">lst</span><span class="p">]],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="p">])</span>
+
+            <span class="c1"># perform analysis for each data chunk</span>
+            <span class="k">if</span> <span class="n">pass_features</span><span class="p">:</span>
+                <span class="n">analyzed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">analysis</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">feature_slice</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dist_funcs</span><span class="p">)],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">feature</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">analyzed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">analysis</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">)],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+            <span class="c1"># append analyzed data</span>
+            <span class="n">analyzed_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analyzed</span><span class="p">)</span>
+
+    <span class="c1"># concatenate slices</span>
+    <span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">)</span>
+
+    <span class="c1"># add the analysis type for smart plotting</span>
+    <span class="n">analyzed_data</span><span class="o">.</span><span class="n">analysis_type</span> <span class="o">=</span> <span class="n">analysis_type</span>
+
+    <span class="c1"># add the analysis type for smart plotting</span>
+    <span class="n">analyzed_data</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">list_length</span>
+
+    <span class="k">return</span> <span class="n">analyzed_data</span>
+
+<span class="c1">##RECALL MATRIX#######</span>
+
+<span class="k">def</span> <span class="nf">recall_matrix</span><span class="p">(</span><span class="n">presented</span><span class="p">,</span> <span class="n">recalled</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes recall matrix given list of presented and list of recalled words</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    presented : list of list of strings</span>
+<span class="sd">      presentedWords are the words presented in the experiment, in order, grouped by list</span>
+
+<span class="sd">    recalled : list of list of strings</span>
+<span class="sd">      recalledWords are the words recalled by the subject, in order, grouped by list</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    recall_matrix : list of lists of ints</span>
+<span class="sd">      each integer represents the presentation position of the recalled word in a given list in order of recall</span>
+<span class="sd">      0s represent recalled words not presented</span>
+<span class="sd">      negative ints represent words recalled from previous lists</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">recall_pos</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span><span class="n">rec_list</span><span class="p">):</span>
+        <span class="n">pres_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pres_list</span><span class="p">)</span>
+        <span class="n">rec_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pres_list</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pres_list</span><span class="p">)</span><span class="o">&gt;=</span><span class="nb">len</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rec_list</span><span class="p">))</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">rec_word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rec_list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">rec_word</span> <span class="ow">in</span> <span class="n">pres_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">rec_word</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">pres_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">rec_word</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">presented</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">recalled</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recall_pos</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">def</span> <span class="nf">accuracy_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes proportion of words recalled</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of presentation data to be analyzed</span>
+<span class="sd">    rec_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of recall data to be analyzed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prop_recalled : numpy array</span>
+<span class="sd">      proportion of words recalled</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># compute recall_matrix for data slice</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">recall_matrix</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">)</span>
+
+    <span class="c1"># simple function that returns 1 if item encoded in position n is in recall list</span>
+    <span class="k">def</span> <span class="nf">compute_acc</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
+
+    <span class="c1"># get spc for each row in recall matrix</span>
+    <span class="n">acc_matrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">compute_acc</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">recall</span><span class="p">]</span>
+
+    <span class="c1"># average over rows</span>
+    <span class="n">prop_recalled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">acc_matrix</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">prop_recalled</span>
+
+<span class="k">def</span> <span class="nf">spc_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes probability of a word being recalled (in the appropriate recall list), given its presentation position</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of presentation data to be analyzed</span>
+<span class="sd">    rec_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of recall data to be analyzed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prop_recalled : numpy array</span>
+<span class="sd">      each number represents the probability of recall for a word presented in given position/index</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># compute recall_matrix for data slice</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">recall_matrix</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">)</span>
+
+    <span class="c1"># simple function that returns 1 if item encoded in position n is in recall list</span>
+    <span class="k">def</span> <span class="nf">pos_in_list</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">lst</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c1"># get spc for each row in recall matrix</span>
+    <span class="n">spc_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="n">pos_in_list</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">lst</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">recall</span><span class="p">]</span>
+
+    <span class="c1"># average over rows</span>
+    <span class="n">prop_recalled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">spc_matrix</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">prop_recalled</span>
+
+<span class="c1">#PROB FIRST RECALL######</span>
+
+<span class="k">def</span> <span class="nf">pfr_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes probability of a word being recalled first (in the appropriate recall list), given its presentation position</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of presentation data to be analyzed</span>
+<span class="sd">    rec_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of recall data to be analyzed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prob_recalled : numpy array</span>
+<span class="sd">      each number represents the probability of first recall for a word presented in given position/index</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># compute recall_matrix for data slice</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">recall_matrix</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">)</span>
+
+    <span class="c1"># simple function that returns 1 if item encoded in position n is recalled first</span>
+    <span class="k">def</span> <span class="nf">pos_recalled_first</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">lst</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">pos</span><span class="o">==</span><span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c1"># get pfr for each row in recall matrix</span>
+    <span class="n">pfr_matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="n">pos_recalled_first</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">lst</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">recall</span><span class="p">]</span>
+
+    <span class="c1"># average over rows</span>
+    <span class="n">prob_recalled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">pfr_matrix</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">prob_recalled</span>
+
+<span class="k">def</span> <span class="nf">lagcrp_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of presentation data to be analyzed</span>
+<span class="sd">    rec_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of recall data to be analyzed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    prob_recalled : numpy array</span>
+<span class="sd">      each float is the probability of transition distance (distnaces indexed by position, from -(n-1) to (n-1), excluding zero</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># compute recall_matrix for data slice</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">recall_matrix</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">check_pair</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">a</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">b</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">a</span><span class="o">!=</span><span class="n">b</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">compute_actual</span><span class="p">(</span><span class="n">recall_list</span><span class="p">):</span>
+        <span class="n">length</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">recall_list</span><span class="p">)</span>
+        <span class="n">arr</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">length</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">length</span><span class="p">)))</span>
+        <span class="n">recalled</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">a</span><span class="o">=</span><span class="n">recall_list</span><span class="p">[</span><span class="n">trial</span><span class="p">]</span>
+            <span class="n">b</span><span class="o">=</span><span class="n">recall_list</span><span class="p">[</span><span class="n">trial</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">check_pair</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recalled</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">b</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">recalled</span><span class="p">):</span>
+                <span class="n">arr</span><span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">recalled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">arr</span>
+
+    <span class="k">def</span> <span class="nf">compute_possible</span><span class="p">(</span><span class="n">recall_list</span><span class="p">):</span>
+
+        <span class="n">length</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">recall_list</span><span class="p">)</span>
+        <span class="n">arr</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">length</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">length</span><span class="p">)))</span>
+
+        <span class="n">recalled</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">trial</span> <span class="ow">in</span> <span class="n">recall_list</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">trial</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">low_bound</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">trial</span><span class="p">)</span>
+                <span class="n">up_bound</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">length</span><span class="o">-</span><span class="n">trial</span><span class="p">)</span>
+
+                <span class="n">chances</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">low_bound</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">up_bound</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                <span class="c1">#ALL transitions</span>
+
+                <span class="c1">#remove transitions not possible</span>
+                <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">recalled</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">each</span><span class="o">-</span><span class="n">trial</span> <span class="ow">in</span> <span class="n">chances</span><span class="p">:</span>
+                        <span class="n">chances</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">each</span><span class="o">-</span><span class="n">trial</span><span class="p">)</span>
+
+
+                <span class="c1">#update array with possible transitions</span>
+                <span class="n">arr</span><span class="p">[</span><span class="n">chances</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+
+                <span class="n">recalled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trial</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">arr</span>
+
+    <span class="c1">########</span>
+
+    <span class="n">list_crp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n_list</span> <span class="ow">in</span> <span class="n">recall</span><span class="p">:</span>
+        <span class="n">actual</span> <span class="o">=</span> <span class="n">compute_actual</span><span class="p">(</span><span class="n">n_list</span><span class="p">)</span>
+        <span class="n">possible</span> <span class="o">=</span> <span class="n">compute_possible</span><span class="p">(</span><span class="n">n_list</span><span class="p">)</span>
+        <span class="n">crp</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">if</span> <span class="n">i</span><span class="o">==</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="n">i</span><span class="o">/</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">actual</span><span class="p">,</span><span class="n">possible</span><span class="p">)]</span>
+        <span class="n">crp</span> <span class="o">=</span> <span class="n">crp</span><span class="p">[:</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">crp</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">))]</span><span class="o">+</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span><span class="o">+</span><span class="n">crp</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">crp</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)):]</span>
+        <span class="n">list_crp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">crp</span><span class="p">)</span>
+
+    <span class="n">prob_recalled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">list_crp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">prob_recalled</span>
+
+
+<span class="k">def</span> <span class="nf">fingerprint_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">feature_slice</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes clustering along a set of feature dimensions</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of presentation data to be analyzed</span>
+<span class="sd">    rec_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of recall data to be analyzed</span>
+<span class="sd">    feature_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of features data to be analyzed</span>
+<span class="sd">    dist_funcs : dict</span>
+<span class="sd">        Dictionary of distance functions for feature clustering analyses</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    probabilities : numpy array</span>
+<span class="sd">      each number represents clustering along a different feature dimension</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">compute_distances</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">):</span>
+
+        <span class="c1"># initialize distance dictionary</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pres_list</span><span class="p">):</span>
+            <span class="n">stimulus</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">stimulus</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">word</span>
+            <span class="n">stimulus</span><span class="p">[</span><span class="s1">&#39;distances&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
+                <span class="n">stimulus</span><span class="p">[</span><span class="s1">&#39;distances&#39;</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stimulus</span><span class="p">)</span>
+
+        <span class="c1"># loop over the lists to create distance matrices</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">stimulus1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">feature_list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">stimulus2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">feature_list</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">stimulus1</span><span class="p">:</span>
+                    <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;distances&#39;</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                            <span class="s1">&#39;word&#39;</span> <span class="p">:</span> <span class="n">distances</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;word&#39;</span><span class="p">],</span>
+                            <span class="s1">&#39;dist&#39;</span> <span class="p">:</span> <span class="n">dist_funcs</span><span class="p">[</span><span class="n">feature</span><span class="p">](</span><span class="n">stimulus1</span><span class="p">[</span><span class="n">feature</span><span class="p">],</span><span class="n">stimulus2</span><span class="p">[</span><span class="n">feature</span><span class="p">])</span>
+                        <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">distances</span>
+
+    <span class="k">def</span> <span class="nf">compute_feature_weights</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">distances</span><span class="p">):</span>
+
+        <span class="c1"># initialize the weights object for just this list</span>
+        <span class="n">listWeights</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># return default list if there is not enough data to compute the fingerprint</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+            <span class="k">return</span> <span class="n">listWeights</span>
+
+        <span class="c1"># initialize pastWords list</span>
+        <span class="n">pastWords</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># finger print analysis</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+
+            <span class="c1"># grab current word</span>
+            <span class="n">currentWord</span> <span class="o">=</span> <span class="n">rec_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="c1"># grab the next word</span>
+            <span class="n">nextWord</span> <span class="o">=</span> <span class="n">rec_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># grab the words from the encoding list</span>
+            <span class="n">encodingWords</span> <span class="o">=</span> <span class="n">pres_list</span>
+
+            <span class="c1"># append current word to past words log</span>
+            <span class="c1"># pastWords.append(currentWord)</span>
+
+            <span class="c1"># if both recalled words are in the encoding list</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentWord</span> <span class="ow">in</span> <span class="n">encodingWords</span> <span class="ow">and</span> <span class="n">nextWord</span> <span class="ow">in</span> <span class="n">encodingWords</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">currentWord</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pastWords</span> <span class="ow">and</span> <span class="n">nextWord</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pastWords</span><span class="p">):</span>
+                <span class="c1"># print(currentWord,nextWord,encodingWords,pastWords)</span>
+
+                <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+
+                    <span class="c1"># get the distance vector for the current word</span>
+                    <span class="n">distVec</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">encodingWords</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">currentWord</span><span class="p">)][</span><span class="s1">&#39;distances&#39;</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span>
+
+                    <span class="c1"># filter distVec removing the words that have already been analyzed from future calculations</span>
+                    <span class="n">filteredDistVec</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">distVec</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">pastWords</span><span class="p">:</span>
+                            <span class="k">pass</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">filteredDistVec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+                    <span class="c1"># sort distWords by distances</span>
+                    <span class="n">filteredDistVec</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">filteredDistVec</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;dist&#39;</span><span class="p">])</span>
+
+                    <span class="c1"># compute the category listWeights</span>
+                    <span class="n">nextWordIdx</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">filteredDistVec</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">nextWord</span><span class="p">)</span>
+
+                    <span class="c1"># not sure about this part</span>
+                    <span class="n">idxs</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">filteredDistVec</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">filteredDistVec</span><span class="p">[</span><span class="n">nextWordIdx</span><span class="p">][</span><span class="s1">&#39;dist&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">word</span><span class="p">[</span><span class="s1">&#39;dist&#39;</span><span class="p">]:</span>
+                            <span class="n">idxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+                    <span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">filteredDistVec</span><span class="p">)))</span>
+
+                <span class="n">pastWords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentWord</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">listWeights</span><span class="p">:</span>
+            <span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">listWeights</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">listWeights</span><span class="p">]</span>
+
+    <span class="c1"># given a stimulus list and recalled words, compute the weights</span>
+    <span class="k">def</span> <span class="nf">get_fingerprint</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">):</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">compute_distances</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compute_feature_weights</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
+
+    <span class="c1"># compute fingerprint for each list within a chunk</span>
+    <span class="n">fingerprint_matrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_fingerprint</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">dist_funcs</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">rec_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">feature_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())]</span>
+
+    <span class="c1"># return average over rows</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fingerprint_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../../quail.analyze.html#quail.analyze">[docs]</a><span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    General analysis function that groups data by subject/list number and performs analysis.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : Egg data object</span>
+<span class="sd">        The data to be analyzed</span>
+
+<span class="sd">    subjgroup : list of strings or ints</span>
+<span class="sd">        String/int variables indicating how to group over subjects.  Must be</span>
+<span class="sd">        the length of the number of subjects</span>
+
+<span class="sd">    subjname : string</span>
+<span class="sd">        Name of the subject grouping variable</span>
+
+<span class="sd">    listgroup : list of strings or ints</span>
+<span class="sd">        String/int variables indicating how to group over list.  Must be</span>
+<span class="sd">        the length of the number of lists</span>
+
+<span class="sd">    listname : string</span>
+<span class="sd">        Name of the list grouping variable</span>
+
+<span class="sd">    analysis : string</span>
+<span class="sd">        This is the analysis you want to run.  Can be accuracy, spc, pfr or</span>
+<span class="sd">        fingerprint</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    analyzed_data : Pandas DataFrame</span>
+<span class="sd">        DataFrame containing the analysis results</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">analysis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You must pass an analysis type.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">analysis</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">analysis</span> <span class="o">=</span> <span class="p">[</span><span class="n">analysis</span><span class="p">]</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))]</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">d</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">analysis</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="n">accuracy_helper</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;spc&#39;</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="n">spc_helper</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;spc&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;pfr&#39;</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="n">pfr_helper</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;pfr&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;lagcrp&#39;</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="n">lagcrp_helper</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;fingerprint&#39;</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="n">fingerprint_helper</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">pass_features</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">analysis</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">analysis</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

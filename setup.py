@@ -10,13 +10,13 @@ with open('LICENSE') as f:
     license = f.read()
 
 setup(
-    name='pyrec',
+    name='quail',
     version='0.1.0',
-    description='Sample package for Python-Guide.org',
+    description='A python toolbox for analyzing and plotting free recall data',
     long_description=readme,
-    author='Kenneth Reitz',
-    author_email='me@kennethreitz.com',
-    url='https://github.com/kennethreitz/samplemod',
+    author='Contextual Dynamics Lab',
+    author_email='contextualdynamics@gmail.com',
+    url='https://github.com/ContextLab/quail',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )

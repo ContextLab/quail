@@ -1,4 +1,4 @@
 *.pyc
 .cache/
 .idea/
-pyrec.egg-info/
+quail.egg-info/
