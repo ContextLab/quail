@@ -9,6 +9,9 @@ from collections import Counter
 import pandas as pd
 import numpy as np
 from .egg import Egg
+import dill
+import pickle
+import os
 
 def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=None, experiments=None):
     '''
@@ -274,11 +277,8 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         return eggs[0]
 
 def load_example_data():
-    import dill
-    import pickle
-    with open('/Users/andyheusser/Documents/github/pyrec/examples/sample_data/egg.pickle', 'rb') as handle:
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/../examples/sample_data/egg.pickle', 'rb') as handle:
         egg = pickle.load(handle)
-
     return egg
     # dbpath = ['/Users/andyheusser/Documents/github/FRFR-analyses/data/encoding/participants-test-room1.db',
     #           '/Users/andyheusser/Documents/github/FRFR-analyses/data/encoding/participants-test-room2.db']
