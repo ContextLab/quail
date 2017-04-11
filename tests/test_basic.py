@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from quail.analysis import recall_matrix
-from quail.analysis import spc
-from quail.analysis import pfr
-from quail.analysis import lagcrp
+from quail.analysis import analyze
 
 from quail.egg import Egg
 import numpy as np
@@ -15,16 +12,16 @@ recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
 egg = Egg(pres=presented,rec=recalled)
 
 def test_analysis_spc():
-	assert np.array_equal(spc(egg).values,[np.array([ 1.,  1.,  1.,  1.]),np.array([ 1.,  1.,  0.,  1.])])
+	assert np.array_equal(analyze(egg, analysis='spc').values,[np.array([ 1.,  1.,  1.,  1.]),np.array([ 1.,  1.,  0.,  1.])])
 
 def test_analysis_spc_listgroup():
-	assert np.array_equal(spc(egg, listgroup=[1,1], listname='Frank').values,np.array([[ 1. ,  1. ,  0.5,  1. ]]))
+	assert np.array_equal(analyze(egg, listgroup=[1,1], listname='Frank', analysis='spc').values,np.array([[ 1. ,  1. ,  0.5,  1. ]]))
 
 def test_analysis_pfr():
-	assert np.array_equal(pfr(egg).values,[np.array([ 0.,  1.,  0.,  0.]), np.array([ 0.,  1.,  0.,  0.])])
+	assert np.array_equal(analyze(egg, analysis='pfr').values,[np.array([ 0.,  1.,  0.,  0.]), np.array([ 0.,  1.,  0.,  0.])])
 
 def test_analysis_pfr_listgroup():
-	assert np.array_equal(pfr(egg, listgroup=['one','one']).values,np.array([[ 0.,  1.,  0.,  0.]]))
+	assert np.array_equal(analyze(egg, listgroup=['one','one'], analysis='pfr').values,np.array([[ 0.,  1.,  0.,  0.]]))
 
 # def test_analysis_lag_crp():
 # 	assert np.array_equal(lag_crp(egg).values,np.array([[0.0, 0.0, 1.0, 0.0, 0.0, 1.0],[1.0, 0.0, 0.0, 0.0, 0.5, 0.0]]))
@@ -35,10 +32,7 @@ recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']],[['bat', 'c
 multisubj_egg = Egg(pres=presented,rec=recalled)
 
 def test_analysis_spc_multisubj():
-	assert np.array_equal(spc(multisubj_egg).values,np.array([[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.],[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.]]))
-
-def test_analysis_spc_listgroup_subjgroup():
-	assert np.array_equal(spc(multisubj_egg, subjgroup=[1,1], listgroup=[1,1]).values,[np.array([ 1. ,  1. ,  0.5,  1. ])])
+	assert np.array_equal(analyze(multisubj_egg, analysis='spc').values,np.array([[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.],[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.]]))
 
 def test_egg():
 	list1 = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
