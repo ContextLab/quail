@@ -59,6 +59,7 @@
             
                 <li><a href="../api.html">API</a></li>
                 <li><a href="index.html">Gallery</a></li>
+                <li><a href="../tutorial.html">Tutorials</a></li>
                 <li><a href="http://www.github.com/ContextLab/pyrec">Download</a></li>
             
             
@@ -115,7 +116,7 @@
   <div class="section" id="plot-serial-position-curve">
 <span id="sphx-glr-auto-examples-plot-spc-py"></span><h1>Plot serial position curve<a class="headerlink" href="#plot-serial-position-curve" title="Permalink to this headline">¶</a></h1>
 <p>This example plots the probability of recall success as a function of serial
-position during stimulus encoding</p>
+position during stimulus encoding.</p>
 <img alt="../_images/sphx_glr_plot_spc_001.png" class="align-center" src="../_images/sphx_glr_plot_spc_001.png" />
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Code source: Andrew Heusser</span>
 <span class="c1"># License: MIT</span>
@@ -123,23 +124,17 @@ position during stimulus encoding</p>
 <span class="c1"># import</span>
 <span class="kn">import</span> <span class="nn">quail</span>
 
-<span class="c1"># presented words</span>
-<span class="n">presented</span><span class="o">=</span><span class="p">[[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]]</span>
-
-<span class="c1"># recalled words</span>
-<span class="n">recalled</span><span class="o">=</span><span class="p">[[[</span><span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">]]]</span>
-
-<span class="c1"># create egg object</span>
-<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">presented</span><span class="p">,</span><span class="n">rec</span><span class="o">=</span><span class="n">recalled</span><span class="p">)</span>
+<span class="c1">#load data</span>
+<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load_example_data</span><span class="p">()</span>
 
 <span class="c1">#analysis</span>
-<span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;spc&#39;</span><span class="p">)</span>
+<span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;spc&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
 
 <span class="c1">#plot</span>
-<span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">)</span>
+<span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Serial Position Curve&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.215 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.363 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_spc.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_spc.py</span></code></a></div>

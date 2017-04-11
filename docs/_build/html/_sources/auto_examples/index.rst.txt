@@ -9,13 +9,13 @@ Gallery of Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of recall success as a function of serial position during st...">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a Lag-CRP as described in Kahana et al (1996). Given the recall of a stimulu...">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_recmat2egg_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_lagcrp_thumb.png
 
-        :ref:`sphx_glr_auto_examples_recmat2egg.py`
+        :ref:`sphx_glr_auto_examples_plot_lagcrp.py`
 
 .. raw:: html
 
@@ -25,7 +25,7 @@ Gallery of Examples
 .. toctree::
    :hidden:
 
-   /auto_examples/recmat2egg
+   /auto_examples/plot_lagcrp
 
 .. raw:: html
 
@@ -49,6 +49,26 @@ Gallery of Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a fingerprint.  Briefly, a fingerprint can be described as a summary of how ...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_fingerprint_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_fingerprint.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_fingerprint
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of an item being recalled first given its list position.">
 
 .. only:: html
@@ -69,27 +89,7 @@ Gallery of Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a Lag-CRP for a subject as described in Kahana et al (1996). Given the recal...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_lagcrp_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_lagcrp.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_lagcrp
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.  Without any flags, each list wil...">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.">
 
 .. only:: html
 
@@ -109,13 +109,13 @@ Gallery of Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we plot the average recall accuracy for two subject's data. Using the listgrou...">
+    <div class="sphx-glr-thumbcontainer" tooltip="An egg is made up of two primary pieces of data: `pres`, which are the words/stimuli that were ...">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_accuracy_multisubject_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_create_egg_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_accuracy_multisubject.py`
+        :ref:`sphx_glr_auto_examples_create_egg.py`
 
 .. raw:: html
 
@@ -125,47 +125,7 @@ Gallery of Examples
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_accuracy_multisubject
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="The sample data is a list of 2D arrays, where each array is fMRI brain activity from one subjec...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_load_example_thumb.png
-
-        :ref:`sphx_glr_auto_examples_load_example.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/load_example
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a fingerprint for a single subject.  Briefly, a fingerprint can be described...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_fingerprint_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_fingerprint.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_fingerprint
+   /auto_examples/create_egg
 .. raw:: html
 
     <div style='clear:both'></div>

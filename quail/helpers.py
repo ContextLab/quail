@@ -127,6 +127,6 @@ def stack_eggs(eggs):
         features = [egg.features.loc[sub,:].values.tolist() for egg in eggs for sub in egg.features.index.levels[0].values.tolist()]
         new_egg = Egg(pres=pres, rec=rec, features=features)
     else:
-        new_egg = Egg(pres=pres, rec=rec, features=features)
+        new_egg = Egg(pres=pres, rec=rec)
 
     return new_egg

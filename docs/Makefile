@@ -41,6 +41,10 @@ help:
 clean:
 	-rm -rf $(BUILDDIR)/*
 
+notebooks:
+	
+	make -C tutorial notebooks
+
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo

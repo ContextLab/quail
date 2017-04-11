@@ -7,10 +7,7 @@
 Plot free recall accuracy
 =============================
 
-This example plots free recall accuracy for a single subject.  Without any flags,
-each list will be plotted separately. To plot the average, set the plot_type
-kwarg to subject.  Finally, to change the style, you can pass the plot_style
-kwarg, setting it to bar, violin or swarm.
+This example plots free recall accuracy for a single subject.
 
 
 
@@ -32,25 +29,16 @@ kwarg, setting it to bar, violin or swarm.
     #import
     import quail
 
-    # presented words
-    presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
-
-    # recalled words
-    recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
-
-    # create the egg data object
-    egg = quail.Egg(pres=presented,rec=recalled)
+    #load data
+    egg = quail.load_example_data()
 
     #analysis
-    analyzed_data = quail.analyze(egg, analysis='accuracy')
+    analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*16)
 
     #plot by list
-    quail.plot(analyzed_data)
+    quail.plot(analyzed_data, title='Average Recall Accuracy')
 
-    #plot averaged over lists
-    quail.plot(analyzed_data, plot_type='subject')
-
-**Total running time of the script:** ( 0 minutes  0.790 seconds)
+**Total running time of the script:** ( 0 minutes  0.868 seconds)
 
 
 

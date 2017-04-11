@@ -8,7 +8,7 @@ Plot serial position curve
 =============================
 
 This example plots the probability of recall success as a function of serial
-position during stimulus encoding
+position during stimulus encoding.
 
 
 
@@ -30,22 +30,16 @@ position during stimulus encoding
     # import
     import quail
 
-    # presented words
-    presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
-
-    # recalled words
-    recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
-
-    # create egg object
-    egg = quail.Egg(pres=presented,rec=recalled)
+    #load data
+    egg = quail.load_example_data()
 
     #analysis
-    analyzed_data = quail.analyze(egg, analysis='spc')
+    analyzed_data = quail.analyze(egg, analysis='spc', listgroup=['average']*16)
 
     #plot
-    quail.plot(analyzed_data)
+    quail.plot(analyzed_data, title='Serial Position Curve')
 
-**Total running time of the script:** ( 0 minutes  0.215 seconds)
+**Total running time of the script:** ( 0 minutes  0.363 seconds)
 
 
 

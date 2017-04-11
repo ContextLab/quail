@@ -272,3 +272,22 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         return eggs
     else:
         return eggs[0]
+
+def load_example_data():
+    import dill
+    import pickle
+    with open('/Users/andyheusser/Documents/github/pyrec/examples/sample_data/egg.pickle', 'rb') as handle:
+        egg = pickle.load(handle)
+
+    return egg
+    # dbpath = ['/Users/andyheusser/Documents/github/FRFR-analyses/data/encoding/participants-test-room1.db',
+    #           '/Users/andyheusser/Documents/github/FRFR-analyses/data/encoding/participants-test-room2.db']
+    # recpath = '/Users/andyheusser/Documents/github/FRFR-analyses/data/recall/'
+    # remove_subs = ['debugCWO54U:debugQ59MF8', 'debugE1CAO3:debugONZ2R5', 'debugXG82XV:debug7XPXQA']
+    # wordpool = '/Users/andyheusser/Documents/github/FRFR-analyses/stimuli/cut_wordpool.csv'
+    # experiments = ['0.0', '1.0', '1.1']
+    #
+    # # create a list of eggs, where each egg is a different experiment
+    # groupby = {'exp_version': [['0.0','1.0','1.1']]}
+    # egg = load(dbpath=dbpath, recpath=recpath, remove_subs=remove_subs,
+    #                   wordpool=wordpool, experiments=experiments, groupby=groupby)

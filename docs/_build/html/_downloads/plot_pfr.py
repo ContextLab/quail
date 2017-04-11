@@ -15,17 +15,11 @@ list position.
 # import
 import quail
 
-# presented words
-presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
-
-# recalled words
-recalled=[[['bat', 'cat', 'goat', 'hat'],['zebra', 'horse', 'zoo']]]
-
-# create egg object
-egg = quail.Egg(pres=presented,rec=recalled)
+#load data
+egg = quail.load_example_data()
 
 # analysis
-analyzed_data = quail.analyze(egg, analysis='pfr')
+analyzed_data = quail.analyze(egg, analysis='pfr', listgroup=['average']*16)
 
 # plot
-quail.plot(analyzed_data)
+quail.plot(analyzed_data, title='Probability of First Recall')

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-**Quail**: A python toolbox for analyzing and plotting data from free recall experiments
+**Quail**: A python toolbox for analyzing free recall experiments and plotting the results
 ==================================
 
 `Quail <https://github.com/ContextLab/quail>`_ is a library for analyzing and visualizing free recall data
@@ -13,7 +13,7 @@ and to read the paper, click
 `here <https://github.com/ContextLab/>`_.
 
  Some key features of Quail are:
- 
+
  1. A simple data structure for encoding and recall data (eggs).
  2. A set of functions for analyzing data: accuracy, serial position curves, p(first recall), lag-crp and memory fingerprints!
  3. Simple API for customizing plot styles.

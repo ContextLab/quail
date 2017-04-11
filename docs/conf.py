@@ -121,6 +121,7 @@ html_theme_options = {
     'bootstrap_version': "3",
     'navbar_links': [("API", "api"),
                      ("Gallery", "auto_examples/index"),
+                     ("Tutorials", "tutorial"),
                      ("Download", "http://www.github.com/ContextLab/pyrec", True)],
 
     }

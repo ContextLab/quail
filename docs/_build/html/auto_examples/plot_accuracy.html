@@ -59,6 +59,7 @@
             
                 <li><a href="../api.html">API</a></li>
                 <li><a href="index.html">Gallery</a></li>
+                <li><a href="../tutorial.html">Tutorials</a></li>
                 <li><a href="http://www.github.com/ContextLab/pyrec">Download</a></li>
             
             
@@ -114,10 +115,7 @@
       
   <div class="section" id="plot-free-recall-accuracy">
 <span id="sphx-glr-auto-examples-plot-accuracy-py"></span><h1>Plot free recall accuracy<a class="headerlink" href="#plot-free-recall-accuracy" title="Permalink to this headline">¶</a></h1>
-<p>This example plots free recall accuracy for a single subject.  Without any flags,
-each list will be plotted separately. To plot the average, set the plot_type
-kwarg to subject.  Finally, to change the style, you can pass the plot_style
-kwarg, setting it to bar, violin or swarm.</p>
+<p>This example plots free recall accuracy for a single subject.</p>
 <img alt="../_images/sphx_glr_plot_accuracy_001.png" class="align-center" src="../_images/sphx_glr_plot_accuracy_001.png" />
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Code source: Andrew Heusser</span>
 <span class="c1"># License: MIT</span>
@@ -125,26 +123,17 @@ kwarg, setting it to bar, violin or swarm.</p>
 <span class="c1">#import</span>
 <span class="kn">import</span> <span class="nn">quail</span>
 
-<span class="c1"># presented words</span>
-<span class="n">presented</span><span class="o">=</span><span class="p">[[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]]</span>
-
-<span class="c1"># recalled words</span>
-<span class="n">recalled</span><span class="o">=</span><span class="p">[[[</span><span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">]]]</span>
-
-<span class="c1"># create the egg data object</span>
-<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">presented</span><span class="p">,</span><span class="n">rec</span><span class="o">=</span><span class="n">recalled</span><span class="p">)</span>
+<span class="c1">#load data</span>
+<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load_example_data</span><span class="p">()</span>
 
 <span class="c1">#analysis</span>
-<span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+<span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
 
 <span class="c1">#plot by list</span>
-<span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">)</span>
-
-<span class="c1">#plot averaged over lists</span>
-<span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;subject&#39;</span><span class="p">)</span>
+<span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Average Recall Accuracy&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.790 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.868 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_accuracy.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_accuracy.py</span></code></a></div>

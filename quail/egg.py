@@ -49,14 +49,24 @@ class Egg(object):
     """
 
 
-    def __init__(self, pres=[[[]]], rec=[[[]]], features=[[[]]], dist_funcs=dict(), meta={}, list_length=None):
+    def __init__(self, pres=[[[]]], rec=[[[]]], features=None, dist_funcs=dict(), meta={}, list_length=None):
+
+        if not all(isinstance(item, list) for sub in pres for item in sub):
+            pres = [pres]
+
+        if not all(isinstance(item, list) for sub in rec for item in sub):
+            rec = [rec]
+
+        if features:
+            if not all(isinstance(item, list) for sub in features for item in sub):
+                features = [features]
 
         self.pres = list2pd(pres)
         self.rec = list2pd(rec)
         self.meta = meta
 
         # attach features and dist funcs if they are passed
-        if features != [[[]]]:
+        if features:
             self.features = list2pd(features)
             self.dist_funcs = default_dist_funcs(dist_funcs, features[0][0][0])
         else:
