@@ -137,13 +137,13 @@ Gallery of Examples
 
   .. container:: sphx-glr-download
 
-    :download:`Download all examples in Python source code: auto_examples_python.zip <//Users/andyheusser/Documents/github/pyrec/docs/auto_examples/auto_examples_python.zip>`
+    :download:`Download all examples in Python source code: auto_examples_python.zip <//Users/andyheusser/Documents/github/quail/docs/auto_examples/auto_examples_python.zip>`
 
 
 
   .. container:: sphx-glr-download
 
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//Users/andyheusser/Documents/github/pyrec/docs/auto_examples/auto_examples_jupyter.zip>`
+    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//Users/andyheusser/Documents/github/quail/docs/auto_examples/auto_examples_jupyter.zip>`
 
 .. rst-class:: sphx-glr-signature
 
