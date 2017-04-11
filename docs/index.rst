@@ -18,6 +18,3 @@ and to read the paper, click
  2. A set of functions for analyzing data: accuracy, serial position curves, p(first recall), lag-crp and memory fingerprints!
  3. Simple API for customizing plot styles.
  4. Set of powerful tools for importing data, automatically transcribing audio files and more.
-
-.. toctree::
-   :maxdepth: 2

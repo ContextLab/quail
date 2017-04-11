@@ -21,3 +21,7 @@ and to read the paper, click
 
 .. toctree::
    :maxdepth: 2
+
+   api
+   auto_examples/index
+   tutorial
