@@ -38,7 +38,7 @@ This example plots free recall accuracy for a single subject.
     #plot by list
     quail.plot(analyzed_data, title='Average Recall Accuracy')
 
-**Total running time of the script:** ( 0 minutes  0.868 seconds)
+**Total running time of the script:** ( 0 minutes  0.843 seconds)
 
 
 

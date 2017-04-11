@@ -40,7 +40,7 @@ recalling stimuli in neighboring stimulus positions (n+/-5).
     #plot
     quail.plot(analyzed_data, title='Lag-CRP')
 
-**Total running time of the script:** ( 0 minutes  1.960 seconds)
+**Total running time of the script:** ( 0 minutes  1.920 seconds)
 
 
 

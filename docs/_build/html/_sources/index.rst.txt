@@ -19,9 +19,4 @@ and to read the paper, click
  3. Simple API for customizing plot styles.
  4. Set of powerful tools for importing data, automatically transcribing audio files and more.
 
-.. toctree::
-   :maxdepth: 2
-
-   api
-   auto_examples/index
-   tutorial
+ .. toctree::

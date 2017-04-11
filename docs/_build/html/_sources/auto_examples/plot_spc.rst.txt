@@ -39,7 +39,7 @@ position during stimulus encoding.
     #plot
     quail.plot(analyzed_data, title='Serial Position Curve')
 
-**Total running time of the script:** ( 0 minutes  0.363 seconds)
+**Total running time of the script:** ( 0 minutes  0.375 seconds)
 
 
 

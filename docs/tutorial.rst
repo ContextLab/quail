@@ -1,3 +1,5 @@
+:orphan:
+
 .. _tutorial:
 
 How to use the Quail package

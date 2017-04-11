@@ -39,7 +39,7 @@ list position.
     # plot
     quail.plot(analyzed_data, title='Probability of First Recall')
 
-**Total running time of the script:** ( 0 minutes  0.432 seconds)
+**Total running time of the script:** ( 0 minutes  0.472 seconds)
 
 
 
