@@ -11,7 +11,7 @@ The Egg data object
 .. toctree::
    :maxdepth: 2
 
-   tutorial/egg
+   tutorial/egg.ipynb
 
 Basic analysis and plotting
 ------------------
@@ -19,7 +19,7 @@ Basic analysis and plotting
 .. toctree::
    :maxdepth: 2
 
-   tutorial/basic_analyze_and_plot
+   tutorial/basic_analyze_and_plot.ipynb
 
 More advanced plotting
 ----------------
@@ -27,4 +27,4 @@ More advanced plotting
 .. toctree::
    :maxdepth: 2
 
-   tutorial/advanced_plotting
+   tutorial/advanced_plotting.ipynb

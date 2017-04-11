@@ -84,14 +84,14 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">The Egg data object</a><ul>
-<li><a class="reference internal" href="#load-in-the-library">Load in the library</a></li>
-<li><a class="reference internal" href="#the-pres-data-structure">The <code class="docutils literal"><span class="pre">pres</span></code> data structure</a></li>
-<li><a class="reference internal" href="#the-rec-data-structure">The <code class="docutils literal"><span class="pre">rec</span></code> data structure</a></li>
-<li><a class="reference internal" href="#multisubject-eggs">Multisubject <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
-<li><a class="reference internal" href="#stacking-eggs">Stacking <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
-<li><a class="reference internal" href="#the-features-data-structure">The <code class="docutils literal"><span class="pre">features</span></code> data structure</a></li>
-<li><a class="reference internal" href="#defining-custom-distance-functions-for-the-stimulus-feature-dimensions">Defining custom distance functions for the stimulus feature dimensions</a></li>
-<li><a class="reference internal" href="#adding-meta-data-to-an-egg">Adding meta data to an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
+<li><a class="reference internal" href="#Load-in-the-library">Load in the library</a></li>
+<li><a class="reference internal" href="#The-pres-data-structure">The <code class="docutils literal"><span class="pre">pres</span></code> data structure</a></li>
+<li><a class="reference internal" href="#The-rec-data-structure">The <code class="docutils literal"><span class="pre">rec</span></code> data structure</a></li>
+<li><a class="reference internal" href="#Multisubject-eggs">Multisubject <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
+<li><a class="reference internal" href="#Stacking-eggs">Stacking <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
+<li><a class="reference internal" href="#The-features-data-structure">The <code class="docutils literal"><span class="pre">features</span></code> data structure</a></li>
+<li><a class="reference internal" href="#Defining-custom-distance-functions-for-the-stimulus-feature-dimensions">Defining custom distance functions for the stimulus feature dimensions</a></li>
+<li><a class="reference internal" href="#Adding-meta-data-to-an-egg">Adding meta data to an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -123,8 +123,170 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="the-egg-data-object">
-<h1>The Egg data object<a class="headerlink" href="#the-egg-data-object" title="Permalink to this headline">¶</a></h1>
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 9ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="The-Egg-data-object">
+<h1>The Egg data object<a class="headerlink" href="#The-Egg-data-object" title="Permalink to this headline">¶</a></h1>
 <p>This tutorial will go over the basics of the <code class="docutils literal"><span class="pre">Egg</span></code> data object, the
 essential quail data structure that contains all the data you need to
 run analyses and plot the results. An egg is made up of two primary
@@ -147,42 +309,83 @@ store custom meta data about the dataset, such as the date collected,
 experiment version etc.</li>
 </ol>
 <p>Now, lets dive in and create an <code class="docutils literal"><span class="pre">egg</span></code> from scratch.</p>
-<div class="section" id="load-in-the-library">
-<h2>Load in the library<a class="headerlink" href="#load-in-the-library" title="Permalink to this headline">¶</a></h2>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">quail</span>
+<div class="section" id="Load-in-the-library">
+<h2>Load in the library<a class="headerlink" href="#Load-in-the-library" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">quail</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="the-pres-data-structure">
-<h2>The <code class="docutils literal"><span class="pre">pres</span></code> data structure<a class="headerlink" href="#the-pres-data-structure" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="The-pres-data-structure">
+<h2>The <code class="docutils literal"><span class="pre">pres</span></code> data structure<a class="headerlink" href="#The-pres-data-structure" title="Permalink to this headline">¶</a></h2>
 <p>The first piece of an <code class="docutils literal"><span class="pre">egg</span></code> is the <code class="docutils literal"><span class="pre">pres</span></code> data, or in other words
 the words/stimuli that were presented to the subject. For a single
 subject&#8217;s data, the form of the input will be a list of lists, where
 each list is comprised of the words presented to the subject during a
 particular study block. Let&#8217;s create a fake dataset of one subject who
 saw two encoding lists:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">presented_words</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">presented_words</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="the-rec-data-structure">
-<h2>The <code class="docutils literal"><span class="pre">rec</span></code> data structure<a class="headerlink" href="#the-rec-data-structure" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="The-rec-data-structure">
+<h2>The <code class="docutils literal"><span class="pre">rec</span></code> data structure<a class="headerlink" href="#The-rec-data-structure" title="Permalink to this headline">¶</a></h2>
 <p>The second fundamental component of an egg is the <code class="docutils literal"><span class="pre">rec</span></code> data, or the
 words/stimuli that were recalled by the subject. Now, let&#8217;s create the
 recall lists:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">recalled_words</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">]]</span>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
 </pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">recalled_words</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
 </div>
 <p>We now have the two components necessary to build an <code class="docutils literal"><span class="pre">egg</span></code>, so let&#8217;s
 do that and then take a look at the result.</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">presented_words</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">recalled_words</span><span class="p">)</span>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
 </pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">presented_words</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">recalled_words</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <p>That&#8217;s it! We&#8217;ve created our first <code class="docutils literal"><span class="pre">egg</span></code>. Let&#8217;s take a closer look at
 how the <code class="docutils literal"><span class="pre">egg</span></code> is setup. First we&#8217;ll take a look at the <code class="docutils literal"><span class="pre">pres</span></code> data.</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">pres</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
 </pre></div>
 </div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">egg</span><span class="o">.</span><span class="n">pres</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -221,14 +424,29 @@ how the <code class="docutils literal"><span class="pre">egg</span></code> is se
     </tr>
   </tbody>
 </table>
-</div><p>As you can see above, the <code class="docutils literal"><span class="pre">pres</span></code> field was turned into a multi-index
+</div></div>
+</div>
+<p>As you can see above, the <code class="docutils literal"><span class="pre">pres</span></code> field was turned into a multi-index
 Pandas DataFrame organized by subject and by list. This is how the
 <code class="docutils literal"><span class="pre">pres</span></code> data is stored within an egg, which will make more sense when
 we consider larger datasets with more subjects. Next, let&#8217;s take a look
 at the <code class="docutils literal"><span class="pre">rec</span></code> data:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">rec</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
 </pre></div>
 </div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">egg</span><span class="o">.</span><span class="n">rec</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -267,15 +485,23 @@ at the <code class="docutils literal"><span class="pre">rec</span></code> data:<
     </tr>
   </tbody>
 </table>
-</div><p>The <code class="docutils literal"><span class="pre">rec</span></code> data is also stored as a DataFrame. Notice that if the
+</div></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">rec</span></code> data is also stored as a DataFrame. Notice that if the
 number of recalled words is shorter than the number of presented words
 (as it typically will be), those columns are filled with a <code class="docutils literal"><span class="pre">None</span></code>
 value. Now, let&#8217;s create an <code class="docutils literal"><span class="pre">egg</span></code> with two subject&#8217;s data and take a
 look at the result.</p>
 </div>
-<div class="section" id="multisubject-eggs">
-<h2>Multisubject <code class="docutils literal"><span class="pre">eggs</span></code><a class="headerlink" href="#multisubject-eggs" title="Permalink to this headline">¶</a></h2>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># presented words</span>
+<div class="section" id="Multisubject-eggs">
+<h2>Multisubject <code class="docutils literal"><span class="pre">eggs</span></code><a class="headerlink" href="#Multisubject-eggs" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># presented words</span>
 <span class="n">sub1_presented</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
 <span class="n">sub2_presented</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
 
@@ -291,153 +517,26 @@ look at the result.</p>
 <span class="n">multisubject_egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">presented_words</span><span class="p">,</span><span class="n">rec</span><span class="o">=</span><span class="n">recalled_words</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
 <p>As you can see above, in order to create an <code class="docutils literal"><span class="pre">egg</span></code> with more than one
 subject&#8217;s data, all you do is create a list of subjects. Let&#8217;s see how
 the <code class="docutils literal"><span class="pre">pres</span></code> data is organized in the egg with more than one subject:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">multisubject_egg</span><span class="o">.</span><span class="n">pres</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
 </pre></div>
 </div>
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-    </tr>
-    <tr>
-      <th>Subject</th>
-      <th>List</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="2" valign="top">0</th>
-      <th>0</th>
-      <td>cat</td>
-      <td>bat</td>
-      <td>hat</td>
-      <td>goat</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>zoo</td>
-      <td>animal</td>
-      <td>zebra</td>
-      <td>horse</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">1</th>
-      <th>0</th>
-      <td>cat</td>
-      <td>bat</td>
-      <td>hat</td>
-      <td>goat</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>zoo</td>
-      <td>animal</td>
-      <td>zebra</td>
-      <td>horse</td>
-    </tr>
-  </tbody>
-</table>
-</div><p>Looks identical to the single subject data, but now we have two unique
-subject identifiers in the <code class="docutils literal"><span class="pre">DataFrame</span></code>. The <code class="docutils literal"><span class="pre">rec</span></code> data is set up in
-the same way:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">multisubject_egg</span><span class="o">.</span><span class="n">rec</span>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">multisubject_egg</span><span class="o">.</span><span class="n">pres</span>
 </pre></div>
 </div>
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-    </tr>
-    <tr>
-      <th>Subject</th>
-      <th>List</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th rowspan="2" valign="top">0</th>
-      <th>0</th>
-      <td>bat</td>
-      <td>cat</td>
-      <td>goat</td>
-      <td>hat</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>animal</td>
-      <td>horse</td>
-      <td>zoo</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th rowspan="2" valign="top">1</th>
-      <th>0</th>
-      <td>cat</td>
-      <td>goat</td>
-      <td>bat</td>
-      <td>hat</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>horse</td>
-      <td>zebra</td>
-      <td>zoo</td>
-      <td>animal</td>
-    </tr>
-  </tbody>
-</table>
-</div><p>As you add more subjects, they are simply appended to the bottom of the
-df with a unique subject identifier. Let&#8217;s now say you had two separate
-eggs that you wanted to combine. You can use the <code class="docutils literal"><span class="pre">stack_eggs</span></code> function
-to do this easily.</p>
 </div>
-<div class="section" id="stacking-eggs">
-<h2>Stacking <code class="docutils literal"><span class="pre">eggs</span></code><a class="headerlink" href="#stacking-eggs" title="Permalink to this headline">¶</a></h2>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># subject 1 data</span>
-<span class="n">sub1_presented</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
-<span class="n">sub1_recalled</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">]]</span>
-
-<span class="c1"># create subject 2 egg</span>
-<span class="n">subject1_egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">sub1_presented</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">sub1_recalled</span><span class="p">)</span>
-
-<span class="c1"># subject 2 data</span>
-<span class="n">sub2_presented</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
-<span class="n">sub2_recalled</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">]]</span>
-
-<span class="c1"># create subject 2 egg</span>
-<span class="n">subject2_egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">sub2_presented</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">sub2_recalled</span><span class="p">)</span>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
 </pre></div>
 </div>
-<p>We now have two separate eggs, each with a single subject&#8217;s data. Let&#8217;s
-combine them by passing a <code class="docutils literal"><span class="pre">list</span></code> of <code class="docutils literal"><span class="pre">eggs</span></code> to the <code class="docutils literal"><span class="pre">stack_eggs</span></code>
-function:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">stacked_eggs</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">stack_eggs</span><span class="p">([</span><span class="n">subject1_egg</span><span class="p">,</span> <span class="n">subject2_egg</span><span class="p">])</span>
-<span class="n">stacked_eggs</span><span class="o">.</span><span class="n">pres</span>
-</pre></div>
-</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -492,27 +591,220 @@ function:</p>
   </tbody>
 </table>
 </div></div>
-<div class="section" id="the-features-data-structure">
-<h2>The <code class="docutils literal"><span class="pre">features</span></code> data structure<a class="headerlink" href="#the-features-data-structure" title="Permalink to this headline">¶</a></h2>
+</div>
+<p>Looks identical to the single subject data, but now we have two unique
+subject identifiers in the <code class="docutils literal"><span class="pre">DataFrame</span></code>. The <code class="docutils literal"><span class="pre">rec</span></code> data is set up in
+the same way:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">multisubject_egg</span><span class="o">.</span><span class="n">rec</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+    <tr>
+      <th>Subject</th>
+      <th>List</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">0</th>
+      <th>0</th>
+      <td>bat</td>
+      <td>cat</td>
+      <td>goat</td>
+      <td>hat</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>animal</td>
+      <td>horse</td>
+      <td>zoo</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">1</th>
+      <th>0</th>
+      <td>cat</td>
+      <td>goat</td>
+      <td>bat</td>
+      <td>hat</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>horse</td>
+      <td>zebra</td>
+      <td>zoo</td>
+      <td>animal</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>As you add more subjects, they are simply appended to the bottom of the
+df with a unique subject identifier. Let&#8217;s now say you had two separate
+eggs that you wanted to combine. You can use the <code class="docutils literal"><span class="pre">stack_eggs</span></code> function
+to do this easily.</p>
+</div>
+<div class="section" id="Stacking-eggs">
+<h2>Stacking <code class="docutils literal"><span class="pre">eggs</span></code><a class="headerlink" href="#Stacking-eggs" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># subject 1 data</span>
+<span class="n">sub1_presented</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
+<span class="n">sub1_recalled</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">]]</span>
+
+<span class="c1"># create subject 2 egg</span>
+<span class="n">subject1_egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">sub1_presented</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">sub1_recalled</span><span class="p">)</span>
+
+<span class="c1"># subject 2 data</span>
+<span class="n">sub2_presented</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
+<span class="n">sub2_recalled</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">]]</span>
+
+<span class="c1"># create subject 2 egg</span>
+<span class="n">subject2_egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">sub2_presented</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">sub2_recalled</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We now have two separate eggs, each with a single subject&#8217;s data. Let&#8217;s
+combine them by passing a <code class="docutils literal"><span class="pre">list</span></code> of <code class="docutils literal"><span class="pre">eggs</span></code> to the <code class="docutils literal"><span class="pre">stack_eggs</span></code>
+function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">stacked_eggs</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">stack_eggs</span><span class="p">([</span><span class="n">subject1_egg</span><span class="p">,</span> <span class="n">subject2_egg</span><span class="p">])</span>
+<span class="n">stacked_eggs</span><span class="o">.</span><span class="n">pres</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+    </tr>
+    <tr>
+      <th>Subject</th>
+      <th>List</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">0</th>
+      <th>0</th>
+      <td>cat</td>
+      <td>bat</td>
+      <td>hat</td>
+      <td>goat</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>zoo</td>
+      <td>animal</td>
+      <td>zebra</td>
+      <td>horse</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">1</th>
+      <th>0</th>
+      <td>cat</td>
+      <td>bat</td>
+      <td>hat</td>
+      <td>goat</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>zoo</td>
+      <td>animal</td>
+      <td>zebra</td>
+      <td>horse</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+<div class="section" id="The-features-data-structure">
+<h2>The <code class="docutils literal"><span class="pre">features</span></code> data structure<a class="headerlink" href="#The-features-data-structure" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">features</span></code> data structure is an optional field that can be added
 to an egg. It contains features of the presented words that are required
 for the fingerprint analysis. The <code class="docutils literal"><span class="pre">features</span></code> data is set up like the
 <code class="docutils literal"><span class="pre">pres</span></code> and <code class="docutils literal"><span class="pre">rec</span></code> data, but instead of a single word, there is a
 dictionary of features. For example take the word &#8220;cat&#8221;. A <code class="docutils literal"><span class="pre">features</span></code>
 dictionary for this word might look something like this:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">cat_features</span> <span class="o">=</span> <span class="p">{</span>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">cat_features</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span>
     <span class="s1">&#39;word_length&#39;</span> <span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
     <span class="s1">&#39;starting_letter&#39;</span> <span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+</div>
 <p>You can include any stimulus feature you want in this dictionary, such
 as the position of the word on the screen, the color, or perhaps the
 font of the word. To create the <code class="docutils literal"><span class="pre">features</span></code> data structure in an
 <code class="docutils literal"><span class="pre">egg</span></code>, use the format of the <code class="docutils literal"><span class="pre">pres</span></code> structure, but replace the words
 with dictionaries:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># presented words</span>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># presented words</span>
 <span class="n">presented_words</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;donkey&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
 
 <span class="c1"># presentation features</span>
@@ -567,13 +859,27 @@ with dictionaries:</p>
 <span class="n">recalled_words</span><span class="o">=</span><span class="p">[[</span><span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;donkey&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">]]</span>
 </pre></div>
 </div>
+</div>
 <p>Then, simply pass the features to the <code class="docutils literal"><span class="pre">Egg</span></code> class using the
 <code class="docutils literal"><span class="pre">features</span></code> key word argument:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># create egg object</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># create egg object</span>
 <span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">presented_words</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">recalled_words</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">presented_words_features</span><span class="p">)</span>
 <span class="n">egg</span><span class="o">.</span><span class="n">features</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -613,8 +919,10 @@ with dictionaries:</p>
   </tbody>
 </table>
 </div></div>
-<div class="section" id="defining-custom-distance-functions-for-the-stimulus-feature-dimensions">
-<h2>Defining custom distance functions for the stimulus feature dimensions<a class="headerlink" href="#defining-custom-distance-functions-for-the-stimulus-feature-dimensions" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="Defining-custom-distance-functions-for-the-stimulus-feature-dimensions">
+<h2>Defining custom distance functions for the stimulus feature dimensions<a class="headerlink" href="#Defining-custom-distance-functions-for-the-stimulus-feature-dimensions" title="Permalink to this headline">¶</a></h2>
 <p>As described in the fingerprint tutorial, the <code class="docutils literal"><span class="pre">features</span></code> data
 structure is used to estimate how subjects cluster their recall
 responses with respect to the features of the encoded stimuli. Briefly,
@@ -636,24 +944,37 @@ words is computed using Euclidean distance. However, the point of this
 digression is that you can define your own distance functions by passing
 a <code class="docutils literal"><span class="pre">dist_func</span></code> dictionary to the <code class="docutils literal"><span class="pre">Egg</span></code> class. This could be for all
 feature dimensions, or only a subset. Let&#8217;s see an example:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">dist_funcs</span> <span class="o">=</span> <span class="p">{</span>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">dist_funcs</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;word_length&#39;</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 <span class="p">}</span>
 
 <span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">presented_words</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">recalled_words</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">presented_words_features</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="o">=</span><span class="n">dist_funcs</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
 <p>In the example code above, similarity between words for the word_length
 feature dimension will now be computed using this custom distance
 function, while all other feature dimensions will be set to the default.</p>
 </div>
-<div class="section" id="adding-meta-data-to-an-egg">
-<h2>Adding meta data to an <code class="docutils literal"><span class="pre">egg</span></code><a class="headerlink" href="#adding-meta-data-to-an-egg" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Adding-meta-data-to-an-egg">
+<h2>Adding meta data to an <code class="docutils literal"><span class="pre">egg</span></code><a class="headerlink" href="#Adding-meta-data-to-an-egg" title="Permalink to this headline">¶</a></h2>
 <p>Lastly, we can add meta data to the <code class="docutils literal"><span class="pre">egg</span></code>. We added this field to help
 researchers keep their eggs organized by adding custom meta data to the
 <code class="docutils literal"><span class="pre">egg</span></code> object. The data is added to the <code class="docutils literal"><span class="pre">egg</span></code> by passing the <code class="docutils literal"><span class="pre">meta</span></code>
 key word argument when creating the <code class="docutils literal"><span class="pre">egg</span></code>:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;Researcher&#39;</span> <span class="p">:</span> <span class="s1">&#39;Andy Heusser&#39;</span><span class="p">,</span>
     <span class="s1">&#39;Study&#39;</span> <span class="p">:</span> <span class="s1">&#39;Egg Tutorial&#39;</span>
 <span class="p">}</span>
@@ -662,8 +983,16 @@ key word argument when creating the <code class="docutils literal"><span class="
 <span class="n">egg</span><span class="o">.</span><span class="n">meta</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;Researcher&#39;</span><span class="p">:</span> <span class="s1">&#39;Andy Heusser&#39;</span><span class="p">,</span> <span class="s1">&#39;Study&#39;</span><span class="p">:</span> <span class="s1">&#39;Egg Tutorial&#39;</span><span class="p">}</span>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[16]:
 </pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>{&#39;Researcher&#39;: &#39;Andy Heusser&#39;, &#39;Study&#39;: &#39;Egg Tutorial&#39;}
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -681,7 +1010,7 @@ key word argument when creating the <code class="docutils literal"><span class="
         <br/>
         
 <div id="sourcelink">
-  <a href="../_sources/tutorial/egg.rst.txt"
+  <a href="../_sources/tutorial/egg.ipynb.txt"
      rel="nofollow">Source</a>
 </div>
       

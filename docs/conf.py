@@ -35,7 +35,8 @@ extensions = ['sphinx.ext.autodoc',
     'numpydoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.viewcode',
-    'sphinx_gallery.gen_gallery']
+    'sphinx_gallery.gen_gallery',
+    'nbsphinx']
 
 # Generate the API documentation when building
 autosummary_generate = True

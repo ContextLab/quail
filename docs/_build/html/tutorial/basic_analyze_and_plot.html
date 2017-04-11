@@ -84,11 +84,11 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Basic analyzing and plotting</a><ul>
-<li><a class="reference internal" href="#recall-accuracy">Recall Accuracy</a></li>
-<li><a class="reference internal" href="#serial-position-curve">Serial Position Curve</a></li>
-<li><a class="reference internal" href="#probability-of-first-recall">Probability of First Recall</a></li>
-<li><a class="reference internal" href="#lag-crp">Lag-CRP</a></li>
-<li><a class="reference internal" href="#memory-fingerprint">Memory Fingerprint</a></li>
+<li><a class="reference internal" href="#Recall-Accuracy">Recall Accuracy</a></li>
+<li><a class="reference internal" href="#Serial-Position-Curve">Serial Position Curve</a></li>
+<li><a class="reference internal" href="#Probability-of-First-Recall">Probability of First Recall</a></li>
+<li><a class="reference internal" href="#Lag-CRP">Lag-CRP</a></li>
+<li><a class="reference internal" href="#Memory-Fingerprint">Memory Fingerprint</a></li>
 </ul>
 </li>
 </ul>
@@ -120,8 +120,170 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="basic-analyzing-and-plotting">
-<h1>Basic analyzing and plotting<a class="headerlink" href="#basic-analyzing-and-plotting" title="Permalink to this headline">¶</a></h1>
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 9ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="section" id="Basic-analyzing-and-plotting">
+<h1>Basic analyzing and plotting<a class="headerlink" href="#Basic-analyzing-and-plotting" title="Permalink to this headline">¶</a></h1>
 <p>This tutorial will go over the basics of analyzing <code class="docutils literal"><span class="pre">eggs</span></code>, the primary
 data structure used in <code class="docutils literal"><span class="pre">quail</span></code>. To learn about how an egg is set up,
 see the egg tutorial.</p>
@@ -144,16 +306,36 @@ their recall responses with respect to features of a stimulus (see the
 fingerprint tutorial for more on this).</p>
 <p>Let&#8217;s get to analyzing some <code class="docutils literal"><span class="pre">eggs</span></code>. First, we&#8217;ll load in some example
 data:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">quail</span>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">quail</span>
 <span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load_example_data</span><span class="p">()</span>
 </pre></div>
+</div>
 </div>
 <p>This dataset is comprised of 19 subjects, who each performed 16
 study/test blocks of 16 words each. Here are some of the presented
 words:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [2]:
 </pre></div>
 </div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">egg</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -297,10 +479,25 @@ words:</p>
     </tr>
   </tbody>
 </table>
-</div><p>and some of the recalled words:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</div></div>
+</div>
+<p>and some of the recalled words:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [3]:
 </pre></div>
 </div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">egg</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -472,16 +669,31 @@ words:</p>
     </tr>
   </tbody>
 </table>
-</div><p>We can start with the simplest analysis - recall accuracy - which is
+</div></div>
+</div>
+<p>We can start with the simplest analysis - recall accuracy - which is
 just the proportion of words recalled that were in the encoding lists.
 To compute accuracy, simply call the <code class="docutils literal"><span class="pre">analyze</span></code> function, with the
 <code class="docutils literal"><span class="pre">analysis</span></code> key word argument set to <code class="docutils literal"><span class="pre">accuracy</span></code>:</p>
-<div class="section" id="recall-accuracy">
-<h2>Recall Accuracy<a class="headerlink" href="#recall-accuracy" title="Permalink to this headline">¶</a></h2>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+<div class="section" id="Recall-Accuracy">
+<h2>Recall Accuracy<a class="headerlink" href="#Recall-Accuracy" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
 <span class="n">accuracy</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -520,15 +732,30 @@ To compute accuracy, simply call the <code class="docutils literal"><span class=
     </tr>
   </tbody>
 </table>
-</div><p>The result is a multi-index Pandas DataFrame where the first-level index
+</div></div>
+</div>
+<p>The result is a multi-index Pandas DataFrame where the first-level index
 is the subject identifier and the second level index is the list number.
 By default, note that each list is analyzed separately. However, you can
 easily return the average over lists using the <code class="docutils literal"><span class="pre">listgroup</span></code> kew word
 argument:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">accuracy_avg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">accuracy_avg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">accuracy_avg</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -571,14 +798,29 @@ argument:</p>
     </tr>
   </tbody>
 </table>
-</div><p>Now, the result is a single value for each subject representing the
+</div></div>
+</div>
+<p>Now, the result is a single value for each subject representing the
 average accuracy across the 16 lists. The <code class="docutils literal"><span class="pre">listgroup</span></code> kwarg can also
 be used to do some fancier groupings, like splitting the data into the
 first and second half of the experiment:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">accuracy_split</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">accuracy_split</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">accuracy_split</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -619,12 +861,27 @@ first and second half of the experiment:</p>
     </tr>
   </tbody>
 </table>
-</div><p>These analysis results can be passed directly into the plot function
+</div></div>
+</div>
+<p>These analysis results can be passed directly into the plot function
 like so:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy_split</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [7]:
 </pre></div>
 </div>
-<img alt="../_images/basic_analyze_and_plot_14_0.png" src="../_images/basic_analyze_and_plot_14_0.png" />
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy_split</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_basic_analyze_and_plot_14_0.png" src="../_images/tutorial_basic_analyze_and_plot_14_0.png" />
+</div>
+</div>
 <p>For more details on plotting, see the plot tutorial. Next, lets take a
 look at the serial position curve analysis. As stated above the serial
 position curve (or spc) computes recall accuracy as a function of the
@@ -632,12 +889,25 @@ encoding position of the word. To use it, use the same <code class="docutils lit
 function illustrated above, but set the <code class="docutils literal"><span class="pre">analysis</span></code> kwarg to <code class="docutils literal"><span class="pre">spc</span></code>.
 Let&#8217;s also average across lists within subject:</p>
 </div>
-<div class="section" id="serial-position-curve">
-<h2>Serial Position Curve<a class="headerlink" href="#serial-position-curve" title="Permalink to this headline">¶</a></h2>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">spc</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;spc&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+<div class="section" id="Serial-Position-Curve">
+<h2>Serial Position Curve<a class="headerlink" href="#Serial-Position-Curve" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">spc</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;spc&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">spc</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -813,25 +1083,53 @@ Let&#8217;s also average across lists within subject:</p>
     </tr>
   </tbody>
 </table>
-</div><p>The result is a df where each row is a subject and each column is the
+</div></div>
+</div>
+<p>The result is a df where each row is a subject and each column is the
 encoding position of the word. To plot, simply pass the result of the
 analysis function to the plot function:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spc</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [9]:
 </pre></div>
 </div>
-<img alt="../_images/basic_analyze_and_plot_19_0.png" src="../_images/basic_analyze_and_plot_19_0.png" />
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">spc</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="probability-of-first-recall">
-<h2>Probability of First Recall<a class="headerlink" href="#probability-of-first-recall" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_basic_analyze_and_plot_19_0.png" src="../_images/tutorial_basic_analyze_and_plot_19_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Probability-of-First-Recall">
+<h2>Probability of First Recall<a class="headerlink" href="#Probability-of-First-Recall" title="Permalink to this headline">¶</a></h2>
 <p>The next analysis we&#8217;ll take a look at is the probability of first
 recall, which is the probability that a word will be recalled first as a
 function of its encoding position. To compute this, call the <code class="docutils literal"><span class="pre">analyze</span></code>
 function with the <code class="docutils literal"><span class="pre">analysis</span></code> kwarg set to <code class="docutils literal"><span class="pre">pfr</span></code>. Again, we&#8217;ll
 average over lists:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">pfr</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;pfr&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">pfr</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;pfr&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">pfr</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -1007,23 +1305,51 @@ average over lists:</p>
     </tr>
   </tbody>
 </table>
-</div><p>This df is set up just like the serial position curve. To plot:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pfr</span><span class="p">)</span>
+</div></div>
+</div>
+<p>This df is set up just like the serial position curve. To plot:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [11]:
 </pre></div>
 </div>
-<img alt="../_images/basic_analyze_and_plot_23_0.png" src="../_images/basic_analyze_and_plot_23_0.png" />
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pfr</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="lag-crp">
-<h2>Lag-CRP<a class="headerlink" href="#lag-crp" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_basic_analyze_and_plot_23_0.png" src="../_images/tutorial_basic_analyze_and_plot_23_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Lag-CRP">
+<h2>Lag-CRP<a class="headerlink" href="#Lag-CRP" title="Permalink to this headline">¶</a></h2>
 <p>The next analysis to consider is the lag-CRP, which again is a function
 that given the recall of word n, returns the probability of recalling
 words at neighboring positions (n+/-1, 2, 3 etc). To use it? You guessed
 it: call the <code class="docutils literal"><span class="pre">analyze</span></code> function with the <code class="docutils literal"><span class="pre">analysis</span></code> kwarg set to
 <code class="docutils literal"><span class="pre">lagcrp</span></code>:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">lagcrp</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">lagcrp</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">lagcrp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -1207,16 +1533,31 @@ it: call the <code class="docutils literal"><span class="pre">analyze</span></co
   </tbody>
 </table>
 <p>5 rows × 39 columns</p>
-</div><p>Unlike the previous two analyses, the result of this analysis returns a
+</div></div>
+</div>
+<p>Unlike the previous two analyses, the result of this analysis returns a
 df where the number of columns are double the length of the lists. To
 view the results:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">ax</span><span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lagcrp</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [13]:
 </pre></div>
 </div>
-<img alt="../_images/basic_analyze_and_plot_27_0.png" src="../_images/basic_analyze_and_plot_27_0.png" />
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">ax</span><span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lagcrp</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="memory-fingerprint">
-<h2>Memory Fingerprint<a class="headerlink" href="#memory-fingerprint" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_basic_analyze_and_plot_27_0.png" src="../_images/tutorial_basic_analyze_and_plot_27_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Memory-Fingerprint">
+<h2>Memory Fingerprint<a class="headerlink" href="#Memory-Fingerprint" title="Permalink to this headline">¶</a></h2>
 <p>Last but not least is the memory fingerprint analysis. For a detailed
 treatment of this analysis, see the fingerprint tutorial.</p>
 <p>As described in the fingerprint tutorial, the <code class="docutils literal"><span class="pre">features</span></code> data
@@ -1235,9 +1576,22 @@ field when you create your <code class="docutils literal"><span class="pre">egg<
 included. For more info on how to create this field, see the egg and
 fingerprint tutorials.</p>
 <p>Here is a glimpse of the features df:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [14]:
 </pre></div>
 </div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">egg</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -1381,19 +1735,39 @@ fingerprint tutorials.</p>
     </tr>
   </tbody>
 </table>
-</div><p>Like the other analyses, computing the memory fingerprint can be done
+</div></div>
+</div>
+<p>Like the other analyses, computing the memory fingerprint can be done
 using the <code class="docutils literal"><span class="pre">analyze</span></code> function with the <code class="docutils literal"><span class="pre">analysis</span></code> kwarg set to
 <code class="docutils literal"><span class="pre">fingerprint</span></code>:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">fingerprint</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">andyheusser</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Enthought</span><span class="o">/</span><span class="n">Canopy_64bit</span><span class="o">/</span><span class="n">User</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python2</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">fromnumeric</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">2889</span><span class="p">:</span> <span class="ne">RuntimeWarning</span><span class="p">:</span> <span class="n">Mean</span> <span class="n">of</span> <span class="n">empty</span> <span class="nb">slice</span><span class="o">.</span>
-  <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">andyheusser</span><span class="o">/</span><span class="n">Library</span><span class="o">/</span><span class="n">Enthought</span><span class="o">/</span><span class="n">Canopy_64bit</span><span class="o">/</span><span class="n">User</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python2</span><span class="o">.</span><span class="mi">7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">numpy</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">_methods</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">80</span><span class="p">:</span> <span class="ne">RuntimeWarning</span><span class="p">:</span> <span class="n">invalid</span> <span class="n">value</span> <span class="n">encountered</span> <span class="ow">in</span> <span class="n">double_scalars</span>
-  <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">ret</span> <span class="o">/</span> <span class="n">rcount</span><span class="p">)</span>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/numpy/core/fromnumeric.py:2889: RuntimeWarning: Mean of empty slice.
+  out=out, **kwargs)
+/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/numpy/core/_methods.py:80: RuntimeWarning: invalid value encountered in double_scalars
+  ret = ret.dtype.type(ret / rcount)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[15]:
 </pre></div>
 </div>
+<div class="output_area docutils container">
 <div>
 <table border="1" class="dataframe">
   <thead>
@@ -1471,16 +1845,31 @@ using the <code class="docutils literal"><span class="pre">analyze</span></code>
     </tr>
   </tbody>
 </table>
-</div><p>The result of this analysis is a df, where each row is a subject&#8217;s
+</div></div>
+</div>
+<p>The result of this analysis is a df, where each row is a subject&#8217;s
 fingerprint and each column is a feature dimensions. The values
 represent a subjects tendency to cluster their recall responses along a
 particular feature dimensions. They are probability values, and thus,
 greater values indicate more clustering along that feature dimension. To
 plot, simply pass the result to the plot function:</p>
-<div class="code ipython2 highlight-default"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">)</span>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [16]:
 </pre></div>
 </div>
-<img alt="../_images/basic_analyze_and_plot_33_0.png" src="../_images/basic_analyze_and_plot_33_0.png" />
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorial_basic_analyze_and_plot_33_0.png" src="../_images/tutorial_basic_analyze_and_plot_33_0.png" />
+</div>
+</div>
 <p>This result suggests that subjects in this example dataset tended to
 cluster their recall responses by category as well as the size (bigger
 or smaller than a shoebox) of the word.</p>
@@ -1500,7 +1889,7 @@ or smaller than a shoebox) of the word.</p>
         <br/>
         
 <div id="sourcelink">
-  <a href="../_sources/tutorial/basic_analyze_and_plot.rst.txt"
+  <a href="../_sources/tutorial/basic_analyze_and_plot.ipynb.txt"
      rel="nofollow">Source</a>
 </div>
       

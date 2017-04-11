@@ -1,0 +1,335 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Basic analyzing and plotting\n",
+    "\n",
+    "This tutorial will go over the basics of analyzing `eggs`, the primary data structure used in `quail`. To learn about how an egg is set up, see the egg tutorial.\n",
+    "\n",
+    "An egg is made up of (at minimum) the words presented to a subject and the words recalled by the subject.  With these, two components we can perform a number of analyses:\n",
+    "\n",
+    "1. **Recall Accuracy** - the proportion of words presented that were later recalled\n",
+    "2. **Serial Position Curve** - recall accuracy as a function of the encoding position of the word\n",
+    "3. **Probability of First Recall** - the probability that a word will be recalled first as a function of its encoding position\n",
+    "4. **Lag-CRP** - given the recall of word n, the probability of recalling words at neighboring positions (n+/-1, 2, 3 etc).\n",
+    "\n",
+    "If we have a set of features for the stimuli, we can also compute a **Memory Fingerprint**, which is an estimate of how a subject clusters their recall responses with respect to features of a stimulus (see the fingerprint tutorial for more on this).\n",
+    "\n",
+    "Let's get to analyzing some `eggs`.  First, we'll load in some example data: "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import quail\n",
+    "egg = quail.load_example_data()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This dataset is comprised of 19 subjects, who each performed 16 study/test blocks of 16 words each.  Here are some of the presented words:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "egg.pres.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "and some of the recalled words:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "egg.rec.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can start with the simplest analysis - recall accuracy - which is just the proportion of words recalled that were in the encoding lists.  To compute accuracy, simply call the `analyze` function, with the `analysis` key word argument set to `accuracy`:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Recall Accuracy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "accuracy = quail.analyze(egg, analysis='accuracy')\n",
+    "accuracy.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The result is a multi-index Pandas DataFrame where the first-level index is the subject identifier and the second level index is the list number.  By default, note that each list is analyzed separately.  However, you can easily return the average over lists using the `listgroup` kew word argument:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "accuracy_avg = quail.analyze(egg, analysis='accuracy', listgroup=['average']*16)\n",
+    "accuracy_avg.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now, the result is a single value for each subject representing the average accuracy across the 16 lists. The `listgroup` kwarg can also be used to do some fancier groupings, like splitting the data into the first and second half of the experiment:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "accuracy_split = quail.analyze(egg, analysis='accuracy', listgroup=['First Half']*8+['Second Half']*8)\n",
+    "accuracy_split.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "These analysis results can be passed directly into the plot function like so:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(accuracy_split)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For more details on plotting, see the plot tutorial. Next, lets take a look at the serial position curve analysis.  As stated above the serial position curve (or spc) computes recall accuracy as a function of the encoding position of the word.  To use it, use the same `analyze` function illustrated above, but set the `analysis` kwarg to `spc`.  Let's also average across lists within subject:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Serial Position Curve"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "spc = quail.analyze(egg, analysis='spc', listgroup=['average']*16)\n",
+    "spc.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The result is a df where each row is a subject and each column is the encoding position of the word. To plot, simply pass the result of the analysis function to the plot function:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(spc)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Probability of First Recall\n",
+    "\n",
+    "The next analysis we'll take a look at is the probability of first recall, which is the probability that a word will be recalled first as a function of its encoding position. To compute this, call the `analyze` function with the `analysis` kwarg set to `pfr`. Again, we'll average over lists:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pfr = quail.analyze(egg, analysis='pfr', listgroup=['average']*16)\n",
+    "pfr.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This df is set up just like the serial position curve.  To plot:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(pfr)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Lag-CRP\n",
+    "\n",
+    "The next analysis to consider is the lag-CRP, which again is a function that given the recall of word n, returns the probability of recalling words at neighboring positions (n+/-1, 2, 3 etc). To use it? You guessed it: call the `analyze` function with the `analysis` kwarg set to `lagcrp`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lagcrp = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*16)\n",
+    "lagcrp.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Unlike the previous two analyses, the result of this analysis returns a df where the number of columns are double the length of the lists.  To view the results:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax= quail.plot(lagcrp)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Memory Fingerprint\n",
+    "\n",
+    "Last but not least is the memory fingerprint analysis.  For a detailed treatment of this analysis, see the fingerprint tutorial.\n",
+    "\n",
+    "As described in the fingerprint tutorial, the `features` data structure is used to estimate how subjects cluster their recall responses with respect to the features of the encoded stimuli.  Briefly, these estimates are derived by computing the similarity of neighboring recall words along each feature dimension.  For example, if you recall \"dog\", and then the next word you recall is \"cat\", your clustering by category score would increase because the two recalled words are in the same category.  Similarly, if after you recall \"cat\" you recall the word \"can\", your clustering by starting letter score would increase, since both words share the first letter \"c\".  This logic can be extended to any number of feature dimensions.\n",
+    "\n",
+    "To use this analysis function, you'll need to include a `features` field when you create your `egg`.  Our example data has this field included.  For more info on how to create this field, see the egg and fingerprint tutorials.\n",
+    "\n",
+    "Here is a glimpse of the features df:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "egg.features.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Like the other analyses, computing the memory fingerprint can be done using the `analyze` function with the `analysis` kwarg set to `fingerprint`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fingerprint = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*16)\n",
+    "fingerprint.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The result of this analysis is a df, where each row is a subject's fingerprint and each column is a feature dimensions.  The values represent a subjects tendency to cluster their recall responses along a particular feature dimensions.  They are probability values, and thus, greater values indicate more clustering along that feature dimension.  To plot, simply pass the result to the plot function:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(fingerprint)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This result suggests that subjects in this example dataset tended to cluster their recall responses by category as well as the size (bigger or smaller than a shoebox) of the word."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 2",
+   "language": "python",
+   "name": "python2"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.11"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
