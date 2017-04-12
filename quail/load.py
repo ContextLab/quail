@@ -277,7 +277,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         return eggs[0]
 
 def load_example_data():
-    with open(os.path.dirname(os.path.abspath(__file__)) + '/../examples/sample_data/egg.pickle', 'rb') as handle:
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/data/egg.pickle', 'rb') as handle:
         egg = pickle.load(handle)
     return egg
     # dbpath = ['/Users/andyheusser/Documents/github/FRFR-analyses/data/encoding/participants-test-room1.db',

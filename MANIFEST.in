@@ -1,1 +1,1 @@
-include examples/sample_data/*
+include quail/data/*
