@@ -194,3 +194,6 @@ sphinx_gallery_conf = {
     'examples_dirs' : '../examples',
     # path where to save gallery generated examples
     'gallery_dirs'  : 'auto_examples'}
+
+# def setup(app):
+#     app.add_stylesheet('css/custom.css')  # may also be an URL
