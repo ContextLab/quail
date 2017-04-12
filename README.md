@@ -1,26 +1,26 @@
-![Hypertools logo](images/quail.png)
+<!-- ![Hypertools logo](images/quail.png)
 
-![Hypertools example](images/hypertools.gif)
+![Hypertools example](images/hypertools.gif) -->
 
 <h2>Try it!</h2>
 
 Click the badge to launch a binder instance with example uses:
 
-[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org:/repo/contextlab/hypertools-paper-notebooks)
+[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org:/repo/contextlab/quail-example-notebooks)
 
 or
 
-Check the [repo](https://github.com/ContextLab/hypertools-paper-notebooks) of Jupyter notebooks from the HyperTools [paper](https://arxiv.org/abs/1701.08290).
+Check the [repo](https://github.com/ContextLab/quail-example-notebooks) of Jupyter notebooks.
 
 <h2>Installation</h2>
 
-`pip install hypertools`
+`pip install quail`
 
 or
 
 To install from this repo:
 
-`git clone https://github.com/ContextLab/hypertools.git`
+`git clone https://github.com/ContextLab/quail.git`
 
 Then, navigate to the folder and type:
 
@@ -31,8 +31,6 @@ Then, navigate to the folder and type:
 <h2>Requirements</h2>
 
 + python 2.7, 3.4+
-+ PPCA>=0.0.2
-+ scikit-learn>=0.18.1
 + pandas>=0.18.0
 + seaborn>=0.7.1
 + matplotlib>=1.5.1
@@ -40,36 +38,35 @@ Then, navigate to the folder and type:
 + numpy>=1.10.4
 + future
 + pytest (for development)
-+ ffmpeg (for saving animations)
 
 If installing from github (instead of pip), you must also install the requirements:
 `pip install -r requirements.txt`
 
 <h2>Documentation</h2>
 
-Check out our readthedocs [here](http://hypertools.readthedocs.io/en/latest/).
+Check out our readthedocs: [here](http://cdl-quail.readthedocs.io/en/latest/).
 
-<h2>Citing</h2>
+<!-- <h2>Citing</h2>
 
-We wrote a paper about HyperTools, which you can read [here](https://arxiv.org/abs/1701.08290). We also have a repo with example notebooks from the paper [here](https://github.com/ContextLab/hypertools-paper-notebooks).
+We wrote a paper about quail, which you can read [here](https://arxiv.org/abs/1701.08290). We also have a repo with example notebooks from the paper [here](https://github.com/ContextLab/quail-example-notebooks).
 
 Please cite as:
 
-`Heusser AC, Ziman K, Owen LLW, Manning JR (2017) HyperTools: A Python toolbox for visualizing and manipulating high-dimensional data.  arXiv: 1701.08290`
+`Heusser AC, Ziman K, Owen LLW, Manning JR (2017) quail: A Python toolbox for visualizing and manipulating high-dimensional data.  arXiv: 1701.08290`
 
 Here is a bibtex formatted reference:
 
 ```
 @ARTICLE {,
     author  = "A C Heusser and K Ziman and L L W Owen and J R Manning",
-    title   = "HyperTools: A Python toolbox for visualizing and manipulating high-dimensional data",
+    title   = "quail: A Python toolbox for visualizing and manipulating high-dimensional data",
     journal = "arXiv",
     year    = "2017",
     volume  = "1701",
     number  = "08290",
     month   = "jan"
 }
-```
+``` -->
 
 <h2>Contributing</h2>
 (some text borrowed from Matplotlib contributing [guide](http://matplotlib.org/devdocs/devel/contributing.html))
@@ -84,7 +81,7 @@ If you are reporting a bug, please do your best to include the following -
 
 <h3>Contributing code</h3>
 
-The preferred way to contribute to HyperTools is to fork the main repository on GitHub, then submit a pull request.
+The preferred way to contribute to quail is to fork the main repository on GitHub, then submit a pull request.
 
 + If your pull request addresses an issue, please use the title to describe the issue and mention the issue number in the pull request description to ensure a link is created to the original issue.
 
@@ -99,51 +96,75 @@ The preferred way to contribute to HyperTools is to fork the main repository on 
 [![Build Status](https://travis-ci.com/ContextLab/hypertools.svg?token=hxjzzuVkr2GZrDkPGN5n&branch=master)](https://travis-ci.com/ContextLab/hypertools)
 
 
-To test HyperTools, install pytest (`pip install pytest`) and run `pytest` in the HyperTools folder
+To test quail, install pytest (`pip install pytest`) and run `pytest` in the quail folder
 
 <h2>Examples</h2>
-See [here](http://hypertools.readthedocs.io/en/latest/auto_examples/index.html) for more examples.
+See [here](http://cdl-quail.readthedocs.io/en/latest/auto_examples/index.html) for more examples.
 
-<h2>Plot</h2>
+<h2>Create an `egg`!</h2>
 
-```
-import hypertools as hyp
-hyp.plot(list_of_arrays, 'o', group=list_of_labels)
-```
-
-![Plot example](images/plot.gif)
-
-<h2>Align</h2>
+Eggs are the fundamental data structure in `quail`.  They are comprised of lists of presented words, lists of recalled words, and a few other optional components.
 
 ```
-import hypertools as hyp
-aligned_list = hyp.tools.align(list_of_arrays)
-hyp.plot(aligned_list)
-```
+import quail
 
-<h3><center>BEFORE</center></h3>
+# presented words
+presented_words = [['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
 
-![Align before example](images/align_before.gif)
+# recalled words
+recalled_words = [['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]
 
-<h3><center>AFTER</center></h3>
-
-![Align after example](images/align_after.gif)
-
-
-<h2>Cluster</h2>
+# create egg
+egg = quail.Egg(pres=presented_words, rec=recalled_words)
 
 ```
-import hypertools as hyp
-hyp.plot(array, 'o', n_clusters=10)
-```
 
-![Cluster Example](images/cluster_example.png)
-
-
-<h2>Describe PCA</h2>
+<h2>Analyze some data</h2>
 
 ```
-import hypertools as hyp
-hyp.tools.describe_pca(list_of_arrays)
+#load data
+egg = quail.load_example_data()
+
+#analysis
+analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*16)
 ```
-![Describe Example](images/describe_example.png)
+
+<h2>Plot Accuracy</h2>
+
+```
+analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*16)
+ax = quail.plot(analyzed_data, title='Recall Accuracy')
+```
+![Plot Accuracy](images/plot_acc.png)
+
+<h2>Plot Serial Position Curve</h2>
+
+```
+analyzed_data = quail.analyze(egg, analysis='spc', listgroup=['average']*16)
+ax = quail.plot(analyzed_data, title='Serial Position Curve')
+```
+![Plot SPC](images/plot_spc.png)
+
+<h2>Plot Probability of First Recall</h2>
+
+```
+analyzed_data = quail.analyze(egg, analysis='pfr', listgroup=['average']*16)
+ax = quail.plot(analyzed_data, title='Probability of First Recall')
+```
+![Plot PFR](images/plot_pfr.png)
+
+<h2>Plot Lag-CRP</h2>
+
+```
+analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*16)
+ax = quail.plot(analyzed_data, title='Lag-CRP')
+```
+![Plot Lag-CRP](images/plot_lagcrp.png)
+
+<h2>Plot Memory Fingerprint</h2>
+
+```
+analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*16)
+ax = quail.plot(analyzed_data, title='Memory Fingerprint')
+```
+![Plot Fingerprint](images/plot_fingerprint.png)
