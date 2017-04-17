@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 from __future__ import division
 import numpy as np
 import pandas as pd
@@ -61,6 +60,8 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
             # get data slice for presentation and recall
             pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst]]]
+            pres_slice.list_length = data.list_length
+
             rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst]]]
 
             # if features are need for analysis, get the features for this slice of data
@@ -122,8 +123,6 @@ def recall_matrix(presented, recalled):
             if rec_word in pres_list:
                 if type(rec_word) is str:
                     result[idx]=int(pres_list.index(rec_word)+1)
-
-        # [int(pres_list.index(rec_word)+1) if rec_word in pres_list else np.nan for rec_word in rec_list]
         return result
 
     result = []
@@ -154,7 +153,7 @@ def accuracy_helper(pres_slice, rec_slice):
 
     # simple function that returns 1 if item encoded in position n is in recall list
     def compute_acc(lst):
-        return len([i for i in lst if i>0])/len(lst)
+        return len([i for i in lst if i>0])/pres_slice.list_length
 
     # get spc for each row in recall matrix
     acc_matrix = [compute_acc(lst) for lst in recall]
@@ -185,15 +184,11 @@ def spc_helper(pres_slice, rec_slice):
     # compute recall_matrix for data slice
     recall = recall_matrix(pres_slice, rec_slice)
 
-    # simple function that returns 1 if item encoded in position n is in recall list
-    def pos_in_list(pos,lst):
-        return 1 if pos in lst else 0
-
     # get spc for each row in recall matrix
-    spc_matrix = [[pos_in_list(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]
+    spc_matrix = [[1 if pos in lst else 0 for pos in range(1,len(lst)+1)] for lst in recall]
 
     # average over rows
-    prop_recalled = np.mean(spc_matrix,axis=0)
+    prop_recalled = np.mean(spc_matrix, axis=0)
 
     return prop_recalled
 

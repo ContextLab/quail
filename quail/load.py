@@ -104,8 +104,8 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         data_frame['exp_version']=version_col
 
         if filter_func:
-            data_frame = filter_func(data_frame)
-
+            for filt in filter_func:
+                data_frame = filt(data_frame)
         return data_frame
 
     # custom filter to clean db file
@@ -126,6 +126,23 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
 
         return data_frame.drop(data_frame.index[indexes])
 
+    def filter_func2(data_frame):
+        data=[]
+        indexes=[]
+        subjcb={}
+        for line in data_frame.iterrows():
+            try:
+                if 'Q2' in json.loads(line[1]['responses']):
+                    delete = True
+                else:
+                    delete = False
+            except:
+                pass
+
+            if delete:
+                indexes.append(line[0])
+        return data_frame.drop(data_frame.index[indexes])
+
 
     # this function takes the data frame and returns subject specific data based on the subid variable
     def filterData(data_frame,subid):
@@ -135,25 +152,64 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         return filtered_stim_data
 
     # this function parses the data creating an array of dictionaries, where each dictionary represents a trial (word presented) along with the stimulus attributes
+    # def createStimDict(data):
+    #     stimDict = []
+    #     for index, row in data.iterrows():
+    #         stimDict.append({
+    #                 'text': str(re.findall('>(.+)<',row['stimulus'])[0]),
+    #                 'color' : { 'r' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[0]),
+    #                            'g' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[1]),
+    #                            'b' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[2])
+    #                            },
+    #                 'location' : {
+    #                     'top': float(re.findall('top:(.+)\%;', row['stimulus'])[0]),
+    #                     'left' : float(re.findall('left:(.+)\%', row['stimulus'])[0])
+    #                     },
+    #                 'category' : wordpool['CATEGORY'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
+    #                 'size' : wordpool['SIZE'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
+    #                 'wordLength' : len(str(re.findall('>(.+)<',row['stimulus'])[0])),
+    #                 'firstLetter' : str(re.findall('>(.+)<',row['stimulus'])[0])[0],
+    #                 'listnum' : row['listNumber']
+    #             })
+    #     return stimDict
+
     def createStimDict(data):
         stimDict = []
         for index, row in data.iterrows():
-            stimDict.append({
-                    'text': str(re.findall('>(.+)<',row['stimulus'])[0]),
-                    'color' : { 'r' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[0]),
-                               'g' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[1]),
-                               'b' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[2])
-                               },
-                    'location' : {
-                        'top': float(re.findall('top:(.+)\%;', row['stimulus'])[0]),
-                        'left' : float(re.findall('left:(.+)\%', row['stimulus'])[0])
-                        },
-                    'category' : wordpool['CATEGORY'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
-                    'size' : wordpool['SIZE'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
-                    'wordLength' : len(str(re.findall('>(.+)<',row['stimulus'])[0])),
-                    'firstLetter' : str(re.findall('>(.+)<',row['stimulus'])[0])[0],
-                    'listnum' : row['listNumber']
-                })
+            try:
+                stimDict.append({
+                        'text': str(re.findall('>(.+)<',row['stimulus'])[0]),
+                        'color' : { 'r' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[0]),
+                                   'g' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[1]),
+                                   'b' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[2])
+                                   },
+                        'location' : {
+                            'top': float(re.findall('top:(.+)\%;', row['stimulus'])[0]),
+                            'left' : float(re.findall('left:(.+)\%', row['stimulus'])[0])
+                            },
+                        'category' : wordpool['CATEGORY'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
+                        'size' : wordpool['SIZE'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
+                        'wordLength' : len(str(re.findall('>(.+)<',row['stimulus'])[0])),
+                        'firstLetter' : str(re.findall('>(.+)<',row['stimulus'])[0])[0],
+                        'listnum' : row['listNumber']
+                    })
+            except:
+                stimDict.append({
+                        'text': str(re.findall('>(.+)<',row['stimulus'])[0]),
+                        'color' : { 'r' : 0,
+                                   'g' : 0,
+                                   'b' : 0
+                                   },
+                        'location' : {
+                            'top': 50,
+                            'left' : 50
+                            },
+                        'category' : wordpool['CATEGORY'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
+                        'size' : wordpool['SIZE'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
+                        'wordLength' : len(str(re.findall('>(.+)<',row['stimulus'])[0])),
+                        'firstLetter' : str(re.findall('>(.+)<',row['stimulus'])[0])[0],
+                        'listnum' : row['listNumber']
+                    })
         return stimDict
 
     # this function loads in the recall data into an array of arrays, where each array represents a list of words
@@ -206,7 +262,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
     wordpool = pd.read_csv(wordpool)
 
     # load in dbs and convert to df, and filter
-    dfs = [db2df(db, filter_func=filter_func) for db in dbpath]
+    dfs = [db2df(db, filter_func=[filter_func2, filter_func]) for db in dbpath]
 
     # concatenate the db files
     df = pd.concat(dfs)
