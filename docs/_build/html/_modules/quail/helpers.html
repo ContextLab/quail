@@ -175,7 +175,7 @@
 
     <span class="k">return</span> <span class="n">melted_df</span>
 
-<span class="k">def</span> <span class="nf">recmat2egg</span><span class="p">(</span><span class="n">recmat</span><span class="p">):</span>
+<div class="viewcode-block" id="recmat2egg"><a class="viewcode-back" href="../../quail.recmat2egg.html#quail.recmat2egg">[docs]</a><span class="k">def</span> <span class="nf">recmat2egg</span><span class="p">(</span><span class="n">recmat</span><span class="p">,</span> <span class="n">list_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates egg data object from zero-indexed recall matrix</span>
 
@@ -183,7 +183,10 @@
 <span class="sd">        ----------</span>
 <span class="sd">        recmat : list of lists (subs) of lists (encoding lists) of ints or 2D numpy array</span>
 <span class="sd">            recall matrix representing serial positions of freely recalled words \</span>
-<span class="sd">            e.g. [[[16, 15, 1, 2, 3, None, None...], [16, 4, 5, 6, 1, None, None...]]]</span>
+<span class="sd">            e.g. [[[16, 15, 0, 2, 3, None, None...], [16, 4, 5, 6, 1, None, None...]]]</span>
+
+<span class="sd">        list_length : int</span>
+<span class="sd">            The length of each list (e.g. 16)</span>
 
 
 <span class="sd">        Returns</span>
@@ -193,10 +196,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">.egg</span> <span class="k">import</span> <span class="n">Egg</span> <span class="k">as</span> <span class="n">Egg</span>
 
-        <span class="n">pres</span> <span class="o">=</span> <span class="p">[[[</span><span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">reclist</span><span class="p">)))]</span> <span class="k">for</span> <span class="n">reclist</span> <span class="ow">in</span> <span class="n">recsub</span><span class="p">]</span> <span class="k">for</span> <span class="n">recsub</span> <span class="ow">in</span> <span class="n">recmat</span><span class="p">]</span>
+        <span class="n">pres</span> <span class="o">=</span> <span class="p">[[[</span><span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">list_length</span><span class="p">))]</span> <span class="k">for</span> <span class="n">reclist</span> <span class="ow">in</span> <span class="n">recsub</span><span class="p">]</span> <span class="k">for</span> <span class="n">recsub</span> <span class="ow">in</span> <span class="n">recmat</span><span class="p">]</span>
         <span class="n">rec</span> <span class="o">=</span> <span class="p">[[[</span><span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">reclist</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span> <span class="k">for</span> <span class="n">reclist</span> <span class="ow">in</span> <span class="n">recsub</span><span class="p">]</span> <span class="k">for</span> <span class="n">recsub</span> <span class="ow">in</span> <span class="n">recmat</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">pres</span><span class="p">,</span><span class="n">rec</span><span class="o">=</span><span class="n">rec</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">pres</span><span class="p">,</span><span class="n">rec</span><span class="o">=</span><span class="n">rec</span><span class="p">)</span></div>
 
 <span class="k">def</span> <span class="nf">default_dist_funcs</span><span class="p">(</span><span class="n">dist_funcs</span><span class="p">,</span> <span class="n">feature_example</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

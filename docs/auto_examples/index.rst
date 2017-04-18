@@ -9,6 +9,26 @@ Gallery of Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to make an egg out of a precomputed recall matrix so that the analysis a...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_recmat2egg_thumb.png
+
+        :ref:`sphx_glr_auto_examples_recmat2egg.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/recmat2egg
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example plots a Lag-CRP as described in Kahana et al (1996). Given the recall of a stimulu...">
 
 .. only:: html

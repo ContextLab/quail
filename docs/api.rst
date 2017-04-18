@@ -40,3 +40,11 @@ Stack eggs
   :toctree:
 
   quail.stack_eggs
+
+Convert recall matrix to egg
+------------------
+
+.. autosummary::
+  :toctree:
+
+  quail.recmat2egg
