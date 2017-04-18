@@ -153,7 +153,7 @@ def accuracy_helper(pres_slice, rec_slice):
 
     # simple function that returns 1 if item encoded in position n is in recall list
     def compute_acc(lst):
-        return len([i for i in lst if i>0])/pres_slice.list_length
+        return len([i for i in np.unique(lst) if i>0])/pres_slice.list_length
 
     # get spc for each row in recall matrix
     acc_matrix = [compute_acc(lst) for lst in recall]
