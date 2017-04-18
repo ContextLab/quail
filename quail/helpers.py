@@ -133,3 +133,37 @@ def stack_eggs(eggs):
         new_egg = Egg(pres=pres, rec=rec)
 
     return new_egg
+
+def crack_egg(egg, subjindex=None):
+    '''
+    Takes an egg and returns a subset of the subjects
+
+    Parameters
+    ----------
+    egg : Egg data object
+        Egg that you want to crack
+
+    subjindex : list
+        List of subject ids
+
+
+    Returns
+    ----------
+    new_egg : Egg data object
+        A mega egg comprised of the input eggs stacked together
+
+    '''
+    from .egg import Egg
+
+    pres = [egg.pres.loc[sub,:].values.tolist() for sub in subjindex]
+    rec = [egg.rec.loc[sub,:].values.tolist() for sub in subjindex]
+
+    all_have_features = egg.features is not None
+
+    if all_have_features:
+        features = [egg.features.loc[sub,:].values.tolist() for sub in subjindex]
+        new_egg = Egg(pres=pres, rec=rec, features=features)
+    else:
+        new_egg = Egg(pres=pres, rec=rec)
+
+    return new_egg
