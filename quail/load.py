@@ -219,12 +219,12 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
             try:
                 f = open(recpath + subid + '/' + subid + '-' + str(i) + '.wav.txt', 'rb')
                 spamreader = csv.reader(f, delimiter=' ', quotechar='|')
+            # except (IOError, OSError) as e:
+            #     try:
+            #         f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'rb')
+            #         spamreader = csv.reader(f, delimiter=' ', quotechar='|')
             except (IOError, OSError) as e:
-                try:
-                    f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'rb')
-                    spamreader = csv.reader(f, delimiter=' ', quotechar='|')
-                except (IOError, OSError) as e:
-                    print(e)
+                print(e)
             for row in spamreader:
                 recalledWords.append(row[0].split(','))
         return recalledWords

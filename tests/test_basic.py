@@ -11,6 +11,9 @@ presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
 recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
 egg = Egg(pres=presented,rec=recalled)
 
+def test_analysis_acc():
+	assert np.array_equal(analyze(egg, analysis='accuracy').values,[np.array([1.]),np.array([.75])])
+
 def test_analysis_spc():
 	assert np.array_equal(analyze(egg, analysis='spc').values,[np.array([ 1.,  1.,  1.,  1.]),np.array([ 1.,  1.,  0.,  1.])])
 
@@ -30,6 +33,9 @@ def test_analysis_pfr_listgroup():
 presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']],[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
 recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']],[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
 multisubj_egg = Egg(pres=presented,rec=recalled)
+
+def test_analysis_acc_multisubj():
+	assert np.array_equal(analyze(multisubj_egg, analysis='accuracy').values,np.array([[ 1.],[ .75],[ 1.],[ .75]]))
 
 def test_analysis_spc_multisubj():
 	assert np.array_equal(analyze(multisubj_egg, analysis='spc').values,np.array([[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.],[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.]]))

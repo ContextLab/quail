@@ -124,7 +124,7 @@ def stack_eggs(eggs):
     pres = [egg.pres.loc[sub,:].values.tolist() for egg in eggs for sub in egg.pres.index.levels[0].values.tolist()]
     rec = [egg.rec.loc[sub,:].values.tolist()  for egg in eggs for sub in egg.rec.index.levels[0].values.tolist()]
 
-    all_have_features = any([egg.features is not None for egg in eggs])
+    all_have_features = all([egg.features is not None for egg in eggs])
 
     if all_have_features:
         features = [egg.features.loc[sub,:].values.tolist() for egg in eggs for sub in egg.features.index.levels[0].values.tolist()]
@@ -134,7 +134,7 @@ def stack_eggs(eggs):
 
     return new_egg
 
-def crack_egg(egg, subjindex=None):
+def crack_egg(egg, subjects=None, lists=None):
     '''
     Takes an egg and returns a subset of the subjects
 
@@ -155,15 +155,24 @@ def crack_egg(egg, subjindex=None):
     '''
     from .egg import Egg
 
-    pres = [egg.pres.loc[sub,:].values.tolist() for sub in subjindex]
-    rec = [egg.rec.loc[sub,:].values.tolist() for sub in subjindex]
-
     all_have_features = egg.features is not None
+    opts = {}
 
-    if all_have_features:
-        features = [egg.features.loc[sub,:].values.tolist() for sub in subjindex]
-        new_egg = Egg(pres=pres, rec=rec, features=features)
+    if subjects:
+        pres = [egg.pres.loc[sub,:].values.tolist() for sub in subjects]
+        rec = [egg.rec.loc[sub,:].values.tolist() for sub in subjects]
+        if all_have_features:
+            opts['features']=[egg.features.loc[sub,:].values.tolist() for sub in subjects]
     else:
-        new_egg = Egg(pres=pres, rec=rec)
+        pres = [egg.pres.loc[:,:].values.tolist()]
+        rec = [egg.rec.loc[:,:].values.tolist()]
+        if all_have_features:
+            opts['features'] = [egg.features.loc[:,:].values.tolist()]
 
-    return new_egg
+    if lists:
+        pres = map(lambda x: x[:8], pres)
+        rec = map(lambda x: x[:8], rec)
+        if all_have_features:
+            opts['features'] = map(lambda x: x[:8], opts['features'])
+
+    return Egg(pres=pres, rec=rec, **opts)
