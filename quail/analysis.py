@@ -405,7 +405,7 @@ def tempclust_helper(pres_slice, rec_slice):
     # compute temporal clustering for each list
     score = [compute_tempclust(lst,pres_slice.list_length) for lst in recall]
 
-    return score
+    return np.mean(score)
 
 
 def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
