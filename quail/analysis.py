@@ -339,22 +339,22 @@ def tempclust_helper(pres_slice, rec_slice):
         for idx in range(len(rec_list)-1):
 
             # current word position
-            c = reclist[idx]
+            c = rec_list[idx]
 
             # next word position
-            n = reclist[idx]
+            n = rec_list[idx+1]
 
             # if the current word and next recall were on the encoding list and haven't been said yet..
-            if (c in range(list_length) and n in range(list_length)) and (c not in past and n not in past):
+            if (c in range(list_length+1) and n in range(list_length+2)) and (c not in past and n not in past):
 
                 # compute sorted dist vector
-                dist_vec = sorted([np.abs(c-i) for i in range(list_length)])
+                dist_vec = sorted([np.abs(c-i) for i in range(1,list_length+2) if c!=i])
 
                 # find the rank position of the distance
-                idx = np.where(dist_vec==np.abs(c-n))
+                idx = np.where(dist_vec==np.abs(c-n))[0]
 
                 # compute the weight and append
-                weights.append((1 - (sum(idx)/len(idx) / list_length-len(past))))
+                weights.append(1-(idx[0] / (list_length-len(past))))
 
             # add c to past words.
             past.append(c)
@@ -620,6 +620,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listname=listname,
                                   analysis=fingerprint_helper,
                                   analysis_type='tempclust')
+
             result[idx].append(r)
 
     # return analysis result
