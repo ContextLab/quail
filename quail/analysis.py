@@ -377,22 +377,32 @@ def tempclust_helper(pres_slice, rec_slice):
         for idx in range(len(rec_list)-1):
 
             # current word position
-            c = reclist[idx]
+            c = rec_list[idx]
+            # print('c',c)
 
             # next word position
-            n = reclist[idx]
+            n = rec_list[idx+1]
+            # print('n',n)
 
             # if the current word and next recall were on the encoding list and haven't been said yet..
-            if (c in range(list_length) and n in range(list_length)) and (c not in past and n not in past):
+            if (c in range(list_length+1) and n in range(list_length+2)) and (c not in past and n not in past):
 
                 # compute sorted dist vector
-                dist_vec = sorted([np.abs(c-i) for i in range(list_length)])
-
+                dist_vec = sorted([np.abs(c-i) for i in range(1,list_length+2) if c!=i])
+                # print('dist_vec',dist_vec)
+                # print('dist vec equals abs(c-n)', dist_vec==np.abs(c-n))
+                # print('np.where',np.where(dist_vec==np.abs(c-n)))
                 # find the rank position of the distance
-                idx = np.where(dist_vec==np.abs(c-n))
-
+                idx = np.where(dist_vec==np.abs(c-n))[0]
+                # print('sum of idx', sum(idx))
+                # print('len of idx', len(idx))
+                # print('sum(idx)/len(idx)', sum(idx)/len(idx))
+                # print('list_length',list_length)
+                # print('len of past',len(past))
+                # print('list len - len of past', list_length-len(past))
+                # print(1-((sum(idx)/len(idx)) / (list_length-len(past))))
                 # compute the weight and append
-                weights.append((1 - (sum(idx)/len(idx) / list_length-len(past))))
+                weights.append(1-(idx[0] / (list_length-len(past))))
 
             # add c to past words.
             past.append(c)
