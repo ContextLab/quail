@@ -104,12 +104,12 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         data_frame['exp_version']=version_col
 
         if filter_func:
-            for filt in filter_func:
+            for idx,filt in enumerate(filter_func):
                 data_frame = filt(data_frame)
         return data_frame
 
     # custom filter to clean db file
-    def filter_func(data_frame):
+    def experimenter_filter(data_frame):
         data=[]
         indexes=[]
         for line in data_frame.iterrows():
@@ -124,9 +124,9 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
             if delete:
                 indexes.append(line[0])
 
-        return data_frame.drop(data_frame.index[indexes])
+        return data_frame.drop(indexes)
 
-    def filter_func2(data_frame):
+    def adaptive_filter(data_frame):
         data=[]
         indexes=[]
         subjcb={}
@@ -141,7 +141,22 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
 
             if delete:
                 indexes.append(line[0])
-        return data_frame.drop(data_frame.index[indexes])
+        return data_frame.drop(indexes)
+
+    def experiments_filter(data_frame):
+        indexes=[]
+        for line in data_frame.iterrows():
+            try:
+                if line[1]['exp_version'] in experiments:
+                    delete = False
+                else:
+                    delete = True
+            except:
+                pass
+
+            if delete:
+                indexes.append(line[0])
+        return data_frame.drop(indexes)
 
 
     # this function takes the data frame and returns subject specific data based on the subid variable
@@ -150,28 +165,6 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         filtered_stim_data = filtered_stim_data[filtered_stim_data['trial_type']=='single-stim']
         filtered_stim_data =  filtered_stim_data[filtered_stim_data['uniqueid']==subid]
         return filtered_stim_data
-
-    # this function parses the data creating an array of dictionaries, where each dictionary represents a trial (word presented) along with the stimulus attributes
-    # def createStimDict(data):
-    #     stimDict = []
-    #     for index, row in data.iterrows():
-    #         stimDict.append({
-    #                 'text': str(re.findall('>(.+)<',row['stimulus'])[0]),
-    #                 'color' : { 'r' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[0]),
-    #                            'g' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[1]),
-    #                            'b' : int(re.findall('rgb\((.+)\)',row['stimulus'])[0].split(',')[2])
-    #                            },
-    #                 'location' : {
-    #                     'top': float(re.findall('top:(.+)\%;', row['stimulus'])[0]),
-    #                     'left' : float(re.findall('left:(.+)\%', row['stimulus'])[0])
-    #                     },
-    #                 'category' : wordpool['CATEGORY'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
-    #                 'size' : wordpool['SIZE'].iloc[list(wordpool['WORD'].values).index(str(re.findall('>(.+)<',row['stimulus'])[0]))],
-    #                 'wordLength' : len(str(re.findall('>(.+)<',row['stimulus'])[0])),
-    #                 'firstLetter' : str(re.findall('>(.+)<',row['stimulus'])[0])[0],
-    #                 'listnum' : row['listNumber']
-    #             })
-    #     return stimDict
 
     def createStimDict(data):
         stimDict = []
@@ -266,7 +259,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
     wordpool = pd.read_csv(wordpool)
 
     # load in dbs and convert to df, and filter
-    dfs = [db2df(db, filter_func=[filter_func2, filter_func]) for db in dbpath]
+    dfs = [db2df(db, filter_func=[adaptive_filter, experimenter_filter, experiments_filter]) for db in dbpath]
 
     # concatenate the db files
     df = pd.concat(dfs)
@@ -277,7 +270,10 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
     # remove problematic subjects
     if remove_subs:
         for sub in remove_subs:
-            subids.remove(sub)
+            try:
+                subids.remove(sub)
+            except:
+                print('Could not find subject: ' + sub + ', skipping...')
 
     # set up data structure to load in subjects
     if groupby:

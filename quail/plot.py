@@ -5,7 +5,9 @@ import seaborn as sns
 from .helpers import *
 import matplotlib.pyplot as plt
 
-def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None, listname='List', plot_type=None, plot_style=None, title=None, legend=True, ylim=None, **kwargs):
+def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
+         listname='List', plot_type=None, plot_style=None, title=None,
+         legend=True, ylim=None, save_path=None, **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
@@ -48,6 +50,10 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None, listnam
 
     ylim : list of numbers
         A ymin/max can be specified by a list of the form [ymin, ymax]
+
+    save_path : str
+        Path to save out figure.  Include the file extension, e.g.
+        save_path='figure.pdf'
 
 
     Returns
@@ -148,6 +154,9 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None, listnam
 
     if ylim:
         plt.ylim(ylim)
+
+    if save_path:
+        plt.savefig(save_path)
 
     plt.show()
 
