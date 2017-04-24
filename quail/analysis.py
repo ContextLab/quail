@@ -313,10 +313,7 @@ def lagcrp_helper(pres_slice, rec_slice):
 
     return prob_recalled
 
-<<<<<<< HEAD
 # temporal clustering analysis
-=======
->>>>>>> first draft of tempclust analysis
 def tempclust_helper(pres_slice, rec_slice):
     """
     Computes temporal clustering score
