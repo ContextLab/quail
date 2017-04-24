@@ -352,6 +352,61 @@ def lagcrp_helper(pres_slice, rec_slice):
 
     return prob_recalled
 
+def tempclust_helper(pres_slice, rec_slice):
+    """
+    Computes temporal clustering score
+
+    Parameters
+    ----------
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
+
+    Returns
+    ----------
+    score : float
+        a number representing temporal clustering
+
+    """
+    def compute_tempclust(rec_list, list_length):
+
+        past = []
+        weights = []
+
+        for idx in range(len(rec_list)-1):
+
+            # current word position
+            c = reclist[idx]
+
+            # next word position
+            n = reclist[idx]
+
+            # if the current word and next recall were on the encoding list and haven't been said yet..
+            if (c in range(list_length) and n in range(list_length)) and (c not in past and n not in past):
+
+                # compute sorted dist vector
+                dist_vec = sorted([np.abs(c-i) for i in range(list_length)])
+
+                # find the rank position of the distance
+                idx = np.where(dist_vec==np.abs(c-n))
+
+                # compute the weight and append
+                weights.append((1 - (sum(idx)/len(idx) / list_length-len(past))))
+
+            # add c to past words.
+            past.append(c)
+
+        return np.mean(weights)
+
+    # compute recall_matrix for data slice
+    recall = recall_matrix(pres_slice, rec_slice)
+
+    # compute temporal clustering for each list
+    score = [compute_tempclust(lst,pres_slice.list_length) for lst in recall]
+
+    return score
+
 
 def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     """
@@ -426,9 +481,6 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
 
             # grab the words from the encoding list
             encodingWords = pres_list
-
-            # append current word to past words log
-            # pastWords.append(currentWord)
 
             # if both recalled words are in the encoding list
             if (currentWord in encodingWords and nextWord in encodingWords) and (currentWord not in pastWords and nextWord not in pastWords):
@@ -578,6 +630,13 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   analysis=fingerprint_helper,
                                   analysis_type='fingerprint',
                                   pass_features=True)
+            elif a is 'tempclust':
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=fingerprint_helper,
+                                  analysis_type='tempclust')
 
             result[idx].append(r)
 
