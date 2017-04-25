@@ -143,8 +143,11 @@ def crack_egg(egg, subjects=None, lists=None):
     egg : Egg data object
         Egg that you want to crack
 
-    subjindex : list
-        List of subject ids
+    subjects : list
+        List of subject idxs
+
+    lists : list
+        List of lists idxs
 
 
     Returns
@@ -158,21 +161,25 @@ def crack_egg(egg, subjects=None, lists=None):
     all_have_features = egg.features is not None
     opts = {}
 
-    if subjects:
-        pres = [egg.pres.loc[sub,:].values.tolist() for sub in subjects]
-        rec = [egg.rec.loc[sub,:].values.tolist() for sub in subjects]
-        if all_have_features:
-            opts['features']=[egg.features.loc[sub,:].values.tolist() for sub in subjects]
-    else:
-        pres = [egg.pres.loc[:,:].values.tolist()]
-        rec = [egg.rec.loc[:,:].values.tolist()]
-        if all_have_features:
-            opts['features'] = [egg.features.loc[:,:].values.tolist()]
+    if subjects is None:
+        subjects = egg.pres.index.levels[0].values
+    elif type(subjects) is not list:
+        subjects = [subjects]
+    if lists is None:
+        lists = egg.pres.index.levels[1].values
+    elif type(lists) is not list:
+        lists = [lists]
 
-    if lists:
-        pres = map(lambda x: x[:8], pres)
-        rec = map(lambda x: x[:8], rec)
-        if all_have_features:
-            opts['features'] = map(lambda x: x[:8], opts['features'])
+    idx = pd.IndexSlice
+    pres = egg.pres.loc[idx[subjects,lists],:]
+    rec = egg.rec.loc[idx[subjects,lists],:]
+
+    pres = [pres.loc[sub,:].values.tolist() for sub in pres.index.levels[0].values]
+    rec = [rec.loc[sub,:].values.tolist() for sub in rec.index.levels[0].values]
+
+
+    if all_have_features:
+        features = egg.features.loc[idx[subjects,lists],:]
+        opts['features'] = [features.loc[sub,:].values.tolist() for sub in features.index.levels[0].values]
 
     return Egg(pres=pres, rec=rec, **opts)
