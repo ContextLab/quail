@@ -119,6 +119,7 @@
 <span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">default_dist_funcs</span>
 <span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">crack_egg</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <div class="viewcode-block" id="Egg"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg">[docs]</a><span class="k">class</span> <span class="nc">Egg</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -135,24 +136,34 @@
 <span class="sd">    the meta field is an optional dictionary that contains any details useful for</span>
 <span class="sd">    identifying the egg object</span>
 
-<span class="sd">    Attributes</span>
+<span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 
-<span class="sd">    pres : pd.DataFrame</span>
-<span class="sd">        Dataframe containing the presented words.  Each row represents the presented words for a given list and each column</span>
-<span class="sd">        represents a list. The cells should be lowercase words. The index will be a multi-index, where the first level reprensents the subject number</span>
+<span class="sd">    pres : list (subjects) of lists (study lists) of lists (words) of strings</span>
+<span class="sd">        This is a nested list containing the presented words.  Internally, it will</span>
+<span class="sd">        be converted into a multi-index Pandas DataFrame. Each row represents</span>
+<span class="sd">        the presented words for a given list and each column represents a list.</span>
+<span class="sd">        The cells should be lowercase words. The index will be a multi-index,</span>
+<span class="sd">        where the first level reprensents the subject number and the second level</span>
+<span class="sd">        represents the list number.</span>
+
+<span class="sd">    rec : list (subjects) of lists (study lists) of lists (words) of strings</span>
+<span class="sd">        This is a nested list containing the presented words.  Internally, it will</span>
+<span class="sd">        be converted into a multi-index Pandas DataFrame. Each row represents</span>
+<span class="sd">        the recalled words for a given list and each column represents a list.</span>
+<span class="sd">        Each row represents the recalled words for a given list and each column</span>
+<span class="sd">        represents a list. The cells should be lowercase words. The index will</span>
+<span class="sd">        be a multi-index, where the first level reprensents the subject number</span>
 <span class="sd">        and the second level represents the list number</span>
 
-<span class="sd">    rec : pd.DataFrame</span>
-<span class="sd">        Dataframe containing the words recalled.  Each row represents the recalled words for a given list and each column</span>
-<span class="sd">        represents a list.  Each row represents the recalled words for a given list and each column</span>
-<span class="sd">        represents a list. The cells should be lowercase words. The index will be a multi-index, where the first level reprensents the subject number</span>
-<span class="sd">        and the second level represents the list number</span>
-
-<span class="sd">    features : pd.DataFrame (optional)</span>
-<span class="sd">        Dataframe containing the features for presented words.  Each row represents the presented words for a given list and each column</span>
-<span class="sd">        represents a list. The cells should be a dictionary of features, where the keys are the name of the features, and the values are the feature values.</span>
-<span class="sd">        The index will be a multi-index, where the first level reprensents the subject number and the second level represents the list number</span>
+<span class="sd">    features : list (subjects) of lists (study lists) of lists (words) of strings</span>
+<span class="sd">        This is a nested list containing the presented words.  Internally, it will</span>
+<span class="sd">        be converted into a multi-index Pandas DataFrame. Each row represents the</span>
+<span class="sd">        presented words for a given list and each column represents a list. The</span>
+<span class="sd">        cells should be a dictionary of features, where the keys are the name of</span>
+<span class="sd">        the features, and the values are the feature values. The index will be a</span>
+<span class="sd">        multi-index, where the first level represents the subject number and the</span>
+<span class="sd">        second level represents the list number.</span>
 
 <span class="sd">    dist_funcs : dict (optional)</span>
 <span class="sd">        A dictionary of custom distance functions for stimulus features.  Each key should be the name of a feature</span>
@@ -160,6 +171,21 @@
 
 <span class="sd">    meta : dict (optional)</span>
 <span class="sd">        Meta data about the study (i.e. version, description, date, etc.) can be saved here.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    n_subjects : int</span>
+<span class="sd">        Number of subjects in the egg object</span>
+
+<span class="sd">    n_lists : int</span>
+<span class="sd">        Number of lists per subject</span>
+
+<span class="sd">    list_length : int</span>
+<span class="sd">        Number of words in the lists</span>
+
+<span class="sd">    date_created : time</span>
+<span class="sd">        A timestamp when the egg was created</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -187,24 +213,36 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="n">list_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pres</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="n">list_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_subjects</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_lists</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date_created</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%c</span><span class="s2">&quot;</span><span class="p">)</span>
 
+        <span class="c1"># attach methods</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">crack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crack</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
 
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+<div class="viewcode-block" id="Egg.info"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print info about the data egg</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of subjects: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subjects</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of lists per subject: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_lists</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of words per list: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_length</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Date created: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_created</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Meta data: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Egg.save"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save a pickled egg</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span> <span class="o">+</span> <span class="s1">&#39;.egg&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickle saved.&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickle saved.&#39;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lists</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Egg.crack"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.crack">[docs]</a>    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lists</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Wraps crack_egg function to take an egg and returns a subset of the subjects</span>
 
@@ -227,7 +265,7 @@
 <span class="sd">        new_egg : Egg data object</span>
 <span class="sd">            A mega egg comprised of the input eggs stacked together</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">crack_egg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="p">,</span> <span class="n">lists</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">crack_egg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="p">,</span> <span class="n">lists</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span></div></div>
 </pre></div>
 
     </div>

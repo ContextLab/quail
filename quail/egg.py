@@ -6,6 +6,7 @@ from .helpers import list2pd
 from .helpers import default_dist_funcs
 from .helpers import crack_egg
 import pickle
+import time
 
 class Egg(object):
     """
@@ -48,7 +49,7 @@ class Egg(object):
         presented words for a given list and each column represents a list. The
         cells should be a dictionary of features, where the keys are the name of
         the features, and the values are the feature values. The index will be a
-        multi-index, where the first level represents the subject number and the 
+        multi-index, where the first level represents the subject number and the
         second level represents the list number.
 
     dist_funcs : dict (optional)
@@ -57,6 +58,21 @@ class Egg(object):
 
     meta : dict (optional)
         Meta data about the study (i.e. version, description, date, etc.) can be saved here.
+
+    Attributes
+    ----------
+
+    n_subjects : int
+        Number of subjects in the egg object
+
+    n_lists : int
+        Number of lists per subject
+
+    list_length : int
+        Number of words in the lists
+
+    date_created : time
+        A timestamp when the egg was created
 
     """
 
@@ -84,13 +100,25 @@ class Egg(object):
             self.features = None
             self.dist_funcs = None
 
-        if list_length is None:
-            self.list_length = len(pres[0][0])-1
-        else:
-            self.list_length = list_length
+        self.n_subjects = len(self.pres.index.levels[0].values)
+        self.n_lists = len(self.pres.index.levels[1].values)
+        self.list_length = len(self.pres.columns)
+        self.date_created = time.strftime("%c")
 
+        # attach methods
         self.crack = self.crack
         self.save = self.save
+        self.info = self.info
+
+    def info(self):
+        """
+        Print info about the data egg
+        """
+        print('Number of subjects: ' + str(self.n_subjects))
+        print('Number of lists per subject: ' + str(self.n_lists))
+        print('Number of words per list: ' + str(self.list_length))
+        print('Date created: ' + str(self.date_created))
+        print('Meta data: ' + str(self.meta))
 
     def save(self, filepath):
         """

@@ -120,7 +120,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
         elif plot_type is 'list':
             ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
-        ax.set_xlim(0,data.list_length)
+        ax.set_xlim(0,data.list_length-1)
 
     elif data.analysis_type is 'pfr':
 
@@ -130,7 +130,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit="Subject", condition=subjname, **kwargs)
         elif plot_type is 'list':
             ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit="Subject", condition=listname, **kwargs)
-        ax.set_xlim(0,data.list_length)
+        ax.set_xlim(0,data.list_length-1)
 
     if data.analysis_type=='lagcrp':
 

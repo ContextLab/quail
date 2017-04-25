@@ -3,4 +3,5 @@ quail.Egg
 
 .. currentmodule:: quail
 
-.. autofunction:: Egg
+.. autoclass:: Egg
+    :members:

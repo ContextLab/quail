@@ -115,9 +115,9 @@
       
   <div class="section" id="quail-egg">
 <h1>quail.Egg<a class="headerlink" href="#quail-egg" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
+<dl class="class">
 <dt id="quail.Egg">
-<code class="descclassname">quail.</code><code class="descname">Egg</code><span class="sig-paren">(</span><em>pres=[[[]]], rec=[[[]]], features=None, dist_funcs={}, meta={}, list_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">quail.</code><code class="descname">Egg</code><span class="sig-paren">(</span><em>pres=[[[]]], rec=[[[]]], features=None, dist_funcs={}, meta={}, list_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data object for the quail package</p>
 <p>An Egg data object contains the data you need to analyze free recall experiments.
 This can be a single subject&#8217;s data, or a group of subjects.  An Egg is comprised of
@@ -129,30 +129,139 @@ is the dist_funcs dictionary (also optional).  This dictionary specifies
 a set of distance functions required for the fingerprint analyses.  Finally,
 the meta field is an optional dictionary that contains any details useful for
 identifying the egg object</p>
-<p class="rubric">Attributes</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="2%" />
-<col width="98%" />
-</colgroup>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td>pres</td>
-<td>(pd.DataFrame) Dataframe containing the presented words.  Each row represents the presented words for a given list and each column represents a list. The cells should be lowercase words. The index will be a multi-index, where the first level reprensents the subject number and the second level represents the list number</td>
-</tr>
-<tr class="row-even"><td>rec</td>
-<td>(pd.DataFrame) Dataframe containing the words recalled.  Each row represents the recalled words for a given list and each column represents a list.  Each row represents the recalled words for a given list and each column represents a list. The cells should be lowercase words. The index will be a multi-index, where the first level reprensents the subject number and the second level represents the list number</td>
-</tr>
-<tr class="row-odd"><td>features</td>
-<td>(pd.DataFrame (optional)) Dataframe containing the features for presented words.  Each row represents the presented words for a given list and each column represents a list. The cells should be a dictionary of features, where the keys are the name of the features, and the values are the feature values. The index will be a multi-index, where the first level reprensents the subject number and the second level represents the list number</td>
-</tr>
-<tr class="row-even"><td>dist_funcs</td>
-<td>(dict (optional)) A dictionary of custom distance functions for stimulus features.  Each key should be the name of a feature and each value should be an inline distance function (e.g. <cite>dist_funcs[&#8216;feature_n&#8217;] = lambda a, b: abs(a-b)</cite>)</td>
-</tr>
-<tr class="row-odd"><td>meta</td>
-<td>(dict (optional)) Meta data about the study (i.e. version, description, date, etc.) can be saved here.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pres</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
+<blockquote>
+<div><p>This is a nested list containing the presented words.  Internally, it will
+be converted into a multi-index Pandas DataFrame. Each row represents
+the presented words for a given list and each column represents a list.
+The cells should be lowercase words. The index will be a multi-index,
+where the first level reprensents the subject number and the second level
+represents the list number.</p>
+</div></blockquote>
+<p><strong>rec</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
+<blockquote>
+<div><p>This is a nested list containing the presented words.  Internally, it will
+be converted into a multi-index Pandas DataFrame. Each row represents
+the recalled words for a given list and each column represents a list.
+Each row represents the recalled words for a given list and each column
+represents a list. The cells should be lowercase words. The index will
+be a multi-index, where the first level reprensents the subject number
+and the second level represents the list number</p>
+</div></blockquote>
+<p><strong>features</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
+<blockquote>
+<div><p>This is a nested list containing the presented words.  Internally, it will
+be converted into a multi-index Pandas DataFrame. Each row represents the
+presented words for a given list and each column represents a list. The
+cells should be a dictionary of features, where the keys are the name of
+the features, and the values are the feature values. The index will be a
+multi-index, where the first level represents the subject number and the
+second level represents the list number.</p>
+</div></blockquote>
+<p><strong>dist_funcs</strong> : dict (optional)</p>
+<blockquote>
+<div><p>A dictionary of custom distance functions for stimulus features.  Each key should be the name of a feature
+and each value should be an inline distance function (e.g. <cite>dist_funcs[&#8216;feature_n&#8217;] = lambda a, b: abs(a-b)</cite>)</p>
+</div></blockquote>
+<p><strong>meta</strong> : dict (optional)</p>
+<blockquote class="last">
+<div><p>Meta data about the study (i.e. version, description, date, etc.) can be saved here.</p>
+</div></blockquote>
+</td>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>n_subjects</td>
+<td>(int) Number of subjects in the egg object</td>
+</tr>
+<tr class="row-even"><td>n_lists</td>
+<td>(int) Number of lists per subject</td>
+</tr>
+<tr class="row-odd"><td>list_length</td>
+<td>(int) Number of words in the lists</td>
+</tr>
+<tr class="row-even"><td>date_created</td>
+<td>(time) A timestamp when the egg was created</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.crack" title="quail.Egg.crack"><code class="xref py py-obj docutils literal"><span class="pre">crack</span></code></a>([subjects,&nbsp;lists,&nbsp;positions])</td>
+<td>Wraps crack_egg function to take an egg and returns a subset of the subjects</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#quail.Egg.info" title="quail.Egg.info"><code class="xref py py-obj docutils literal"><span class="pre">info</span></code></a>()</td>
+<td>Print info about the data egg</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.save" title="quail.Egg.save"><code class="xref py py-obj docutils literal"><span class="pre">save</span></code></a>(filepath)</td>
+<td>Save a pickled egg</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="quail.Egg.crack">
+<code class="descname">crack</code><span class="sig-paren">(</span><em>subjects=None</em>, <em>lists=None</em>, <em>positions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.crack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.crack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps crack_egg function to take an egg and returns a subset of the subjects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>egg</strong> : Egg data object</p>
+<blockquote>
+<div><p>Egg that you want to crack</p>
+</div></blockquote>
+<p><strong>subjects</strong> : list</p>
+<blockquote>
+<div><p>List of subject idxs</p>
+</div></blockquote>
+<p><strong>lists</strong> : list</p>
+<blockquote>
+<div><p>List of lists idxs</p>
+</div></blockquote>
+<p><strong>positions</strong> : list</p>
+<blockquote>
+<div><p>List of position idxs</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_egg</strong> : Egg data object</p>
+<blockquote class="last">
+<div><p>A mega egg comprised of the input eggs stacked together</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quail.Egg.info">
+<code class="descname">info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print info about the data egg</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quail.Egg.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a pickled egg</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
