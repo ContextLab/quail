@@ -3,6 +3,7 @@
 from __future__ import division
 import pandas as pd
 import numpy as np
+import pickle
 
 def list2pd(all_data, subjindex=None, listindex=None):
     """
@@ -210,6 +211,6 @@ def load_egg(filepath):
     """
 
     with open(filepath, 'rb') as f:
-        egg = pickle.load(filepath)
+        egg = pickle.load(f)
 
     return egg

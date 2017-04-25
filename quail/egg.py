@@ -50,7 +50,6 @@ class Egg(object):
 
     """
 
-
     def __init__(self, pres=[[[]]], rec=[[[]]], features=None, dist_funcs=dict(), meta={}, list_length=None):
 
         if not all(isinstance(item, list) for sub in pres for item in sub):
@@ -80,42 +79,39 @@ class Egg(object):
         else:
             self.list_length = list_length
 
-        def save(filepath):
-            """
-            Save a pickled egg
-            """
+        self.crack = self.crack
+        self.save = self.save
 
-            if filepath[-2] is '.p' or filepath[-7] is '.pickle':
-                fullpath = filepath
-            else:
-                fullpath = filepath + '.p'
+    def save(self, filepath):
+        """
+        Save a pickled egg
+        """
 
-            with open(fullpath, 'wb') as f:
-                pickle.dump(self, f)
-                print('pickle saved.')
+        with open(filepath + '.egg', 'wb') as f:
+            pickle.dump(self, f)
+            print('pickle saved.')
 
-        def crack(self, subjects=None, lists=None, positions=None):
-            """
-            Wraps crack_egg function to take an egg and returns a subset of the subjects
+    def crack(self, subjects=None, lists=None, positions=None):
+        """
+        Wraps crack_egg function to take an egg and returns a subset of the subjects
 
-            Parameters
-            ----------
-            egg : Egg data object
-                Egg that you want to crack
+        Parameters
+        ----------
+        egg : Egg data object
+            Egg that you want to crack
 
-            subjects : list
-                List of subject idxs
+        subjects : list
+            List of subject idxs
 
-            lists : list
-                List of lists idxs
+        lists : list
+            List of lists idxs
 
-            positions : list
-                List of position idxs
+        positions : list
+            List of position idxs
 
-            Returns
-            ----------
-            new_egg : Egg data object
-                A mega egg comprised of the input eggs stacked together
-            """
-
-            return crack_egg(self, subjects=None, lists=None, positions=None)
+        Returns
+        ----------
+        new_egg : Egg data object
+            A mega egg comprised of the input eggs stacked together
+        """
+        return crack_egg(self, subjects, lists, positions)
