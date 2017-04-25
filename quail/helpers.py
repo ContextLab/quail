@@ -165,19 +165,19 @@ def crack_egg(egg, subjects=None, lists=None, positions=None):
     opts = {}
 
     if subjects is None:
-        subjects = egg.pres.index.levels[0].values
+        subjects = egg.pres.index.levels[0].values.tolist()
     elif type(subjects) is not list:
-        subjects = [subjects]
+        subjects = list(subjects)
 
     if lists is None:
-        lists = egg.pres.index.levels[1].values
+        lists = egg.pres.index.levels[1].values.tolist()
     elif type(lists) is not list:
-        lists = [lists]
+        lists = list(lists)
 
     if positions is None:
-        positions = egg.pres.index.levels[1].values
-    elif type(lists) is not list:
-        lists = [lists]
+        positions = egg.pres.columns.values.tolist()
+    elif type(positions) is not list:
+        positons= list(positions)
 
     idx = pd.IndexSlice
     pres = egg.pres.loc[idx[subjects,lists],positions]

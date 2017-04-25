@@ -41,6 +41,14 @@ Stack eggs
 
   quail.stack_eggs
 
+Crack eggs
+------------------
+
+.. autosummary::
+  :toctree:
+
+  quail.crack_eggs
+
 Convert recall matrix to egg
 ------------------
 
