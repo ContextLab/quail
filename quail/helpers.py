@@ -157,7 +157,7 @@ def crack_egg(egg, subjects=None, lists=None, positions=None):
     Returns
     ----------
     new_egg : Egg data object
-        A mega egg comprised of the input eggs stacked together
+        A sliced egg, good on a salad
 
     '''
     from .egg import Egg
