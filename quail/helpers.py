@@ -134,7 +134,7 @@ def stack_eggs(eggs):
 
     return new_egg
 
-def crack_egg(egg, subjects=None, lists=None):
+def crack_egg(egg, subjects=None, lists=None, positions=None):
     '''
     Takes an egg and returns a subset of the subjects
 
@@ -148,6 +148,9 @@ def crack_egg(egg, subjects=None, lists=None):
 
     lists : list
         List of lists idxs
+
+    positions : list
+        List of position idxs
 
 
     Returns
@@ -165,21 +168,27 @@ def crack_egg(egg, subjects=None, lists=None):
         subjects = egg.pres.index.levels[0].values
     elif type(subjects) is not list:
         subjects = [subjects]
+
     if lists is None:
         lists = egg.pres.index.levels[1].values
     elif type(lists) is not list:
         lists = [lists]
 
+    if positions is None:
+        positions = egg.pres.index.levels[1].values
+    elif type(lists) is not list:
+        lists = [lists]
+
     idx = pd.IndexSlice
-    pres = egg.pres.loc[idx[subjects,lists],:]
-    rec = egg.rec.loc[idx[subjects,lists],:]
+    pres = egg.pres.loc[idx[subjects,lists],positions]
+    rec = egg.rec.loc[idx[subjects,lists],positions]
 
     pres = [pres.loc[sub,:].values.tolist() for sub in pres.index.levels[0].values]
     rec = [rec.loc[sub,:].values.tolist() for sub in rec.index.levels[0].values]
 
 
     if all_have_features:
-        features = egg.features.loc[idx[subjects,lists],:]
+        features = egg.features.loc[idx[subjects,lists],positions]
         opts['features'] = [features.loc[sub,:].values.tolist() for sub in features.index.levels[0].values]
 
     return Egg(pres=pres, rec=rec, **opts)
