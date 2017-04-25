@@ -4,6 +4,8 @@ import pandas as pd
 from .analysis import recall_matrix
 from .helpers import list2pd
 from .helpers import default_dist_funcs
+from .helpers import crack_egg
+import pickle
 
 class Egg(object):
     """
@@ -77,3 +79,43 @@ class Egg(object):
             self.list_length = len(pres[0][0])-1
         else:
             self.list_length = list_length
+
+        def save(filepath):
+            """
+            Save a pickled egg
+            """
+
+            if filepath[-2] is '.p' or filepath[-7] is '.pickle':
+                fullpath = filepath
+            else:
+                fullpath = filepath + '.p'
+
+            with open(fullpath, 'wb') as f:
+                pickle.dump(self, f)
+                print('pickle saved.')
+
+        def crack(self, subjects=None, lists=None, positions=None):
+            """
+            Wraps crack_egg function to take an egg and returns a subset of the subjects
+
+            Parameters
+            ----------
+            egg : Egg data object
+                Egg that you want to crack
+
+            subjects : list
+                List of subject idxs
+
+            lists : list
+                List of lists idxs
+
+            positions : list
+                List of position idxs
+
+            Returns
+            ----------
+            new_egg : Egg data object
+                A mega egg comprised of the input eggs stacked together
+            """
+
+            return crack_egg(self, subjects=None, lists=None, positions=None)

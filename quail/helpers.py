@@ -192,3 +192,24 @@ def crack_egg(egg, subjects=None, lists=None, positions=None):
         opts['features'] = [features.loc[sub,:].values.tolist() for sub in features.index.levels[0].values]
 
     return Egg(pres=pres, rec=rec, **opts)
+
+def load_egg(filepath):
+    """
+    Loads pickled egg
+
+    Parameters
+    ----------
+    filepath : str
+        Location of pickled egg
+
+    Returns
+    ----------
+    egg : Egg data object
+        A loaded unpickled egg
+
+    """
+
+    with open(filepath, 'rb') as f:
+        egg = pickle.load(filepath)
+
+    return egg

@@ -17,6 +17,14 @@ Egg data object
 
   quail.Egg
 
+Load egg
+------------------
+
+.. autosummary::
+  :toctree:
+
+  quail.load_egg
+
 Analyze
 ------------------
 
@@ -41,13 +49,13 @@ Stack eggs
 
   quail.stack_eggs
 
-Crack eggs
+Crack egg
 ------------------
 
 .. autosummary::
   :toctree:
 
-  quail.crack_eggs
+  quail.crack_egg
 
 Convert recall matrix to egg
 ------------------
