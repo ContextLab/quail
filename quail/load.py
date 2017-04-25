@@ -114,7 +114,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         indexes=[]
         for line in data_frame.iterrows():
             try:
-                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','maddy','campbell']:
+                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','maddy','campbell', 'campbell field', 'kirsten\\nkirsten']:
                     delete = False
                 else:
                     delete = True
@@ -212,12 +212,12 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
             try:
                 f = open(recpath + subid + '/' + subid + '-' + str(i) + '.wav.txt', 'rb')
                 spamreader = csv.reader(f, delimiter=' ', quotechar='|')
-            # except (IOError, OSError) as e:
-            #     try:
-            #         f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'rb')
-            #         spamreader = csv.reader(f, delimiter=' ', quotechar='|')
             except (IOError, OSError) as e:
-                print(e)
+                try:
+                    f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'rb')
+                    spamreader = csv.reader(f, delimiter=' ', quotechar='|')
+                except (IOError, OSError) as e:
+                    print(e)
             for row in spamreader:
                 recalledWords.append(row[0].split(','))
         return recalledWords
