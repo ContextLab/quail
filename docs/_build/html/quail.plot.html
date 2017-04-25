@@ -117,7 +117,7 @@
 <h1>quail.plot<a class="headerlink" href="#quail-plot" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="quail.plot">
-<code class="descclassname">quail.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>data</em>, <em>subjgroup=None</em>, <em>subjname='Subject Group'</em>, <em>listgroup=None</em>, <em>listname='List'</em>, <em>plot_type=None</em>, <em>plot_style=None</em>, <em>title=None</em>, <em>legend=True</em>, <em>ylim=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/plot.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.plot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">quail.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>data</em>, <em>subjgroup=None</em>, <em>subjname='Subject Group'</em>, <em>listgroup=None</em>, <em>listname='List'</em>, <em>plot_type=None</em>, <em>plot_style=None</em>, <em>title=None</em>, <em>legend=True</em>, <em>ylim=None</em>, <em>save_path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/plot.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>General plot function that groups data by subject/list number and performs analysis.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -170,6 +170,11 @@ accruacy plot), violin (default for fingerprint plots) or swarm.</p>
 <p><strong>ylim</strong> : list of numbers</p>
 <blockquote>
 <div><p>A ymin/max can be specified by a list of the form [ymin, ymax]</p>
+</div></blockquote>
+<p><strong>save_path</strong> : str</p>
+<blockquote>
+<div><p>Path to save out figure.  Include the file extension, e.g.
+save_path=&#8217;figure.pdf&#8217;</p>
 </div></blockquote>
 </td>
 </tr>
