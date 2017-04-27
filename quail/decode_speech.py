@@ -32,9 +32,6 @@ def decode_speech(path, save=False, speech_context=None,
 
         # load in speech context, note: max 500 words for speech context
         if speech_context:
-            with open('static/files/speech-context.csv', 'rb') as csvfile:
-                reader = csv.reader(csvfile, delimiter='\n')
-                speech_context = [row[0] for row in reader]
                 opts['speech_context']=speech_context
 
         # read in wav
