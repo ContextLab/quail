@@ -29,6 +29,26 @@ Gallery of Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This an example of how to crack an egg (take a slice of subjects/lists from it)">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_crack_egg_thumb.png
+
+        :ref:`sphx_glr_auto_examples_crack_egg.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/crack_egg
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example plots a Lag-CRP as described in Kahana et al (1996). Given the recall of a stimulu...">
 
 .. only:: html
