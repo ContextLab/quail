@@ -6,8 +6,9 @@ from .helpers import *
 import matplotlib.pyplot as plt
 
 def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
-         listname='List', plot_type=None, plot_style=None, title=None,
-         legend=True, ylim=None, save_path=None, **kwargs):
+         listname='List', subjconds=None, listconds=None, plot_type=None,
+         plot_style=None, title=None, legend=True, ylim=None, save_path=None,
+         **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
@@ -29,6 +30,12 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
 
     listname : string
         Name of the list grouping variable
+
+    subjconds : list
+        List of subject conditions (str) to plot
+
+    listconds : list
+        List of list conditions (str) to plot
 
     plot_type : string
         Specifies the type of plot. If list (default), the list groupings (listgroup)
@@ -70,6 +77,45 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
         # if no grouping, set default to iterate over each list independently
         subjgroup = subjgroup if subjgroup is not None else d.index.levels[0].values
         listgroup = listgroup if listgroup is not None else d.index.levels[1].values
+
+        if subjconds:
+            # make sure its a list
+            if type(subjconds) is not list:
+                subjconds=[subjconds]
+
+            # save attr to reattach to df
+            analysis_type = d.analysis_type
+            list_length = d.list_length
+
+            # slice
+            idx = pd.IndexSlice
+            d = d.sort_index()
+            d = d.loc[idx[subjconds, :],:]
+
+            # reattach attrs
+            d.analysis_type = analysis_type
+            d.list_length = list_length
+
+            # filter subjgroup
+            subjgroup = filter(lambda x: x in subjconds, subjgroup)
+
+        if listconds:
+            # make sure its a list
+            if type(listconds) is not list:
+                listconds=[listconds]
+
+            # save attr to reattach to df
+            analysis_type = d.analysis_type
+            list_length = d.list_length
+
+            # slice
+            idx = pd.IndexSlice
+            d = d.sort_index()
+            d = d.loc[idx[:, listconds],:]
+
+            # reattach attrs
+            d.analysis_type = analysis_type
+            d.list_length = list_length
 
         # convert to tiny and format for plotting
         tidy_data = format2tidy(d, subjname, listname, subjgroup, analysis_type=d.analysis_type)
