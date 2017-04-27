@@ -49,6 +49,26 @@ Gallery of Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_decode_speech_thumb.png
+
+        :ref:`sphx_glr_auto_examples_decode_speech.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/decode_speech
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example plots a Lag-CRP as described in Kahana et al (1996). Given the recall of a stimulu...">
 
 .. only:: html

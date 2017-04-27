@@ -41,6 +41,14 @@ Plot
 
   quail.plot
 
+Decode speech
+------------------
+
+.. autosummary::
+  :toctree:
+
+  quail.decode_speech
+
 Stack eggs
 ------------------
 
