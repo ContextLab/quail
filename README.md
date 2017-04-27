@@ -1,6 +1,19 @@
-<!-- ![Hypertools logo](images/quail.png)
+<!-- ![Quail logo](images/quail.png)
 
-![Hypertools example](images/hypertools.gif) -->
+![Quail example](images/quail_example.png) -->
+
+<h2>Overview</h2>
+
+Quail is a Python package that facilitates analyzes of behavioral data from memory experiments.  (The current focus is on free recall experiments.)  Key features include:
+- Serial position curves (probability of recalling items presented at each presentation position)
+- Probability of Nth recall curves (probability of recalling items at each presentation position as the Nth recall in the recall sequence)
+- Lag-Conditional Response Probability curves (probability of transitioning between items in the recall sequence, as a function of their relative presentation positions)
+- Clustering metrics (e.g. single-number summaries of how often participants transition from recalling a word to another related word, where "related" can be user-defined.)
+- Many nice plotting functions
+- Convenience functions for loading in data
+- (Future) automatically parse speech data (audio files) using wrappers for the Google Cloud Speech to Text API
+
+The toolbox name is inspired by Douglas Quail, the main character from the Philip K. Dick short story [_We Can Remember It for You Wholesale_](https://en.wikipedia.org/wiki/We_Can_Remember_It_for_You_Wholesale) (the inspiration for the film [_Total Recall_](https://en.wikipedia.org/wiki/Total_Recall_(1990_film))).
 
 <h2>Try it!</h2>
 
@@ -69,10 +82,12 @@ Here is a bibtex formatted reference:
 ``` -->
 
 <h2>Contributing</h2>
-(some text borrowed from Matplotlib contributing [guide](http://matplotlib.org/devdocs/devel/contributing.html))
+
+(Some text borrowed from Matplotlib contributing [guide](http://matplotlib.org/devdocs/devel/contributing.html).)
 
 <h3>Submitting a bug report</h3>
-If you are reporting a bug, please do your best to include the following -
+
+If you are reporting a bug, please do your best to include the following:
 
 1. A short, top-level summary of the bug. In most cases, this should be 1-2 sentences.
 2. A short, self-contained code snippet to reproduce the bug, ideally allowing a simple copy and paste to reproduce. Please do your best to reduce the code snippet to the minimum required.
@@ -99,6 +114,7 @@ The preferred way to contribute to quail is to fork the main repository on GitHu
 To test quail, install pytest (`pip install pytest`) and run `pytest` in the quail folder
 
 <h2>Examples</h2>
+
 See [here](http://cdl-quail.readthedocs.io/en/latest/auto_examples/index.html) for more examples.
 
 <h2>Create an `egg`!</h2>
