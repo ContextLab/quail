@@ -5,3 +5,6 @@ numpy>=1.10.4
 future
 sqlalchemy
 dill
+requests
+pydub
+google-cloud

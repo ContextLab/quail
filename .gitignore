@@ -3,3 +3,4 @@
 .idea/
 quail.egg-info/
 .DS_Store
+data/*.wav.*
