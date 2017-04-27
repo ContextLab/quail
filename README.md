@@ -11,7 +11,7 @@ Quail is a Python package that facilitates analyzes of behavioral data from memo
 - Clustering metrics (e.g. single-number summaries of how often participants transition from recalling a word to another related word, where "related" can be user-defined.)
 - Many nice plotting functions
 - Convenience functions for loading in data
-- (Future) automatically parse speech data (audio files) using wrappers for the the Google Cloud Speech to Text API
+- (Future) automatically parse speech data (audio files) using wrappers for the Google Cloud Speech to Text API
 
 The toolbox name is inspired by Douglas Quail, the main character from the Philip K. Dick short story [_We Can Remember It for You Wholesale_](https://en.wikipedia.org/wiki/We_Can_Remember_It_for_You_Wholesale) (the inspiration for the film [_Total Recall_](https://en.wikipedia.org/wiki/Total_Recall_(1990_film))).
 
@@ -87,7 +87,7 @@ Here is a bibtex formatted reference:
 
 <h3>Submitting a bug report</h3>
 
-If you are reporting a bug, please do your best to include the following -
+If you are reporting a bug, please do your best to include the following:
 
 1. A short, top-level summary of the bug. In most cases, this should be 1-2 sentences.
 2. A short, self-contained code snippet to reproduce the bug, ideally allowing a simple copy and paste to reproduce. Please do your best to reduce the code snippet to the minimum required.
