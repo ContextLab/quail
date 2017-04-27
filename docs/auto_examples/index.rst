@@ -9,6 +9,7 @@ Gallery of Examples
 
 .. raw:: html
 
+<<<<<<< HEAD
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to make an egg out of a precomputed recall matrix so that the analysis a...">
 
 .. only:: html
@@ -49,6 +50,8 @@ Gallery of Examples
 
 .. raw:: html
 
+=======
+>>>>>>> 1c1cb6480053abca7d818eaa4838a1c24d6fe7fd
     <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.">
 
 .. only:: html
