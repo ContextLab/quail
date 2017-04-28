@@ -585,5 +585,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
         return result
     elif len(data)>1 and len(analysis)==1:
         return [item[0] for item in result]
+    elif len(data)==1 and len(analysis)>1:
+        return [item for item in result[0]]
     else:
         return result[0][0]
