@@ -136,9 +136,9 @@ def stack_eggs(eggs):
 
     return new_egg
 
-def crack_egg(egg, subjects=None, lists=None, positions=None):
+def crack_egg(egg, subjects=None, lists=None):
     '''
-    Takes an egg and returns a subset of the subjects
+    Takes an egg and returns a subset of the subjects or lists
 
     Parameters
     ----------
@@ -150,10 +150,6 @@ def crack_egg(egg, subjects=None, lists=None, positions=None):
 
     lists : list
         List of lists idxs
-
-    positions : list
-        List of position idxs
-
 
     Returns
     ----------
