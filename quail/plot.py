@@ -85,18 +85,10 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             if type(subjconds) is not list:
                 subjconds=[subjconds]
 
-            # save attr to reattach to df
-            # analysis_type = d.analysis_type
-            # list_length = d.list_length
-
             # slice
             idx = pd.IndexSlice
             d = d.sort_index()
             d = d.loc[idx[subjconds, :],:]
-
-            # reattach attrs
-            # d.analysis_type = analysis_type
-            # d.list_length = list_length
 
             # filter subjgroup
             subjgroup = filter(lambda x: x in subjconds, subjgroup)
@@ -106,18 +98,10 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             if type(listconds) is not list:
                 listconds=[listconds]
 
-            # save attr to reattach to df
-            # analysis_type = d.analysis_type
-            # list_length = d.list_length
-
             # slice
             idx = pd.IndexSlice
             d = d.sort_index()
             d = d.loc[idx[:, listconds],:]
-
-            # reattach attrs
-            # d.analysis_type = analysis_type
-            # d.list_length = list_length
 
         # convert to tiny and format for plotting
         tidy_data = format2tidy(d, subjname, listname, subjgroup, **attrs)
