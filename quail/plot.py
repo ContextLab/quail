@@ -74,6 +74,8 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
 
     for d in data:
 
+        attrs = d.attrs
+
         # if no grouping, set default to iterate over each list independently
         subjgroup = subjgroup if subjgroup is not None else d.index.levels[0].values
         listgroup = listgroup if listgroup is not None else d.index.levels[1].values
@@ -84,8 +86,8 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
                 subjconds=[subjconds]
 
             # save attr to reattach to df
-            analysis_type = d.analysis_type
-            list_length = d.list_length
+            # analysis_type = d.analysis_type
+            # list_length = d.list_length
 
             # slice
             idx = pd.IndexSlice
@@ -93,8 +95,8 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             d = d.loc[idx[subjconds, :],:]
 
             # reattach attrs
-            d.analysis_type = analysis_type
-            d.list_length = list_length
+            # d.analysis_type = analysis_type
+            # d.list_length = list_length
 
             # filter subjgroup
             subjgroup = filter(lambda x: x in subjconds, subjgroup)
@@ -105,8 +107,8 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
                 listconds=[listconds]
 
             # save attr to reattach to df
-            analysis_type = d.analysis_type
-            list_length = d.list_length
+            # analysis_type = d.analysis_type
+            # list_length = d.list_length
 
             # slice
             idx = pd.IndexSlice
@@ -114,14 +116,14 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             d = d.loc[idx[:, listconds],:]
 
             # reattach attrs
-            d.analysis_type = analysis_type
-            d.list_length = list_length
+            # d.analysis_type = analysis_type
+            # d.list_length = list_length
 
         # convert to tiny and format for plotting
-        tidy_data = format2tidy(d, subjname, listname, subjgroup, analysis_type=d.analysis_type)
+        tidy_data = format2tidy(d, subjname, listname, subjgroup, **attrs)
 
         #plot!
-        if d.analysis_type is 'accuracy':
+        if attrs['analysis_type'] is 'accuracy':
 
             # set defaul style to bar
             plot_style = plot_style if plot_style is not None else 'bar'
@@ -141,7 +143,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             elif plot_type is 'split':
                 ax = plot_func(data=tidy_data, x=subjname, y="Accuracy", hue=listname, **kwargs)
 
-        elif d.analysis_type is 'fingerprint':
+        elif attrs['analysis_type'] is 'fingerprint':
 
             # set default style to violin
             plot_style = plot_style if plot_style is not None else 'violin'
@@ -162,7 +164,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             else:
                 ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
 
-        elif d.analysis_type is 'spc':
+        elif attrs['analysis_type'] is 'spc':
 
             plot_type = plot_type if plot_type is not None else 'list'
 
@@ -170,19 +172,21 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
                 ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
             elif plot_type is 'list':
                 ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
-            ax.set_xlim(0,d.list_length)
+            ax.set_xlim(0,attrs['list_length'])
 
-        elif d.analysis_type is 'pfr':
+        elif attrs['analysis_type'] is 'pfr' or attrs['analysis_type'] is 'pnr':
+            n=attrs['n']
+            del attrs['n']
 
             plot_type = plot_type if plot_type is not None else 'list'
 
             if plot_type is 'subject':
-                ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit="Subject", condition=subjname, **kwargs)
+                ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Nth Recall: Position ' + str(n), unit="Subject", condition=subjname, **kwargs)
             elif plot_type is 'list':
-                ax = sns.tsplot(data = tidy_data, time="Position", value="Probability of First Recall", unit="Subject", condition=listname, **kwargs)
-            ax.set_xlim(0,d.list_length)
+                ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Recall: Position ' + str(n), unit="Subject", condition=listname, **kwargs)
+            ax.set_xlim(0,attrs['list_length'])
 
-        if d.analysis_type=='lagcrp':
+        if attrs['analysis_type']=='lagcrp':
 
             plot_type = plot_type if plot_type is not None else 'list'
 

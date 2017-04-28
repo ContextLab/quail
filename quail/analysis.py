@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from .helpers import *
 
-def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False):
+def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False, **kwargs):
     """
     Private function that groups data by subject/list number and performs analysis for a chunk of data.
 
@@ -74,6 +74,8 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
             # perform analysis for each data chunk
             if pass_features:
                 analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
+            elif 'n' in kwargs:
+                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, n=kwargs['n'])], index=index)
             else:
                 analyzed = pd.DataFrame([analysis(pres_slice, rec_slice)], index=index)
 
@@ -83,11 +85,13 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
     # concatenate slices
     analyzed_data = pd.concat(analyzed_data)
 
-    # add the analysis type for smart plotting
-    analyzed_data.analysis_type = analysis_type
+    analyzed_data.attrs = {
+        'analysis_type' : analysis_type,
+        'list_length' : data.list_length
+    }
 
-    # add the analysis type for smart plotting
-    analyzed_data.list_length = data.list_length
+    for key in kwargs:
+        analyzed_data.attrs[key] = kwargs[key]
 
     return analyzed_data
 
@@ -194,7 +198,7 @@ def spc_helper(pres_slice, rec_slice):
 
 #PROB FIRST RECALL######
 
-def pfr_helper(pres_slice, rec_slice):
+def pfr_helper(pres_slice, rec_slice, n):
 
     """
     Computes probability of a word being recalled first (in the appropriate recall list), given its presentation position
@@ -212,19 +216,55 @@ def pfr_helper(pres_slice, rec_slice):
       each number represents the probability of first recall for a word presented in given position/index
 
     """
+    return pnr_helper(pres_slice, rec_slice, n)
+
+    # # compute recall_matrix for data slice
+    # recall = recall_matrix(pres_slice, rec_slice)
+    #
+    # # simple function that returns 1 if item encoded in position n is recalled first
+    # def pos_recalled_first(pos,lst):
+    #     return 1 if pos==lst[0] else 0
+    #
+    # # get pfr for each row in recall matrix
+    # pfr_matrix = [[pos_recalled_first(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]
+    #
+    # # average over rows
+    # prob_recalled = np.mean(pfr_matrix,axis=0)
+    #
+    # return prob_recalled
+
+def pnr_helper(pres_slice, rec_slice, n):
+
+    """
+    Computes probability of a word being recalled nth (in the appropriate recall
+    list), given its presentation position.  Note: zero indexed
+
+    Parameters
+    ----------
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
+
+    Returns
+    ----------
+    prob_recalled : numpy array
+      each number represents the probability of nth recall for a word presented in given position/index
+
+    """
 
     # compute recall_matrix for data slice
     recall = recall_matrix(pres_slice, rec_slice)
 
     # simple function that returns 1 if item encoded in position n is recalled first
-    def pos_recalled_first(pos,lst):
-        return 1 if pos==lst[0] else 0
+    def pos_recalled_first(pos,lst,n):
+        return 1 if pos==lst[n] else 0
 
     # get pfr for each row in recall matrix
-    pfr_matrix = [[pos_recalled_first(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]
+    pnr_matrix = [[pos_recalled_first(pos,lst,n) for pos in range(1,len(lst)+1)] for lst in recall]
 
     # average over rows
-    prob_recalled = np.mean(pfr_matrix,axis=0)
+    prob_recalled = np.mean(pnr_matrix,axis=0)
 
     return prob_recalled
 
@@ -439,7 +479,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
-def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None):
+def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None, n=0):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -489,15 +529,55 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
         for a in analysis:
 
             if a is 'accuracy':
-                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=accuracy_helper, analysis_type='accuracy')
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=accuracy_helper,
+                                  analysis_type='accuracy',
+                                  pass_features=False)
             elif a is 'spc':
-                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=spc_helper, analysis_type='spc')
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=spc_helper,
+                                  analysis_type='spc',
+                                  pass_features=False)
             elif a is 'pfr':
-                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=pfr_helper, analysis_type='pfr')
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=pfr_helper,
+                                  analysis_type='pfr',
+                                  pass_features=False,
+                                  n=0)
+            elif a is 'pnr':
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=pnr_helper,
+                                  analysis_type='pnr',
+                                  pass_features=False,
+                                  n=n)
             elif a is 'lagcrp':
-                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=lagcrp_helper, analysis_type='lagcrp')
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=lagcrp_helper,
+                                  analysis_type='lagcrp',
+                                  pass_features=False)
             elif a is 'fingerprint':
-                r = analyze_chunk(d, subjgroup=subjgroup, listgroup=listgroup, subjname=subjname, listname=listname, analysis=fingerprint_helper, analysis_type='fingerprint', pass_features=True)
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=fingerprint_helper,
+                                  analysis_type='fingerprint',
+                                  pass_features=True)
 
             result[idx].append(r)
 
