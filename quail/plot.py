@@ -127,6 +127,26 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             elif plot_type is 'split':
                 ax = plot_func(data=tidy_data, x=subjname, y="Accuracy", hue=listname, **kwargs)
 
+        if attrs['analysis_type'] is 'tempclust':
+
+            # set defaul style to bar
+            plot_style = plot_style if plot_style is not None else 'bar'
+            plot_type = plot_type if plot_type is not None else 'list'
+
+            if plot_style is 'bar':
+                plot_func = sns.barplot
+            elif plot_style is 'swarm':
+                plot_func = sns.swarmplot
+            elif plot_style is 'violin':
+                plot_func = sns.violinplot
+
+            if plot_type is 'list':
+                ax = plot_func(data=tidy_data, x=listname, y="Temporal Clustering Score", **kwargs)
+            elif plot_type is 'subject':
+                ax = plot_func(data=tidy_data, x=subjname, y="Temporal Clustering Score", **kwargs)
+            elif plot_type is 'split':
+                ax = plot_func(data=tidy_data, x=subjname, y="Temporal Clustering Score", hue=listname, **kwargs)
+
         elif attrs['analysis_type'] is 'fingerprint':
 
             # set default style to violin

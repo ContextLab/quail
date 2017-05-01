@@ -63,6 +63,9 @@ def format2tidy(df, subjname, listname, subjgroup, **attrs):
         melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
     elif attrs['analysis_type'] is 'accuracy':
         melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
+    elif attrs['analysis_type'] is 'tempclust':
+        melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
+
 
     return melted_df
 
