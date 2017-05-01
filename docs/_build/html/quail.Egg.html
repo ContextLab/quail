@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quail.Egg &#8212; quail 0.1.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          quail</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="api.html">API</a></li>
+                <li><a href="auto_examples/index.html">Gallery</a></li>
+                <li><a href="tutorial.html">Tutorials</a></li>
+                <li><a href="http://www.github.com/ContextLab/pyrec">Download</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">quail.Egg</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="quail-egg">
+<h1>quail.Egg<a class="headerlink" href="#quail-egg" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="quail.Egg">
+<em class="property">class </em><code class="descclassname">quail.</code><code class="descname">Egg</code><span class="sig-paren">(</span><em>pres=[[[]]], rec=[[[]]], features=None, dist_funcs={}, meta={}, list_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data object for the quail package</p>
+<p>An Egg data object contains the data you need to analyze free recall experiments.
+This can be a single subject&#8217;s data, or a group of subjects.  An Egg is comprised of
+a number of fields: the pres field contains the words/stimuli presented to the subject.
+The rec field contains the words/stimuli recalled by the subject. The feature field
+is optional, but may contain a dictionary of features for each stimulus.  This
+field is necessary to run the fingerprint analyses. Related to the features
+is the dist_funcs dictionary (also optional).  This dictionary specifies
+a set of distance functions required for the fingerprint analyses.  Finally,
+the meta field is an optional dictionary that contains any details useful for
+identifying the egg object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pres</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
+<blockquote>
+<div><p>This is a nested list containing the presented words.  Internally, it will
+be converted into a multi-index Pandas DataFrame. Each row represents
+the presented words for a given list and each column represents a list.
+The cells should be lowercase words. The index will be a multi-index,
+where the first level reprensents the subject number and the second level
+represents the list number.</p>
+</div></blockquote>
+<p><strong>rec</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
+<blockquote>
+<div><p>This is a nested list containing the presented words.  Internally, it will
+be converted into a multi-index Pandas DataFrame. Each row represents
+the recalled words for a given list and each column represents a list.
+Each row represents the recalled words for a given list and each column
+represents a list. The cells should be lowercase words. The index will
+be a multi-index, where the first level reprensents the subject number
+and the second level represents the list number</p>
+</div></blockquote>
+<p><strong>features</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
+<blockquote>
+<div><p>This is a nested list containing the presented words.  Internally, it will
+be converted into a multi-index Pandas DataFrame. Each row represents the
+presented words for a given list and each column represents a list. The
+cells should be a dictionary of features, where the keys are the name of
+the features, and the values are the feature values. The index will be a
+multi-index, where the first level represents the subject number and the
+second level represents the list number.</p>
+</div></blockquote>
+<p><strong>dist_funcs</strong> : dict (optional)</p>
+<blockquote>
+<div><p>A dictionary of custom distance functions for stimulus features.  Each key should be the name of a feature
+and each value should be an inline distance function (e.g. <cite>dist_funcs[&#8216;feature_n&#8217;] = lambda a, b: abs(a-b)</cite>)</p>
+</div></blockquote>
+<p><strong>meta</strong> : dict (optional)</p>
+<blockquote class="last">
+<div><p>Meta data about the study (i.e. version, description, date, etc.) can be saved here.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>n_subjects</td>
+<td>(int) Number of subjects in the egg object</td>
+</tr>
+<tr class="row-even"><td>n_lists</td>
+<td>(int) Number of lists per subject</td>
+</tr>
+<tr class="row-odd"><td>list_length</td>
+<td>(int) Number of words in the lists</td>
+</tr>
+<tr class="row-even"><td>date_created</td>
+<td>(time) A timestamp when the egg was created</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.crack" title="quail.Egg.crack"><code class="xref py py-obj docutils literal"><span class="pre">crack</span></code></a>([subjects,&nbsp;lists,&nbsp;positions])</td>
+<td>Wraps crack_egg function to take an egg and returns a subset of the subjects</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#quail.Egg.info" title="quail.Egg.info"><code class="xref py py-obj docutils literal"><span class="pre">info</span></code></a>()</td>
+<td>Print info about the data egg</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.save" title="quail.Egg.save"><code class="xref py py-obj docutils literal"><span class="pre">save</span></code></a>(filepath)</td>
+<td>Save a pickled egg</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="quail.Egg.crack">
+<code class="descname">crack</code><span class="sig-paren">(</span><em>subjects=None</em>, <em>lists=None</em>, <em>positions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.crack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.crack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps crack_egg function to take an egg and returns a subset of the subjects</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>egg</strong> : Egg data object</p>
+<blockquote>
+<div><p>Egg that you want to crack</p>
+</div></blockquote>
+<p><strong>subjects</strong> : list</p>
+<blockquote>
+<div><p>List of subject idxs</p>
+</div></blockquote>
+<p><strong>lists</strong> : list</p>
+<blockquote>
+<div><p>List of lists idxs</p>
+</div></blockquote>
+<p><strong>positions</strong> : list</p>
+<blockquote>
+<div><p>List of position idxs</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_egg</strong> : Egg data object</p>
+<blockquote class="last">
+<div><p>A mega egg comprised of the input eggs stacked together</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quail.Egg.info">
+<code class="descname">info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print info about the data egg</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quail.Egg.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a pickled egg</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="_sources/quail.Egg.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

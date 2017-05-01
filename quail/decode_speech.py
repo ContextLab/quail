@@ -3,9 +3,15 @@ import base64
 import json
 import csv
 import pickle
-from google.cloud import speech
-from pydub import AudioSegment
 import time
+
+# optional imports for speech decoding
+try:
+    from google.cloud import speech
+    from pydub import AudioSegment
+except:
+    pass
+
 
 def decode_speech(path, save=False, speech_context=None,
                   sample_rate=44100, max_alternatives=1, language_code='en-US',

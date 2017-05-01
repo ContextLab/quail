@@ -1,0 +1,292 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Advanced plotting\n",
+    "\n",
+    "This tutorial will go over more advanced plotting functionality. Before reading this, you should take a look at the basic analysis and plotting tutorial.  First, we'll load in some example data. This dataset is an `egg` comprised of 19 subjects, who each performed 16 study/test blocks of 16 words each."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import quail\n",
+    "egg = quail.load_example_data()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Accuracy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "accuracy = quail.analyze(egg, analysis='accuracy')\n",
+    "accuracy.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "By default, the `analyze` function will perform an analysis on each list separately, so when you plot the result, it will plot a separate bar for each list, averaged over all subjects:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(accuracy)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can plot the accuracy for each subject by setting `plot_type='subject'`, and we can change the name of the subject grouping variable by setting the `subjname` kwarg:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(accuracy, plot_type='subject', subjname='Subject Number')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Furthermore, we can add a title using the `title` kwarg, and change the y axis limits using `ylim`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(accuracy, plot_type='subject', subjname='Subject Number',\n",
+    "                title='Accuracy by Subject', ylim=[0,1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In addition to bar plots, accuracy can be plotted as a violin or swarm plot by using the `plot_style` kwarg:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(accuracy, plot_type='subject', subjname='Subject Number',\n",
+    "                title='Accuracy by Subject', ylim=[0,1], plot_style='violin')\n",
+    "ax = quail.plot(accuracy, plot_type='subject', subjname='Subject Number',\n",
+    "                title='Accuracy by Subject', ylim=[0,1], plot_style='swarm')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can also group the subjects.  This is useful in cases where you might want to compare analysis results across multiple experiments.  To do this we will reanalyze the data, averaging over lists within a subject, and then use the `subjgroup` kwarg to group the subjects into two sets:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "accuracy = quail.analyze(egg, analysis='accuracy', listgroup=['average']*16)\n",
+    "accuracy.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Oops, what happened there? By default, the `plot` function looks to the List column of the df to group the data.  To group according to subject group, we must tell the plot function to plot by `subjgroup`.  This can be achieved by setting `plot_type='subject'`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='subject')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "If you also have a list grouping (such as first 8 lists / second 8 lists), you can plot the interaction by setting `plot_type='split'`.  This will create a plot with respect to both the `subjgroup` and `listgroup`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "accuracy = quail.analyze(egg, analysis='accuracy', listgroup=['First 8 Lists']*8+['Second 8 Lists'])\n",
+    "ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='split')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Like above, these plots can also be violin or swarm plots:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='split', plot_style='violin')\n",
+    "ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='split', plot_style='swarm')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Memory fingerprints"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The Memory Fingerprint plotting works exactly the same as the the accuracy plots, with the except that `plot_type='split'` only works for the accuracy plots, and the default `plot_style` is a violinplot, instead of a barplot."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fingerprint = quail.analyze(egg, analysis='fingerprint', listgroup=['First 8 Lists']*8+['Second 8 Lists'])\n",
+    "ax = quail.plot(fingerprint, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='subject')\n",
+    "ax = quail.plot(fingerprint, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='list')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Other analyses\n",
+    "\n",
+    "Like the plots above, spc, pfr and lagcrp plots can all be plotted according to `listgroup` or `subjgroup` by setting the `plot_type` kwarg."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Plot by list grouping"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "listgroup = ['First 8 Lists']*8+['Second 8 Lists']\n",
+    "plot_type = 'list'\n",
+    "\n",
+    "spc = quail.analyze(egg, analysis='spc', listgroup=listgroup)\n",
+    "ax = quail.plot(spc, plot_type=plot_type)\n",
+    "\n",
+    "pfr = quail.analyze(egg, analysis='pfr', listgroup=listgroup)\n",
+    "ax = quail.plot(pfr, plot_type=plot_type)\n",
+    "\n",
+    "lagcrp = quail.analyze(egg, analysis='lagcrp', listgroup=listgroup)\n",
+    "ax = quail.plot(lagcrp, plot_type=plot_type)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Plot by subject grouping"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "listgroup=['average']*16\n",
+    "subjgroup = ['Experiment 1']*9+['Experiment 2']*10\n",
+    "plot_type = 'subject'\n",
+    "\n",
+    "spc = quail.analyze(egg, analysis='spc', listgroup=listgroup)\n",
+    "ax = quail.plot(spc, subjgroup=subjgroup, plot_type=plot_type)\n",
+    "\n",
+    "pfr = quail.analyze(egg, analysis='pfr', listgroup=listgroup)\n",
+    "ax = quail.plot(pfr, subjgroup=subjgroup, plot_type=plot_type)\n",
+    "\n",
+    "lagcrp = quail.analyze(egg, analysis='lagcrp', listgroup=listgroup)\n",
+    "ax = quail.plot(lagcrp, subjgroup=subjgroup, plot_type=plot_type)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 2",
+   "language": "python",
+   "name": "python2"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython2",
+   "version": "2.7.11"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
