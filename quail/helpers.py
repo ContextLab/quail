@@ -172,24 +172,17 @@ def crack_egg(egg, subjects=None, lists=None):
     elif type(lists) is not list:
         lists = list(lists)
 
-    if positions is None:
-        positions = egg.pres.columns.values.tolist()
-    elif type(positions) is not list:
-        positons= list(positions)
-
     idx = pd.IndexSlice
-    pres = egg.pres.loc[idx[subjects,lists],positions]
+    pres = egg.pres.loc[idx[subjects,lists],:]
     pres.index.set_levels(idx[subjects,lists], inplace=True)
-    rec = egg.rec.loc[idx[subjects,lists],positions]
+    rec = egg.rec.loc[idx[subjects,lists],:]
     rec.index.set_levels(idx[subjects,lists], inplace=True)
-
 
     pres = [pres.loc[sub,:].values.tolist() for sub in pres.index.levels[0].values]
     rec = [rec.loc[sub,:].values.tolist() for sub in rec.index.levels[0].values]
 
-
     if all_have_features:
-        features = egg.features.loc[idx[subjects,lists],positions]
+        features = egg.features.loc[idx[subjects,lists],:]
         features.index.set_levels(idx[subjects,lists], inplace=True)
         opts['features'] = [features.loc[sub,:].values.tolist() for sub in features.index.levels[0].values]
 
