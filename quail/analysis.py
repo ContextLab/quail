@@ -411,7 +411,6 @@ def tempclust_helper(pres_slice, rec_slice):
 
     return np.nanmean(score)
 
-
 def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     """
     Computes clustering along a set of feature dimensions
