@@ -165,7 +165,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             plot_type = plot_type if plot_type is not None else 'list'
 
             if plot_type is 'subject':
-                ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Nth Recall: Position ' + str(n), unit="Subject", condition=subjname, **kwargs)
+                ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Recall: Position ' + str(n), unit="Subject", condition=subjname, **kwargs)
             elif plot_type is 'list':
                 ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Recall: Position ' + str(n), unit="Subject", condition=listname, **kwargs)
             ax.set_xlim(0,attrs['list_length'])
