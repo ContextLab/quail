@@ -21,10 +21,12 @@ def test_analysis_tempclust_backwards():
     egg = Egg(pres=presented,rec=recalled)
     assert np.array_equal(analyze(egg, analysis='tempclust')[0].values,[1])
 
-# test that temporal clustering is one if words recited backwards
-def test_analysis_tempclust_rand():
-    presented=[[['cat', 'bat', 'hat', 'goat']]]
-    for i in range(10):
-        rec_perm = [[[str(i) for i in np.random.permutation(['goat', 'cat', 'bat', 'hat'])]]]
-        egg = Egg(pres=presented,rec=rec_perm)
-    assert False
+# # test that temporal clustering is one if words recited backwards
+# def test_analysis_tempclust_rand():
+#     presented=[[['cat', 'bat', 'hat', 'goat']]]
+#     res = []
+#     for i in range(100):
+#         rec_perm = [[[str(i) for i in np.random.permutation(['goat', 'cat', 'bat', 'hat'])]]]
+#         egg = Egg(pres=presented,rec=rec_perm)
+#         res.append(analyze(egg, analysis='tempclust')[0].values[0])
+#     assert False

@@ -369,7 +369,11 @@ def tempclust_helper(pres_slice, rec_slice):
         a number representing temporal clustering
 
     """
+
     def compute_tempclust(rec_list, list_length):
+        """
+        Computes temporal clustering for a list from a recall matrix
+        """
 
         past = []
         weights = []
@@ -378,36 +382,26 @@ def tempclust_helper(pres_slice, rec_slice):
 
             # current word position
             c = rec_list[idx]
-            # print('c',c)
 
             # next word position
             n = rec_list[idx+1]
-            # print('n',n)
 
-            # if the current word and next recall were on the encoding list and haven't been said yet..
-            if (c in range(list_length+1) and n in range(list_length+2)) and (c not in past and n not in past):
+            # if the current word and next recall were on the encoding list, haven't been said yet and are not the same
+            if (c in range(list_length+1) and n in range(list_length+1)) and (c not in past and n not in past) and (c != n):
 
                 # compute sorted dist vector
-                dist_vec = sorted([np.abs(c-i) for i in range(1,list_length+2) if c!=i])
-                # print('dist_vec',dist_vec)
-                # print('dist vec equals abs(c-n)', dist_vec==np.abs(c-n))
-                # print('np.where',np.where(dist_vec==np.abs(c-n)))
+                dist_vec = sorted([np.abs(c-i) for i in range(list_length+1) if c!=i])
+
                 # find the rank position of the distance
                 idx = np.where(dist_vec==np.abs(c-n))[0]
-                # print('sum of idx', sum(idx))
-                # print('len of idx', len(idx))
-                # print('sum(idx)/len(idx)', sum(idx)/len(idx))
-                # print('list_length',list_length)
-                # print('len of past',len(past))
-                # print('list len - len of past', list_length-len(past))
-                # print(1-((sum(idx)/len(idx)) / (list_length-len(past))))
+
                 # compute the weight and append
-                weights.append(1-(idx[0] / (list_length-len(past))))
+                weights.append(1-(idx[0] / len(dist_vec)))
 
             # add c to past words.
             past.append(c)
 
-        return np.mean(weights)
+        return np.nanmean(weights)
 
     # compute recall_matrix for data slice
     recall = recall_matrix(pres_slice, rec_slice)
@@ -415,7 +409,7 @@ def tempclust_helper(pres_slice, rec_slice):
     # compute temporal clustering for each list
     score = [compute_tempclust(lst,pres_slice.list_length) for lst in recall]
 
-    return np.mean(score)
+    return np.nanmean(score)
 
 
 def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
@@ -565,8 +559,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
         Name of the list grouping variable
 
     analysis : string
-        This is the analysis you want to run.  Can be accuracy, spc, pfr or
-        fingerprint
+        This is the analysis you want to run.  Can be accuracy, spc, pfr,
+        tempclust or fingerprint
 
 
     Returns
@@ -645,7 +639,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listgroup=listgroup,
                                   subjname=subjname,
                                   listname=listname,
-                                  analysis=fingerprint_helper,
+                                  analysis=tempclust_helper,
                                   analysis_type='tempclust')
 
             result[idx].append(r)
