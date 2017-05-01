@@ -173,16 +173,16 @@ def crack_egg(egg, subjects=None, lists=None):
         lists = list(lists)
 
     idx = pd.IndexSlice
-    pres = egg.pres.loc[idx[subjects,lists],:]
+    pres = egg.pres.loc[idx[subjects,lists],egg.pres.columns]
     pres.index.set_levels(idx[subjects,lists], inplace=True)
-    rec = egg.rec.loc[idx[subjects,lists],:]
+    rec = egg.rec.loc[idx[subjects,lists],egg.rec.columns]
     rec.index.set_levels(idx[subjects,lists], inplace=True)
 
     pres = [pres.loc[sub,:].values.tolist() for sub in pres.index.levels[0].values]
     rec = [rec.loc[sub,:].values.tolist() for sub in rec.index.levels[0].values]
 
     if all_have_features:
-        features = egg.features.loc[idx[subjects,lists],:]
+        features = egg.features.loc[idx[subjects,lists],egg.features.columns]
         features.index.set_levels(idx[subjects,lists], inplace=True)
         opts['features'] = [features.loc[sub,:].values.tolist() for sub in features.index.levels[0].values]
 
