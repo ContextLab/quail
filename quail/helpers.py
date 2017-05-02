@@ -24,8 +24,10 @@ def list2pd(all_data, subjindex=None, listindex=None):
 
     """
     # set default index if it is not defined
-    listindex = [idx for idx,lst in enumerate(all_data[0])] if not listindex else listindex
+    # max_nlists = max(map(lambda x: len(x), all_data))
+    listindex = [[idx for idx in range(len(sub))] for sub in all_data] if not listindex else listindex
     subjindex = [idx for idx,subj in enumerate(all_data)] if not subjindex else subjindex
+
 
     def make_multi_index(listindex, sub_num):
         return pd.MultiIndex.from_tuples([(sub_num,lst) for lst in listindex], names = ['Subject', 'List'])
@@ -33,7 +35,7 @@ def list2pd(all_data, subjindex=None, listindex=None):
     listindex = list(listindex)
     subjindex = list(subjindex)
 
-    subs_list_of_dfs = [pd.DataFrame(sub_data, index=make_multi_index(listindex, subjindex[sub_num])) for sub_num,sub_data in enumerate(all_data)]
+    subs_list_of_dfs = [pd.DataFrame(sub_data, index=make_multi_index(listindex[sub_num], subjindex[sub_num])) for sub_num,sub_data in enumerate(all_data)]
 
     return pd.concat(subs_list_of_dfs)
 
@@ -205,3 +207,23 @@ def load_egg(filepath):
         egg = pickle.load(f)
 
     return egg
+
+def fill_missing(x):
+    """
+    Fills in missing lists (assumes end lists are missing)
+    """
+
+    # find subject with max number of lists
+    maxlen = max(map(lambda xi: len(xi), x))
+
+    subs = []
+    
+    for sub in x:
+        if len(sub)<maxlen:
+            for i in range(maxlen-len(sub)):
+                sub.append([])
+            new_sub = sub
+        else:
+            new_sub = sub
+        subs.append(new_sub)
+    return subs

@@ -59,14 +59,14 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
         for lst in listdict[0]:
 
             # get data slice for presentation and recall
-            pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst]]]
+            pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
             pres_slice.list_length = data.list_length
 
-            rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst]]]
+            rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
 
             # if features are need for analysis, get the features for this slice of data
             if pass_features:
-                feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst]]]
+                feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
 
             # generate indices
             index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])

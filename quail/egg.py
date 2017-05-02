@@ -5,6 +5,7 @@ from .analysis import recall_matrix
 from .helpers import list2pd
 from .helpers import default_dist_funcs
 from .helpers import crack_egg
+from .helpers import fill_missing
 import pickle
 import time
 
@@ -88,12 +89,17 @@ class Egg(object):
             if not all(isinstance(item, list) for sub in features for item in sub):
                 features = [features]
 
+        # make sure each subject has same number of lists
+        pres = fill_missing(pres)
+        rec = fill_missing(rec)
+
         self.pres = list2pd(pres)
         self.rec = list2pd(rec)
         self.meta = meta
 
         # attach features and dist funcs if they are passed
         if features:
+            features = fill_missing(features)
             self.features = list2pd(features)
             self.dist_funcs = default_dist_funcs(dist_funcs, features[0][0][0])
         else:
