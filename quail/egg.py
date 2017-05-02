@@ -59,6 +59,20 @@ class Egg(object):
     meta : dict (optional)
         Meta data about the study (i.e. version, description, date, etc.) can be saved here.
 
+    subjgroup : list of strings or ints (optional)
+        String/int variables indicating how to group over subjects.  Must be
+        the length of the number of subjects
+
+    subjname : string (optional)
+        Name of the subject grouping variable. Default is 'Subject'.
+
+    listgroup : list of strings or ints (optional)
+        String/int variables indicating how to group over list.  Must be
+        the length of the number of lists
+
+    listname : string (optional)
+        Name of the list grouping variable. Default is 'List'.
+
     Attributes
     ----------
 
@@ -76,7 +90,8 @@ class Egg(object):
 
     """
 
-    def __init__(self, pres=[[[]]], rec=[[[]]], features=None, dist_funcs=dict(), meta={}, list_length=None):
+    def __init__(self, pres=[[[]]], rec=[[[]]], features=None, dist_funcs=dict(),
+                 meta={}, subjgroup=None, subjname='Subject', listgroup=None, listname='List'):
 
         if not all(isinstance(item, list) for sub in pres for item in sub):
             pres = [pres]
@@ -100,6 +115,13 @@ class Egg(object):
             self.features = None
             self.dist_funcs = None
 
+        # attach listgroup and subjgroup
+        self.subjgroup=subjgroup
+        self.subjname=subjname
+        self.listgroup=listgroup
+        self.listname=listname
+
+        # attach attributes
         self.n_subjects = len(self.pres.index.levels[0].values)
         self.n_lists = len(self.pres.index.levels[1].values)
         self.list_length = len(self.pres.columns)

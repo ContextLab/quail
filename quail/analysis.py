@@ -514,8 +514,26 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
 
     """
 
+    # make sure an analysis is specified
     if analysis is None:
         raise ValueError('You must pass an analysis type.')
+
+    # check if subject/list grouping variables exist on the egg
+    if hasattr(data, 'subjgroup'):
+        if data.subjgroup is not None:
+            subjgroup = data.subjgroup
+
+    if hasattr(data, 'subjname'):
+        if data.subjname is not None:
+            subjname = data.subjname
+
+    if hasattr(data, 'listgroup'):
+        if data.listgroup is not None:
+            listgroup = data.listgroup
+
+    if hasattr(data, 'listname'):
+        if data.listname is not None:
+            listname = data.listname
 
     if type(data) != list:
         data = [data]
