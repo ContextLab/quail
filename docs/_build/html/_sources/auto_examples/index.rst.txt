@@ -206,6 +206,26 @@ Gallery of Examples
    :hidden:
 
    /auto_examples/create_egg
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An egg is made up of two primary pieces of data: `pres`, which are the words/stimuli that were ...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_create_multisubject_egg_thumb.png
+
+        :ref:`sphx_glr_auto_examples_create_multisubject_egg.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/create_multisubject_egg
 .. raw:: html
 
     <div style='clear:both'></div>

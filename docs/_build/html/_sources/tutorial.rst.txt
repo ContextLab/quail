@@ -28,3 +28,11 @@ More advanced plotting
    :maxdepth: 2
 
    tutorial/advanced_plotting.ipynb
+
+Setting up speech decoding
+----------------
+
+.. toctree::
+  :maxdepth: 2
+
+  tutorial/speech_decoding.ipynb

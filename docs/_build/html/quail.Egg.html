@@ -117,7 +117,7 @@
 <h1>quail.Egg<a class="headerlink" href="#quail-egg" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="quail.Egg">
-<em class="property">class </em><code class="descclassname">quail.</code><code class="descname">Egg</code><span class="sig-paren">(</span><em>pres=[[[]]], rec=[[[]]], features=None, dist_funcs={}, meta={}, list_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">quail.</code><code class="descname">Egg</code><span class="sig-paren">(</span><em>pres=[[[]]], rec=[[[]]], features=None, dist_funcs={}, meta={}, subjgroup=None, subjname='Subject', listgroup=None, listname='List'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data object for the quail package</p>
 <p>An Egg data object contains the data you need to analyze free recall experiments.
 This can be a single subject&#8217;s data, or a group of subjects.  An Egg is comprised of
@@ -168,8 +168,26 @@ second level represents the list number.</p>
 and each value should be an inline distance function (e.g. <cite>dist_funcs[&#8216;feature_n&#8217;] = lambda a, b: abs(a-b)</cite>)</p>
 </div></blockquote>
 <p><strong>meta</strong> : dict (optional)</p>
-<blockquote class="last">
+<blockquote>
 <div><p>Meta data about the study (i.e. version, description, date, etc.) can be saved here.</p>
+</div></blockquote>
+<p><strong>subjgroup</strong> : list of strings or ints (optional)</p>
+<blockquote>
+<div><p>String/int variables indicating how to group over subjects.  Must be
+the length of the number of subjects</p>
+</div></blockquote>
+<p><strong>subjname</strong> : string (optional)</p>
+<blockquote>
+<div><p>Name of the subject grouping variable. Default is &#8216;Subject&#8217;.</p>
+</div></blockquote>
+<p><strong>listgroup</strong> : list of strings or ints (optional)</p>
+<blockquote>
+<div><p>String/int variables indicating how to group over list.  Must be
+the length of the number of lists</p>
+</div></blockquote>
+<p><strong>listname</strong> : string (optional)</p>
+<blockquote class="last">
+<div><p>Name of the list grouping variable. Default is &#8216;List&#8217;.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -203,7 +221,7 @@ and each value should be an inline distance function (e.g. <cite>dist_funcs[&#82
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.crack" title="quail.Egg.crack"><code class="xref py py-obj docutils literal"><span class="pre">crack</span></code></a>([subjects,&nbsp;lists,&nbsp;positions])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.crack" title="quail.Egg.crack"><code class="xref py py-obj docutils literal"><span class="pre">crack</span></code></a>([subjects,&nbsp;lists])</td>
 <td>Wraps crack_egg function to take an egg and returns a subset of the subjects</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#quail.Egg.info" title="quail.Egg.info"><code class="xref py py-obj docutils literal"><span class="pre">info</span></code></a>()</td>
@@ -216,27 +234,19 @@ and each value should be an inline distance function (e.g. <cite>dist_funcs[&#82
 </table>
 <dl class="method">
 <dt id="quail.Egg.crack">
-<code class="descname">crack</code><span class="sig-paren">(</span><em>subjects=None</em>, <em>lists=None</em>, <em>positions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.crack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.crack" title="Permalink to this definition">¶</a></dt>
+<code class="descname">crack</code><span class="sig-paren">(</span><em>subjects=None</em>, <em>lists=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.crack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.crack" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps crack_egg function to take an egg and returns a subset of the subjects</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>egg</strong> : Egg data object</p>
-<blockquote>
-<div><p>Egg that you want to crack</p>
-</div></blockquote>
-<p><strong>subjects</strong> : list</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>subjects</strong> : list</p>
 <blockquote>
 <div><p>List of subject idxs</p>
 </div></blockquote>
 <p><strong>lists</strong> : list</p>
 <blockquote>
 <div><p>List of lists idxs</p>
-</div></blockquote>
-<p><strong>positions</strong> : list</p>
-<blockquote>
-<div><p>List of position idxs</p>
 </div></blockquote>
 </td>
 </tr>

@@ -118,6 +118,7 @@
 <span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">list2pd</span>
 <span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">default_dist_funcs</span>
 <span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">crack_egg</span>
+<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">fill_missing</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
@@ -172,6 +173,20 @@
 <span class="sd">    meta : dict (optional)</span>
 <span class="sd">        Meta data about the study (i.e. version, description, date, etc.) can be saved here.</span>
 
+<span class="sd">    subjgroup : list of strings or ints (optional)</span>
+<span class="sd">        String/int variables indicating how to group over subjects.  Must be</span>
+<span class="sd">        the length of the number of subjects</span>
+
+<span class="sd">    subjname : string (optional)</span>
+<span class="sd">        Name of the subject grouping variable. Default is &#39;Subject&#39;.</span>
+
+<span class="sd">    listgroup : list of strings or ints (optional)</span>
+<span class="sd">        String/int variables indicating how to group over list.  Must be</span>
+<span class="sd">        the length of the number of lists</span>
+
+<span class="sd">    listname : string (optional)</span>
+<span class="sd">        Name of the list grouping variable. Default is &#39;List&#39;.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 
@@ -189,7 +204,8 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pres</span><span class="o">=</span><span class="p">[[[]]],</span> <span class="n">rec</span><span class="o">=</span><span class="p">[[[]]],</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="n">meta</span><span class="o">=</span><span class="p">{},</span> <span class="n">list_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pres</span><span class="o">=</span><span class="p">[[[]]],</span> <span class="n">rec</span><span class="o">=</span><span class="p">[[[]]],</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span>
+                 <span class="n">meta</span><span class="o">=</span><span class="p">{},</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">pres</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">):</span>
             <span class="n">pres</span> <span class="o">=</span> <span class="p">[</span><span class="n">pres</span><span class="p">]</span>
@@ -201,18 +217,30 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">features</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">):</span>
                 <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">]</span>
 
+        <span class="c1"># make sure each subject has same number of lists</span>
+        <span class="n">pres</span> <span class="o">=</span> <span class="n">fill_missing</span><span class="p">(</span><span class="n">pres</span><span class="p">)</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="n">fill_missing</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">pres</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rec</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
 
         <span class="c1"># attach features and dist funcs if they are passed</span>
         <span class="k">if</span> <span class="n">features</span><span class="p">:</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="n">fill_missing</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span> <span class="o">=</span> <span class="n">default_dist_funcs</span><span class="p">(</span><span class="n">dist_funcs</span><span class="p">,</span> <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span> <span class="o">=</span> <span class="kc">None</span>
 
+        <span class="c1"># attach listgroup and subjgroup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">listname</span><span class="o">=</span><span class="n">listname</span>
+
+        <span class="c1"># attach attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_subjects</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_lists</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
@@ -242,30 +270,24 @@
             <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickle saved.&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Egg.crack"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.crack">[docs]</a>    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lists</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Egg.crack"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.crack">[docs]</a>    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lists</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Wraps crack_egg function to take an egg and returns a subset of the subjects</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        egg : Egg data object</span>
-<span class="sd">            Egg that you want to crack</span>
-
 <span class="sd">        subjects : list</span>
 <span class="sd">            List of subject idxs</span>
 
 <span class="sd">        lists : list</span>
 <span class="sd">            List of lists idxs</span>
 
-<span class="sd">        positions : list</span>
-<span class="sd">            List of position idxs</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        ----------</span>
 <span class="sd">        new_egg : Egg data object</span>
 <span class="sd">            A mega egg comprised of the input eggs stacked together</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">crack_egg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="p">,</span> <span class="n">lists</span><span class="p">,</span> <span class="n">positions</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">crack_egg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="p">,</span> <span class="n">lists</span><span class="p">)</span></div></div>
 </pre></div>
 
     </div>

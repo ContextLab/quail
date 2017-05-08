@@ -126,7 +126,7 @@
     <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="decode_speech"><a class="viewcode-back" href="../../quail.decode_speech.html#quail.decode_speech">[docs]</a><span class="k">def</span> <span class="nf">decode_speech</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="decode_speech"><a class="viewcode-back" href="../../quail.decode_speech.html#quail.decode_speech">[docs]</a><span class="k">def</span> <span class="nf">decode_speech</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">keypath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
                   <span class="n">return_raw</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -143,6 +143,12 @@
 <span class="sd">    ----------</span>
 <span class="sd">    path : str</span>
 <span class="sd">        Path to a wav file, or a folder of wav files.</span>
+
+<span class="sd">    keypath : str</span>
+<span class="sd">        Google Cloud Speech API key filepath. This is a JSON file containing</span>
+<span class="sd">        credentials that was generated when creating a service account key.</span>
+<span class="sd">        If None, assumes you have a local key that is set with an environmental</span>
+<span class="sd">        variable. See the speech decoding tutorial for details.</span>
 
 <span class="sd">    save : boolean</span>
 <span class="sd">        False by default, but if set to true, will save a pickle with the results</span>
@@ -223,7 +229,10 @@
     <span class="c1"># MAIN #####################################################################</span>
 
     <span class="c1"># initialize speech client</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">keypath</span><span class="p">:</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="n">keypath</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 
     <span class="c1"># make a list of files</span>
     <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
