@@ -60,6 +60,20 @@ class Egg(object):
     meta : dict (optional)
         Meta data about the study (i.e. version, description, date, etc.) can be saved here.
 
+    subjgroup : list of strings or ints (optional)
+        String/int variables indicating how to group over subjects.  Must be
+        the length of the number of subjects
+
+    subjname : string (optional)
+        Name of the subject grouping variable. Default is 'Subject'.
+
+    listgroup : list of strings or ints (optional)
+        String/int variables indicating how to group over list.  Must be
+        the length of the number of lists
+
+    listname : string (optional)
+        Name of the list grouping variable. Default is 'List'.
+
     Attributes
     ----------
 
@@ -77,7 +91,8 @@ class Egg(object):
 
     """
 
-    def __init__(self, pres=[[[]]], rec=[[[]]], features=None, dist_funcs=dict(), meta={}, list_length=None):
+    def __init__(self, pres=[[[]]], rec=[[[]]], features=None, dist_funcs=dict(),
+                 meta={}, subjgroup=None, subjname='Subject', listgroup=None, listname='List'):
 
         if not all(isinstance(item, list) for sub in pres for item in sub):
             pres = [pres]
@@ -106,6 +121,13 @@ class Egg(object):
             self.features = None
             self.dist_funcs = None
 
+        # attach listgroup and subjgroup
+        self.subjgroup=subjgroup
+        self.subjname=subjname
+        self.listgroup=listgroup
+        self.listname=listname
+
+        # attach attributes
         self.n_subjects = len(self.pres.index.levels[0].values)
         self.n_lists = len(self.pres.index.levels[1].values)
         self.list_length = len(self.pres.columns)
@@ -135,27 +157,21 @@ class Egg(object):
             pickle.dump(self, f)
             print('pickle saved.')
 
-    def crack(self, subjects=None, lists=None, positions=None):
+    def crack(self, subjects=None, lists=None):
         """
         Wraps crack_egg function to take an egg and returns a subset of the subjects
 
         Parameters
         ----------
-        egg : Egg data object
-            Egg that you want to crack
-
         subjects : list
             List of subject idxs
 
         lists : list
             List of lists idxs
 
-        positions : list
-            List of position idxs
-
         Returns
         ----------
         new_egg : Egg data object
             A mega egg comprised of the input eggs stacked together
         """
-        return crack_egg(self, subjects, lists, positions)
+        return crack_egg(self, subjects, lists)
