@@ -151,27 +151,21 @@ class Egg(object):
             pickle.dump(self, f)
             print('pickle saved.')
 
-    def crack(self, subjects=None, lists=None, positions=None):
+    def crack(self, subjects=None, lists=None):
         """
         Wraps crack_egg function to take an egg and returns a subset of the subjects
 
         Parameters
         ----------
-        egg : Egg data object
-            Egg that you want to crack
-
         subjects : list
             List of subject idxs
 
         lists : list
             List of lists idxs
 
-        positions : list
-            List of position idxs
-
         Returns
         ----------
         new_egg : Egg data object
             A mega egg comprised of the input eggs stacked together
         """
-        return crack_egg(self, subjects, lists, positions)
+        return crack_egg(self, subjects, lists)
