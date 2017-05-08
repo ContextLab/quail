@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Automated Speech Decoding &#8212; quail 0.1.2 documentation</title>
+    <title>Automated Speech Decoding &#8212; quail 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -60,7 +60,7 @@
                 <li><a href="../api.html">API</a></li>
                 <li><a href="../auto_examples/index.html">Gallery</a></li>
                 <li><a href="../tutorial.html">Tutorials</a></li>
-                <li><a href="http://www.github.com/ContextLab/pyrec">Download</a></li>
+                <li><a href="http://www.github.com/ContextLab/quail">Download</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -84,12 +84,12 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">Automated Speech Decoding</a></li>
-<li><a class="reference internal" href="#Setting-up-ffmpeg">Setting up <code class="docutils literal"><span class="pre">ffmpeg</span></code></a><ul>
-<li><a class="reference internal" href="#On-a-mac:">On a mac:</a></li>
+<li><a class="reference internal" href="#setting-up-ffmpeg">Setting up <code class="docutils literal"><span class="pre">ffmpeg</span></code></a><ul>
+<li><a class="reference internal" href="#on-a-mac">On a mac:</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#Setting-up-the-Google-Speech-API">Setting up the Google Speech API</a><ul>
-<li><a class="reference internal" href="#Super-user-tip:">Super-user tip:</a></li>
+<li><a class="reference internal" href="#setting-up-the-google-speech-api">Setting up the Google Speech API</a><ul>
+<li><a class="reference internal" href="#super-user-tip">Super-user tip:</a></li>
 </ul>
 </li>
 </ul>
@@ -121,8 +121,8 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="Automated-Speech-Decoding">
-<h1>Automated Speech Decoding<a class="headerlink" href="#Automated-Speech-Decoding" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="automated-speech-decoding">
+<h1>Automated Speech Decoding<a class="headerlink" href="#automated-speech-decoding" title="Permalink to this headline">¶</a></h1>
 <p>In a typical free recall experiment, after the experiment completes the
 experimenter (or a team of experience-hungry undergraduates) will
 manually transcribe the verbal responses from a subject by listening to
@@ -135,13 +135,13 @@ responses. Furthermore, it allows the experimenter to transcribe in
 possibility. To use this feature (assuming that you are using a mac or
 linux machine), you must first set up ffmpeg and Google Speech API:</p>
 </div>
-<div class="section" id="Setting-up-ffmpeg">
-<h1>Setting up <code class="docutils literal"><span class="pre">ffmpeg</span></code><a class="headerlink" href="#Setting-up-ffmpeg" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-up-ffmpeg">
+<h1>Setting up <code class="docutils literal"><span class="pre">ffmpeg</span></code><a class="headerlink" href="#setting-up-ffmpeg" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal"><span class="pre">ffmpeg</span></code> is native application that processes audio and video files.
 We will use it to convert .wav files to the .flac format, which will
 allow us to send the files to Google Speech. To set up:</p>
-<div class="section" id="On-a-mac:">
-<h2>On a mac:<a class="headerlink" href="#On-a-mac:" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="on-a-mac">
+<h2>On a mac:<a class="headerlink" href="#on-a-mac" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Make sure you have brew installed. If you don&#8217;t, paste this into your
 terminal window:</li>
@@ -153,8 +153,8 @@ terminal window:</li>
 <p><code class="docutils literal"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">ffmpeg</span></code></p>
 </div>
 </div>
-<div class="section" id="Setting-up-the-Google-Speech-API">
-<h1>Setting up the Google Speech API<a class="headerlink" href="#Setting-up-the-Google-Speech-API" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-up-the-google-speech-api">
+<h1>Setting up the Google Speech API<a class="headerlink" href="#setting-up-the-google-speech-api" title="Permalink to this headline">¶</a></h1>
 <p>Under the hood, <code class="docutils literal"><span class="pre">quail</span></code> uses the Google Speech API to transcribe audio
 responses. Follow the instructions below to set it up. Note: the API is
 not free, but its quite reasonable. Up to 60 minutes/month is free, and
@@ -208,8 +208,8 @@ basic example of how to use it:</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">recall_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="Super-user-tip:">
-<h2>Super-user tip:<a class="headerlink" href="#Super-user-tip:" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="super-user-tip">
+<h2>Super-user tip:<a class="headerlink" href="#super-user-tip" title="Permalink to this headline">¶</a></h2>
 <p>The credentials can also be set up as an environmental variable. To do
 this, edit your .bash_profile, adding the line:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s1">&#39;/path/to/keyfile.JSON&#39;</span>
@@ -237,7 +237,7 @@ this, edit your .bash_profile, adding the line:</p>
         <br/>
         
 <div id="sourcelink">
-  <a href="../_sources/tutorial/speech_decoding.ipynb.txt"
+  <a href="../_sources/tutorial/speech_decoding.rst.txt"
      rel="nofollow">Source</a>
 </div>
       

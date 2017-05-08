@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>How to use the Quail package &#8212; quail 0.1.2 documentation</title>
+    <title>How to use the Quail package &#8212; quail 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -60,7 +60,7 @@
                 <li><a href="api.html">API</a></li>
                 <li><a href="auto_examples/index.html">Gallery</a></li>
                 <li><a href="#">Tutorials</a></li>
-                <li><a href="http://www.github.com/ContextLab/pyrec">Download</a></li>
+                <li><a href="http://www.github.com/ContextLab/quail">Download</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -88,6 +88,7 @@
 <li><a class="reference internal" href="#basic-analysis-and-plotting">Basic analysis and plotting</a></li>
 <li><a class="reference internal" href="#more-advanced-plotting">More advanced plotting</a></li>
 <li><a class="reference internal" href="#setting-up-speech-decoding">Setting up speech decoding</a></li>
+<li><a class="reference internal" href="#what-is-a-memory-fingerprint">What is a &#8220;memory fingerprint&#8221;?</a></li>
 </ul>
 </li>
 </ul>
@@ -126,17 +127,17 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/egg.html">The Egg data object</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#Load-in-the-library">Load in the library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#The-pres-data-structure">The <code class="docutils literal"><span class="pre">pres</span></code> data structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#The-rec-data-structure">The <code class="docutils literal"><span class="pre">rec</span></code> data structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#Multisubject-eggs">Multisubject <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#The-features-data-structure">The <code class="docutils literal"><span class="pre">features</span></code> data structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#Defining-custom-distance-functions-for-the-stimulus-feature-dimensions">Defining custom distance functions for the stimulus feature dimensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#Adding-meta-data-to-an-egg">Adding meta data to an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#Adding-listgroup-and-subjgroup-to-an-egg">Adding <code class="docutils literal"><span class="pre">listgroup</span></code> and <code class="docutils literal"><span class="pre">subjgroup</span></code> to an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#Saving-an-egg">Saving an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#Stacking-eggs">Stacking <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#Cracking-eggs">Cracking <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#load-in-the-library">Load in the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#the-pres-data-structure">The <code class="docutils literal"><span class="pre">pres</span></code> data structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#the-rec-data-structure">The <code class="docutils literal"><span class="pre">rec</span></code> data structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#multisubject-eggs">Multisubject <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#the-features-data-structure">The <code class="docutils literal"><span class="pre">features</span></code> data structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#defining-custom-distance-functions-for-the-stimulus-feature-dimensions">Defining custom distance functions for the stimulus feature dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#adding-meta-data-to-an-egg">Adding meta data to an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#adding-listgroup-and-subjgroup-to-an-egg">Adding <code class="docutils literal"><span class="pre">listgroup</span></code> and <code class="docutils literal"><span class="pre">subjgroup</span></code> to an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#saving-an-egg">Saving an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#stacking-eggs">Stacking <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#cracking-eggs">Cracking <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -147,11 +148,11 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html">Basic analyzing and plotting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#Recall-Accuracy">Recall Accuracy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#Serial-Position-Curve">Serial Position Curve</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#Probability-of-First-Recall">Probability of First Recall</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#Lag-CRP">Lag-CRP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#Memory-Fingerprint">Memory Fingerprint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#recall-accuracy">Recall Accuracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#serial-position-curve">Serial Position Curve</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#probability-of-first-recall">Probability of First Recall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#lag-crp">Lag-CRP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html#memory-fingerprint">Memory Fingerprint</a></li>
 </ul>
 </li>
 </ul>
@@ -162,9 +163,9 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/advanced_plotting.html">Advanced plotting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/advanced_plotting.html#Accuracy">Accuracy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/advanced_plotting.html#Memory-fingerprints">Memory fingerprints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/advanced_plotting.html#Other-analyses">Other analyses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/advanced_plotting.html#accuracy">Accuracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/advanced_plotting.html#memory-fingerprints">Memory fingerprints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/advanced_plotting.html#other-analyses">Other analyses</a></li>
 </ul>
 </li>
 </ul>
@@ -175,14 +176,22 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/speech_decoding.html">Automated Speech Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial/speech_decoding.html#Setting-up-ffmpeg">Setting up <code class="docutils literal"><span class="pre">ffmpeg</span></code></a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/speech_decoding.html#On-a-mac:">On a mac:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/speech_decoding.html#setting-up-ffmpeg">Setting up <code class="docutils literal"><span class="pre">ffmpeg</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/speech_decoding.html#on-a-mac">On a mac:</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial/speech_decoding.html#Setting-up-the-Google-Speech-API">Setting up the Google Speech API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/speech_decoding.html#Super-user-tip:">Super-user tip:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/speech_decoding.html#setting-up-the-google-speech-api">Setting up the Google Speech API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/speech_decoding.html#super-user-tip">Super-user tip:</a></li>
 </ul>
 </li>
+</ul>
+</div>
+</div>
+<div class="section" id="what-is-a-memory-fingerprint">
+<h2>What is a &#8220;memory fingerprint&#8221;?<a class="headerlink" href="#what-is-a-memory-fingerprint" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/fingerprint.html">Computing a memory fingerprint</a></li>
 </ul>
 </div>
 </div>

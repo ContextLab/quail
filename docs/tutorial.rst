@@ -36,3 +36,11 @@ Setting up speech decoding
   :maxdepth: 2
 
   tutorial/speech_decoding.ipynb
+
+What is a "memory fingerprint"?
+----------------
+
+.. toctree::
+  :maxdepth: 2
+
+  tutorial/fingerprint.ipynb
