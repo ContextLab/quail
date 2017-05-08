@@ -2,6 +2,8 @@
 
 ![Quail example](images/quail_example.png) -->
 
+![Quail logo](images/Quail_Logo_small.png)
+
 <h2>Overview</h2>
 
 Quail is a Python package that facilitates analyzes of behavioral data from memory experiments.  (The current focus is on free recall experiments.)  Key features include:
