@@ -13,7 +13,7 @@ except:
     pass
 
 
-def decode_speech(path, save=False, speech_context=None,
+def decode_speech(path, keypath=None, save=False, speech_context=None,
                   sample_rate=44100, max_alternatives=1, language_code='en-US',
                   return_raw=False):
     """
@@ -30,6 +30,12 @@ def decode_speech(path, save=False, speech_context=None,
     ----------
     path : str
         Path to a wav file, or a folder of wav files.
+
+    keypath : str
+        Google Cloud Speech API key filepath. This is a JSON file containing
+        credentials that was generated when creating a service account key.
+        If None, assumes you have a local key that is set with an environmental
+        variable. See the speech decoding tutorial for details.
 
     save : boolean
         False by default, but if set to true, will save a pickle with the results
@@ -110,7 +116,10 @@ def decode_speech(path, save=False, speech_context=None,
     # MAIN #####################################################################
 
     # initialize speech client
-    client = speech.Client()
+    if keypath:
+        client = speech.Client.from_service_account_json(keypath)
+    else:
+        client = speech.Client()
 
     # make a list of files
     files = []
