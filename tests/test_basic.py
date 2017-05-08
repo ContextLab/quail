@@ -47,7 +47,6 @@ def test_analysis_spc_multisubj():
 def test_egg():
     list1 = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
     list2 = [[[10, 20], [30, 40]], [[50, 60], [70, 80]]]
-
-     egg = Egg(pres = list1, rec = list2)
-     assert type(egg.pres) == pd.core.frame.DataFrame
-     assert type(egg.rec) == pd.core.frame.DataFrame
+    egg = Egg(pres = list1, rec = list2)
+    assert type(egg.pres) == pd.core.frame.DataFrame
+    assert type(egg.rec) == pd.core.frame.DataFrame
