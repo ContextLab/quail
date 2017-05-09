@@ -280,6 +280,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         pres = [[] for i in range(len(groupby['exp_version']))]
         rec = [[] for i in range(len(groupby['exp_version']))]
         features = [[] for i in range(len(groupby['exp_version']))]
+        subs = [[] for i in range(len(groupby['exp_version']))]
 
         # make each groupby item a list
         groupby = [exp if type(exp) is list else [exp] for exp in groupby['exp_version']]
@@ -288,6 +289,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         pres = [[]]
         rec = [[]]
         features = [[]]
+        subs = [[]]
 
     # for each subject that completed the experiment
     for idx,sub in enumerate(subids):
@@ -324,8 +326,9 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
                 pres[exp_idx[0]].append([list(sub_data[sub_data['listnum']==lst]['text'].values) for lst in sub_data['listnum'].unique()])
                 rec[exp_idx[0]].append(recalledWords)
                 features[exp_idx[0]].append(feats)
+                subs[exp_idx[0]].append(sub)
 
-    eggs = [Egg(pres=ipres, rec=irec, features=ifeatures) for ipres,irec,ifeatures in zip(pres,rec,features)]
+    eggs = [Egg(pres=ipres, rec=irec, features=ifeatures, meta={'ids' : subs}) for ipres,irec,ifeatures in zip(pres, rec, features, subs)]
 
     if len(eggs)>1:
         return eggs
@@ -336,14 +339,3 @@ def load_example_data():
     with open(os.path.dirname(os.path.abspath(__file__)) + '/data/egg.pickle', 'rb') as handle:
         egg = pickle.load(handle)
     return egg
-    # dbpath = ['/Users/andyheusser/Documents/github/FRFR-analyses/data/encoding/participants-test-room1.db',
-    #           '/Users/andyheusser/Documents/github/FRFR-analyses/data/encoding/participants-test-room2.db']
-    # recpath = '/Users/andyheusser/Documents/github/FRFR-analyses/data/recall/'
-    # remove_subs = ['debugCWO54U:debugQ59MF8', 'debugE1CAO3:debugONZ2R5', 'debugXG82XV:debug7XPXQA']
-    # wordpool = '/Users/andyheusser/Documents/github/FRFR-analyses/stimuli/cut_wordpool.csv'
-    # experiments = ['0.0', '1.0', '1.1']
-    #
-    # # create a list of eggs, where each egg is a different experiment
-    # groupby = {'exp_version': [['0.0','1.0','1.1']]}
-    # egg = load(dbpath=dbpath, recpath=recpath, remove_subs=remove_subs,
-    #                   wordpool=wordpool, experiments=experiments, groupby=groupby)
