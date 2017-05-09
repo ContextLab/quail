@@ -95,8 +95,7 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
     return analyzed_data
 
-##RECALL MATRIX#######
-
+# recall matrix
 def recall_matrix(presented, recalled):
     """
     Computes recall matrix given list of presented and list of recalled words
@@ -134,6 +133,7 @@ def recall_matrix(presented, recalled):
         result.append(recall_pos(pres_list, rec_list))
     return result
 
+# accuracy analysis
 def accuracy_helper(pres_slice, rec_slice):
     """
     Computes proportion of words recalled
@@ -167,6 +167,7 @@ def accuracy_helper(pres_slice, rec_slice):
 
     return prop_recalled
 
+# serial position curve
 def spc_helper(pres_slice, rec_slice):
     """
     Computes probability of a word being recalled (in the appropriate recall list), given its presentation position
@@ -196,43 +197,7 @@ def spc_helper(pres_slice, rec_slice):
 
     return prop_recalled
 
-#PROB FIRST RECALL######
-
-def pfr_helper(pres_slice, rec_slice, n):
-
-    """
-    Computes probability of a word being recalled first (in the appropriate recall list), given its presentation position
-
-    Parameters
-    ----------
-    pres_slice : Pandas Dataframe
-        chunk of presentation data to be analyzed
-    rec_slice : Pandas Dataframe
-        chunk of recall data to be analyzed
-
-    Returns
-    ----------
-    prob_recalled : numpy array
-      each number represents the probability of first recall for a word presented in given position/index
-
-    """
-    return pnr_helper(pres_slice, rec_slice, n)
-
-    # # compute recall_matrix for data slice
-    # recall = recall_matrix(pres_slice, rec_slice)
-    #
-    # # simple function that returns 1 if item encoded in position n is recalled first
-    # def pos_recalled_first(pos,lst):
-    #     return 1 if pos==lst[0] else 0
-    #
-    # # get pfr for each row in recall matrix
-    # pfr_matrix = [[pos_recalled_first(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]
-    #
-    # # average over rows
-    # prob_recalled = np.mean(pfr_matrix,axis=0)
-    #
-    # return prob_recalled
-
+# probability of nth recall
 def pnr_helper(pres_slice, rec_slice, n):
 
     """
@@ -268,6 +233,7 @@ def pnr_helper(pres_slice, rec_slice, n):
 
     return prob_recalled
 
+# lag-crp
 def lagcrp_helper(pres_slice, rec_slice):
     """
     Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)
@@ -347,7 +313,7 @@ def lagcrp_helper(pres_slice, rec_slice):
 
     return prob_recalled
 
-
+# fingerprint analysis
 def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     """
     Computes clustering along a set of feature dimensions
@@ -474,6 +440,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
+# main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None, n=0):
     """
     General analysis function that groups data by subject/list number and performs analysis.
@@ -562,7 +529,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listgroup=listgroup,
                                   subjname=subjname,
                                   listname=listname,
-                                  analysis=pfr_helper,
+                                  analysis=pnr_helper,
                                   analysis_type='pfr',
                                   pass_features=False,
                                   n=0)
@@ -596,6 +563,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
 
             result[idx].append(r)
 
+    # return analysis result
     if len(data)>1 and len(analysis)>1:
         return result
     elif len(data)>1 and len(analysis)==1:
