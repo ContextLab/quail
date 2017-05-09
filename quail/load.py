@@ -328,7 +328,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
                 features[exp_idx[0]].append(feats)
                 subs[exp_idx[0]].append(sub)
 
-    eggs = [Egg(pres=ipres, rec=irec, features=ifeatures, meta={'ids' : subs}) for ipres,irec,ifeatures in zip(pres, rec, features, subs)]
+    eggs = [Egg(pres=ipres, rec=irec, features=ifeatures, meta={'ids' : isub}) for ipres,irec,ifeatures,isub in zip(pres, rec, features, subs)]
 
     if len(eggs)>1:
         return eggs
