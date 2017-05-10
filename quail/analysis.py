@@ -456,11 +456,11 @@ def tempclust_helper(pres_slice, rec_slice):
 
     # define distance function for temporal clustering
     dist_funcs = {
-        'temporal clustering' : lambda a, b : np.abs(a-b)
+        'temporal' : lambda a, b : np.abs(a-b)
     }
 
     # define features (just positions for temporal clustering)
-    f = [{'temporal clustering' : i} for i in range(pres_slice.list_length+1)]
+    f = [{'temporal' : i} for i in range(pres_slice.list_length+1)]
 
     # loop over lists
     for p, r in zip(pres_slice.as_matrix(), rec_slice.as_matrix()):
@@ -520,6 +520,58 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
+# fingerprint + temporal clustering analysis
+def fingerprint_tempclust_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
+    """
+    Computes clustering along a set of feature dimensions
+
+    Parameters
+    ----------
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
+    feature_slice : Pandas Dataframe
+        chunk of features data to be analyzed
+    dist_funcs : dict
+        Dictionary of distance functions for feature clustering analyses
+
+    Returns
+    ----------
+    probabilities : numpy array
+      each number represents clustering along a different feature dimension
+
+    """
+
+    # compute fingerprint for each list within a chunk
+    fingerprint_matrix = []
+
+    for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix()):
+
+        # turn arrays into lists
+        p = list(p)
+        r = list(r)
+        f = list(f)
+
+        # add in temporal clustering
+        nf = []
+        for idx, fi in enumerate(f):
+            fi['temporal'] = idx
+            nf.append(fi)
+
+        dist_funcs_copy = dist_funcs.copy()
+
+        dist_funcs_copy['temporal'] = lambda a, b : np.abs(a-b)
+
+        # compute distances
+        distances = compute_distances(p, nf, dist_funcs_copy)
+
+        # compute feature weights
+        fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
+
+    # return average over rows
+    return np.mean(fingerprint_matrix, axis=0)
+
 # main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None, n=0):
     """
@@ -546,7 +598,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
 
     analysis : string
         This is the analysis you want to run.  Can be accuracy, spc, pfr,
-        tempclust or fingerprint
+        temporal or fingerprint
 
 
     Returns
@@ -640,13 +692,21 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   analysis=fingerprint_helper,
                                   analysis_type='fingerprint',
                                   pass_features=True)
-            elif a is 'tempclust':
+            elif a is 'temporal':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
                                   subjname=subjname,
                                   listname=listname,
                                   analysis=tempclust_helper,
-                                  analysis_type='tempclust')
+                                  analysis_type='temporal')
+            elif a is 'fingerprint_temporal':
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=fingerprint_tempclust_helper,
+                                  analysis_type='fingerprint_temporal',
+                                  pass_features=True)
 
             result[idx].append(r)
 
