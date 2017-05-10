@@ -433,7 +433,7 @@ def lagcrp_helper(pres_slice, rec_slice):
     return prob_recalled
 
 # temporal clustering analysis
-def tempclust_helper(pres_slice, rec_slice):
+def temporal_helper(pres_slice, rec_slice):
     """
     Computes temporal clustering score
 
@@ -521,7 +521,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     return np.mean(fingerprint_matrix, axis=0)
 
 # fingerprint + temporal clustering analysis
-def fingerprint_tempclust_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
+def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
     """
     Computes clustering along a set of feature dimensions
 
@@ -697,14 +697,14 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listgroup=listgroup,
                                   subjname=subjname,
                                   listname=listname,
-                                  analysis=tempclust_helper,
+                                  analysis=temporal_helper,
                                   analysis_type='temporal')
             elif a is 'fingerprint_temporal':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
                                   subjname=subjname,
                                   listname=listname,
-                                  analysis=fingerprint_tempclust_helper,
+                                  analysis=fingerprint_temporal_helper,
                                   analysis_type='fingerprint_temporal',
                                   pass_features=True)
 
