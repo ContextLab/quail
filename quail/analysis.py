@@ -234,10 +234,13 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
                 cdist = dists[pres_list.index(n)]
 
                 # filter dists removing the words that have already been recalled, and the dist for the current word
-                dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs and idx is not pres_list.index(c)])
+                dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
+
+                # get indices
+                avg_rank = np.mean(np.where(np.sort(dists_filt)[::-1] == cdist)[0]+1)
 
                 # compute the weight
-                weights[feature].append(np.sum(dists_filt > cdist) / len(dists_filt))
+                weights[feature].append(avg_rank / len(dists_filt))
 
             # keep track of what has been recalled already
             past_idxs.append(pres_list.index(c))
