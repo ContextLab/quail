@@ -133,6 +133,101 @@ def recall_matrix(presented, recalled):
         result.append(recall_pos(pres_list, rec_list))
     return result
 
+def compute_distances(pres_list, feature_list, dist_funcs):
+    """
+    Compute distances between list words along n feature dimensions
+
+    Parameters
+    ----------
+    pres_list : list
+        list of words
+    feature_list : list
+        list of feature dicts
+    dist_funcs : dict
+        dict of distance functions for each feature
+
+    Returns
+    ----------
+    distances : dict
+        dict of distance matrices for each feature
+    """
+
+    # initialize dist dict
+    distances = {}
+
+    # for each feature in dist_funcs
+    for feature in dist_funcs:
+
+        # initialize dist matrix
+        dists = np.zeros((len(pres_list), len(pres_list)))
+
+        # for each word in the list
+        for idx1, item1 in enumerate(pres_list):
+
+            # for each word in the list
+            for idx2, item2 in enumerate(pres_list):
+
+                # compute the distance between word 1 and word 2 along some feature dimension
+                dists[idx1,idx2] = dist_funcs[feature](feature_list[idx1][feature],feature_list[idx2][feature])
+
+        # set that distance matrix to the value of a dict where the feature name is the key
+        distances[feature] = dists
+
+    return distances
+
+def compute_feature_weights(pres_list, rec_list, feature_list, distances):
+
+    # initialize the weights object for just this list
+    weights = {}
+    for feature in feature_list[0]:
+        weights[feature] = []
+
+    # return default list if there is not enough data to compute the fingerprint
+    if len(rec_list) <= 2:
+        print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
+        for feature in feature_list[0]:
+            weights[feature] = .5
+        return weights
+
+    # initialize past word list
+    past_words = []
+    past_idxs = []
+
+    # loop over words
+    for i in range(len(rec_list)-1):
+
+        # grab current word
+        c = rec_list[i]
+
+        # grab the next word
+        n = rec_list[i + 1]
+
+        # if both recalled words are in the encoding list and haven't been recalled before
+        if (c in pres_list and n in pres_list) and (c not in past_words and n not in past_words):
+
+            # for each feature
+            for feature in feature_list[0]:
+
+                # get the distance vector for the current word
+                dists = distances[feature][pres_list.index(c),:]
+
+                # filter dists removing the words that have already been recalled
+                dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs and idx is not pres_list.index(c)])
+
+                # distance between current and next word
+                cdist = dists[pres_list.index(n)]
+
+                # compute the weight
+                weights[feature].append(np.sum(dists_filt > cdist) / len(dists_filt))
+
+            past_idxs.append(pres_list.index(c))
+            past_words.append(c)
+
+    for feature in weights:
+        weights[feature] = np.nanmean(weights[feature])
+
+    return [weights[key] for key in weights]
+
 # accuracy analysis
 def accuracy_helper(pres_slice, rec_slice):
     """
@@ -332,46 +427,32 @@ def tempclust_helper(pres_slice, rec_slice):
 
     """
 
-    def compute_tempclust(rec_list, list_length):
-        """
-        Computes temporal clustering for a list from a recall matrix
-        """
+    # initialize temporal clustering list
+    temporal_clustering = []
 
-        past = []
-        weights = []
+    # define distance function for temporal clustering
+    dist_funcs = {
+        'temporal clustering' : lambda a, b : np.abs(a-b)
+    }
 
-        for idx in range(len(rec_list)-1):
+    # define features (just positions for temporal clustering)
+    f = [{'temporal clustering' : i} for i in range(pres_slice.list_length+1)]
 
-            # current word position
-            c = rec_list[idx]
+    # loop over lists
+    for p, r in zip(pres_slice.as_matrix(), rec_slice.as_matrix()):
 
-            # next word position
-            n = rec_list[idx+1]
+        # turn arrays into lists
+        p = list(p)
+        r = list(r)
 
-            # if the current word and next recall were on the encoding list, haven't been said yet and are not the same
-            if (c in range(list_length+1) and n in range(list_length+1)) and (c not in past and n not in past) and (c != n):
+        # compute distances
+        distances = compute_distances(p, f, dist_funcs)
 
-                # compute sorted dist vector
-                dist_vec = sorted([np.abs(c-i) for i in range(1,list_length+2) if c!=i])
+        # compute feature weights
+        temporal_clustering.append(compute_feature_weights(p, r, f, distances))
 
-                # find the rank position of the distance
-                idx = np.where(dist_vec==np.abs(c-n))[0]
-
-                # compute the weight and append
-                weights.append(1-(idx[0] / len(dist_vec)))
-
-            # add c to past words.
-            past.append(c)
-
-        return np.nanmean(weights)
-
-    # compute recall_matrix for data slice
-    recall = recall_matrix(pres_slice, rec_slice)
-
-    # compute temporal clustering for each list
-    score = [compute_tempclust(lst,pres_slice.list_length) for lst in recall]
-
-    return np.nanmean(score)
+    # return average over rows
+    return np.nanmean(temporal_clustering, axis=0)
 
 # fingerprint analysis
 def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
@@ -396,80 +477,21 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
 
     """
 
-    def compute_feature_weights(pres_list, rec_list, feature_list, distances):
-
-        # initialize the weights object for just this list
-        listWeights = {}
-        for feature in feature_list[0]:
-            listWeights[feature] = []
-
-        # return default list if there is not enough data to compute the fingerprint
-        if len(rec_list) <= 2:
-            print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
-            for feature in feature_list[0]:
-                listWeights[feature] = .5
-            return listWeights
-
-        # initialize pastWords list
-        pastWords = []
-
-        # finger print analysis
-        for i in range(0,len(rec_list)-1):
-
-            # grab current word
-            currentWord = rec_list[i]
-
-            # grab the next word
-            nextWord = rec_list[i + 1]
-
-            # grab the words from the encoding list
-            encodingWords = pres_list
-
-            # if both recalled words are in the encoding list
-            if (currentWord in encodingWords and nextWord in encodingWords) and (currentWord not in pastWords and nextWord not in pastWords):
-                # print(currentWord,nextWord,encodingWords,pastWords)
-
-                for feature in feature_list[0]:
-
-                    # get the distance vector for the current word
-                    distVec = distances[encodingWords.index(currentWord)]['distances'][feature]
-
-                    # filter distVec removing the words that have already been analyzed from future calculations
-                    filteredDistVec = []
-                    for word in distVec:
-                        if word['word'] in pastWords:
-                            pass
-                        else:
-                            filteredDistVec.append(word)
-
-                    # sort distWords by distances
-                    filteredDistVec = sorted(filteredDistVec, key=lambda item:item['dist'])
-
-                    # compute the category listWeights
-                    nextWordIdx = [word['word'] for word in filteredDistVec].index(nextWord)
-
-                    # not sure about this part
-                    idxs = []
-                    for idx,word in enumerate(filteredDistVec):
-                        if filteredDistVec[nextWordIdx]['dist'] == word['dist']:
-                            idxs.append(idx)
-
-                    listWeights[feature].append(1 - (sum(idxs)/len(idxs) / len(filteredDistVec)))
-
-                pastWords.append(currentWord)
-
-        for feature in listWeights:
-            listWeights[feature] = np.mean(listWeights[feature])
-
-        return [listWeights[key] for key in listWeights]
-
-    # given a stimulus list and recalled words, compute the weights
-    def get_fingerprint(pres_list, rec_list, feature_list, dist_funcs):
-        distances = compute_distances(pres_list, feature_list, dist_funcs)
-        return compute_feature_weights(pres_list, rec_list, feature_list, distances)
-
     # compute fingerprint for each list within a chunk
-    fingerprint_matrix = [get_fingerprint(list(p), list(r), list(f), dist_funcs) for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix())]
+    fingerprint_matrix = []
+
+    for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix()):
+
+        # turn arrays into lists
+        p = list(p)
+        r = list(r)
+        f = list(f)
+
+        # compute distances
+        distances = compute_distances(p, f, dist_funcs)
+
+        # compute feature weights
+        fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
 
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)

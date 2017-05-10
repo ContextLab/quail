@@ -230,26 +230,3 @@ def fill_missing(x):
             new_sub = sub
         subs.append(new_sub)
     return subs
-
-def compute_distances(pres_list, feature_list, dist_funcs):
-
-    # initialize distance dictionary
-    distances = []
-    for idx,word in enumerate(pres_list):
-        stimulus = {}
-        stimulus['word'] = word
-        stimulus['distances'] = {}
-        for feature in feature_list[idx]:
-            stimulus['distances'][feature] = []
-        distances.append(stimulus)
-
-    # loop over the lists to create distance matrices
-    for i,stimulus1 in enumerate(feature_list):
-        for j,stimulus2 in enumerate(feature_list):
-            for feature in stimulus1:
-                distances[i]['distances'][feature].append({
-                        'word' : distances[j]['word'],
-                        'dist' : dist_funcs[feature](stimulus1[feature],stimulus2[feature])
-                    })
-
-    return distances
