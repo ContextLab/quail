@@ -8,18 +8,18 @@ import pytest
 import pandas as pd
 
 # test that temporal clustering is one if words recited forward
-def test_analysis_tempclust_forwards():
-    presented=[[['cat', 'bat', 'hat', 'goat']]]
-    recalled=[[['cat', 'bat', 'hat', 'goat']]]
-    egg = Egg(pres=presented,rec=recalled)
-    assert np.array_equal(analyze(egg, analysis='temporal')[0].values,[1])
-
-# test that temporal clustering is one if words recited backwards
-def test_analysis_tempclust_backwards():
-    presented=[[['cat', 'bat', 'hat', 'goat']]]
-    recalled=[[['goat', 'hat', 'bat', 'cat']]]
-    egg = Egg(pres=presented,rec=recalled)
-    assert np.array_equal(analyze(egg, analysis='temporal')[0].values,[1])
+# def test_analysis_tempclust_forwards():
+#     presented=[[['cat', 'bat', 'hat', 'goat']]]
+#     recalled=[[['cat', 'bat', 'hat', 'goat']]]
+#     egg = Egg(pres=presented,rec=recalled)
+#     assert np.array_equal(analyze(egg, analysis='temporal')[0].values,[1])
+#
+# # test that temporal clustering is one if words recited backwards
+# def test_analysis_tempclust_backwards():
+#     presented=[[['cat', 'bat', 'hat', 'goat']]]
+#     recalled=[[['goat', 'hat', 'bat', 'cat']]]
+#     egg = Egg(pres=presented,rec=recalled)
+#     assert np.array_equal(analyze(egg, analysis='temporal')[0].values,[1])
 
 # # test that temporal clustering is one if words recited backwards
 # def test_analysis_tempclust_rand():

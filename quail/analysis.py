@@ -233,7 +233,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
                 # distance between current and next word
                 cdist = dists[pres_list.index(n)]
 
-                # filter dists removing the words that have already been recalled, and the dist for the current word
+                # filter dists removing the words that have already been recalled
                 dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
 
                 # get indices
@@ -251,6 +251,24 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
         weights[feature] = np.nanmean(weights[feature])
 
     return [weights[key] for key in weights]
+
+def bootstrap_fingerprint(p, r, f, distances, n_perms=100):
+
+    r_perms = []
+    r_real = compute_feature_weights(p, r, f, distances)
+
+    for iperm in range(n_perms):
+        r_perm = list(np.random.permutation(r))
+        r_perms.append(compute_feature_weights(p, r_perm, f, distances))
+
+    r_perms_bool = []
+    for perm in r_perms:
+        r_perm_bool = []
+        for idx, feature_perm in enumerate(perm):
+            r_perm_bool.append(feature_perm < r_real[idx])
+        r_perms_bool.append(r_perm_bool)
+
+    return np.sum(np.array(r_perms_bool), axis=0) / n_perms
 
 # accuracy analysis
 def accuracy_helper(pres_slice, rec_slice):
@@ -433,7 +451,7 @@ def lagcrp_helper(pres_slice, rec_slice):
     return prob_recalled
 
 # temporal clustering analysis
-def temporal_helper(pres_slice, rec_slice):
+def temporal_helper(pres_slice, rec_slice, bootstrap=True, n_perms=100):
     """
     Computes temporal clustering score
 
@@ -472,6 +490,11 @@ def temporal_helper(pres_slice, rec_slice):
         # compute distances
         distances = compute_distances(p, f, dist_funcs)
 
+        # add optional bootstrapping
+        if bootstrap:
+            bootstrapped_feature_weights = bootstrap_fingerprint(p, r, f, distances, n_perms=n_perms)
+            temporal_clustering.append(bootstrapped_feature_weights)
+
         # compute feature weights
         temporal_clustering.append(compute_feature_weights(p, r, f, distances))
 
@@ -479,7 +502,7 @@ def temporal_helper(pres_slice, rec_slice):
     return np.nanmean(temporal_clustering, axis=0)
 
 # fingerprint analysis
-def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
+def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, bootstrap=True, n_perms=100):
     """
     Computes clustering along a set of feature dimensions
 
@@ -514,14 +537,20 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
         # compute distances
         distances = compute_distances(p, f, dist_funcs)
 
-        # compute feature weights
-        fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
+        # add optional bootstrapping
+        if bootstrap:
+            bootstrapped_feature_weights = bootstrap_fingerprint(p, r, f, distances, n_perms=n_perms)
+            fingerprint_matrix.append(bootstrapped_feature_weights)
+
+        else:
+            # compute feature weights
+            fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
 
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
 # fingerprint + temporal clustering analysis
-def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
+def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs, bootstrap=True, n_perms=100):
     """
     Computes clustering along a set of feature dimensions
 
@@ -542,7 +571,6 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
       each number represents clustering along a different feature dimension
 
     """
-
     # compute fingerprint for each list within a chunk
     fingerprint_matrix = []
 
@@ -566,6 +594,11 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
         # compute distances
         distances = compute_distances(p, nf, dist_funcs_copy)
 
+        # add optional bootstrapping
+        if bootstrap:
+            bootstrapped_feature_weights = bootstrap_fingerprint(p, r, f, distances, n_perms=n_perms)
+            fingerprint_matrix.append(bootstrapped_feature_weights)
+
         # compute feature weights
         fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
 
@@ -573,7 +606,8 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
     return np.mean(fingerprint_matrix, axis=0)
 
 # main analysis function
-def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None, n=0):
+def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
+            listname='List', analysis=None, n=0, bootstrap=True, n_perms=100):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -600,6 +634,22 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
         This is the analysis you want to run.  Can be accuracy, spc, pfr,
         temporal or fingerprint
 
+    n : int
+        Optional argument for pnr analysis.  Defines encoding position of item
+        to run pnr.  Default is 0, and it is zero indexed
+
+    bootstrap : bool
+        Optional argument for fingerprint/temporal cluster analyses. Determines
+        whether to correct clustering scores by shuffling recall order for each list
+        to create a distribution of clustering scores (for each feature). The
+        "corrected" clustering score is the proportion of clustering scores in
+        that random distribution that were lower than the clustering score for
+        the observed recall sequence. Default is True.
+
+    n_perms : int
+        Optional argument for fingerprint/temporal cluster analyses. Number of
+        permutations to run for "corrected" clustering scores. Default is 100 (
+        per recall list).
 
     Returns
     ----------
@@ -691,14 +741,18 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listname=listname,
                                   analysis=fingerprint_helper,
                                   analysis_type='fingerprint',
-                                  pass_features=True)
+                                  pass_features=True,
+                                  bootstrap=bootstrap,
+                                  n_perms=n_perms)
             elif a is 'temporal':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
                                   subjname=subjname,
                                   listname=listname,
                                   analysis=temporal_helper,
-                                  analysis_type='temporal')
+                                  analysis_type='temporal',
+                                  bootstrap=bootstrap,
+                                  n_perms=n_perms)
             elif a is 'fingerprint_temporal':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -706,7 +760,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listname=listname,
                                   analysis=fingerprint_temporal_helper,
                                   analysis_type='fingerprint_temporal',
-                                  pass_features=True)
+                                  pass_features=True,
+                                  bootstrap=bootstrap,
+                                  n_perms=n_perms)
 
             result[idx].append(r)
 
