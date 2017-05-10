@@ -140,9 +140,9 @@ def compute_distances(pres_list, feature_list, dist_funcs):
     Parameters
     ----------
     pres_list : list
-        list of words
+        list of presented words
     feature_list : list
-        list of feature dicts
+        list of feature dicts for presented words
     dist_funcs : dict
         dict of distance functions for each feature
 
@@ -176,6 +176,25 @@ def compute_distances(pres_list, feature_list, dist_funcs):
     return distances
 
 def compute_feature_weights(pres_list, rec_list, feature_list, distances):
+    """
+    Compute clustering scores along a set of feature dimensions
+
+    Parameters
+    ----------
+    pres_list : list
+        list of presented words
+    rec_list : list
+        list of recalled words
+    feature_list : list
+        list of feature dicts for presented words
+    distances : dict
+        dict of distance matrices for each feature
+
+    Returns
+    ----------
+    weights : list
+        list of clustering scores for each feature dimension
+    """
 
     # initialize the weights object for just this list
     weights = {}
@@ -211,18 +230,20 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
                 # get the distance vector for the current word
                 dists = distances[feature][pres_list.index(c),:]
 
-                # filter dists removing the words that have already been recalled
-                dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs and idx is not pres_list.index(c)])
-
                 # distance between current and next word
                 cdist = dists[pres_list.index(n)]
+
+                # filter dists removing the words that have already been recalled, and the dist for the current word
+                dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs and idx is not pres_list.index(c)])
 
                 # compute the weight
                 weights[feature].append(np.sum(dists_filt > cdist) / len(dists_filt))
 
+            # keep track of what has been recalled already
             past_idxs.append(pres_list.index(c))
             past_words.append(c)
 
+    # average over the cluster scores for a particular dimension
     for feature in weights:
         weights[feature] = np.nanmean(weights[feature])
 
