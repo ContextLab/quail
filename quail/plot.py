@@ -127,9 +127,9 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             elif plot_type is 'split':
                 ax = plot_func(data=tidy_data, x=subjname, y="Accuracy", hue=listname, **kwargs)
 
-        if attrs['analysis_type'] is 'temporal':
+        elif attrs['analysis_type'] is 'temporal':
 
-            # set defaul style to bar
+            # set default style to bar
             plot_style = plot_style if plot_style is not None else 'bar'
             plot_type = plot_type if plot_type is not None else 'list'
 
@@ -147,7 +147,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             elif plot_type is 'split':
                 ax = plot_func(data=tidy_data, x=subjname, y="Temporal Clustering Score", hue=listname, **kwargs)
 
-        elif attrs['analysis_type'] is 'fingerprint' or 'fingerprint_temporal':
+        elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
 
             # set default style to violin
             plot_style = plot_style if plot_style is not None else 'violin'

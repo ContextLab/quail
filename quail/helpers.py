@@ -57,7 +57,7 @@ def format2tidy(df, subjname, listname, subjgroup, **attrs):
         base = range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
-    elif attrs['analysis_type'] is 'fingerprint' or 'fingerprint_temporal':
+    elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
         base = list(df.columns.values)
         melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
