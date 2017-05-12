@@ -16,3 +16,4 @@ pydub
 google-cloud
 multiprocessing
 pathos
+jupyter_client
