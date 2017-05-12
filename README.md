@@ -110,7 +110,7 @@ The preferred way to contribute to quail is to fork the main repository on GitHu
 
 <h2>Testing</h2>
 
-[![Build Status](https://travis-ci.com/ContextLab/hypertools.svg?token=hxjzzuVkr2GZrDkPGN5n&branch=master)](https://travis-ci.com/ContextLab/hypertools)
+[![Build Status](https://travis-ci.com/ContextLab/quail.svg?token=hxjzzuVkr2GZrDkPGN5n&branch=master)
 
 
 To test quail, install pytest (`pip install pytest`) and run `pytest` in the quail folder
@@ -119,7 +119,7 @@ To test quail, install pytest (`pip install pytest`) and run `pytest` in the qua
 
 See [here](http://cdl-quail.readthedocs.io/en/latest/auto_examples/index.html) for more examples.
 
-<h2>Create an `egg`!</h2>
+<h2>Create an egg!</h2>
 
 Eggs are the fundamental data structure in `quail`.  They are comprised of lists of presented words, lists of recalled words, and a few other optional components.
 
