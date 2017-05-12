@@ -22,9 +22,8 @@ import quail
 #load data
 egg = quail.load_example_data()
 
-# analysis (use parallel processing because this takes a while)
-analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*16,
-                              parallel=True, permute=True, n_perms=1000)
+# analysis
+analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*16)
 
 # plot
 quail.plot(analyzed_data, title='Memory Fingerprint')
