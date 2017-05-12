@@ -9,3 +9,5 @@ dill
 requests
 pydub
 google-cloud
+multiprocessing
+pathos

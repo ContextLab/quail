@@ -2,6 +2,7 @@
 from __future__ import division
 import numpy as np
 import pandas as pd
+import warnings
 from .helpers import *
 
 def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False, **kwargs):
@@ -54,31 +55,47 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
         listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
 
     # perform the analysis
-    analyzed_data = []
+    def perform_analysis(subj, lst):
+
+        # get data slice for presentation and recall
+        pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+        pres_slice.list_length = data.list_length
+
+        rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+
+        # if features are need for analysis, get the features for this slice of data
+        if pass_features:
+            feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+
+        # generate indices
+        index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
+
+        # perform analysis for each data chunk
+        if pass_features:
+            return pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
+        else:
+            return pd.DataFrame([analysis(pres_slice, rec_slice, **kwargs)], index=index)
+
+    # create list of chunks to process
+    a=[]
+    b=[]
     for subj in subjdict:
         for lst in listdict[0]:
+            a.append(subj)
+            b.append(lst)
 
-            # get data slice for presentation and recall
-            pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-            pres_slice.list_length = data.list_length
+    # handle parellel kwarg
+    parallel=kwargs['parallel']
+    del kwargs['parallel']
 
-            rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-
-            # if features are need for analysis, get the features for this slice of data
-            if pass_features:
-                feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-
-            # generate indices
-            index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
-
-            # perform analysis for each data chunk
-            if pass_features:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
-            else:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, **kwargs)], index=index)
-
-            # append analyzed data
-            analyzed_data.append(analyzed)
+    # if we're running permutation tests, use multiprocessing
+    if parallel==True:
+        import multiprocessing
+        from pathos.multiprocessing import ProcessingPool as Pool
+        p = Pool(multiprocessing.cpu_count())
+        analyzed_data = p.map(perform_analysis, a, b)
+    else:
+        analyzed_data = [perform_analysis(ai, bi) for ai,bi in zip(a,b)]
 
     # concatenate slices
     analyzed_data = pd.concat(analyzed_data)
@@ -246,11 +263,31 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
 
     # average over the cluster scores for a particular dimension
     for feature in weights:
-        weights[feature] = np.nanmean(weights[feature])
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            weights[feature] = np.nanmean(weights[feature])
 
     return [weights[key] for key in weights]
 
-def bootstrap_fingerprint(p, r, f, distances, n_perms=100):
+# def single_perm(p, r, f, distances):
+#     r_real = compute_feature_weights(p, r, f, distances)
+#     perm = list(np.random.permutation(r))
+#     r_perm = compute_feature_weights(p, perm, f, distances)
+#     return [feature_perm < r_real[idx] for idx, feature_perm in enumerate(r_perm)]
+#
+# def permute_fingerprint_parallel(p, r, f, distances, n_perms=100):
+#
+#     executor = concurrent.futures.ThreadPoolExecutor(10)
+#     futures = [executor.submit(single_perm, p, r, f, distances) for perm in range(n_perms)]
+#     concurrent.futures.wait(futures)
+#
+#     results = [perm.result() for perm in futures]
+#
+#     print(np.sum(np.array(results), axis=0) / n_perms)
+#
+#     return np.sum(np.array(results), axis=0) / n_perms
+
+def permute_fingerprint_serial(p, r, f, distances, n_perms=100):
 
     r_perms = []
     r_real = compute_feature_weights(p, r, f, distances)
@@ -449,7 +486,7 @@ def lagcrp_helper(pres_slice, rec_slice):
     return prob_recalled
 
 # temporal clustering analysis
-def temporal_helper(pres_slice, rec_slice, bootstrap=True, n_perms=100):
+def temporal_helper(pres_slice, rec_slice, permute=False, n_perms=1000):
     """
     Computes temporal clustering score
 
@@ -483,24 +520,26 @@ def temporal_helper(pres_slice, rec_slice, bootstrap=True, n_perms=100):
 
         # turn arrays into lists
         p = list(p)
-        r = list(r)
+        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
 
-        # compute distances
-        distances = compute_distances(p, f, dist_funcs)
+        if len(r)>1:
 
-        # add optional bootstrapping
-        if bootstrap:
-            bootstrapped_feature_weights = bootstrap_fingerprint(p, r, f, distances, n_perms=n_perms)
-            temporal_clustering.append(bootstrapped_feature_weights)
+            # compute distances
+            distances = compute_distances(p, f, dist_funcs)
 
-        # compute feature weights
-        temporal_clustering.append(compute_feature_weights(p, r, f, distances))
+            # add optional bootstrapping
+            if permute:
+                temporal_clustering.append(permute_fingerprint_serial(p, r, f, distances, n_perms=n_perms))
+            else:
+                temporal_clustering.append(compute_feature_weights(p, r, f, distances))
+        else:
+            temporal_clustering.append([np.nan]*len(f[0].keys()))
 
     # return average over rows
     return np.nanmean(temporal_clustering, axis=0)
 
 # fingerprint analysis
-def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, bootstrap=True, n_perms=100):
+def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute=False, n_perms=1000):
     """
     Computes clustering along a set of feature dimensions
 
@@ -521,6 +560,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, bootstr
       each number represents clustering along a different feature dimension
 
     """
+    import time
 
     # compute fingerprint for each list within a chunk
     fingerprint_matrix = []
@@ -529,26 +569,27 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, bootstr
 
         # turn arrays into lists
         p = list(p)
-        r = list(r)
         f = list(f)
+        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
 
-        # compute distances
-        distances = compute_distances(p, f, dist_funcs)
+        if len(r)>1:
 
-        # add optional bootstrapping
-        if bootstrap:
-            bootstrapped_feature_weights = bootstrap_fingerprint(p, r, f, distances, n_perms=n_perms)
-            fingerprint_matrix.append(bootstrapped_feature_weights)
+            # compute distances
+            distances = compute_distances(p, f, dist_funcs)
 
+            # add optional bootstrapping
+            if permute:
+                fingerprint_matrix.append(permute_fingerprint_serial(p, r, f, distances, n_perms=n_perms))
+            else:
+                fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
         else:
-            # compute feature weights
-            fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
+            fingerprint_matrix.append([np.nan]*len(f[0].keys()))
 
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
 # fingerprint + temporal clustering analysis
-def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs, bootstrap=True, n_perms=100):
+def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute=True, n_perms=1000):
     """
     Computes clustering along a set of feature dimensions
 
@@ -576,8 +617,8 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
 
         # turn arrays into lists
         p = list(p)
-        r = list(r)
         f = list(f)
+        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
 
         # add in temporal clustering
         nf = []
@@ -586,26 +627,29 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
             nf.append(fi)
 
         dist_funcs_copy = dist_funcs.copy()
-
         dist_funcs_copy['temporal'] = lambda a, b : np.abs(a-b)
 
-        # compute distances
-        distances = compute_distances(p, nf, dist_funcs_copy)
+        # if there is at least 1 transition
+        if len(r)>1:
 
-        # add optional bootstrapping
-        if bootstrap:
-            bootstrapped_feature_weights = bootstrap_fingerprint(p, r, f, distances, n_perms=n_perms)
-            fingerprint_matrix.append(bootstrapped_feature_weights)
+            # compute distances
+            distances = compute_distances(p, nf, dist_funcs_copy)
 
-        # compute feature weights
-        fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
+            # add optional bootstrapping
+            if permute:
+                fingerprint_matrix.append(permute_fingerprint_serial(p, r, nf, distances, n_perms=n_perms))
+            else:
+                fingerprint_matrix.append(compute_feature_weights(p, r, nf, distances))
+        else:
+            fingerprint_matrix.append([np.nan]*len(nf[0].keys()))
 
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
 # main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
-            listname='List', analysis=None, n=0, bootstrap=True, n_perms=100):
+            listname='List', analysis=None, n=0, permute=False, n_perms=1000,
+            parallel=False):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -636,18 +680,22 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         Optional argument for pnr analysis.  Defines encoding position of item
         to run pnr.  Default is 0, and it is zero indexed
 
-    bootstrap : bool
+    permute : bool
         Optional argument for fingerprint/temporal cluster analyses. Determines
         whether to correct clustering scores by shuffling recall order for each list
         to create a distribution of clustering scores (for each feature). The
         "corrected" clustering score is the proportion of clustering scores in
         that random distribution that were lower than the clustering score for
-        the observed recall sequence. Default is True.
+        the observed recall sequence. Default is False.
 
     n_perms : int
         Optional argument for fingerprint/temporal cluster analyses. Number of
-        permutations to run for "corrected" clustering scores. Default is 100 (
+        permutations to run for "corrected" clustering scores. Default is 1000 (
         per recall list).
+
+    parallel : bool
+        Option to use multiprocessing (this can help speed up the permutations
+        tests in the clustering calculations)
 
     Returns
     ----------
@@ -695,7 +743,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   listname=listname,
                                   analysis=accuracy_helper,
                                   analysis_type='accuracy',
-                                  pass_features=False)
+                                  pass_features=False,
+                                  parallel=parallel)
             elif a is 'spc':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -703,7 +752,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   listname=listname,
                                   analysis=spc_helper,
                                   analysis_type='spc',
-                                  pass_features=False)
+                                  pass_features=False,
+                                  parallel=parallel)
             elif a is 'pfr':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -712,7 +762,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   analysis=pnr_helper,
                                   analysis_type='pfr',
                                   pass_features=False,
-                                  n=0)
+                                  n=0,
+                                  parallel=parallel)
             elif a is 'pnr':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -721,7 +772,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   analysis=pnr_helper,
                                   analysis_type='pnr',
                                   pass_features=False,
-                                  n=n)
+                                  n=n,
+                                  parallel=parallel)
             elif a is 'lagcrp':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -729,7 +781,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   listname=listname,
                                   analysis=lagcrp_helper,
                                   analysis_type='lagcrp',
-                                  pass_features=False)
+                                  pass_features=False,
+                                  parallel=parallel)
                 # set indices for lagcrp
                 r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
             elif a is 'fingerprint':
@@ -740,8 +793,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   analysis=fingerprint_helper,
                                   analysis_type='fingerprint',
                                   pass_features=True,
-                                  bootstrap=bootstrap,
-                                  n_perms=n_perms)
+                                  permute=permute,
+                                  n_perms=n_perms,
+                                  parallel=parallel)
             elif a is 'temporal':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -749,8 +803,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   listname=listname,
                                   analysis=temporal_helper,
                                   analysis_type='temporal',
-                                  bootstrap=bootstrap,
-                                  n_perms=n_perms)
+                                  permute=permute,
+                                  n_perms=n_perms,
+                                  parallel=parallel)
             elif a is 'fingerprint_temporal':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -759,8 +814,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   analysis=fingerprint_temporal_helper,
                                   analysis_type='fingerprint_temporal',
                                   pass_features=True,
-                                  bootstrap=bootstrap,
-                                  n_perms=n_perms)
+                                  permute=permute,
+                                  n_perms=n_perms,
+                                  parallel=parallel)
 
             result[idx].append(r)
 
