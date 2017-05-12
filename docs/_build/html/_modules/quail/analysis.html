@@ -115,6 +115,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="k">def</span> <span class="nf">analyze_chunk</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -167,33 +168,47 @@
         <span class="n">listdict</span> <span class="o">=</span> <span class="p">[{</span><span class="n">lst</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">lst</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)}</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">]</span>
 
     <span class="c1"># perform the analysis</span>
-    <span class="n">analyzed_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">perform_analysis</span><span class="p">(</span><span class="n">subj</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+
+        <span class="c1"># get data slice for presentation and recall</span>
+        <span class="n">pres_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)]))]]</span>
+        <span class="n">pres_slice</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">list_length</span>
+
+        <span class="n">rec_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)]))]]</span>
+
+        <span class="c1"># if features are need for analysis, get the features for this slice of data</span>
+        <span class="k">if</span> <span class="n">pass_features</span><span class="p">:</span>
+            <span class="n">feature_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)]))]]</span>
+
+        <span class="c1"># generate indices</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">([[</span><span class="n">subj</span><span class="p">],[</span><span class="n">lst</span><span class="p">]],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="p">])</span>
+
+        <span class="c1"># perform analysis for each data chunk</span>
+        <span class="k">if</span> <span class="n">pass_features</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">analysis</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">feature_slice</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dist_funcs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">feature</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">analysis</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="c1"># create list of chunks to process</span>
+    <span class="n">a</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">b</span><span class="o">=</span><span class="p">[]</span>
     <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subj</span><span class="p">)</span>
+            <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span>
 
-            <span class="c1"># get data slice for presentation and recall</span>
-            <span class="n">pres_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)]))]]</span>
-            <span class="n">pres_slice</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">list_length</span>
+    <span class="c1"># handle parellel kwarg</span>
+    <span class="n">parallel</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;parallel&#39;</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;parallel&#39;</span><span class="p">]</span>
 
-            <span class="n">rec_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)]))]]</span>
-
-            <span class="c1"># if features are need for analysis, get the features for this slice of data</span>
-            <span class="k">if</span> <span class="n">pass_features</span><span class="p">:</span>
-                <span class="n">feature_slice</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="o">~</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">s</span><span class="p">,</span><span class="n">l</span><span class="p">)]))]]</span>
-
-            <span class="c1"># generate indices</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">([[</span><span class="n">subj</span><span class="p">],[</span><span class="n">lst</span><span class="p">]],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="p">])</span>
-
-            <span class="c1"># perform analysis for each data chunk</span>
-            <span class="k">if</span> <span class="n">pass_features</span><span class="p">:</span>
-                <span class="n">analyzed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">analysis</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">feature_slice</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dist_funcs</span><span class="p">)],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">feature</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_slice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()])</span>
-            <span class="k">elif</span> <span class="s1">&#39;n&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-                <span class="n">analyzed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">analysis</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">])],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">analyzed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">analysis</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">)],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
-
-            <span class="c1"># append analyzed data</span>
-            <span class="n">analyzed_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analyzed</span><span class="p">)</span>
+    <span class="c1"># if we&#39;re running permutation tests, use multiprocessing</span>
+    <span class="k">if</span> <span class="n">parallel</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">multiprocessing</span>
+        <span class="kn">from</span> <span class="nn">pathos.multiprocessing</span> <span class="k">import</span> <span class="n">ProcessingPool</span> <span class="k">as</span> <span class="n">Pool</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span>
+        <span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">perform_analysis</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">analyzed_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">perform_analysis</span><span class="p">(</span><span class="n">ai</span><span class="p">,</span> <span class="n">bi</span><span class="p">)</span> <span class="k">for</span> <span class="n">ai</span><span class="p">,</span><span class="n">bi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)]</span>
 
     <span class="c1"># concatenate slices</span>
     <span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">)</span>
@@ -208,8 +223,7 @@
 
     <span class="k">return</span> <span class="n">analyzed_data</span>
 
-<span class="c1">##RECALL MATRIX#######</span>
-
+<span class="c1"># recall matrix</span>
 <span class="k">def</span> <span class="nf">recall_matrix</span><span class="p">(</span><span class="n">presented</span><span class="p">,</span> <span class="n">recalled</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes recall matrix given list of presented and list of recalled words</span>
@@ -247,6 +261,164 @@
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recall_pos</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">result</span>
 
+<span class="k">def</span> <span class="nf">compute_distances</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute distances between list words along n feature dimensions</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_list : list</span>
+<span class="sd">        list of presented words</span>
+<span class="sd">    feature_list : list</span>
+<span class="sd">        list of feature dicts for presented words</span>
+<span class="sd">    dist_funcs : dict</span>
+<span class="sd">        dict of distance functions for each feature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    distances : dict</span>
+<span class="sd">        dict of distance matrices for each feature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># initialize dist dict</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># for each feature in dist_funcs</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">dist_funcs</span><span class="p">:</span>
+
+        <span class="c1"># initialize dist matrix</span>
+        <span class="n">dists</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">pres_list</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">pres_list</span><span class="p">)))</span>
+
+        <span class="c1"># for each word in the list</span>
+        <span class="k">for</span> <span class="n">idx1</span><span class="p">,</span> <span class="n">item1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pres_list</span><span class="p">):</span>
+
+            <span class="c1"># for each word in the list</span>
+            <span class="k">for</span> <span class="n">idx2</span><span class="p">,</span> <span class="n">item2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pres_list</span><span class="p">):</span>
+
+                <span class="c1"># compute the distance between word 1 and word 2 along some feature dimension</span>
+                <span class="n">dists</span><span class="p">[</span><span class="n">idx1</span><span class="p">,</span><span class="n">idx2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist_funcs</span><span class="p">[</span><span class="n">feature</span><span class="p">](</span><span class="n">feature_list</span><span class="p">[</span><span class="n">idx1</span><span class="p">][</span><span class="n">feature</span><span class="p">],</span><span class="n">feature_list</span><span class="p">[</span><span class="n">idx2</span><span class="p">][</span><span class="n">feature</span><span class="p">])</span>
+
+        <span class="c1"># set that distance matrix to the value of a dict where the feature name is the key</span>
+        <span class="n">distances</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">dists</span>
+
+    <span class="k">return</span> <span class="n">distances</span>
+
+<span class="k">def</span> <span class="nf">compute_feature_weights</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">distances</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute clustering scores along a set of feature dimensions</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_list : list</span>
+<span class="sd">        list of presented words</span>
+<span class="sd">    rec_list : list</span>
+<span class="sd">        list of recalled words</span>
+<span class="sd">    feature_list : list</span>
+<span class="sd">        list of feature dicts for presented words</span>
+<span class="sd">    distances : dict</span>
+<span class="sd">        dict of distance matrices for each feature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    weights : list</span>
+<span class="sd">        list of clustering scores for each feature dimension</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># initialize the weights object for just this list</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">weights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># return default list if there is not enough data to compute the fingerprint</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">weights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
+        <span class="k">return</span> <span class="n">weights</span>
+
+    <span class="c1"># initialize past word list</span>
+    <span class="n">past_words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">past_idxs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># loop over words</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="c1"># grab current word</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">rec_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># grab the next word</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">rec_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># if both recalled words are in the encoding list and haven&#39;t been recalled before</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="n">pres_list</span> <span class="ow">and</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">pres_list</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">past_words</span> <span class="ow">and</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">past_words</span><span class="p">):</span>
+
+            <span class="c1"># for each feature</span>
+            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+
+                <span class="c1"># get the distance vector for the current word</span>
+                <span class="n">dists</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">feature</span><span class="p">][</span><span class="n">pres_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">c</span><span class="p">),:]</span>
+
+                <span class="c1"># distance between current and next word</span>
+                <span class="n">cdist</span> <span class="o">=</span> <span class="n">dists</span><span class="p">[</span><span class="n">pres_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+                <span class="c1"># filter dists removing the words that have already been recalled</span>
+                <span class="n">dists_filt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dist</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dists</span><span class="p">)</span> <span class="k">if</span> <span class="n">idx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">past_idxs</span><span class="p">])</span>
+
+                <span class="c1"># get indices</span>
+                <span class="n">avg_rank</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">dists_filt</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">cdist</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># compute the weight</span>
+                <span class="n">weights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_rank</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dists_filt</span><span class="p">))</span>
+
+            <span class="c1"># keep track of what has been recalled already</span>
+            <span class="n">past_idxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pres_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+            <span class="n">past_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+    <span class="c1"># average over the cluster scores for a particular dimension</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+            <span class="n">weights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">feature</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">weights</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">]</span>
+
+<span class="c1"># def single_perm(p, r, f, distances):</span>
+<span class="c1">#     r_real = compute_feature_weights(p, r, f, distances)</span>
+<span class="c1">#     perm = list(np.random.permutation(r))</span>
+<span class="c1">#     r_perm = compute_feature_weights(p, perm, f, distances)</span>
+<span class="c1">#     return [feature_perm &lt; r_real[idx] for idx, feature_perm in enumerate(r_perm)]</span>
+<span class="c1">#</span>
+<span class="c1"># def permute_fingerprint_parallel(p, r, f, distances, n_perms=100):</span>
+<span class="c1">#</span>
+<span class="c1">#     executor = concurrent.futures.ThreadPoolExecutor(10)</span>
+<span class="c1">#     futures = [executor.submit(single_perm, p, r, f, distances) for perm in range(n_perms)]</span>
+<span class="c1">#     concurrent.futures.wait(futures)</span>
+<span class="c1">#</span>
+<span class="c1">#     results = [perm.result() for perm in futures]</span>
+<span class="c1">#</span>
+<span class="c1">#     print(np.sum(np.array(results), axis=0) / n_perms)</span>
+<span class="c1">#</span>
+<span class="c1">#     return np.sum(np.array(results), axis=0) / n_perms</span>
+
+<span class="k">def</span> <span class="nf">permute_fingerprint_serial</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">n_perms</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+
+    <span class="n">r_perms</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">r_real</span> <span class="o">=</span> <span class="n">compute_feature_weights</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">iperm</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_perms</span><span class="p">):</span>
+        <span class="n">r_perm</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+        <span class="n">r_perms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_feature_weights</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r_perm</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distances</span><span class="p">))</span>
+
+    <span class="n">r_perms_bool</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">r_perms</span><span class="p">:</span>
+        <span class="n">r_perm_bool</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">feature_perm</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+            <span class="n">r_perm_bool</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature_perm</span> <span class="o">&lt;</span> <span class="n">r_real</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+        <span class="n">r_perms_bool</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r_perm_bool</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">r_perms_bool</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n_perms</span>
+
+<span class="c1"># accuracy analysis</span>
 <span class="k">def</span> <span class="nf">accuracy_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes proportion of words recalled</span>
@@ -280,6 +452,7 @@
 
     <span class="k">return</span> <span class="n">prop_recalled</span>
 
+<span class="c1"># serial position curve</span>
 <span class="k">def</span> <span class="nf">spc_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes probability of a word being recalled (in the appropriate recall list), given its presentation position</span>
@@ -309,43 +482,7 @@
 
     <span class="k">return</span> <span class="n">prop_recalled</span>
 
-<span class="c1">#PROB FIRST RECALL######</span>
-
-<span class="k">def</span> <span class="nf">pfr_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes probability of a word being recalled first (in the appropriate recall list), given its presentation position</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    pres_slice : Pandas Dataframe</span>
-<span class="sd">        chunk of presentation data to be analyzed</span>
-<span class="sd">    rec_slice : Pandas Dataframe</span>
-<span class="sd">        chunk of recall data to be analyzed</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    ----------</span>
-<span class="sd">    prob_recalled : numpy array</span>
-<span class="sd">      each number represents the probability of first recall for a word presented in given position/index</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">pnr_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-
-    <span class="c1"># # compute recall_matrix for data slice</span>
-    <span class="c1"># recall = recall_matrix(pres_slice, rec_slice)</span>
-    <span class="c1">#</span>
-    <span class="c1"># # simple function that returns 1 if item encoded in position n is recalled first</span>
-    <span class="c1"># def pos_recalled_first(pos,lst):</span>
-    <span class="c1">#     return 1 if pos==lst[0] else 0</span>
-    <span class="c1">#</span>
-    <span class="c1"># # get pfr for each row in recall matrix</span>
-    <span class="c1"># pfr_matrix = [[pos_recalled_first(pos,lst) for pos in range(1,len(lst)+1)] for lst in recall]</span>
-    <span class="c1">#</span>
-    <span class="c1"># # average over rows</span>
-    <span class="c1"># prob_recalled = np.mean(pfr_matrix,axis=0)</span>
-    <span class="c1">#</span>
-    <span class="c1"># return prob_recalled</span>
-
+<span class="c1"># probability of nth recall</span>
 <span class="k">def</span> <span class="nf">pnr_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
@@ -381,6 +518,7 @@
 
     <span class="k">return</span> <span class="n">prob_recalled</span>
 
+<span class="c1"># lag-crp</span>
 <span class="k">def</span> <span class="nf">lagcrp_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)</span>
@@ -460,8 +598,61 @@
 
     <span class="k">return</span> <span class="n">prob_recalled</span>
 
+<span class="c1"># temporal clustering analysis</span>
+<span class="k">def</span> <span class="nf">temporal_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_perms</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes temporal clustering score</span>
 
-<span class="k">def</span> <span class="nf">fingerprint_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">feature_slice</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">):</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of presentation data to be analyzed</span>
+<span class="sd">    rec_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of recall data to be analyzed</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    score : float</span>
+<span class="sd">        a number representing temporal clustering</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># initialize temporal clustering list</span>
+    <span class="n">temporal_clustering</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># define distance function for temporal clustering</span>
+    <span class="n">dist_funcs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;temporal&#39;</span> <span class="p">:</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1"># define features (just positions for temporal clustering)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;temporal&#39;</span> <span class="p">:</span> <span class="n">i</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pres_slice</span><span class="o">.</span><span class="n">list_length</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+
+    <span class="c1"># loop over lists</span>
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">rec_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()):</span>
+
+        <span class="c1"># turn arrays into lists</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ri</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ri</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">r</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+
+            <span class="c1"># compute distances</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">compute_distances</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">)</span>
+
+            <span class="c1"># add optional bootstrapping</span>
+            <span class="k">if</span> <span class="n">permute</span><span class="p">:</span>
+                <span class="n">temporal_clustering</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">permute_fingerprint_serial</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">n_perms</span><span class="o">=</span><span class="n">n_perms</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">temporal_clustering</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_feature_weights</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distances</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">temporal_clustering</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+    <span class="c1"># return average over rows</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">temporal_clustering</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># fingerprint analysis</span>
+<span class="k">def</span> <span class="nf">fingerprint_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">feature_slice</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_perms</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes clustering along a set of feature dimensions</span>
 
@@ -482,112 +673,96 @@
 <span class="sd">      each number represents clustering along a different feature dimension</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">compute_distances</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">):</span>
-
-        <span class="c1"># initialize distance dictionary</span>
-        <span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pres_list</span><span class="p">):</span>
-            <span class="n">stimulus</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">stimulus</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">word</span>
-            <span class="n">stimulus</span><span class="p">[</span><span class="s1">&#39;distances&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]:</span>
-                <span class="n">stimulus</span><span class="p">[</span><span class="s1">&#39;distances&#39;</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stimulus</span><span class="p">)</span>
-
-        <span class="c1"># loop over the lists to create distance matrices</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">stimulus1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">feature_list</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">stimulus2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">feature_list</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">stimulus1</span><span class="p">:</span>
-                    <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;distances&#39;</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                            <span class="s1">&#39;word&#39;</span> <span class="p">:</span> <span class="n">distances</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="s1">&#39;word&#39;</span><span class="p">],</span>
-                            <span class="s1">&#39;dist&#39;</span> <span class="p">:</span> <span class="n">dist_funcs</span><span class="p">[</span><span class="n">feature</span><span class="p">](</span><span class="n">stimulus1</span><span class="p">[</span><span class="n">feature</span><span class="p">],</span><span class="n">stimulus2</span><span class="p">[</span><span class="n">feature</span><span class="p">])</span>
-                        <span class="p">})</span>
-
-        <span class="k">return</span> <span class="n">distances</span>
-
-    <span class="k">def</span> <span class="nf">compute_feature_weights</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">distances</span><span class="p">):</span>
-
-        <span class="c1"># initialize the weights object for just this list</span>
-        <span class="n">listWeights</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-            <span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="c1"># return default list if there is not enough data to compute the fingerprint</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)&#39;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span>
-            <span class="k">return</span> <span class="n">listWeights</span>
-
-        <span class="c1"># initialize pastWords list</span>
-        <span class="n">pastWords</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="c1"># finger print analysis</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-
-            <span class="c1"># grab current word</span>
-            <span class="n">currentWord</span> <span class="o">=</span> <span class="n">rec_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-
-            <span class="c1"># grab the next word</span>
-            <span class="n">nextWord</span> <span class="o">=</span> <span class="n">rec_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
-
-            <span class="c1"># grab the words from the encoding list</span>
-            <span class="n">encodingWords</span> <span class="o">=</span> <span class="n">pres_list</span>
-
-            <span class="c1"># append current word to past words log</span>
-            <span class="c1"># pastWords.append(currentWord)</span>
-
-            <span class="c1"># if both recalled words are in the encoding list</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">currentWord</span> <span class="ow">in</span> <span class="n">encodingWords</span> <span class="ow">and</span> <span class="n">nextWord</span> <span class="ow">in</span> <span class="n">encodingWords</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">currentWord</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pastWords</span> <span class="ow">and</span> <span class="n">nextWord</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pastWords</span><span class="p">):</span>
-                <span class="c1"># print(currentWord,nextWord,encodingWords,pastWords)</span>
-
-                <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">feature_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-
-                    <span class="c1"># get the distance vector for the current word</span>
-                    <span class="n">distVec</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[</span><span class="n">encodingWords</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">currentWord</span><span class="p">)][</span><span class="s1">&#39;distances&#39;</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span>
-
-                    <span class="c1"># filter distVec removing the words that have already been analyzed from future calculations</span>
-                    <span class="n">filteredDistVec</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">distVec</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">pastWords</span><span class="p">:</span>
-                            <span class="k">pass</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="n">filteredDistVec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
-
-                    <span class="c1"># sort distWords by distances</span>
-                    <span class="n">filteredDistVec</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">filteredDistVec</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;dist&#39;</span><span class="p">])</span>
-
-                    <span class="c1"># compute the category listWeights</span>
-                    <span class="n">nextWordIdx</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">filteredDistVec</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">nextWord</span><span class="p">)</span>
-
-                    <span class="c1"># not sure about this part</span>
-                    <span class="n">idxs</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">filteredDistVec</span><span class="p">):</span>
-                        <span class="k">if</span> <span class="n">filteredDistVec</span><span class="p">[</span><span class="n">nextWordIdx</span><span class="p">][</span><span class="s1">&#39;dist&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">word</span><span class="p">[</span><span class="s1">&#39;dist&#39;</span><span class="p">]:</span>
-                            <span class="n">idxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
-
-                    <span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">filteredDistVec</span><span class="p">)))</span>
-
-                <span class="n">pastWords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currentWord</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">listWeights</span><span class="p">:</span>
-            <span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">listWeights</span><span class="p">[</span><span class="n">feature</span><span class="p">])</span>
-
-        <span class="k">return</span> <span class="p">[</span><span class="n">listWeights</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">listWeights</span><span class="p">]</span>
-
-    <span class="c1"># given a stimulus list and recalled words, compute the weights</span>
-    <span class="k">def</span> <span class="nf">get_fingerprint</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">):</span>
-        <span class="n">distances</span> <span class="o">=</span> <span class="n">compute_distances</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">compute_feature_weights</span><span class="p">(</span><span class="n">pres_list</span><span class="p">,</span> <span class="n">rec_list</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">,</span> <span class="n">distances</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">time</span>
 
     <span class="c1"># compute fingerprint for each list within a chunk</span>
-    <span class="n">fingerprint_matrix</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_fingerprint</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">dist_funcs</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">rec_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">feature_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">())]</span>
+    <span class="n">fingerprint_matrix</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">rec_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">feature_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()):</span>
+
+        <span class="c1"># turn arrays into lists</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ri</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ri</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">r</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+
+            <span class="c1"># compute distances</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">compute_distances</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">)</span>
+
+            <span class="c1"># add optional bootstrapping</span>
+            <span class="k">if</span> <span class="n">permute</span><span class="p">:</span>
+                <span class="n">fingerprint_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">permute_fingerprint_serial</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">n_perms</span><span class="o">=</span><span class="n">n_perms</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fingerprint_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_feature_weights</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distances</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fingerprint_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 
     <span class="c1"># return average over rows</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fingerprint_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../../quail.analyze.html#quail.analyze">[docs]</a><span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="c1"># fingerprint + temporal clustering analysis</span>
+<span class="k">def</span> <span class="nf">fingerprint_temporal_helper</span><span class="p">(</span><span class="n">pres_slice</span><span class="p">,</span> <span class="n">rec_slice</span><span class="p">,</span> <span class="n">feature_slice</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_perms</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes clustering along a set of feature dimensions</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pres_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of presentation data to be analyzed</span>
+<span class="sd">    rec_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of recall data to be analyzed</span>
+<span class="sd">    feature_slice : Pandas Dataframe</span>
+<span class="sd">        chunk of features data to be analyzed</span>
+<span class="sd">    dist_funcs : dict</span>
+<span class="sd">        Dictionary of distance functions for feature clustering analyses</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    probabilities : numpy array</span>
+<span class="sd">      each number represents clustering along a different feature dimension</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># compute fingerprint for each list within a chunk</span>
+    <span class="n">fingerprint_matrix</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">rec_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">(),</span> <span class="n">feature_slice</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()):</span>
+
+        <span class="c1"># turn arrays into lists</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ri</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ri</span><span class="p">,</span> <span class="nb">str</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">r</span><span class="p">)))</span>
+
+        <span class="c1"># add in temporal clustering</span>
+        <span class="n">nf</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">fi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="n">fi</span><span class="p">[</span><span class="s1">&#39;temporal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span>
+            <span class="n">nf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
+
+        <span class="n">dist_funcs_copy</span> <span class="o">=</span> <span class="n">dist_funcs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">dist_funcs_copy</span><span class="p">[</span><span class="s1">&#39;temporal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
+
+        <span class="c1"># if there is at least 1 transition</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+
+            <span class="c1"># compute distances</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">compute_distances</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">dist_funcs_copy</span><span class="p">)</span>
+
+            <span class="c1"># add optional bootstrapping</span>
+            <span class="k">if</span> <span class="n">permute</span><span class="p">:</span>
+                <span class="n">fingerprint_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">permute_fingerprint_serial</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">n_perms</span><span class="o">=</span><span class="n">n_perms</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fingerprint_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">compute_feature_weights</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">nf</span><span class="p">,</span> <span class="n">distances</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fingerprint_matrix</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">nf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+
+    <span class="c1"># return average over rows</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fingerprint_matrix</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># main analysis function</span>
+<div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../../quail.analyze.html#quail.analyze">[docs]</a><span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span>
+            <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_perms</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    General analysis function that groups data by subject/list number and performs analysis.</span>
 
@@ -611,9 +786,29 @@
 <span class="sd">        Name of the list grouping variable</span>
 
 <span class="sd">    analysis : string</span>
-<span class="sd">        This is the analysis you want to run.  Can be accuracy, spc, pfr or</span>
-<span class="sd">        fingerprint</span>
+<span class="sd">        This is the analysis you want to run.  Can be accuracy, spc, pfr,</span>
+<span class="sd">        temporal or fingerprint</span>
 
+<span class="sd">    n : int</span>
+<span class="sd">        Optional argument for pnr analysis.  Defines encoding position of item</span>
+<span class="sd">        to run pnr.  Default is 0, and it is zero indexed</span>
+
+<span class="sd">    permute : bool</span>
+<span class="sd">        Optional argument for fingerprint/temporal cluster analyses. Determines</span>
+<span class="sd">        whether to correct clustering scores by shuffling recall order for each list</span>
+<span class="sd">        to create a distribution of clustering scores (for each feature). The</span>
+<span class="sd">        &quot;corrected&quot; clustering score is the proportion of clustering scores in</span>
+<span class="sd">        that random distribution that were lower than the clustering score for</span>
+<span class="sd">        the observed recall sequence. Default is False.</span>
+
+<span class="sd">    n_perms : int</span>
+<span class="sd">        Optional argument for fingerprint/temporal cluster analyses. Number of</span>
+<span class="sd">        permutations to run for &quot;corrected&quot; clustering scores. Default is 1000 (</span>
+<span class="sd">        per recall list).</span>
+
+<span class="sd">    parallel : bool</span>
+<span class="sd">        Option to use multiprocessing (this can help speed up the permutations</span>
+<span class="sd">        tests in the clustering calculations)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    ----------</span>
@@ -661,7 +856,8 @@
                                   <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span>
                                   <span class="n">analysis</span><span class="o">=</span><span class="n">accuracy_helper</span><span class="p">,</span>
                                   <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span>
-                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                  <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;spc&#39;</span><span class="p">:</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span>
                                   <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span>
@@ -669,16 +865,18 @@
                                   <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span>
                                   <span class="n">analysis</span><span class="o">=</span><span class="n">spc_helper</span><span class="p">,</span>
                                   <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;spc&#39;</span><span class="p">,</span>
-                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                  <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;pfr&#39;</span><span class="p">:</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span>
                                   <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span>
                                   <span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span><span class="p">,</span>
                                   <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span>
-                                  <span class="n">analysis</span><span class="o">=</span><span class="n">pfr_helper</span><span class="p">,</span>
+                                  <span class="n">analysis</span><span class="o">=</span><span class="n">pnr_helper</span><span class="p">,</span>
                                   <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;pfr&#39;</span><span class="p">,</span>
                                   <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                  <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                                  <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                  <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;pnr&#39;</span><span class="p">:</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span>
                                   <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span>
@@ -687,7 +885,8 @@
                                   <span class="n">analysis</span><span class="o">=</span><span class="n">pnr_helper</span><span class="p">,</span>
                                   <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;pnr&#39;</span><span class="p">,</span>
                                   <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                  <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+                                  <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
+                                  <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;lagcrp&#39;</span><span class="p">:</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span>
                                   <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span>
@@ -695,7 +894,8 @@
                                   <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span>
                                   <span class="n">analysis</span><span class="o">=</span><span class="n">lagcrp_helper</span><span class="p">,</span>
                                   <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span>
-                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                  <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">)</span>
                 <span class="c1"># set indices for lagcrp</span>
                 <span class="n">r</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="nb">int</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="nb">int</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;fingerprint&#39;</span><span class="p">:</span>
@@ -705,10 +905,35 @@
                                   <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span>
                                   <span class="n">analysis</span><span class="o">=</span><span class="n">fingerprint_helper</span><span class="p">,</span>
                                   <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span>
-                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                  <span class="n">permute</span><span class="o">=</span><span class="n">permute</span><span class="p">,</span>
+                                  <span class="n">n_perms</span><span class="o">=</span><span class="n">n_perms</span><span class="p">,</span>
+                                  <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;temporal&#39;</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span>
+                                  <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span>
+                                  <span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span><span class="p">,</span>
+                                  <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span>
+                                  <span class="n">analysis</span><span class="o">=</span><span class="n">temporal_helper</span><span class="p">,</span>
+                                  <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;temporal&#39;</span><span class="p">,</span>
+                                  <span class="n">permute</span><span class="o">=</span><span class="n">permute</span><span class="p">,</span>
+                                  <span class="n">n_perms</span><span class="o">=</span><span class="n">n_perms</span><span class="p">,</span>
+                                  <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">a</span> <span class="ow">is</span> <span class="s1">&#39;fingerprint_temporal&#39;</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">analyze_chunk</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span><span class="p">,</span>
+                                  <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">,</span>
+                                  <span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span><span class="p">,</span>
+                                  <span class="n">listname</span><span class="o">=</span><span class="n">listname</span><span class="p">,</span>
+                                  <span class="n">analysis</span><span class="o">=</span><span class="n">fingerprint_temporal_helper</span><span class="p">,</span>
+                                  <span class="n">analysis_type</span><span class="o">=</span><span class="s1">&#39;fingerprint_temporal&#39;</span><span class="p">,</span>
+                                  <span class="n">pass_features</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                  <span class="n">permute</span><span class="o">=</span><span class="n">permute</span><span class="p">,</span>
+                                  <span class="n">n_perms</span><span class="o">=</span><span class="n">n_perms</span><span class="p">,</span>
+                                  <span class="n">parallel</span><span class="o">=</span><span class="n">parallel</span><span class="p">)</span>
 
             <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 
+    <span class="c1"># return analysis result</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">analysis</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">result</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">analysis</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>

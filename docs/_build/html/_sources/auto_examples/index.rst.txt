@@ -169,6 +169,26 @@ Gallery of Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots temporal clustering, the extent to which subject tend to recall neighboring ...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_tempclust_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_tempclust.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_tempclust
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.">
 
 .. only:: html
