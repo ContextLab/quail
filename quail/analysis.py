@@ -2,6 +2,7 @@
 from __future__ import division
 import numpy as np
 import pandas as pd
+import warnings
 from .helpers import *
 
 def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False, **kwargs):
@@ -54,33 +55,47 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
         listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
 
     # perform the analysis
-    analyzed_data = []
+    def perform_analysis(subj, lst):
+
+        # get data slice for presentation and recall
+        pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+        pres_slice.list_length = data.list_length
+
+        rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+
+        # if features are need for analysis, get the features for this slice of data
+        if pass_features:
+            feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+
+        # generate indices
+        index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
+
+        # perform analysis for each data chunk
+        if pass_features:
+            return pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
+        else:
+            return pd.DataFrame([analysis(pres_slice, rec_slice, **kwargs)], index=index)
+
+    # create list of chunks to process
+    a=[]
+    b=[]
     for subj in subjdict:
         for lst in listdict[0]:
+            a.append(subj)
+            b.append(lst)
 
-            # get data slice for presentation and recall
-            pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-            pres_slice.list_length = data.list_length
+    # handle parellel kwarg
+    parallel=kwargs['parallel']
+    del kwargs['parallel']
 
-            rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-
-            # if features are need for analysis, get the features for this slice of data
-            if pass_features:
-                feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-
-            # generate indices
-            index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
-
-            # perform analysis for each data chunk
-            if pass_features:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
-            elif 'n' in kwargs:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, n=kwargs['n'])], index=index)
-            else:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice)], index=index)
-
-            # append analyzed data
-            analyzed_data.append(analyzed)
+    # if we're running permutation tests, use multiprocessing
+    if parallel==True:
+        import multiprocessing
+        from pathos.multiprocessing import ProcessingPool as Pool
+        p = Pool(multiprocessing.cpu_count())
+        analyzed_data = p.map(perform_analysis, a, b)
+    else:
+        analyzed_data = [perform_analysis(ai, bi) for ai,bi in zip(a,b)]
 
     # concatenate slices
     analyzed_data = pd.concat(analyzed_data)
@@ -132,6 +147,163 @@ def recall_matrix(presented, recalled):
     for pres_list, rec_list in zip(presented.values, recalled.values):
         result.append(recall_pos(pres_list, rec_list))
     return result
+
+def compute_distances(pres_list, feature_list, dist_funcs):
+    """
+    Compute distances between list words along n feature dimensions
+
+    Parameters
+    ----------
+    pres_list : list
+        list of presented words
+    feature_list : list
+        list of feature dicts for presented words
+    dist_funcs : dict
+        dict of distance functions for each feature
+
+    Returns
+    ----------
+    distances : dict
+        dict of distance matrices for each feature
+    """
+
+    # initialize dist dict
+    distances = {}
+
+    # for each feature in dist_funcs
+    for feature in dist_funcs:
+
+        # initialize dist matrix
+        dists = np.zeros((len(pres_list), len(pres_list)))
+
+        # for each word in the list
+        for idx1, item1 in enumerate(pres_list):
+
+            # for each word in the list
+            for idx2, item2 in enumerate(pres_list):
+
+                # compute the distance between word 1 and word 2 along some feature dimension
+                dists[idx1,idx2] = dist_funcs[feature](feature_list[idx1][feature],feature_list[idx2][feature])
+
+        # set that distance matrix to the value of a dict where the feature name is the key
+        distances[feature] = dists
+
+    return distances
+
+def compute_feature_weights(pres_list, rec_list, feature_list, distances):
+    """
+    Compute clustering scores along a set of feature dimensions
+
+    Parameters
+    ----------
+    pres_list : list
+        list of presented words
+    rec_list : list
+        list of recalled words
+    feature_list : list
+        list of feature dicts for presented words
+    distances : dict
+        dict of distance matrices for each feature
+
+    Returns
+    ----------
+    weights : list
+        list of clustering scores for each feature dimension
+    """
+
+    # initialize the weights object for just this list
+    weights = {}
+    for feature in feature_list[0]:
+        weights[feature] = []
+
+    # return default list if there is not enough data to compute the fingerprint
+    if len(rec_list) <= 2:
+        print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
+        for feature in feature_list[0]:
+            weights[feature] = .5
+        return weights
+
+    # initialize past word list
+    past_words = []
+    past_idxs = []
+
+    # loop over words
+    for i in range(len(rec_list)-1):
+
+        # grab current word
+        c = rec_list[i]
+
+        # grab the next word
+        n = rec_list[i + 1]
+
+        # if both recalled words are in the encoding list and haven't been recalled before
+        if (c in pres_list and n in pres_list) and (c not in past_words and n not in past_words):
+
+            # for each feature
+            for feature in feature_list[0]:
+
+                # get the distance vector for the current word
+                dists = distances[feature][pres_list.index(c),:]
+
+                # distance between current and next word
+                cdist = dists[pres_list.index(n)]
+
+                # filter dists removing the words that have already been recalled
+                dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
+
+                # get indices
+                avg_rank = np.mean(np.where(np.sort(dists_filt)[::-1] == cdist)[0]+1)
+
+                # compute the weight
+                weights[feature].append(avg_rank / len(dists_filt))
+
+            # keep track of what has been recalled already
+            past_idxs.append(pres_list.index(c))
+            past_words.append(c)
+
+    # average over the cluster scores for a particular dimension
+    for feature in weights:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            weights[feature] = np.nanmean(weights[feature])
+
+    return [weights[key] for key in weights]
+
+# def single_perm(p, r, f, distances):
+#     r_real = compute_feature_weights(p, r, f, distances)
+#     perm = list(np.random.permutation(r))
+#     r_perm = compute_feature_weights(p, perm, f, distances)
+#     return [feature_perm < r_real[idx] for idx, feature_perm in enumerate(r_perm)]
+#
+# def permute_fingerprint_parallel(p, r, f, distances, n_perms=100):
+#
+#     executor = concurrent.futures.ThreadPoolExecutor(10)
+#     futures = [executor.submit(single_perm, p, r, f, distances) for perm in range(n_perms)]
+#     concurrent.futures.wait(futures)
+#
+#     results = [perm.result() for perm in futures]
+#
+#     print(np.sum(np.array(results), axis=0) / n_perms)
+#
+#     return np.sum(np.array(results), axis=0) / n_perms
+
+def permute_fingerprint_serial(p, r, f, distances, n_perms=100):
+
+    r_perms = []
+    r_real = compute_feature_weights(p, r, f, distances)
+
+    for iperm in range(n_perms):
+        r_perm = list(np.random.permutation(r))
+        r_perms.append(compute_feature_weights(p, r_perm, f, distances))
+
+    r_perms_bool = []
+    for perm in r_perms:
+        r_perm_bool = []
+        for idx, feature_perm in enumerate(perm):
+            r_perm_bool.append(feature_perm < r_real[idx])
+        r_perms_bool.append(r_perm_bool)
+
+    return np.sum(np.array(r_perms_bool), axis=0) / n_perms
 
 # accuracy analysis
 def accuracy_helper(pres_slice, rec_slice):
@@ -313,8 +485,61 @@ def lagcrp_helper(pres_slice, rec_slice):
 
     return prob_recalled
 
+# temporal clustering analysis
+def temporal_helper(pres_slice, rec_slice, permute=False, n_perms=1000):
+    """
+    Computes temporal clustering score
+
+    Parameters
+    ----------
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
+
+    Returns
+    ----------
+    score : float
+        a number representing temporal clustering
+
+    """
+
+    # initialize temporal clustering list
+    temporal_clustering = []
+
+    # define distance function for temporal clustering
+    dist_funcs = {
+        'temporal' : lambda a, b : np.abs(a-b)
+    }
+
+    # define features (just positions for temporal clustering)
+    f = [{'temporal' : i} for i in range(pres_slice.list_length+1)]
+
+    # loop over lists
+    for p, r in zip(pres_slice.as_matrix(), rec_slice.as_matrix()):
+
+        # turn arrays into lists
+        p = list(p)
+        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+
+        if len(r)>1:
+
+            # compute distances
+            distances = compute_distances(p, f, dist_funcs)
+
+            # add optional bootstrapping
+            if permute:
+                temporal_clustering.append(permute_fingerprint_serial(p, r, f, distances, n_perms=n_perms))
+            else:
+                temporal_clustering.append(compute_feature_weights(p, r, f, distances))
+        else:
+            temporal_clustering.append([np.nan]*len(f[0].keys()))
+
+    # return average over rows
+    return np.nanmean(temporal_clustering, axis=0)
+
 # fingerprint analysis
-def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
+def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute=False, n_perms=1000):
     """
     Computes clustering along a set of feature dimensions
 
@@ -335,113 +560,96 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs):
       each number represents clustering along a different feature dimension
 
     """
-
-    def compute_distances(pres_list, feature_list, dist_funcs):
-
-        # initialize distance dictionary
-        distances = []
-        for idx,word in enumerate(pres_list):
-            stimulus = {}
-            stimulus['word'] = word
-            stimulus['distances'] = {}
-            for feature in feature_list[idx]:
-                stimulus['distances'][feature] = []
-            distances.append(stimulus)
-
-        # loop over the lists to create distance matrices
-        for i,stimulus1 in enumerate(feature_list):
-            for j,stimulus2 in enumerate(feature_list):
-                for feature in stimulus1:
-                    distances[i]['distances'][feature].append({
-                            'word' : distances[j]['word'],
-                            'dist' : dist_funcs[feature](stimulus1[feature],stimulus2[feature])
-                        })
-
-        return distances
-
-    def compute_feature_weights(pres_list, rec_list, feature_list, distances):
-
-        # initialize the weights object for just this list
-        listWeights = {}
-        for feature in feature_list[0]:
-            listWeights[feature] = []
-
-        # return default list if there is not enough data to compute the fingerprint
-        if len(rec_list) <= 2:
-            print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
-            for feature in feature_list[0]:
-                listWeights[feature] = .5
-            return listWeights
-
-        # initialize pastWords list
-        pastWords = []
-
-        # finger print analysis
-        for i in range(0,len(rec_list)-1):
-
-            # grab current word
-            currentWord = rec_list[i]
-
-            # grab the next word
-            nextWord = rec_list[i + 1]
-
-            # grab the words from the encoding list
-            encodingWords = pres_list
-
-            # append current word to past words log
-            # pastWords.append(currentWord)
-
-            # if both recalled words are in the encoding list
-            if (currentWord in encodingWords and nextWord in encodingWords) and (currentWord not in pastWords and nextWord not in pastWords):
-                # print(currentWord,nextWord,encodingWords,pastWords)
-
-                for feature in feature_list[0]:
-
-                    # get the distance vector for the current word
-                    distVec = distances[encodingWords.index(currentWord)]['distances'][feature]
-
-                    # filter distVec removing the words that have already been analyzed from future calculations
-                    filteredDistVec = []
-                    for word in distVec:
-                        if word['word'] in pastWords:
-                            pass
-                        else:
-                            filteredDistVec.append(word)
-
-                    # sort distWords by distances
-                    filteredDistVec = sorted(filteredDistVec, key=lambda item:item['dist'])
-
-                    # compute the category listWeights
-                    nextWordIdx = [word['word'] for word in filteredDistVec].index(nextWord)
-
-                    # not sure about this part
-                    idxs = []
-                    for idx,word in enumerate(filteredDistVec):
-                        if filteredDistVec[nextWordIdx]['dist'] == word['dist']:
-                            idxs.append(idx)
-
-                    listWeights[feature].append(1 - (sum(idxs)/len(idxs) / len(filteredDistVec)))
-
-                pastWords.append(currentWord)
-
-        for feature in listWeights:
-            listWeights[feature] = np.mean(listWeights[feature])
-
-        return [listWeights[key] for key in listWeights]
-
-    # given a stimulus list and recalled words, compute the weights
-    def get_fingerprint(pres_list, rec_list, feature_list, dist_funcs):
-        distances = compute_distances(pres_list, feature_list, dist_funcs)
-        return compute_feature_weights(pres_list, rec_list, feature_list, distances)
+    import time
 
     # compute fingerprint for each list within a chunk
-    fingerprint_matrix = [get_fingerprint(list(p), list(r), list(f), dist_funcs) for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix())]
+    fingerprint_matrix = []
+
+    for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix()):
+
+        # turn arrays into lists
+        p = list(p)
+        f = list(f)
+        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+
+        if len(r)>1:
+
+            # compute distances
+            distances = compute_distances(p, f, dist_funcs)
+
+            # add optional bootstrapping
+            if permute:
+                fingerprint_matrix.append(permute_fingerprint_serial(p, r, f, distances, n_perms=n_perms))
+            else:
+                fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
+        else:
+            fingerprint_matrix.append([np.nan]*len(f[0].keys()))
+
+    # return average over rows
+    return np.mean(fingerprint_matrix, axis=0)
+
+# fingerprint + temporal clustering analysis
+def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute=True, n_perms=1000):
+    """
+    Computes clustering along a set of feature dimensions
+
+    Parameters
+    ----------
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
+    feature_slice : Pandas Dataframe
+        chunk of features data to be analyzed
+    dist_funcs : dict
+        Dictionary of distance functions for feature clustering analyses
+
+    Returns
+    ----------
+    probabilities : numpy array
+      each number represents clustering along a different feature dimension
+
+    """
+    # compute fingerprint for each list within a chunk
+    fingerprint_matrix = []
+
+    for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix()):
+
+        # turn arrays into lists
+        p = list(p)
+        f = list(f)
+        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+
+        # add in temporal clustering
+        nf = []
+        for idx, fi in enumerate(f):
+            fi['temporal'] = idx
+            nf.append(fi)
+
+        dist_funcs_copy = dist_funcs.copy()
+        dist_funcs_copy['temporal'] = lambda a, b : np.abs(a-b)
+
+        # if there is at least 1 transition
+        if len(r)>1:
+
+            # compute distances
+            distances = compute_distances(p, nf, dist_funcs_copy)
+
+            # add optional bootstrapping
+            if permute:
+                fingerprint_matrix.append(permute_fingerprint_serial(p, r, nf, distances, n_perms=n_perms))
+            else:
+                fingerprint_matrix.append(compute_feature_weights(p, r, nf, distances))
+        else:
+            fingerprint_matrix.append([np.nan]*len(nf[0].keys()))
 
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
 # main analysis function
-def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='List', analysis=None, n=0):
+def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
+            listname='List', analysis=None, n=0, permute=False, n_perms=1000,
+            parallel=False):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -465,9 +673,29 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
         Name of the list grouping variable
 
     analysis : string
-        This is the analysis you want to run.  Can be accuracy, spc, pfr or
-        fingerprint
+        This is the analysis you want to run.  Can be accuracy, spc, pfr,
+        temporal or fingerprint
 
+    n : int
+        Optional argument for pnr analysis.  Defines encoding position of item
+        to run pnr.  Default is 0, and it is zero indexed
+
+    permute : bool
+        Optional argument for fingerprint/temporal cluster analyses. Determines
+        whether to correct clustering scores by shuffling recall order for each list
+        to create a distribution of clustering scores (for each feature). The
+        "corrected" clustering score is the proportion of clustering scores in
+        that random distribution that were lower than the clustering score for
+        the observed recall sequence. Default is False.
+
+    n_perms : int
+        Optional argument for fingerprint/temporal cluster analyses. Number of
+        permutations to run for "corrected" clustering scores. Default is 1000 (
+        per recall list).
+
+    parallel : bool
+        Option to use multiprocessing (this can help speed up the permutations
+        tests in the clustering calculations)
 
     Returns
     ----------
@@ -515,7 +743,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listname=listname,
                                   analysis=accuracy_helper,
                                   analysis_type='accuracy',
-                                  pass_features=False)
+                                  pass_features=False,
+                                  parallel=parallel)
             elif a is 'spc':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -523,7 +752,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listname=listname,
                                   analysis=spc_helper,
                                   analysis_type='spc',
-                                  pass_features=False)
+                                  pass_features=False,
+                                  parallel=parallel)
             elif a is 'pfr':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -532,7 +762,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   analysis=pnr_helper,
                                   analysis_type='pfr',
                                   pass_features=False,
-                                  n=0)
+                                  n=0,
+                                  parallel=parallel)
             elif a is 'pnr':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -541,7 +772,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   analysis=pnr_helper,
                                   analysis_type='pnr',
                                   pass_features=False,
-                                  n=n)
+                                  n=n,
+                                  parallel=parallel)
             elif a is 'lagcrp':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,
@@ -549,7 +781,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listname=listname,
                                   analysis=lagcrp_helper,
                                   analysis_type='lagcrp',
-                                  pass_features=False)
+                                  pass_features=False,
+                                  parallel=parallel)
                 # set indices for lagcrp
                 r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
             elif a is 'fingerprint':
@@ -559,7 +792,31 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject', listname='
                                   listname=listname,
                                   analysis=fingerprint_helper,
                                   analysis_type='fingerprint',
-                                  pass_features=True)
+                                  pass_features=True,
+                                  permute=permute,
+                                  n_perms=n_perms,
+                                  parallel=parallel)
+            elif a is 'temporal':
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=temporal_helper,
+                                  analysis_type='temporal',
+                                  permute=permute,
+                                  n_perms=n_perms,
+                                  parallel=parallel)
+            elif a is 'fingerprint_temporal':
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=fingerprint_temporal_helper,
+                                  analysis_type='fingerprint_temporal',
+                                  pass_features=True,
+                                  permute=permute,
+                                  n_perms=n_perms,
+                                  parallel=parallel)
 
             result[idx].append(r)
 

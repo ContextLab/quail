@@ -127,7 +127,27 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             elif plot_type is 'split':
                 ax = plot_func(data=tidy_data, x=subjname, y="Accuracy", hue=listname, **kwargs)
 
-        elif attrs['analysis_type'] is 'fingerprint':
+        elif attrs['analysis_type'] is 'temporal':
+
+            # set default style to bar
+            plot_style = plot_style if plot_style is not None else 'bar'
+            plot_type = plot_type if plot_type is not None else 'list'
+
+            if plot_style is 'bar':
+                plot_func = sns.barplot
+            elif plot_style is 'swarm':
+                plot_func = sns.swarmplot
+            elif plot_style is 'violin':
+                plot_func = sns.violinplot
+
+            if plot_type is 'list':
+                ax = plot_func(data=tidy_data, x=listname, y="Temporal Clustering Score", **kwargs)
+            elif plot_type is 'subject':
+                ax = plot_func(data=tidy_data, x=subjname, y="Temporal Clustering Score", **kwargs)
+            elif plot_type is 'split':
+                ax = plot_func(data=tidy_data, x=subjname, y="Temporal Clustering Score", hue=listname, **kwargs)
+
+        elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
 
             # set default style to violin
             plot_style = plot_style if plot_style is not None else 'violin'
@@ -140,13 +160,24 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             elif plot_style is 'violin':
                 plot_func = sns.violinplot
 
-
-            if plot_type is 'list':
-                ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
-            elif plot_type is 'subject':
-                ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
+            if attrs['analysis_type'] is 'fingerprint':
+                if plot_type is 'list':
+                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
+                elif plot_type is 'subject':
+                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
+                else:
+                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
             else:
-                ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
+                # move order to the end
+                order = list(tidy_data['Feature'].unique())
+                order.remove('temporal')
+                order = order + ['temporal']
+                if plot_type is 'list':
+                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, order=order, **kwargs)
+                elif plot_type is 'subject':
+                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, order=order, **kwargs)
+                else:
+                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", order=order, **kwargs)
 
         elif attrs['analysis_type'] is 'spc':
 
