@@ -73,11 +73,9 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
             # perform analysis for each data chunk
             if pass_features:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
-            elif 'n' in kwargs:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, n=kwargs['n'])], index=index)
+                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
             else:
-                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice)], index=index)
+                analyzed = pd.DataFrame([analysis(pres_slice, rec_slice, **kwargs)], index=index)
 
             # append analyzed data
             analyzed_data.append(analyzed)
