@@ -187,7 +187,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
                 ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
             elif plot_type is 'list':
                 ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
-            ax.set_xlim(0,attrs['list_length']-1)
+            ax.set_xlim(0,attrs['list_length'])
 
         elif attrs['analysis_type'] is 'pfr' or attrs['analysis_type'] is 'pnr':
             n=attrs['n']
@@ -199,7 +199,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
                 ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Recall: Position ' + str(n), unit="Subject", condition=subjname, **kwargs)
             elif plot_type is 'list':
                 ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Recall: Position ' + str(n), unit="Subject", condition=listname, **kwargs)
-            ax.set_xlim(0,attrs['list_length']-1)
+            ax.set_xlim(0,attrs['list_length'])
 
         if attrs['analysis_type']=='lagcrp':
 
