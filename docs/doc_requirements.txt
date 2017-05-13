@@ -1,4 +1,4 @@
-sphinx==1.5.5
+sphinx==1.5.4
 sphinx_bootstrap_theme
 sphinx-gallery
 numpydoc
@@ -7,7 +7,7 @@ seaborn>=0.7.1
 matplotlib>=1.5.1
 scipy>=0.17.1
 numpy>=1.10.4
-pandas==0.18.0
+pandas==0.18.1
 future
 sqlalchemy
 dill
