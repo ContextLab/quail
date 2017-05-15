@@ -127,8 +127,8 @@
 <p>This tutorial will go over more advanced plotting functionality. Before
 reading this, you should take a look at the basic analysis and plotting
 tutorial. First, we&#8217;ll load in some example data. This dataset is an
-<code class="docutils literal"><span class="pre">egg</span></code> comprised of 19 subjects, who each performed 16 study/test
-blocks of 16 words each.</p>
+<code class="docutils literal"><span class="pre">egg</span></code> comprised of 30 subjects, who each performed 8 study/test blocks
+of 16 words each.</p>
 <div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">quail</span>
 <span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load_example_data</span><span class="p">()</span>
 </pre></div>
@@ -157,23 +157,23 @@ blocks of 16 words each.</p>
     <tr>
       <th rowspan="5" valign="top">0</th>
       <th>0</th>
-      <td>0.533333</td>
+      <td>0.500</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.333333</td>
+      <td>0.500</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.600000</td>
+      <td>0.250</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.733333</td>
+      <td>0.375</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.533333</td>
+      <td>0.625</td>
     </tr>
   </tbody>
 </table>
@@ -212,7 +212,7 @@ plot by using the <code class="docutils literal"><span class="pre">plot_style</s
 want to compare analysis results across multiple experiments. To do this
 we will reanalyze the data, averaging over lists within a subject, and
 then use the <code class="docutils literal"><span class="pre">subjgroup</span></code> kwarg to group the subjects into two sets:</p>
-<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">accuracy</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -234,31 +234,31 @@ then use the <code class="docutils literal"><span class="pre">subjgroup</span></
     <tr>
       <th>0</th>
       <th>average</th>
-      <td>0.495833</td>
+      <td>0.476562</td>
     </tr>
     <tr>
       <th>1</th>
       <th>average</th>
-      <td>0.933333</td>
+      <td>0.960938</td>
     </tr>
     <tr>
       <th>2</th>
       <th>average</th>
-      <td>0.587500</td>
+      <td>0.546875</td>
     </tr>
     <tr>
       <th>3</th>
       <th>average</th>
-      <td>0.500000</td>
+      <td>0.757812</td>
     </tr>
     <tr>
       <th>4</th>
       <th>average</th>
-      <td>0.529167</td>
+      <td>0.406250</td>
     </tr>
   </tbody>
 </table>
-</div><div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span>
+</div><div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/advanced_plotting_14_0.png" src="../_images/advanced_plotting_14_0.png" />
@@ -266,26 +266,22 @@ then use the <code class="docutils literal"><span class="pre">subjgroup</span></
 the List column of the df to group the data. To group according to
 subject group, we must tell the plot function to plot by <code class="docutils literal"><span class="pre">subjgroup</span></code>.
 This can be achieved by setting <code class="docutils literal"><span class="pre">plot_type='subject'</span></code>:</p>
-<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;subject&#39;</span><span class="p">)</span>
+<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;subject&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/advanced_plotting_16_0.png" src="../_images/advanced_plotting_16_0.png" />
-<p>If you also have a list grouping (such as first 8 lists / second 8
+<p>If you also have a list grouping (such as first 4 lists / second 4
 lists), you can plot the interaction by setting <code class="docutils literal"><span class="pre">plot_type='split'</span></code>.
 This will create a plot with respect to both the <code class="docutils literal"><span class="pre">subjgroup</span></code> and
 <code class="docutils literal"><span class="pre">listgroup</span></code>:</p>
-<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First 8 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second 8 Lists&#39;</span><span class="p">])</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">)</span>
+<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">accuracy</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First 4 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second 4 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">andyheusser</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">quail</span><span class="o">/</span><span class="n">quail</span><span class="o">/</span><span class="n">analysis</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span> <span class="n">VisibleDeprecationWarning</span><span class="p">:</span> <span class="n">boolean</span> <span class="n">index</span> <span class="n">did</span> <span class="ow">not</span> <span class="n">match</span> <span class="n">indexed</span> <span class="n">array</span> <span class="n">along</span> <span class="n">dimension</span> <span class="mi">0</span><span class="p">;</span> <span class="n">dimension</span> <span class="ow">is</span> <span class="mi">16</span> <span class="n">but</span> <span class="n">corresponding</span> <span class="n">boolean</span> <span class="n">dimension</span> <span class="ow">is</span> <span class="mi">9</span>
-  <span class="n">listdict</span> <span class="o">=</span> <span class="p">[{</span><span class="n">lst</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">lst</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)}</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">]</span>
-</pre></div>
-</div>
-<img alt="../_images/advanced_plotting_18_1.png" src="../_images/advanced_plotting_18_1.png" />
+<img alt="../_images/advanced_plotting_18_0.png" src="../_images/advanced_plotting_18_0.png" />
 <p>Like above, these plots can also be violin or swarm plots:</p>
-<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="s1">&#39;violin&#39;</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="s1">&#39;swarm&#39;</span><span class="p">)</span>
+<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="s1">&#39;violin&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">,</span> <span class="n">plot_style</span><span class="o">=</span><span class="s1">&#39;swarm&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/advanced_plotting_20_0.png" src="../_images/advanced_plotting_20_0.png" />
@@ -297,9 +293,9 @@ This will create a plot with respect to both the <code class="docutils literal">
 accuracy plots, with the except that <code class="docutils literal"><span class="pre">plot_type='split'</span></code> only works
 for the accuracy plots, and the default <code class="docutils literal"><span class="pre">plot_style</span></code> is a violinplot,
 instead of a barplot.</p>
-<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First 8 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second 8 Lists&#39;</span><span class="p">])</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;subject&#39;</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>
+<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First 4 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second 4 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;subject&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fingerprint</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s1">&#39;list&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/advanced_plotting_23_0.png" src="../_images/advanced_plotting_23_0.png" />
@@ -312,7 +308,7 @@ according to <code class="docutils literal"><span class="pre">listgroup</span></
 kwarg.</p>
 <div class="section" id="plot-by-list-grouping">
 <h3>Plot by list grouping<a class="headerlink" href="#plot-by-list-grouping" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">listgroup</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;First 8 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second 8 Lists&#39;</span><span class="p">]</span>
+<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">listgroup</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;First 4 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second 4 Lists&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span>
 <span class="n">plot_type</span> <span class="o">=</span> <span class="s1">&#39;list&#39;</span>
 
 <span class="n">spc</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;spc&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">)</span>
@@ -331,8 +327,8 @@ kwarg.</p>
 </div>
 <div class="section" id="plot-by-subject-grouping">
 <h3>Plot by subject grouping<a class="headerlink" href="#plot-by-subject-grouping" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span>
-<span class="n">subjgroup</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">9</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span>
+<div class="highlight-ipython2"><div class="highlight"><pre><span></span><span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span>
+<span class="n">subjgroup</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Experiment 1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Experiment 2&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">15</span>
 <span class="n">plot_type</span> <span class="o">=</span> <span class="s1">&#39;subject&#39;</span>
 
 <span class="n">spc</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;spc&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span><span class="p">)</span>

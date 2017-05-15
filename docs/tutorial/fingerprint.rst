@@ -12,9 +12,6 @@ Let's imagine you were running a free recall experiment where subjects
 were presented with lists of words that varied randomly over a number of
 distinct dimensions:
 
-.. image:: images/fingerprint1.png
-    :width: 500pt
-
 In the figure above, the first word (dog) is: green in color, an animal,
 starts with the letter 'd', is large (bigger than a shoebox) and is
 positioned left-center on the screen. The next word (cat) is similar
@@ -25,9 +22,6 @@ word on this list is similar to others words along some dimensions, but
 different along other dimensions. Let's imagine a subject started
 recalling the list as follows:
 
-.. image:: images/fingerprint25.png
-    :width: 500pt
-
 In this recall sequence, "dog" was recalled, followed by "cat". For each
 recall transition, we can compute the similarity between the two stimuli
 along each feature dimension. For example, both words are in the animal
@@ -36,9 +30,6 @@ high. In the color dimension, green (dog) and blue (cat) are somewhat
 similar colors, so these words are somewhat similar along this
 dimension. The figure below illustrates how we compute a "clustering
 score" for a given recall transition and feature dimension:
-
-.. image:: images/fingerprint3.png
-    :width: 500pt
 
 For each recall transition and feature dimension (color in this
 example), we:
@@ -54,6 +45,3 @@ example), we:
 This analysis is performed to each recall transition and feature
 dimension for a given list, and then the percentile ranks are averaged
 within feature to get a "memory fingerprint" for each list:
-
-.. image:: images/fingerprint4.png
-    :width: 500pt

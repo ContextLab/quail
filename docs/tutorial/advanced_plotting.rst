@@ -5,8 +5,8 @@ Advanced plotting
 This tutorial will go over more advanced plotting functionality. Before
 reading this, you should take a look at the basic analysis and plotting
 tutorial. First, we'll load in some example data. This dataset is an
-``egg`` comprised of 19 subjects, who each performed 16 study/test
-blocks of 16 words each.
+``egg`` comprised of 30 subjects, who each performed 8 study/test blocks
+of 16 words each.
 
 .. code:: ipython2
 
@@ -44,23 +44,23 @@ Accuracy
         <tr>
           <th rowspan="5" valign="top">0</th>
           <th>0</th>
-          <td>0.533333</td>
+          <td>0.500</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>0.333333</td>
+          <td>0.500</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.600000</td>
+          <td>0.250</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>0.733333</td>
+          <td>0.375</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.533333</td>
+          <td>0.625</td>
         </tr>
       </tbody>
     </table>
@@ -133,7 +133,7 @@ then use the ``subjgroup`` kwarg to group the subjects into two sets:
 
 .. code:: ipython2
 
-    accuracy = quail.analyze(egg, analysis='accuracy', listgroup=['average']*16)
+    accuracy = quail.analyze(egg, analysis='accuracy', listgroup=['average']*8)
     accuracy.head()
 
 
@@ -159,27 +159,27 @@ then use the ``subjgroup`` kwarg to group the subjects into two sets:
         <tr>
           <th>0</th>
           <th>average</th>
-          <td>0.495833</td>
+          <td>0.476562</td>
         </tr>
         <tr>
           <th>1</th>
           <th>average</th>
-          <td>0.933333</td>
+          <td>0.960938</td>
         </tr>
         <tr>
           <th>2</th>
           <th>average</th>
-          <td>0.587500</td>
+          <td>0.546875</td>
         </tr>
         <tr>
           <th>3</th>
           <th>average</th>
-          <td>0.500000</td>
+          <td>0.757812</td>
         </tr>
         <tr>
           <th>4</th>
           <th>average</th>
-          <td>0.529167</td>
+          <td>0.406250</td>
         </tr>
       </tbody>
     </table>
@@ -189,7 +189,7 @@ then use the ``subjgroup`` kwarg to group the subjects into two sets:
 
 .. code:: ipython2
 
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10)
+    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15)
 
 
 
@@ -203,40 +203,34 @@ This can be achieved by setting ``plot_type='subject'``:
 
 .. code:: ipython2
 
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='subject')
+    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='subject')
 
 
 
 .. image:: advanced_plotting_files/advanced_plotting_16_0.png
 
 
-If you also have a list grouping (such as first 8 lists / second 8
+If you also have a list grouping (such as first 4 lists / second 4
 lists), you can plot the interaction by setting ``plot_type='split'``.
 This will create a plot with respect to both the ``subjgroup`` and
 ``listgroup``:
 
 .. code:: ipython2
 
-    accuracy = quail.analyze(egg, analysis='accuracy', listgroup=['First 8 Lists']*8+['Second 8 Lists'])
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='split')
-
-
-.. parsed-literal::
-
-    /Users/andyheusser/Documents/github/quail/quail/analysis.py:54: VisibleDeprecationWarning: boolean index did not match indexed array along dimension 0; dimension is 16 but corresponding boolean dimension is 9
-      listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
+    accuracy = quail.analyze(egg, analysis='accuracy', listgroup=['First 4 Lists']*4+['Second 4 Lists']*4)
+    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split')
 
 
 
-.. image:: advanced_plotting_files/advanced_plotting_18_1.png
+.. image:: advanced_plotting_files/advanced_plotting_18_0.png
 
 
 Like above, these plots can also be violin or swarm plots:
 
 .. code:: ipython2
 
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='split', plot_style='violin')
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='split', plot_style='swarm')
+    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split', plot_style='violin')
+    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split', plot_style='swarm')
 
 
 
@@ -257,9 +251,9 @@ instead of a barplot.
 
 .. code:: ipython2
 
-    fingerprint = quail.analyze(egg, analysis='fingerprint', listgroup=['First 8 Lists']*8+['Second 8 Lists'])
-    ax = quail.plot(fingerprint, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='subject')
-    ax = quail.plot(fingerprint, subjgroup=['Experiment 1']*9+['Experiment 2']*10, plot_type='list')
+    fingerprint = quail.analyze(egg, analysis='fingerprint', listgroup=['First 4 Lists']*4+['Second 4 Lists']*4)
+    ax = quail.plot(fingerprint, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='subject')
+    ax = quail.plot(fingerprint, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='list')
 
 
 
@@ -282,7 +276,7 @@ Plot by list grouping
 
 .. code:: ipython2
 
-    listgroup = ['First 8 Lists']*8+['Second 8 Lists']
+    listgroup = ['First 4 Lists']*4+['Second 4 Lists']*4
     plot_type = 'list'
     
     spc = quail.analyze(egg, analysis='spc', listgroup=listgroup)
@@ -312,8 +306,8 @@ Plot by subject grouping
 
 .. code:: ipython2
 
-    listgroup=['average']*16
-    subjgroup = ['Experiment 1']*9+['Experiment 2']*10
+    listgroup=['average']*8
+    subjgroup = ['Experiment 1']*15+['Experiment 2']*15
     plot_type = 'subject'
     
     spc = quail.analyze(egg, analysis='spc', listgroup=listgroup)

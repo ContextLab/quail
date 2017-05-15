@@ -18,7 +18,7 @@ import quail
 egg = quail.load_example_data()
 
 #analysis
-analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['condition1']*8+['condition2']*8)
+analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['condition1']*4+['condition2']*4)
 
 #plot by list
 quail.plot(analyzed_data, plot_style='violin', title='Average Recall Accuracy')

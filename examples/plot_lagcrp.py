@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 =============================
-Plot Lag-CRP for a single subject
+Plot Lag-CRP
 =============================
 
 This example plots a Lag-CRP as described in Kahana et al (1996).
@@ -20,7 +20,7 @@ import quail
 egg = quail.load_example_data()
 
 #analysis
-analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*16)
+analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*8)
 
 #plot
 quail.plot(analyzed_data, title='Lag-CRP')

@@ -34,12 +34,12 @@ list position.
     egg = quail.load_example_data()
 
     # analysis
-    analyzed_data = quail.analyze(egg, analysis='pfr', listgroup=['average']*16)
+    analyzed_data = quail.analyze(egg, analysis='pfr', listgroup=['average']*8)
 
     # plot
     quail.plot(analyzed_data, title='Probability of First Recall')
 
-**Total running time of the script:** ( 0 minutes  0.472 seconds)
+**Total running time of the script:** ( 0 minutes  0.715 seconds)
 
 
 

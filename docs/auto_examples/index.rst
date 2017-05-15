@@ -173,9 +173,9 @@ Gallery of Examples
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_tempclust_thumb.png
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_temporal_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_tempclust.py`
+        :ref:`sphx_glr_auto_examples_plot_temporal.py`
 
 .. raw:: html
 
@@ -185,7 +185,7 @@ Gallery of Examples
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_tempclust
+   /auto_examples/plot_temporal
 
 .. raw:: html
 

@@ -4,7 +4,7 @@
 
 
 =============================
-Plot Lag-CRP for a single subject
+Plot Lag-CRP
 =============================
 
 This example plots a Lag-CRP as described in Kahana et al (1996).
@@ -35,12 +35,12 @@ recalling stimuli in neighboring stimulus positions (n+/-5).
     egg = quail.load_example_data()
 
     #analysis
-    analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*16)
+    analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*8)
 
     #plot
     quail.plot(analyzed_data, title='Lag-CRP')
 
-**Total running time of the script:** ( 0 minutes  1.920 seconds)
+**Total running time of the script:** ( 0 minutes  2.164 seconds)
 
 
 

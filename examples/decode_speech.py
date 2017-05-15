@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 =============================
-Plot free recall accuracy
+Decode speech
 =============================
 
 This example plots free recall accuracy for a single subject.

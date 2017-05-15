@@ -123,7 +123,6 @@ location etc. Let&#8217;s walkthrough an example to gain a better intuition.</p>
 <p>Let&#8217;s imagine you were running a free recall experiment where subjects
 were presented with lists of words that varied randomly over a number of
 distinct dimensions:</p>
-<a class="reference internal image-reference" href="../_images/fingerprint1.png"><img alt="../_images/fingerprint1.png" src="../_images/fingerprint1.png" style="width: 500pt;" /></a>
 <p>In the figure above, the first word (dog) is: green in color, an animal,
 starts with the letter &#8216;d&#8217;, is large (bigger than a shoebox) and is
 positioned left-center on the screen. The next word (cat) is similar
@@ -133,7 +132,6 @@ occupy different parts of the computer screen, etc. More generally, each
 word on this list is similar to others words along some dimensions, but
 different along other dimensions. Let&#8217;s imagine a subject started
 recalling the list as follows:</p>
-<a class="reference internal image-reference" href="../_images/fingerprint25.png"><img alt="../_images/fingerprint25.png" src="../_images/fingerprint25.png" style="width: 500pt;" /></a>
 <p>In this recall sequence, &#8220;dog&#8221; was recalled, followed by &#8220;cat&#8221;. For each
 recall transition, we can compute the similarity between the two stimuli
 along each feature dimension. For example, both words are in the animal
@@ -142,7 +140,6 @@ high. In the color dimension, green (dog) and blue (cat) are somewhat
 similar colors, so these words are somewhat similar along this
 dimension. The figure below illustrates how we compute a &#8220;clustering
 score&#8221; for a given recall transition and feature dimension:</p>
-<a class="reference internal image-reference" href="../_images/fingerprint3.png"><img alt="../_images/fingerprint3.png" src="../_images/fingerprint3.png" style="width: 500pt;" /></a>
 <p>For each recall transition and feature dimension (color in this
 example), we:</p>
 <ol class="arabic simple">
@@ -157,7 +154,6 @@ transitioned to</li>
 <p>This analysis is performed to each recall transition and feature
 dimension for a given list, and then the percentile ranks are averaged
 within feature to get a &#8220;memory fingerprint&#8221; for each list:</p>
-<a class="reference internal image-reference" href="../_images/fingerprint4.png"><img alt="../_images/fingerprint4.png" src="../_images/fingerprint4.png" style="width: 500pt;" /></a>
 </div>
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 =============================
-Create an egg
+Create a multisubject egg
 =============================
 
 An egg is made up of two primary pieces of data: `pres`, which are the

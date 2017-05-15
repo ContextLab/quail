@@ -19,7 +19,7 @@ import quail
 egg = quail.load_example_data()
 
 #analysis
-analyzed_data = quail.analyze(egg, analysis='temporal', listgroup=['early']*8+['late']*8)
+analyzed_data = quail.analyze(egg, analysis='temporal', listgroup=['early']*4+['late']*4)
 
 #plot
 quail.plot(analyzed_data, title='Temporal Clustering')

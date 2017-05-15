@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Plot Lag-CRP for a single subject &#8212; quail 0.1.0 documentation</title>
+    <title>Plot Lag-CRP &#8212; quail 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -83,7 +83,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Plot Lag-CRP for a single subject</a></li>
+<li><a class="reference internal" href="#">Plot Lag-CRP</a></li>
 </ul>
 </ul>
 </li>
@@ -113,8 +113,8 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="plot-lag-crp-for-a-single-subject">
-<span id="sphx-glr-auto-examples-plot-lagcrp-py"></span><h1>Plot Lag-CRP for a single subject<a class="headerlink" href="#plot-lag-crp-for-a-single-subject" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="plot-lag-crp">
+<span id="sphx-glr-auto-examples-plot-lagcrp-py"></span><h1>Plot Lag-CRP<a class="headerlink" href="#plot-lag-crp" title="Permalink to this headline">¶</a></h1>
 <p>This example plots a Lag-CRP as described in Kahana et al (1996).
 Given the recall of a stimulus in position n, this plot shows the probability of
 recalling stimuli in neighboring stimulus positions (n+/-5).</p>
@@ -129,13 +129,13 @@ recalling stimuli in neighboring stimulus positions (n+/-5).</p>
 <span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load_example_data</span><span class="p">()</span>
 
 <span class="c1">#analysis</span>
-<span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
 
 <span class="c1">#plot</span>
 <span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Lag-CRP&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.920 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.164 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_lagcrp.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_lagcrp.py</span></code></a></div>

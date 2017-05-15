@@ -34,12 +34,12 @@ position during stimulus encoding.
     egg = quail.load_example_data()
 
     #analysis
-    analyzed_data = quail.analyze(egg, analysis='spc', listgroup=['average']*16)
+    analyzed_data = quail.analyze(egg, analysis='spc', listgroup=['average']*8)
 
     #plot
     quail.plot(analyzed_data, title='Serial Position Curve')
 
-**Total running time of the script:** ( 0 minutes  0.375 seconds)
+**Total running time of the script:** ( 0 minutes  0.551 seconds)
 
 
 

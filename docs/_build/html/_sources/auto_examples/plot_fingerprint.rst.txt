@@ -38,12 +38,12 @@ values for each stimulus.
     egg = quail.load_example_data()
 
     # analysis
-    analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*16)
+    analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*8)
 
     # plot
     quail.plot(analyzed_data, title='Memory Fingerprint')
 
-**Total running time of the script:** ( 0 minutes  2.489 seconds)
+**Total running time of the script:** ( 0 minutes  2.340 seconds)
 
 
 

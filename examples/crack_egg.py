@@ -18,6 +18,6 @@ import quail
 egg = quail.load_example_data()
 
 #crack egg
-cracked_egg = quail.crack_egg(egg, subjects=range(5), lists=range(8))
+cracked_egg = quail.crack_egg(egg, subjects=range(5), lists=range(4))
 
 cracked_egg.info()
