@@ -4,6 +4,9 @@ import pandas as pd
 import seaborn as sns
 from .helpers import *
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+mpl.rcParams['pdf.fonttype'] = 42
 
 def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
          listname='List', subjconds=None, listconds=None, plot_type=None,
