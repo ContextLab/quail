@@ -405,6 +405,26 @@ def pnr_helper(pres_slice, rec_slice, n):
 
     return prob_recalled
 
+def pnr_matrix_helper(pres_slice, rec_slice, n):
+
+    """
+    Computes a n-presented by n-recalled matrix, with each entry being the probability of a word being recalled nth given its presentation position
+    Parameters
+    ----------
+    pres_slice : Pandas Dataframe
+        chunk of presentation data to be analyzed
+    rec_slice : Pandas Dataframe
+        chunk of recall data to be analyzed
+
+    Returns
+    ----------
+    pnr_matrix : numpy array
+        each number represents the probability of nth recall for each word presented in each position/index
+    """
+    return [pnr_helper(pres_slice, rec_slice, n=pos) for pos in range(pres_slice.list_length)]
+
+
+
 # lag-crp
 def lagcrp_helper(pres_slice, rec_slice):
     """
@@ -771,6 +791,16 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   listname=listname,
                                   analysis=pnr_helper,
                                   analysis_type='pnr',
+                                  pass_features=False,
+                                  n=n,
+                                  parallel=parallel)
+            elif a is 'pnr_matrix':
+                r = analyze_chunk(d, subjgroup=subjgroup,
+                                  listgroup=listgroup,
+                                  subjname=subjname,
+                                  listname=listname,
+                                  analysis=pnr_matrix_helper,
+                                  analysis_type='pnr_matrix',
                                   pass_features=False,
                                   n=n,
                                   parallel=parallel)
