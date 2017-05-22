@@ -18,7 +18,7 @@ import quail
 egg = quail.load_example_data()
 
 # analysis
-analyzed_data = quail.analyze(egg, analysis='pnr_matrix', listgroup=['average']*8, n=5)
+analyzed_data = quail.analyze(egg, analysis='pnr_matrix', listgroup=['average']*8)
 
 # plot
 quail.plot(analyzed_data, title='Probability of Recall')

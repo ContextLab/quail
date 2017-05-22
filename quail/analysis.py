@@ -421,9 +421,7 @@ def pnr_matrix_helper(pres_slice, rec_slice, n):
     pnr_matrix : numpy array
         each number represents the probability of nth recall for each word presented in each position/index
     """
-    return [pnr_helper(pres_slice, rec_slice, n=pos) for pos in range(pres_slice.list_length)]
-
-
+    return [np.array([pnr_helper(pres_slice, rec_slice, n=pos) for pos in range(pres_slice.list_length)])]
 
 # lag-crp
 def lagcrp_helper(pres_slice, rec_slice):
