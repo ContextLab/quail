@@ -419,7 +419,7 @@ def pnr_matrix_helper(pres_slice, rec_slice, n):
     Returns
     ----------
     pnr_matrix : numpy array
-        each number represents the probability of nth recall for each word presented in each position/index
+        each cell is a matrix representing the probability of nth recall for each word presented in each position/index
     """
     return [np.array([pnr_helper(pres_slice, rec_slice, n=pos) for pos in range(pres_slice.list_length)])]
 
