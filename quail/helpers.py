@@ -40,8 +40,13 @@ def list2pd(all_data, subjindex=None, listindex=None):
     return pd.concat(subs_list_of_dfs)
 
 def format2tidy(df, subjname, listname, subjgroup, **attrs):
+
     if attrs['analysis_type'] in ['pnr_matrix']:
-        pass
+        matrix_array = []
+        for group in enumerate(np.unique(df.index.levels[1].values)):
+            for i in range(int(len(df.ix[:])/len(df.index.levels[1].values))):
+                matrix_array.append(df.ix[i, group[1]].values[0][:, :attrs['list_length']])
+        return np.array(matrix_array).mean(axis=0)
     else:
         melted_df = pd.melt(df.T)
         melted_df[subjname]=""
