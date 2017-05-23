@@ -40,34 +40,34 @@ def list2pd(all_data, subjindex=None, listindex=None):
     return pd.concat(subs_list_of_dfs)
 
 def format2tidy(df, subjname, listname, subjgroup, **attrs):
-
-    melted_df = pd.melt(df.T)
-    melted_df[subjname]=""
-    for idx,sub in enumerate(melted_df['Subject'].unique()):
-        melted_df.loc[melted_df['Subject']==sub,subjname]=subjgroup[idx]
-    if attrs['analysis_type'] in ['spc']:
-        base = list(df.columns)
-        melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', listname, 'Proportion Recalled', subjname, 'Position']
-    elif attrs['analysis_type'] in ['pfr', 'pnr']:
-        base = list(df.columns)
-        melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(attrs['n']), subjname, 'Position']
-    elif attrs['analysis_type'] is 'lagcrp':
-        base = range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1)
-        melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
-    elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
-        base = list(df.columns.values)
-        melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
-    elif attrs['analysis_type'] is 'accuracy':
-        melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
-    elif attrs['analysis_type'] is 'temporal':
-        melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
-
-
-    return melted_df
+    if attrs['analysis_type'] in ['pnr_matrix']:
+        pass
+    else:
+        melted_df = pd.melt(df.T)
+        melted_df[subjname]=""
+        for idx,sub in enumerate(melted_df['Subject'].unique()):
+            melted_df.loc[melted_df['Subject']==sub,subjname]=subjgroup[idx]
+        if attrs['analysis_type'] in ['spc']:
+            base = list(df.columns)
+            melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
+            melted_df.columns = ['Subject', listname, 'Proportion Recalled', subjname, 'Position']
+        elif attrs['analysis_type'] in ['pfr', 'pnr']:
+            base = list(df.columns)
+            melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
+            melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(attrs['n']), subjname, 'Position']
+        elif attrs['analysis_type'] is 'lagcrp':
+            base = range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1)
+            melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
+            melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
+        elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
+            base = list(df.columns.values)
+            melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
+            melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
+        elif attrs['analysis_type'] is 'accuracy':
+            melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
+        elif attrs['analysis_type'] is 'temporal':
+            melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
+        return melted_df
 
 def recmat2egg(recmat, list_length=None):
         """
