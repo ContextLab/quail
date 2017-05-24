@@ -213,12 +213,10 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
 
             if plot_type is 'list':
                 subarray = np.split(tidy_data, len(np.unique(listgroup)))
-                current_array = 0
                 f, axarr = plt.subplots(len(np.unique(listgroup)), sharex=True)
 
-                for ax in axarr:
-                    sns.heatmap(subarray[current_array], ax=ax)
-                    current_array += 1
+                for sub, ax in zip(subarray, axarr):
+                    sns.heatmap(sub, ax=ax)
 
             else:
                 ax = sns.heatmap(data=tidy_data)
