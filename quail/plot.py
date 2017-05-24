@@ -208,8 +208,18 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             ax.set_xlim(0,attrs['list_length']-1)
 
         elif attrs['analysis_type'] is 'pnr_matrix':
+
+            plot_type = plot_type if plot_type is not None else 'list'
+
             if plot_type is 'list':
-                ax = sns.heatmap(data=tidy_data)
+                subarray = np.split(tidy_data, len(np.unique(listgroup)))
+                current_array = 0
+                f, axarr = plt.subplots(len(np.unique(listgroup)), sharex=True)
+
+                for ax in axarr:
+                    sns.heatmap(subarray[current_array], ax=ax)
+                    current_array += 1
+
             else:
                 ax = sns.heatmap(data=tidy_data)
 
