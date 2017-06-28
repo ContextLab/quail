@@ -84,10 +84,13 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
 
         # load in speech context, note: max 500 words for speech context
         if speech_context:
-                opts['speech_context']=speech_context
+                opts['speech_contexts']=speech_context
 
         # read in wav
         audio = AudioSegment.from_wav(file_path)
+
+        # trim
+        audio = audio[:60000]
 
         # export as flac
         audio.export(file_path + ".flac", format = "flac", bitrate="44.1k")
@@ -99,10 +102,10 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
         # initialize speech sample
         sample = client.sample(content=speech_content,
                             encoding=speech.Encoding.FLAC,
-                            sample_rate=sample_rate)
+                            sample_rate_hertz=sample_rate)
 
         # run speech decoding
-        return sample.sync_recognize(**opts)
+        return sample.recognize(**opts)
 
     def parse_response(results):
         """Parses response from google speech"""
