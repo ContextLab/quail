@@ -100,7 +100,7 @@ class Egg(object):
         if not all(isinstance(item, list) for sub in rec for item in sub):
             rec = [rec]
 
-        if features:
+        if features is not None:
             if not all(isinstance(item, list) for sub in features for item in sub):
                 features = [features]
 

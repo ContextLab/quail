@@ -221,7 +221,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
         print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
         for feature in feature_list[0]:
             weights[feature] = .5
-        return weights
+        return [weights[key] for key in weights]
 
     # initialize past word list
     past_words = []
@@ -643,8 +643,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
         else:
             fingerprint_matrix.append([np.nan]*len(nf[0].keys()))
 
-    # return average over rows
-    return np.mean(fingerprint_matrix, axis=0)
+    return np.nanmean(fingerprint_matrix, axis=0)
 
 # main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
