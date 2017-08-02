@@ -114,7 +114,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         indexes=[]
         for line in data_frame.iterrows():
             try:
-                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','maddy','campbell', 'campbell field', 'kirsten\\nkirsten']:
+                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'test']:
                     delete = False
                 else:
                     delete = True
@@ -133,7 +133,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         for line in data_frame.iterrows():
             try:
                 if 'Q2' in json.loads(line[1]['responses']):
-                    delete = True
+                    delete = False
                 else:
                     delete = False
             except:
@@ -259,10 +259,11 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
     wordpool = pd.read_csv(wordpool)
 
     # load in dbs and convert to df, and filter
-    dfs = [db2df(db, filter_func=[adaptive_filter, experimenter_filter, experiments_filter]) for db in dbpath]
+    dfs = [db2df(db) for db in dbpath]
 
     # concatenate the db files
     df = pd.concat(dfs)
+
 
     # subjects who have completed the exp
     subids = list(df[df['listNumber']==15]['uniqueid'].unique())
