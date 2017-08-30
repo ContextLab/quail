@@ -1,39 +1,12 @@
 #!/usr/bin/env python
 import numpy as np
 
-class OptimalPresenter(object):
-
-    def __init__(self, strategy='random', features=None, params={'alpha' : 4, 'tau' : 1},
-                 fingerprint=None):
-
-    def set_params(self, name, value):
-        """
-        Sets a parameter to a particular value
-        """
-        self[name]=value
-
-    def get_params(self, name):
-        """
-        Sets a parameter to a particular value
-        """
-        return self.params[name]
-
-    def set_strategy(self, strategy='random'):
-        """
-        Sets a reordering strategy
-        """
-        self.set_strategy = strategy
-
-    def order(self, next_list):
-        return next_list
-
 class Fingerprint(object):
 
     def __init__(self, features=None, state=None, n=0, permute=False, nperms=1000):
 
         if state is None:
             self.state = {feature : [.5] for feature in features}
-
 
     def update(self, pres_list, rec_list, feature_list, dist_funcs):
         """
@@ -55,10 +28,17 @@ class Fingerprint(object):
         None
         """
 
-        weights = compute_feature_weights(pres_list, rec_list, feature_list, dist_funcs)
-        self.n+=1
-        
+        # compute weights for a single list
+        next_weights = compute_feature_weights(pres_list, rec_list, feature_list, dist_funcs)
 
+        # increment n
+        self.n+=1
+
+        # multiply states by n
+        c = self.state*n
+
+        # update state
+        self.state = (c+next_weights)/(self.n+1)
 
     def compute_feature_weights(pres_list, rec_list, feature_list, distances):
         """
@@ -139,6 +119,54 @@ class Fingerprint(object):
 
         return [weights[key] for key in weights]
 
+class OptimalPresenter(object):
+
+    def __init__(self, strategy='random', features=None, params=None,
+                 fingerprint=None):
+
+        if params is None:
+            self.params = {'alpha' : 4, 'tau' : 1}
+
+        if fingerprint is None:
+            self.fingerprint = Fingerprint()
+
+    def set_params(self, name, value):
+        """
+        Sets a parameter to a particular value
+        """
+        self[name]=value
+
+    def get_params(self, name):
+        """
+        Sets a parameter to a particular value
+        """
+        return self.params[name]
+
+    def set_strategy(self, strategy='random'):
+        """
+        Sets a reordering strategy
+        """
+        self.set_strategy = strategy
+
+    def order(self, next_list):
+        """
+        Reorders a list according to strategy
+        """
+
+        def get_feature_stick(w, alpha):
+            '''create a 'stick' of feature weights'''
+
+            feature_stick = [[weights[feature]]*round(weights[feature]**alpha)*100 for feature in w]
+            return [item for sublist in feature_stick for item in sublist]
+
+        def compute_stimulus_stick(s, tau):
+            '''create a 'stick' of feature weights'''
+
+            feature_stick = [[weights[feature]]*round(weights[feature]**alpha)*100 for feature in w]
+            return [item for sublist in feature_stick for item in sublist]
+
+
+        return next_list
 
 # class Fingerprint(object):
 #
