@@ -1,5 +1,5 @@
 ---
-title: 'Quail: A python toolbox for analyzing and plotting free recall data'
+title: 'Quail: A Python toolbox for analyzing and plotting free recall data'
 tags:
   - memory
   - free recall
@@ -9,12 +9,12 @@ authors:
    orcid: 0
    affiliation: 1
  - name: Jeremy R. Manning
-   orcid: 0
+   orcid: 0000-0001-7613-4732
    affiliation: 1
 affiliations:
  - name: Department of Psychological and Brain Sciences, Dartmouth College
    index: 1
-date: 08 August 2017
+date: 30 August 2017
 bibliography: paper.bib
 ---
 
