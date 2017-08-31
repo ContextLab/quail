@@ -10,7 +10,7 @@ authors:
    orcid: 0
    affiliation: 1
  - name: Paxton C. Fitzpatrick
-   orcid: 0
+   orcid: 0000-0003-0205-3088
    affiliation: 1
  - name: Campbell E. Field
    orcid: 0
