@@ -16,7 +16,7 @@ authors:
    orcid: 0
    affiliation: 1
  - name: Kirsten Ziman
-   orcid: 0
+   orcid: 0000-0002-8942-3362
    affiliation: 1
  - name: Jeremy R. Manning
    orcid: 0000-0001-7613-4732
