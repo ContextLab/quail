@@ -7,7 +7,7 @@ tags:
  - visualization
 authors:
  - name: Andrew C. Heusser
-   orcid: 0
+   orcid: 0000-0001-6353-688X
    affiliation: 1
  - name: Paxton C. Fitzpatrick
    orcid: 0000-0003-0205-3088
