@@ -1,0 +1,17 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+
+  ],
+  "identifier": "",
+  "codeRepository": "https://github.com/ContextLab/quail",
+  "datePublished": "2017-08-31",
+  "dateModified": "2017-08-31",
+  "dateCreated": "2017-08-31",
+  "description": " A Python package that facilitates analysis and visualization of behavioral data from memory experiments",
+  "keywords": "memory, free recall, python",
+  "license": "MIT",
+  "title": "Quail",
+  "version": "0.1.0"
+}
