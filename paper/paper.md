@@ -8,13 +8,22 @@ authors:
  - name: Andrew C. Heusser
    orcid: 0
    affiliation: 1
+ - name: Paxton C. Fitzpatrick
+   orcid: 0
+   affiliation: 1
+ - name: Campbell E. Field
+   orcid: 0
+   affiliation: 1
+ - name: Kirsten Ziman
+   orcid: 0
+   affiliation: 1
  - name: Jeremy R. Manning
    orcid: 0
    affiliation: 1
 affiliations:
  - name: Department of Psychological and Brain Sciences, Dartmouth College
    index: 1
-date: 08 August 2017
+date: 31 August 2017
 bibliography: paper.bib
 ---
 
