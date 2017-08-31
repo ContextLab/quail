@@ -18,7 +18,7 @@ authors:
    orcid: 0
    affiliation: 1
  - name: Jeremy R. Manning
-   orcid: 0
+   orcid: 0000-0001-7613-4732
    affiliation: 1
 affiliations:
  - name: Department of Psychological and Brain Sciences, Dartmouth College
