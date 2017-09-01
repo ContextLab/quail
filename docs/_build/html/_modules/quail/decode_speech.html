@@ -117,6 +117,7 @@
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="c1"># optional imports for speech decoding</span>
 <span class="k">try</span><span class="p">:</span>
@@ -190,6 +191,30 @@
     <span class="c1"># SUBFUNCTIONS</span>
     <span class="k">def</span> <span class="nf">decode_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">speech_context</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="p">):</span>
 
+        <span class="k">def</span> <span class="nf">recognize</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Subfunction that loops over audio segments to recognize speech</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="c1"># export as flac</span>
+            <span class="n">chunk</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">file_path</span> <span class="o">+</span> <span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;flac&quot;</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="s2">&quot;44.1k&quot;</span><span class="p">)</span>
+
+            <span class="c1"># open flac file</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span> <span class="o">+</span> <span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sc</span><span class="p">:</span>
+                <span class="n">speech_content</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="c1"># initialize speech sample</span>
+            <span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">speech_content</span><span class="p">,</span>
+                                <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
+                                <span class="n">sample_rate_hertz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">)</span>
+
+            <span class="c1"># run speech decoding</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">result</span>
+
         <span class="c1"># set up speech decoding options dict</span>
         <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;language_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language_code</span>
@@ -197,33 +222,47 @@
 
         <span class="c1"># load in speech context, note: max 500 words for speech context</span>
         <span class="k">if</span> <span class="n">speech_context</span><span class="p">:</span>
-                <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;speech_context&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">speech_context</span>
+                <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;speech_contexts&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">speech_context</span>
 
         <span class="c1"># read in wav</span>
         <span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_wav</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 
-        <span class="c1"># export as flac</span>
-        <span class="n">audio</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">file_path</span> <span class="o">+</span> <span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;flac&quot;</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="s2">&quot;44.1k&quot;</span><span class="p">)</span>
+        <span class="c1"># segment into 1 minute chunks</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">60000</span><span class="p">:</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">),</span><span class="mi">60000</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>
+                <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Audio clip is longer than 1 minute.  Splitting into </span><span class="si">%d</span><span class="s1"> one minute segments...&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">audio_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">audio_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">audio</span><span class="p">[</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">audio_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">audio</span><span class="p">]</span>
 
-        <span class="c1"># open flac file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span> <span class="o">+</span> <span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sc</span><span class="p">:</span>
-            <span class="n">speech_content</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="c1"># loop over audio segments</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">audio_chunks</span><span class="p">):</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recognize</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">file_path</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)))</span>
 
-        <span class="c1"># initialize speech sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">speech_content</span><span class="p">,</span>
-                            <span class="n">encoding</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">FLAC</span><span class="p">,</span>
-                            <span class="n">sample_rate</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">)</span>
-
-        <span class="c1"># run speech decoding</span>
-        <span class="k">return</span> <span class="n">sample</span><span class="o">.</span><span class="n">sync_recognize</span><span class="p">(</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span>
+        <span class="c1"># return list of results</span>
+        <span class="k">return</span> <span class="n">results</span>
 
     <span class="k">def</span> <span class="nf">parse_response</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parses response from google speech&quot;&quot;&quot;</span>
         <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">chunk</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                    <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;No speech was decoded for segment </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+                <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">segment</span><span class="o">.</span><span class="n">transcript</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">chunk</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                                <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Error parsing response for segment </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
         <span class="k">return</span> <span class="n">words</span>
 
     <span class="c1"># MAIN #####################################################################</span>
