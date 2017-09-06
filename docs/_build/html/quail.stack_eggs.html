@@ -117,7 +117,7 @@
 <h1>quail.stack_eggs<a class="headerlink" href="#quail-stack-eggs" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="quail.stack_eggs">
-<code class="descclassname">quail.</code><code class="descname">stack_eggs</code><span class="sig-paren">(</span><em>eggs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/helpers.html#stack_eggs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.stack_eggs" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">quail.</code><code class="descname">stack_eggs</code><span class="sig-paren">(</span><em>eggs</em>, <em>meta='concatenate'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/helpers.html#stack_eggs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.stack_eggs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a list of eggs, stacks them and reindexes the subject number</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -126,6 +126,12 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>eggs</strong> : list of Egg data objects</p>
 <blockquote>
 <div><p>A list of Eggs that you want to combine</p>
+</div></blockquote>
+<p><strong>meta</strong> : string</p>
+<blockquote>
+<div><p>Determines how the meta data of each Egg combines. Default is &#8216;concatenate&#8217;
+&#8216;concatenate&#8217; concatenates keys in meta data dictionary shared between eggs, and copies non-overlapping keys
+&#8216;separate&#8217; keeps the Eggs&#8217; meta data dictionaries separate, with each as a list index in the stacked meta data</p>
 </div></blockquote>
 </td>
 </tr>

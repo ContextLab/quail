@@ -4,6 +4,7 @@ import json
 import csv
 import pickle
 import time
+import warnings
 
 # optional imports for speech decoding
 try:
@@ -77,6 +78,30 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
     # SUBFUNCTIONS
     def decode_file(file_path, client, speech_context, sample_rate, max_alternatives):
 
+        def recognize(chunk, file_path):
+            """
+            Subfunction that loops over audio segments to recognize speech
+            """
+            # export as flac
+            chunk.export(file_path + ".flac", format = "flac", bitrate="44.1k")
+
+            # open flac file
+            with open(file_path + ".flac", 'rb') as sc:
+                speech_content = sc.read()
+
+            # initialize speech sample
+            sample = client.sample(content=speech_content,
+                                encoding=speech.Encoding.FLAC,
+                                sample_rate_hertz=sample_rate)
+
+            # run speech decoding
+            try:
+                result = sample.recognize(**opts)
+            except:
+                result = None
+
+            return result
+
         # set up speech decoding options dict
         opts = {}
         opts['language_code'] = language_code
@@ -89,31 +114,42 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
         # read in wav
         audio = AudioSegment.from_wav(file_path)
 
-        # trim
-        audio = audio[:60000]
+        # segment into 1 minute chunks
+        if len(audio)>60000:
+            segments = range(0,len(audio),60000)
+            if segments[-1]<len(audio):
+                segments.append(len(audio)-1)
+            print('Audio clip is longer than 1 minute.  Splitting into %d one minute segments...' % (len(segments)-1))
+            audio_chunks = []
+            for i in range(len(segments)-1):
+                audio_chunks.append(audio[segments[i]:segments[i+1]])
+        else:
+            audio_chunks = [audio]
 
-        # export as flac
-        audio.export(file_path + ".flac", format = "flac", bitrate="44.1k")
+        # loop over audio segments
+        results = []
+        for idx, chunk in enumerate(audio_chunks):
+            results.append(recognize(chunk, file_path+str(idx)))
 
-        # open flac file
-        with open(file_path + ".flac", 'rb') as sc:
-            speech_content = sc.read()
-
-        # initialize speech sample
-        sample = client.sample(content=speech_content,
-                            encoding=speech.Encoding.FLAC,
-                            sample_rate_hertz=sample_rate)
-
-        # run speech decoding
-        return sample.recognize(**opts)
+        # return list of results
+        return results
 
     def parse_response(results):
         """Parses response from google speech"""
         words = []
-        for result in results:
-            for chunk in result.transcript.split(' '):
-                if chunk != '':
-                    words.append(str(chunk).upper())
+        for idx, result in enumerate(results):
+            if result is None:
+                warnings.warn('No speech was decoded for segment %d' % (idx+1))
+                words.append(None)
+            else:
+                try:
+                    for segment in result:
+                        for chunk in segment.transcript.split(' '):
+                            if chunk != '':
+                                words.append(str(chunk).upper())
+                except:
+                    warnings.warn('Error parsing response for segment %d' % (idx+1))
+
         return words
 
     # MAIN #####################################################################

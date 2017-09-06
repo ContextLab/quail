@@ -18,7 +18,7 @@ setup(
     author_email='contextualdynamics@gmail.com',
     url='https://github.com/ContextLab/quail',
     license=license,
-    packages=find_packages(exclude=('tests', 'docs')),
+    packages=find_packages(exclude=('tests', 'docs', 'paper')),
     include_package_data=True,
     install_requires=[
         "seaborn>=0.7.1",
