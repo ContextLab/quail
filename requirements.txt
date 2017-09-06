@@ -8,6 +8,6 @@ sqlalchemy
 dill
 requests
 pydub
-google-cloud
+google-cloud-speech
 multiprocessing
 pathos

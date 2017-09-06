@@ -20,4 +20,19 @@ setup(
     license=license,
     packages=find_packages(exclude=('tests', 'docs')),
     include_package_data=True,
+    install_requires=[
+        "seaborn>=0.7.1",
+        "matplotlib>=1.5.1",
+        "scipy>=0.17.1",
+        "numpy>=1.10.4",
+        "pandas==0.18.1",
+        "sqlalchemy",
+        "dill",
+        "requests",
+        "pydub",
+        "google-cloud-speech",
+        "multiprocessing",
+        "pathos",
+        "future"
+    ]
 )
