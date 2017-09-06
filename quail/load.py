@@ -54,7 +54,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         data = [json.loads(part)['data'] for part in data if part is not None]
 
         # remove duplicate subject data for debugXG82XV:debug7XPXQA
-        data[110] = data[110][348:]
+        # data[110] = data[110][348:]
 
         # insert uniqueid field into trialdata in case it wasn't added
         # in experiment:

@@ -11,7 +11,7 @@ with open('LICENSE') as f:
 
 setup(
     name='quail',
-    version='0.1.1',
+    version='0.1.2',
     description='A python toolbox for analyzing and plotting free recall data',
     long_description=readme,
     author='Contextual Dynamics Lab',
