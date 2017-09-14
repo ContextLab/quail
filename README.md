@@ -6,7 +6,7 @@
 
 <h2>Overview</h2>
 
-Quail is a Python package that facilitates analyzes of behavioral data from memory experiments.  (The current focus is on free recall experiments.)  Key features include:
+Quail is a Python package that facilitates analyses of behavioral data from memory experiments.  (The current focus is on free recall experiments.)  Key features include:
 - Serial position curves (probability of recalling items presented at each presentation position)
 - Probability of Nth recall curves (probability of recalling items at each presentation position as the Nth recall in the recall sequence)
 - Lag-Conditional Response Probability curves (probability of transitioning between items in the recall sequence, as a function of their relative presentation positions)
