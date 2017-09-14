@@ -346,6 +346,6 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         return eggs[0]
 
 def load_example_data():
-    with open(os.path.dirname(os.path.abspath(__file__)) + '/data/example_data.egg', 'rb') as handle:
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/data/automatic.egg', 'rb') as handle:
         egg = pickle.load(handle)
     return egg
