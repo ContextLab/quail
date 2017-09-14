@@ -190,12 +190,10 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             plot_type = plot_type if plot_type is not None else 'list'
 
             if plot_type is 'subject':
-                ax = sns.tsplot(data = tidy_data, time="Position", value="$Proportion Recalled$", unit="Subject", condition=subjname, **kwargs)
+                ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
             elif plot_type is 'list':
                 ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
             ax.set_xlim(0,attrs['list_length']-1)
-            # plt.xlabel('$Proportion Recalled$', fontsize = 20)
-            # plt.ylabel('$Subject$', fontsize = 20)
 
         elif attrs['analysis_type'] is 'pfr' or attrs['analysis_type'] is 'pnr':
             n=attrs['n']
@@ -239,7 +237,5 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             plt.savefig(save_path)
 
         plt.show()
-
-
 
     return ax
