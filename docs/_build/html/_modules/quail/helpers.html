@@ -223,7 +223,7 @@
 
         <span class="k">return</span> <span class="n">dist_funcs</span>
 
-<div class="viewcode-block" id="stack_eggs"><a class="viewcode-back" href="../../quail.stack_eggs.html#quail.stack_eggs">[docs]</a><span class="k">def</span> <span class="nf">stack_eggs</span><span class="p">(</span><span class="n">eggs</span><span class="p">):</span>
+<div class="viewcode-block" id="stack_eggs"><a class="viewcode-back" href="../../quail.stack_eggs.html#quail.stack_eggs">[docs]</a><span class="k">def</span> <span class="nf">stack_eggs</span><span class="p">(</span><span class="n">eggs</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="s1">&#39;concatenate&#39;</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Takes a list of eggs, stacks them and reindexes the subject number</span>
 
@@ -231,6 +231,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    eggs : list of Egg data objects</span>
 <span class="sd">        A list of Eggs that you want to combine</span>
+<span class="sd">    meta : string</span>
+<span class="sd">        Determines how the meta data of each Egg combines. Default is &#39;concatenate&#39;</span>
+<span class="sd">        &#39;concatenate&#39; concatenates keys in meta data dictionary shared between eggs, and copies non-overlapping keys</span>
+<span class="sd">        &#39;separate&#39; keeps the Eggs&#39; meta data dictionaries separate, with each as a list index in the stacked meta data</span>
 
 
 <span class="sd">    Returns</span>
@@ -242,15 +246,29 @@
     <span class="kn">from</span> <span class="nn">.egg</span> <span class="k">import</span> <span class="n">Egg</span>
 
     <span class="n">pres</span> <span class="o">=</span> <span class="p">[</span><span class="n">egg</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">,:]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">egg</span> <span class="ow">in</span> <span class="n">eggs</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">egg</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
-    <span class="n">rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">egg</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">,:]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>  <span class="k">for</span> <span class="n">egg</span> <span class="ow">in</span> <span class="n">eggs</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">egg</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
+    <span class="n">rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">egg</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">,:]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">egg</span> <span class="ow">in</span> <span class="n">eggs</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">egg</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
 
     <span class="n">all_have_features</span> <span class="o">=</span> <span class="nb">all</span><span class="p">([</span><span class="n">egg</span><span class="o">.</span><span class="n">features</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">egg</span> <span class="ow">in</span> <span class="n">eggs</span><span class="p">])</span>
 
+    <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="s1">&#39;concatenate&#39;</span><span class="p">:</span>
+        <span class="n">new_meta</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">egg</span> <span class="ow">in</span> <span class="n">eggs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">egg</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">new_meta</span><span class="p">:</span>
+                    <span class="n">new_meta</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">new_meta</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                    <span class="n">new_meta</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_meta</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">meta</span> <span class="ow">is</span> <span class="s1">&#39;separate&#39;</span><span class="p">:</span>
+        <span class="n">new_meta</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">meta</span> <span class="k">for</span> <span class="n">egg</span> <span class="ow">in</span> <span class="n">eggs</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">all_have_features</span><span class="p">:</span>
         <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">egg</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">,:]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">egg</span> <span class="ow">in</span> <span class="n">eggs</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">egg</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span>
-        <span class="n">new_egg</span> <span class="o">=</span> <span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">pres</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">rec</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">)</span>
+        <span class="n">new_egg</span> <span class="o">=</span> <span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">pres</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">rec</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">new_meta</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">new_egg</span> <span class="o">=</span> <span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">pres</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">rec</span><span class="p">)</span>
+        <span class="n">new_egg</span> <span class="o">=</span> <span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">pres</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">rec</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">new_meta</span><span class="p">)</span>
+
 
     <span class="k">return</span> <span class="n">new_egg</span></div>
 
