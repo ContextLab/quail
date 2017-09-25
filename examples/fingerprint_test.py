@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
+import quail
 from quail import Fingerprint, OptimalPresenter
 
 # generate some fake data
@@ -37,8 +38,10 @@ dist_funcs = {
                 'length' : lambda a, b: np.linalg.norm(np.subtract(a,b))
 }
 
+egg = quail.Egg(pres=[next_presented], rec=[next_recalled], features=[next_features])
+
 # initialize fingerprint
-fingerprint = Fingerprint(features=dist_funcs.keys(), dist_funcs=dist_funcs)
+fingerprint = Fingerprint(init=egg)
 
 # initialize presenter
 params = {
@@ -47,7 +50,7 @@ params = {
 presenter = OptimalPresenter(params=params)
 
 # update the fingerprint
-fingerprint.update(next_presented, next_recalled, next_features)
+fingerprint.update(egg)
 
 # reorder next list
-next_order = presenter.order(next_presented, )
+next_order = presenter.order(egg)
