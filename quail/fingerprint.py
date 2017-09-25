@@ -1,14 +1,68 @@
 #!/usr/bin/env python
 import numpy as np
+import warnings
+from .helpers import default_dist_funcs
 
 class Fingerprint(object):
+    """
+    Class containing the memory fingerprint and associated functions
 
-    def __init__(self, features=None, state=None, n=0, permute=False, nperms=1000):
+    A memory fingerprint can be defined as a subject's tendency to cluster their
+    recall responses with respect to more than one stimulus feature dimensions.
+    What is a 'stimulus feature dimension' you ask? It is simply an attribute of
+    the stimulus, such as its color, category, spatial location etc.
+
+    Parameters
+    ----------
+
+    features : list
+        Features to consider for fingerprint analyses
+
+    state : np.array
+        The current fingerprint (an array of real numbers between 0 and 1,
+        inclusive) initialized to all 0.5
+
+    n : int
+        a counter specifying how many lists went into estimating the current
+        fingerprint (initialize to 0)
+
+    permute : bool
+        A boolean flag specifying whether to use permutations to compute the
+        fingerprint (default: True)
+
+
+    dist_funcs : dict (optional)
+        A dictionary of custom distance functions for stimulus features.  Each
+        key should be the name of a feature
+        and each value should be an inline distance function
+        (e.g. `dist_funcs['feature_n'] = lambda a, b: abs(a-b)`)
+
+    meta : dict (optional)
+        Meta data about the study (i.e. version, description, date, etc.) can be
+        saved here.
+    """
+
+    def __init__(self, features=None, state=None, n=0, permute=False, nperms=1000,
+                 dist_funcs=None, meta=None):
 
         if state is None:
-            self.state = {feature : [.5] for feature in features}
+            if features is not None:
+                self.state = np.array([.5 for feature in features])
+            else:
+                self.state = state
 
-    def update(self, pres_list, rec_list, feature_list, dist_funcs):
+        if meta is None:
+            meta = {}
+
+        # initialize history param
+        self.history = []
+        self.history.append(self.state)
+
+
+        self.dist_funcs = dist_funcs
+        self.n = n
+
+    def update(self, pres_list, rec_list, feature_list):
         """
         Updates fingerprint with new data
 
@@ -28,19 +82,67 @@ class Fingerprint(object):
         None
         """
 
+        # get distances
+        distances = self.compute_distances(pres_list, feature_list, self.dist_funcs)
+
         # compute weights for a single list
-        next_weights = compute_feature_weights(pres_list, rec_list, feature_list, dist_funcs)
+        next_weights = self.compute_feature_weights(pres_list, rec_list, feature_list, distances)
 
         # increment n
         self.n+=1
 
         # multiply states by n
-        c = self.state*n
+        c = self.state*self.n
 
         # update state
         self.state = (c+next_weights)/(self.n+1)
 
-    def compute_feature_weights(pres_list, rec_list, feature_list, distances):
+        # update the history
+        self.history.append(next_weights)
+
+    def compute_distances(self, pres_list, feature_list, dist_funcs):
+        """
+        Compute distances between list words along n feature dimensions
+
+        Parameters
+        ----------
+        pres_list : list
+            list of presented words
+        feature_list : list
+            list of feature dicts for presented words
+        dist_funcs : dict
+            dict of distance functions for each feature
+
+        Returns
+        ----------
+        distances : dict
+            dict of distance matrices for each feature
+        """
+
+        # initialize dist dict
+        distances = {}
+
+        # for each feature in dist_funcs
+        for feature in dist_funcs:
+
+            # initialize dist matrix
+            dists = np.zeros((len(pres_list), len(pres_list)))
+
+            # for each word in the list
+            for idx1, item1 in enumerate(pres_list):
+
+                # for each word in the list
+                for idx2, item2 in enumerate(pres_list):
+
+                    # compute the distance between word 1 and word 2 along some feature dimension
+                    dists[idx1,idx2] = dist_funcs[feature](feature_list[idx1][feature],feature_list[idx2][feature])
+
+            # set that distance matrix to the value of a dict where the feature name is the key
+            distances[feature] = dists
+
+        return distances
+
+    def compute_feature_weights(self, pres_list, rec_list, feature_list, distances):
         """
         Compute clustering scores along a set of feature dimensions
 
@@ -124,11 +226,16 @@ class OptimalPresenter(object):
     def __init__(self, strategy='random', features=None, params=None,
                  fingerprint=None):
 
-        if params is None:
-            self.params = {'alpha' : 4, 'tau' : 1}
+        # set default params
+        self.params = {
+                        'alpha' : 4,
+                        'tau' : 1,
+                        'fingerprint' : Fingerprint()
+                        }
 
-        if fingerprint is None:
-            self.fingerprint = Fingerprint()
+        # update with user defined params
+        if params is not None:
+            self.params.update(params)
 
     def set_params(self, name, value):
         """
