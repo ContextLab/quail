@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 import numpy as np
+from scipy.spatial.distance import cdist
 import warnings
+from .egg import Egg
 from .helpers import default_dist_funcs, parse_egg
-from .analysis import analyze_chunk, fingerprint_helper
+from .analysis import analyze_chunk, fingerprint_helper, compute_distances, compute_feature_weights
 
 class Fingerprint(object):
     """
@@ -102,6 +104,9 @@ class Fingerprint(object):
         # update the history
         self.history.append(next_weights)
 
+    def get_features(self):
+        return self.features
+
 class OptimalPresenter(object):
 
     def __init__(self, strategy='random', features=None, params=None,
@@ -136,25 +141,249 @@ class OptimalPresenter(object):
         """
         self.set_strategy = strategy
 
+    def order_perm(self, egg, nperms=10000):
+        """
+        This function re-sorts a list by computing permutations of a given
+        list and choosing the one that maximizes/minimizes variance.
+        """
+
+        # parse egg
+        pres, rec, features, dist_funcs = parse_egg(egg)
+
+        # compute distances
+        distances = compute_distances(pres, features, dist_funcs)
+
+        # length of list
+        pres_len = len(pres)
+
+        # initialize weights
+        weights = np.zeros((nperms, len(features[0].keys())))
+
+        # orders are nperms shuffled indexes
+        orders  = np.zeros((nperms, pres_len))
+
+        # loop over number of permuations
+        for perm in range(nperms):
+
+            # shuffle inds
+            idx = np.random.permutation(pres_len)
+
+            # shuffled pres
+            pres_perm = list(pres[idx])
+
+            # shuffled features
+            features_perm = list(features[idx])
+
+            # create a copy of distances
+            distances_perm = distances.copy()
+
+            for key in distances_perm:
+                distances_perm[key]=distances_perm[key][idx]
+
+            # compute weights
+            weights[perm,:] = compute_feature_weights(pres_perm, pres_perm, features_perm, distances_perm)
+
+            # save out the order
+            orders[perm,:] = idx
+
+        # get the fingerprint state
+        fingerprint = self.get_params('fingerprint').state
+
+        # find the closest
+        closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights)),:]
+
+        # return a re-sorted egg
+        return Egg(pres=[list(pres[idx])], rec=[[None]], features=[list(features[idx])])
+
+
     def order(self, egg):
         """
         Reorders a list according to strategy
         """
 
-        def get_feature_stick(w, alpha):
+        def compute_feature_stick(features, weights, alpha):
             '''create a 'stick' of feature weights'''
 
-            feature_stick = [[weights[feature]]*round(weights[feature]**alpha)*100 for feature in w]
-            return [item for sublist in feature_stick for item in sublist]
+            feature_stick = []
+            for f, w in zip(features, weights):
+                feature_stick+=[f]*int(np.power(w,alpha)*100)
 
-        def compute_stimulus_stick(s, tau):
-            '''create a 'stick' of feature weights'''
+            return feature_stick
 
-            feature_stick = [[weights[feature]]*round(weights[feature]**alpha)*100 for feature in w]
-            return [item for sublist in feature_stick for item in sublist]
+        def reorder_list(egg, feature_stick, tau):
+
+            def compute_stimulus_stick(s, tau):
+                '''create a 'stick' of feature weights'''
+
+                feature_stick = [[weights[feature]]*round(weights[feature]**alpha)*100 for feature in w]
+                return [item for sublist in feature_stick for item in sublist]
+
+            # parse egg
+            pres, rec, features, dist_funcs = parse_egg(egg)
+
+            # turn pres and features into np arrays
+            pres_arr = np.array(pres)
+            features_arr = np.array(features)
+
+            # compute distances
+            distances = compute_distances(pres, features, dist_funcs)
+
+            # starting with a random word
+            reordered_list = []
+            reordered_features = []
+
+            # start with a random choice
+            idx = np.random.choice(len(pres), 1)[0]
+
+            # original inds
+            inds = range(len(pres))
+
+            # keep track of the indices
+            inds_used = [idx]
+
+            # get the word
+            current_word = pres[idx]
+
+            # get the features dict
+            current_features = features[idx]
+
+            # append that word to the reordered list
+            reordered_list.append(current_word)
+
+            # append the features to the reordered list
+            reordered_features.append(current_features)
+
+            # loop over the word list
+            for i in range(len(pres)-1):
+
+                # sample from the stick
+                feature_sample = feature_stick[np.random.choice(len(feature_stick), 1)[0]]
+
+                # indices left
+                inds_left = filter(lambda ind: ind not in inds_used, inds)
+
+                # make a copy of the words filtering out the already used ones
+                words_left = pres[inds_left]
+
+                # get word distances for the word
+                dists_left = distances[feature_sample][idx, inds_left]
+
+                # features left
+                features_left = features[inds_left]
+
+                # normalize distances
+                dists_left_max = np.max(dists_left)
+                if dists_left_max>0:
+                    dists_left_norm = dists_left/np.max(dists_left)
+                else:
+                    dists_left_norm = dists_left
+
+                # get the min
+                dists_left_min = np.min(-dists_left_norm)
+
+                # invert the word distances to turn distance->similarity
+                dists_left_inv = - dists_left_norm - dists_left_min + .01
+
+                # create a word stick
+                words_stick = []
+                for word, dist in zip(words_left, dists_left_inv):
+                    words_stick+=[word]*int(np.power(dist,tau)*100)
+
+                next_word = np.random.choice(words_stick)
+
+                next_word_idx = np.where(pres==next_word)[0]
+
+                inds_used.append(next_word_idx)
+
+                reordered_list.append(next_word)
+                reordered_features.append(features[next_word_idx])
+
+            return Egg(pres=[reordered_list], rec=[[None]], features=[reordered_features])
+
+        # parse egg
+        pres, rec, features, dist_funcs = parse_egg(egg)
+
+        # compute distances
+        distances = compute_distances(pres, features, dist_funcs)
+
+        # get params needed for list reordering
+        features = self.get_params('fingerprint').get_features()
+        weights = self.get_params('fingerprint').state
+        alpha = self.get_params('alpha')
+        tau = self.get_params('tau')
+
+        # compute feature stick
+        feature_stick = compute_feature_stick(features, weights, alpha)
+
+        # reorder list
+        return reorder_list(egg, feature_stick, tau)
 
 
-        return next_list
+
+
+
+
+
+                # var wordWeights = reorderedList[reorderedList.length - 1].distances[featureStickSample].map(function(distance) {
+                #     return distance.dist
+                # });
+
+        #         var max = Math.max.apply(null, wordWeights);
+        #         wordWeights = wordWeights.map(function(distance) {
+        #             if (distance === 0) {
+        #                 return distance
+        #             } else {
+        #                 return distance / max
+        #             }
+        #         });
+        #
+        #         var min = Math.min.apply(null, wordWeights.map(function(word) {
+        #             return -word
+        #         }));
+        #
+        #         invertedWordWeights = wordWeights.map(function(weight) {
+        #                 return -weight - min + .01
+        #             })
+        #             // console.log('weight', wordWeights)
+        #             // console.log('inverted weight', invertedWordWeights)
+        #
+        #         // create a stick representing the stimuli to chose from
+        #         var wordStick = invertedWordWeights.map(function(weight, idx) {
+        #             return Array(Math.round(Math.pow(weight, tau) * 100)).fill(idx)
+        #         })
+        #
+        #         wordStick = [].concat.apply([], wordStick);
+        #         var wordStickSample = wordStick[_getRandomIntInclusive(0, wordStick.length - 1)]
+        #             // console.log('word stick: ', wordStick)
+        #             // console.log('word stick sample: ', wordStickSample)
+        #             // console.log('chose the word:', nextList[wordStickSample])
+        #
+        #         // remove the word from the distance object of all stimuli
+        #         nextList.forEach(function(stimulus) {
+        #             for (feature in stimulus.distances) {
+        #                 stimulus.distances[feature].splice(wordStickSample, 1);
+        #             }
+        #         })
+        #         reorderedList.push(nextList[wordStickSample]) // add this stimulus to the reordered list array
+        #         nextList.splice(wordStickSample, 1) // remove it from the unordered list
+        #     };
+        #     // console.log('reordered list: ', reorderedList)
+        #     return reorderedList
+        # }
+        #
+        # def stabilize(self, egg):
+        #     '''function that returns optimized list'''
+        #
+        #     # compute average weights
+        #     avg_weights = self.get_weights()
+        #
+        #     # get feature stick
+        #     feature_stick = compute_feature_stick(avg_weights, self.alpha)
+        #
+        #     # return the reordered list
+        #     return reorder_list(next_list, feature_stick, self.tau)
+        #
+        # return next_list
 
 # class Fingerprint(object):
 #
