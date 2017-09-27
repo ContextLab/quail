@@ -251,8 +251,8 @@ def fill_missing(x):
 
 def parse_egg(egg):
     """Parses an egg and returns fields"""
-    pres_list = egg.pres.values
-    rec_list = egg.rec.values
-    feature_list = egg.features.values[0].tolist()
+    pres_list = egg.pres.values[0]
+    rec_list = egg.rec.values[0]
+    feature_list = egg.features.values[0]
     dist_funcs = egg.dist_funcs
     return pres_list, rec_list, feature_list, dist_funcs

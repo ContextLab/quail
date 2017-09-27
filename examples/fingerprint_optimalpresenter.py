@@ -6,6 +6,7 @@ from quail import Fingerprint, OptimalPresenter
 # generate some fake data
 next_presented = ['CAT', 'DOG', 'SHOE', 'HORSE']
 next_recalled = ['HORSE', 'DOG', 'CAT']
+
 next_features = [{
                     'category' : 'animal',
                     'size' : 'bigger',
@@ -53,4 +54,4 @@ presenter = OptimalPresenter(params=params)
 fingerprint.update(egg)
 
 # reorder next list
-next_order = presenter.order(egg)
+resorted_egg = presenter.order(egg)
