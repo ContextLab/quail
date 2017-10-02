@@ -48,10 +48,12 @@ fingerprint = Fingerprint(init=egg)
 params = {
     'fingerprint' : fingerprint
 }
-presenter = OptimalPresenter(params=params)
+presenter = OptimalPresenter(params=params, strategy='stabilize')
 
 # update the fingerprint
 fingerprint.update(egg)
 
 # reorder next list
-resorted_egg = presenter.order(egg)
+resorted_egg = presenter.order(egg, method='best_stick', nperms=1000)
+
+print(resorted_egg.pres)
