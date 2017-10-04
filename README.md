@@ -29,11 +29,15 @@ Check the [repo](https://github.com/ContextLab/quail-example-notebooks) of Jupyt
 
 <h2>Installation</h2>
 
+To install quail in the recommended way, run:
+
 `pip install quail`
 
-or
+This will work on clean systems, but if you encounter issues you may need to run:
 
-To install from this repo:
+`sudo pip install --upgrade --ignore-installed -e .`
+
+To install directly from this repo (not recommended, but you'll get the "bleeding edge" version of the code):
 
 `git clone https://github.com/ContextLab/quail.git`
 
