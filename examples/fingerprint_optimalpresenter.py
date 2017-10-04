@@ -54,6 +54,6 @@ presenter = OptimalPresenter(params=params, strategy='stabilize')
 fingerprint.update(egg)
 
 # reorder next list
-resorted_egg = presenter.order(egg, method='best_choice', nperms=100)
+resorted_egg = presenter.order(egg, method='permute', nperms=100)
 
 print(resorted_egg.pres)
