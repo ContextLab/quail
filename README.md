@@ -148,13 +148,13 @@ egg = quail.Egg(pres=presented_words, rec=recalled_words)
 egg = quail.load_example_data()
 
 #analysis
-analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*16)
+analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*8)
 ```
 
 <h2>Plot Accuracy</h2>
 
 ```
-analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*16)
+analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*8)
 ax = quail.plot(analyzed_data, title='Recall Accuracy')
 ```
 ![Plot Accuracy](images/plot_acc.png)
@@ -162,7 +162,7 @@ ax = quail.plot(analyzed_data, title='Recall Accuracy')
 <h2>Plot Serial Position Curve</h2>
 
 ```
-analyzed_data = quail.analyze(egg, analysis='spc', listgroup=['average']*16)
+analyzed_data = quail.analyze(egg, analysis='spc', listgroup=['average']*8)
 ax = quail.plot(analyzed_data, title='Serial Position Curve')
 ```
 ![Plot SPC](images/plot_spc.png)
@@ -170,7 +170,7 @@ ax = quail.plot(analyzed_data, title='Serial Position Curve')
 <h2>Plot Probability of First Recall</h2>
 
 ```
-analyzed_data = quail.analyze(egg, analysis='pfr', listgroup=['average']*16)
+analyzed_data = quail.analyze(egg, analysis='pfr', listgroup=['average']*8)
 ax = quail.plot(analyzed_data, title='Probability of First Recall')
 ```
 ![Plot PFR](images/plot_pfr.png)
@@ -178,7 +178,7 @@ ax = quail.plot(analyzed_data, title='Probability of First Recall')
 <h2>Plot Lag-CRP</h2>
 
 ```
-analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*16)
+analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*8)
 ax = quail.plot(analyzed_data, title='Lag-CRP')
 ```
 ![Plot Lag-CRP](images/plot_lagcrp.png)
@@ -186,7 +186,7 @@ ax = quail.plot(analyzed_data, title='Lag-CRP')
 <h2>Plot Memory Fingerprint</h2>
 
 ```
-analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*16)
+analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*8)
 ax = quail.plot(analyzed_data, title='Memory Fingerprint')
 ```
 ![Plot Fingerprint](images/plot_fingerprint.png)
