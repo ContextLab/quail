@@ -114,6 +114,10 @@ The preferred way to contribute to quail is to fork the main repository on GitHu
 
 + Changes (both new features and bugfixes) should be tested using `pytest`.  Add tests for your new feature to the `tests/` repo folder.
 
+<h2>Support</h2>
+
+If you have a question, comment or concern about the software, please post a question to [Stack Overflow](https://stackoverflow.com/search?q=quail), or send us an email at contextualdynamics@gmail.com. 
+
 <h2>Testing</h2>
 
 ![Build Status](https://travis-ci.com/ContextLab/quail.svg?token=hxjzzuVkr2GZrDkPGN5n&branch=master)
