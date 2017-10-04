@@ -212,7 +212,7 @@ class OptimalPresenter(object):
             Egg re-sorted to match fingerprint
         """
 
-        def order_perm_parallel(self, egg, distances, strategy, nperms=10000):
+        def order_perm(self, egg, dist_dict, strategy, nperms=10000):
             """
             This function re-sorts a list by computing permutations of a given
             list and choosing the one that maximizes/minimizes variance.
@@ -225,7 +225,7 @@ class OptimalPresenter(object):
             pres_len = len(pres)
 
             results = Parallel(n_jobs=multiprocessing.cpu_count())(
-            delayed(run_perm)(pres, features, distances) for i in range(nperms))
+            delayed(rand_perm)(pres, features, dist_dict, dist_funcs) for i in range(nperms))
 
             weights = np.array(map(lambda x: x[0], results))
             orders = np.array(map(lambda x: x[1], results))
@@ -235,26 +235,20 @@ class OptimalPresenter(object):
 
             # find the closest (or farthest)
             if strategy is 'stabilize':
-                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights)),:].astype(int).tolist()
+                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, 'correlation')),:].astype(int).tolist()
             elif strategy is 'destabilize':
-                closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights)),:].astype(int).tolist()
+                closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, 'correlation')),:].astype(int).tolist()
 
             # return a re-sorted egg
             return Egg(pres=[list(pres[closest])], rec=[list(pres[closest])], features=[list(features[closest])])
 
-        def order_best_stick(self, egg, distances, strategy, nperms):
+        def order_best_stick(self, egg, dist_dict, strategy, nperms):
 
             # parse egg
             pres, rec, features, dist_funcs = parse_egg(egg)
 
-            # compute distances
-            # distances = compute_distances(pres, features, dist_funcs)
-
-            # length of list
-            pres_len = len(pres)
-
             results = Parallel(n_jobs=multiprocessing.cpu_count())(
-            delayed(stick_perm)(self, egg, distances, strategy) for i in range(nperms))
+            delayed(stick_perm)(self, egg, dist_dict, strategy) for i in range(nperms))
 
             weights = np.array(map(lambda x: x[0], results))
             orders = np.array(map(lambda x: x[1], results))
@@ -264,29 +258,57 @@ class OptimalPresenter(object):
 
             # find the closest (or farthest)
             if strategy is 'stabilize':
-                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights)),:].astype(int).tolist()
+                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, 'correlation')),:].astype(int).tolist()
             elif strategy is 'destabilize':
-                closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights)),:].astype(int).tolist()
+                closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, 'correlation')),:].astype(int).tolist()
 
             # return a re-sorted egg
-            return Egg(pres=[list(pres[closest])], rec=[list(pres[closest])], features=[list(features[closest])])
+            return Egg(pres=[list(pres[closest])], rec=[list(pres[closest])], features=[list(features[closest])], dist_funcs=dist_funcs)
+
+        def order_best_choice(self, egg, dist_dict, nperms):
+
+            # get the fingerprint state
+            fingerprint = self.get_params('fingerprint').state
+
+            # get strategy
+            strategy = self.strategy
+
+            # parse egg
+            pres, rec, features, dist_funcs = parse_egg(egg)
+
+            results = Parallel(n_jobs=multiprocessing.cpu_count())(
+            delayed(choice_perm)(self, egg, dist_dict) for i in range(nperms))
+
+            weights = np.array(map(lambda x: x[0], results))
+            orders = np.array(map(lambda x: x[1], results))
+
+            # find the closest (or farthest)
+            if strategy is 'stabilize':
+                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, 'correlation')),:].astype(int).tolist()
+            elif strategy is 'destabilize':
+                closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, 'correlation')),:].astype(int).tolist()
+
+            # return a re-sorted egg
+            return Egg(pres=[list(pres[closest])], rec=[list(pres[closest])], features=[list(features[closest])], dist_funcs=dist_funcs)
 
         # if strategy is not set explicitly, default to the class strategy
         if strategy is None:
             strategy = self.strategy
 
-        distances = compute_distances(egg)
+        dist_dict = compute_distances_dict(egg)
 
-        if strategy is 'random':
+        if strategy is 'random' or method is 'random':
             return shuffle_egg(egg)
         elif method is 'permute':
-            return order_perm_parallel(self, egg, distances, strategy, nperms)
+            return order_perm(self, egg, dist_dict, strategy, nperms)
         elif method is 'stick':
-            return order_stick(self, egg, distances, strategy)
+            return order_stick(self, egg, dist_dict, strategy)
         elif method is 'best_stick':
-            return order_best_stick(self, egg, distances, strategy, nperms)
+            return order_best_stick(self, egg, dist_dict, strategy, nperms)
+        elif method is 'best_choice':
+            return order_best_choice(self, egg, dist_dict, nperms)
 
-def order_stick(presenter, egg, distances, strategy):
+def order_stick(presenter, egg, dist_dict, strategy):
     """
     Reorders a list according to strategy
     """
@@ -300,7 +322,7 @@ def order_stick(presenter, egg, distances, strategy):
 
         return feature_stick
 
-    def reorder_list(egg, feature_stick, distances, tau):
+    def reorder_list(egg, feature_stick, dist_dict, tau):
 
         def compute_stimulus_stick(s, tau):
             '''create a 'stick' of feature weights'''
@@ -353,7 +375,7 @@ def order_stick(presenter, egg, distances, strategy):
             words_left = pres[inds_left]
 
             # get word distances for the word
-            dists_left = distances[feature_sample][idx, inds_left]
+            dists_left = np.array([dist_dict[current_word][word][feature_sample] for word in words_left])
 
             # features left
             features_left = features[inds_left]
@@ -385,7 +407,7 @@ def order_stick(presenter, egg, distances, strategy):
             reordered_list.append(next_word)
             reordered_features.append(features[next_word_idx][0])
 
-        return Egg(pres=[reordered_list], rec=[reordered_list], features=[[reordered_features]])
+        return Egg(pres=[reordered_list], rec=[reordered_list], features=[[reordered_features]], dist_funcs=dist_funcs)
 
     # parse egg
     pres, rec, features, dist_funcs = parse_egg(egg)
@@ -404,10 +426,101 @@ def order_stick(presenter, egg, distances, strategy):
     feature_stick = compute_feature_stick(features, weights, alpha)
 
     # reorder list
-    return reorder_list(egg, feature_stick, distances, tau)
+    return reorder_list(egg, feature_stick, dist_dict, tau)
+
+def order_choice(presenter, egg, dist_dict):
+
+    # get strategy
+    strategy = presenter.strategy
+
+    # get fingerprint
+    fingerprint = presenter.get_params('fingerprint').state
+
+    # get tau
+    tau = presenter.get_params('tau')
+
+    # get number of features
+    nfeats = len(presenter.get_params('fingerprint').features)
+
+    # parse egg
+    pres, rec, features, dist_funcs = parse_egg(egg)
+
+    # start with a random word
+    idx = np.random.choice(len(pres), 1)[0]
+
+    # original inds
+    inds = range(len(pres))
+
+    # keep track of the indices
+    inds_used = [idx]
+
+    # get the word
+    current_word = pres[idx]
+
+    # get the features dict
+    current_features = features[idx]
+
+    # append that word to the reordered list
+    reordered_list = [current_word]
+
+    # append the features to the reordered list
+    reordered_features = [current_features]
+
+    # loop over the word list
+    for i in range(len(pres)-1):
+
+        # indices left
+        inds_left = filter(lambda ind: ind not in inds_used, inds)
+
+        # make a copy of the words filtering out the already used ones
+        words_left = pres[inds_left]
+
+        # features left
+        features_left = features[inds_left]
+
+        # get weights if each word was added
+        idx=0
+        weights = np.zeros((len(words_left), nfeats))
+        for word, feat in zip(words_left, features_left):
+            weights[idx,:]=compute_feature_weights_dict(
+                list(pres),
+                reordered_list+[word],
+                reordered_features+[feat],
+                dist_dict)
+            idx+=1
+
+        # print(weights)
+        # print(cdist(np.array(fingerprint, ndmin=2), weights, 'euclidean'))
+
+        # pick the closest (or farthest)
+        # if strategy is 'stabilize':
+        # pick = np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, 'euclidean'))
+        stick = []
+        dist = cdist(np.array(fingerprint, ndmin=2), weights, 'correlation').reshape(len(words_left), 1)
+        for idx, val in enumerate(dist):
+            for i in range(int((val*tau)*100)):
+                stick.append(idx)
+        pick = np.random.choice(stick, 1)[0]
+        # elif strategy is 'destabilize':
+        #     pick = np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, 'euclidean'))
+
+        # get the next word
+        next_word = words_left[pick]
+
+        # and the idx of the next word
+        next_word_idx = np.where(pres==next_word)[0]
+
+        # append it to the inds already used
+        inds_used.append(next_word_idx)
+
+        # update the list
+        reordered_list.append(next_word)
+        reordered_features.append(features[next_word_idx][0])
+
+    return Egg(pres=[reordered_list], rec=[reordered_list], features=[[reordered_features]], dist_funcs=dist_funcs)
 
 # function to run 1 perm for parallel list re-sorting function
-def run_perm(pres, features, distances):
+def rand_perm(pres, features, dist_dict, dist_funcs):
 
     # seed RNG
     np.random.seed()
@@ -421,21 +534,15 @@ def run_perm(pres, features, distances):
     # shuffled features
     features_perm = list(features[idx])
 
-    # create a copy of distances
-    distances_perm = distances.copy()
-
-    for key in distances_perm:
-        distances_perm[key]=distances_perm[key][idx]
-
     # compute weights
-    weights = compute_feature_weights(pres_perm, pres_perm, features_perm, distances_perm)
+    weights = compute_feature_weights_dict(pres_perm, pres_perm, features_perm, dist_dict)
 
     # save out the order
     orders = idx
 
     return weights, orders
 
-def stick_perm(presenter, egg, distances, strategy):
+def stick_perm(presenter, egg, dist_dict, strategy):
     """Computes weights for one reordering using stick-breaking method"""
 
     # seed RNG
@@ -445,7 +552,39 @@ def stick_perm(presenter, egg, distances, strategy):
     egg_pres, egg_rec, egg_features, egg_dist_funcs = parse_egg(egg)
 
     # reorder
-    regg = order_stick(presenter, egg, distances, strategy)
+    regg = order_stick(presenter, egg, dist_dict, strategy)
+
+    # unpack regg
+    regg_pres, regg_rec, regg_features, regg_dist_funcs = parse_egg(regg)
+
+    # # get the order
+    regg_pres = list(regg_pres)
+    egg_pres = list(egg_pres)
+    idx = [egg_pres.index(r) for r in regg_pres]
+
+    # compute weights
+    weights = compute_feature_weights_dict(list(regg_pres), list(regg_pres), list(regg_features), dist_dict)
+
+    # save out the order
+    orders = idx
+
+    return weights, orders
+
+def choice_perm(presenter, egg, dist_dict):
+    """
+    Reorder a list by iteratively selecting words that get closer to the
+    target fingerprint
+    """
+    # seed RNG
+    np.random.seed()
+
+    strategy = presenter.strategy
+
+    # unpack egg
+    egg_pres, egg_rec, egg_features, egg_dist_funcs = parse_egg(egg)
+
+    # reorder
+    regg = order_choice(presenter, egg, dist_dict)
 
     # unpack regg
     regg_pres, regg_rec, regg_features, regg_dist_funcs = parse_egg(regg)
@@ -455,19 +594,39 @@ def stick_perm(presenter, egg, distances, strategy):
     egg_pres = list(egg_pres)
     idx = [egg_pres.index(r) for r in regg_pres]
 
-    # create a copy of distances
-    distances_perm = distances.copy()
-
-    for key in distances_perm:
-        distances_perm[key]=distances_perm[key][idx]
-
     # compute weights
-    weights = compute_feature_weights(list(regg_pres), list(regg_pres), list(regg_features), distances_perm)
+    weights = compute_feature_weights_dict(list(regg_pres), list(regg_pres), list(regg_features), dist_dict)
 
     # save out the order
     orders = idx
 
     return weights, orders
+
+def compute_distances_dict(egg):
+    """ Creates a nested dict of distances """
+    pres, rec, features, dist_funcs = parse_egg(egg)
+    pres_list = list(pres)
+    features_list = list(features)
+
+    # initialize dist dict
+    distances = {}
+
+    # for each word in the list
+    for idx1, item1 in enumerate(pres_list):
+
+        distances[item1]={}
+
+        # for each word in the list
+        for idx2, item2 in enumerate(pres_list):
+
+            distances[item1][item2]={}
+
+            # for each feature in dist_funcs
+            for feature in dist_funcs:
+
+                distances[item1][item2][feature] = dist_funcs[feature](features_list[idx1][feature],features_list[idx2][feature])
+
+    return distances
 
 def shuffle_egg(egg):
     """ Shuffle an Egg's recalls"""
@@ -485,102 +644,82 @@ def shuffle_egg(egg):
 
     return Egg(pres=pres, rec=rec, features=features, dist_funcs=dist_funcs)
 
-def compute_distances(egg):
+def compute_feature_weights_dict(pres_list, rec_list, feature_list, dist_dict):
     """
-    Compute distances between list words along n feature dimensions
+    Compute clustering scores along a set of feature dimensions
 
     Parameters
     ----------
     pres_list : list
         list of presented words
+    rec_list : list
+        list of recalled words
     feature_list : list
         list of feature dicts for presented words
-    dist_funcs : dict
-        dict of distance functions for each feature
+    distances : dict
+        dict of distance matrices for each feature
 
     Returns
     ----------
-    distances : dict
-        dict of distance matrices for each feature
+    weights : list
+        list of clustering scores for each feature dimension
     """
 
-    pres, rec, features, dist_funcs = parse_egg(egg)
-    pres_list = list(pres)
-    feature_list = list(features)
+    # initialize the weights object for just this list
+    weights = {}
+    for feature in feature_list[0]:
+        weights[feature] = []
 
-    # initialize dist dict
-    distances = {}
+    # return default list if there is not enough data to compute the fingerprint
+    if len(rec_list) < 2:
+        print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
+        for feature in feature_list[0]:
+            weights[feature] = .5
+        return [weights[key] for key in weights]
 
-    # for each feature in dist_funcs
-    for feature in dist_funcs:
+    # initialize past word list
+    past_words = []
+    past_idxs = []
 
-        # initialize dist matrix
-        dists = np.zeros((len(pres_list), len(pres_list)))
+    # loop over words
+    for i in range(len(rec_list)-1):
 
-        # for each word in the list
-        for idx1, item1 in enumerate(pres_list):
+        # grab current word
+        c = rec_list[i]
 
-            # for each word in the list
-            for idx2, item2 in enumerate(pres_list):
+        # grab the next word
+        n = rec_list[i + 1]
 
-                # compute the distance between word 1 and word 2 along some feature dimension
-                dists[idx1,idx2] = dist_funcs[feature](feature_list[idx1][feature],feature_list[idx2][feature])
+        # if both recalled words are in the encoding list and haven't been recalled before
+        if (c in pres_list and n in pres_list) and (c not in past_words and n not in past_words):
 
-        # set that distance matrix to the value of a dict where the feature name is the key
-        distances[feature] = dists
+            # for each feature
+            for feature in feature_list[0]:
 
-    return distances
-#     def order_perm(self, egg, nperms=10000):
-#         """
-#         This function re-sorts a list by computing permutations of a given
-#         list and choosing the one that maximizes/minimizes variance.
-#         """
-#
-#         # parse egg
-#         pres, rec, features, dist_funcs = parse_egg(egg)
-#
-#         # compute distances
-#         distances = compute_distances(pres, features, dist_funcs)
-#
-#         # length of list
-#         pres_len = len(pres)
-#
-#         # initialize weights
-#         weights = np.zeros((nperms, len(features[0].keys())))
-#
-#         # orders are nperms shuffled indexes
-#         orders  = np.zeros((nperms, pres_len))
-#
-#         # loop over number of permuations
-#         for perm in range(nperms):
-#
-#             # shuffle inds
-#             idx = np.random.permutation(pres_len)
-#
-#             # shuffled pres
-#             pres_perm = list(pres[idx])
-#
-#             # shuffled features
-#             features_perm = list(features[idx])
-#
-#             # create a copy of distances
-#             distances_perm = distances.copy()
-#
-#             for key in distances_perm:
-#                 distances_perm[key]=distances_perm[key][idx]
-#
-#             # compute weights
-#             weights[perm,:] = compute_feature_weights(pres_perm, pres_perm, features_perm, distances_perm)
-#
-#             # save out the order
-#             orders[perm,:] = idx
-#
-#         # get the fingerprint state
-#         fingerprint = self.get_params('fingerprint').state
-#
-#         # find the closest
-#         closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights)),:].astype(int).tolist()
-#
-#         # return a re-sorted egg
-#         return Egg(pres=[list(pres[closest])], rec=[list(pres[closest])], features=[list(features[closest])])
-#
+                # get the distance vector for the current word
+                # dists = [dist_dict[c][j][feature] for j in dist_dict[c]]
+
+                # distance between current and next word
+                c_dist = dist_dict[c][n][feature]
+
+                # filter dists removing the words that have already been recalled
+                # dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
+                dists_filt = [dist_dict[c][j][feature] for j in dist_dict[c] if j not in past_words]
+
+                # get indices
+                avg_rank = np.mean(np.where(np.sort(dists_filt)[::-1] == c_dist)[0]+1)
+
+                # compute the weight
+                weights[feature].append(avg_rank / len(dists_filt))
+
+            # keep track of what has been recalled already
+            past_idxs.append(pres_list.index(c))
+            past_words.append(c)
+
+    # average over the cluster scores for a particular dimension
+    for feature in weights:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            weights[feature] = np.nanmean(weights[feature])
+
+    return [weights[key] for key in weights]
