@@ -65,25 +65,25 @@ If installing from github (instead of pip), you must also install the requiremen
 
 Check out our readthedocs: [here](http://cdl-quail.readthedocs.io/en/latest/).
 
-<!-- <h2>Citing</h2>
+We also have a repo with example notebooks from the paper [here](https://github.com/ContextLab/quail-example-notebooks).
 
-We wrote a paper about quail, which you can read [here](https://arxiv.org/abs/1701.08290). We also have a repo with example notebooks from the paper [here](https://github.com/ContextLab/quail-example-notebooks).
+
+<!-- <h2>Citing</h2>
 
 Please cite as:
 
-`Heusser AC, Ziman K, Owen LLW, Manning JR (2017) quail: A Python toolbox for visualizing and manipulating high-dimensional data.  arXiv: 1701.08290`
+`Heusser AC, Fitzpatrick PC, Field CE, Ziman K, Manning JR (2017) Quail.  https://github.com/ContextLab/quail`
 
 Here is a bibtex formatted reference:
 
 ```
 @ARTICLE {,
-    author  = "A C Heusser and K Ziman and L L W Owen and J R Manning",
-    title   = "quail: A Python toolbox for visualizing and manipulating high-dimensional data",
-    journal = "arXiv",
+    author  = "Heusser AC, Fitzpatrick PC, Field CE, Ziman K, Manning JR",
+    title   = "Quail",
+    journal = "JOSS",
     year    = "2017",
-    volume  = "1701",
-    number  = "08290",
-    month   = "jan"
+    volume  = "",
+    number  = ""
 }
 ``` -->
 
