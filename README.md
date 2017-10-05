@@ -35,10 +35,6 @@ To install quail in the recommended way, run:
 
 `pip install quail`
 
-This will work on clean systems, but if you encounter issues you may need to run:
-
-`sudo pip install --upgrade --ignore-installed -e .`
-
 To install directly from this repo (not recommended, but you'll get the "bleeding edge" version of the code):
 
 `git clone https://github.com/ContextLab/quail.git`
@@ -48,6 +44,10 @@ Then, navigate to the folder and type:
 `pip install -e .`
 
 (this assumes you have [pip](https://pip.pypa.io/en/stable/installing/) installed on your system)
+
+This will work on clean systems, but if you encounter issues you may need to run:
+
+`sudo pip install --upgrade --ignore-installed -e .`
 
 <h2>Requirements</h2>
 
