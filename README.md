@@ -21,13 +21,13 @@ The toolbox name is inspired by Douglas Quail, the main character from the Phili
 
 <h2>Try it!</h2>
 
-Click the badge to launch a binder instance with example uses:
+Check out our [repo](https://github.com/ContextLab/quail-example-notebooks) of Jupyter notebooks.
+
+<!-- Click the badge to launch a binder instance with example uses:
 
 [![Binder](http://mybinder.org/badge.svg)](http://mybinder.org:/repo/contextlab/quail-example-notebooks)
 
-or
-
-Check the [repo](https://github.com/ContextLab/quail-example-notebooks) of Jupyter notebooks.
+or -->
 
 <h2>Installation</h2>
 
