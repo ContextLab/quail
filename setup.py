@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='quail',
-    version='0.1.2',
+    version='0.1.3',
     description='A python toolbox for analyzing and plotting free recall data',
     long_description=' ',
     author='Contextual Dynamics Lab',
