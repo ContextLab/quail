@@ -19,7 +19,7 @@ setup(
         "scipy>=0.17.1",
         "numpy>=1.10.4",
         "pandas>=0.20.3",
-        "grpcio==1.4.0"
+        "grpcio==1.4.0",
         "sqlalchemy",
         "dill",
         "requests",
