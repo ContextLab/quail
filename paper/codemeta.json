@@ -7,7 +7,7 @@
   "identifier": "",
   "codeRepository": "https://github.com/ContextLab/quail",
   "datePublished": "2017-08-31",
-  "dateModified": "2017-08-31",
+  "dateModified": "2017-10-05",
   "dateCreated": "2017-08-31",
   "description": " A Python package that facilitates analysis and visualization of behavioral data from memory experiments",
   "keywords": "memory, free recall, python",
