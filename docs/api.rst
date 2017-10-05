@@ -17,6 +17,15 @@ Egg data object
 
   quail.Egg
 
+Load example data
+------------------
+
+.. autosummary::
+  :toctree:
+
+  quail.load_example_data
+
+
 Load egg
 ------------------
 

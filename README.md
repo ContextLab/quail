@@ -108,7 +108,7 @@ The preferred way to contribute to quail is to fork the main repository on GitHu
 
 + If your pull request addresses an issue, please use the title to describe the issue and mention the issue number in the pull request description to ensure a link is created to the original issue.
 
-+ All public methods should be documented in the README.
++ All public methods should be documented on our [readthedocs](http://cdl-quail.readthedocs.io/en/latest/api.html) API page.
 
 + Each high-level plotting function should have a simple example in the examples folder. This should be as simple as possible to demonstrate the method.
 
@@ -116,7 +116,7 @@ The preferred way to contribute to quail is to fork the main repository on GitHu
 
 <h2>Support</h2>
 
-If you have a question, comment or concern about the software, please post a question to [Stack Overflow](https://stackoverflow.com/search?q=quail), or send us an email at contextualdynamics@gmail.com. 
+If you have a question, comment or concern about the software, please post a question to [Stack Overflow](https://stackoverflow.com/search?q=quail), or send us an email at contextualdynamics@gmail.com.
 
 <h2>Testing</h2>
 

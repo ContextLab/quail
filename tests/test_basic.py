@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from quail.analysis import analyze
-
+from quail.load import load_example_data
 from quail.egg import Egg
 import numpy as np
 import pytest
@@ -50,3 +50,7 @@ def test_egg():
     egg = Egg(pres = list1, rec = list2)
     assert type(egg.pres) == pd.core.frame.DataFrame
     assert type(egg.rec) == pd.core.frame.DataFrame
+
+def test_load_example_data():
+    egg = load_example_data()
+    assert isinstance(egg, Egg)

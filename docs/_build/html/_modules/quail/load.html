@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>quail.load &#8212; quail 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          quail</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../auto_examples/index.html">Gallery</a></li>
+                <li><a href="../../tutorial.html">Tutorials</a></li>
+                <li><a href="http://www.github.com/ContextLab/quail">Download</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for quail.load</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">Table</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">izip_longest</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.egg</span> <span class="k">import</span> <span class="n">Egg</span>
+<span class="kn">import</span> <span class="nn">dill</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">dbpath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">recpath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_subs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wordpool</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Function that loads sql files generated by autoFR Experiment</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">assert</span> <span class="p">(</span><span class="n">dbpath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;You must specify a db file or files.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">recpath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;You must specify a recall folder.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">wordpool</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;You must specify a wordpool file.&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">experiments</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;You must specify a list of experiments&quot;</span>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># subfunctions #############################################################</span>
+
+    <span class="k">def</span> <span class="nf">db2df</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">filter_func</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Loads db file and converts to dataframe</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">db_url</span> <span class="o">=</span> <span class="s2">&quot;sqlite:///&quot;</span> <span class="o">+</span> <span class="n">db</span>
+        <span class="n">table_name</span> <span class="o">=</span> <span class="s1">&#39;turkdemo&#39;</span>
+        <span class="n">data_column_name</span> <span class="o">=</span> <span class="s1">&#39;datastring&#39;</span>
+
+        <span class="c1"># boilerplace sqlalchemy setup</span>
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_url</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+        <span class="n">metadata</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">engine</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">autoload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># make a query and loop through</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">data_column_name</span><span class="p">])</span>
+
+        <span class="c1"># parse each participant&#39;s datastring as json object</span>
+        <span class="c1"># and take the &#39;data&#39; sub-object</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">part</span><span class="p">)[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">part</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+
+        <span class="c1"># remove duplicate subject data for debugXG82XV:debug7XPXQA</span>
+        <span class="c1"># data[110] = data[110][348:]</span>
+
+        <span class="c1"># insert uniqueid field into trialdata in case it wasn&#39;t added</span>
+        <span class="c1"># in experiment:</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">part</span><span class="p">:</span>
+        <span class="c1">#         print(record)</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;trialdata&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+
+                    <span class="n">record</span><span class="p">[</span><span class="s1">&#39;trialdata&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;trialdata&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;trialdata&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]}</span>
+                <span class="n">record</span><span class="p">[</span><span class="s1">&#39;trialdata&#39;</span><span class="p">][</span><span class="s1">&#39;uniqueid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;uniqueid&#39;</span><span class="p">]</span>
+
+        <span class="c1"># flatten nested list so we just have a list of the trialdata recorded</span>
+        <span class="c1"># each time psiturk.recordTrialData(trialdata) was called.</span>
+        <span class="k">def</span> <span class="nf">isNotNumber</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;trialdata&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">part</span><span class="p">]</span>
+
+        <span class="c1"># filter out fields that we dont want using isNotNumber function</span>
+        <span class="n">filtered_data</span> <span class="o">=</span> <span class="p">[{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">part</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">isNotNumber</span><span class="p">(</span><span class="n">k</span><span class="p">)}</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+
+        <span class="c1"># Put all subjects&#39; trial data into a dataframe object from the</span>
+        <span class="c1"># &#39;pandas&#39; python library: one option among many for analysis</span>
+        <span class="n">data_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">filtered_data</span><span class="p">)</span>
+
+        <span class="n">data_column_name</span> <span class="o">=</span> <span class="s1">&#39;codeversion&#39;</span>
+
+        <span class="c1"># boilerplace sqlalchemy setup</span>
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="n">db_url</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+        <span class="n">metadata</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">engine</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">autoload</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># make a query and loop through</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+        <span class="n">versions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">version_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="n">version_dict</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">=</span><span class="n">row</span><span class="p">[</span><span class="n">data_column_name</span><span class="p">]</span>
+
+        <span class="n">version_col</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">sub</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_frame</span><span class="p">[</span><span class="s1">&#39;uniqueid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">data_frame</span><span class="p">[</span><span class="s1">&#39;uniqueid&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">sub</span><span class="p">)):</span>
+                <span class="n">version_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">version_dict</span><span class="p">[</span><span class="n">sub</span><span class="p">])</span>
+        <span class="n">data_frame</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">version_col</span>
+
+        <span class="k">if</span> <span class="n">filter_func</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">filt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">filter_func</span><span class="p">):</span>
+                <span class="n">data_frame</span> <span class="o">=</span> <span class="n">filt</span><span class="p">(</span><span class="n">data_frame</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_frame</span>
+
+    <span class="c1"># custom filter to clean db file</span>
+    <span class="k">def</span> <span class="nf">experimenter_filter</span><span class="p">(</span><span class="n">data_frame</span><span class="p">):</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;responses&#39;</span><span class="p">])[</span><span class="s1">&#39;Q1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;kirsten&#39;</span><span class="p">,</span><span class="s1">&#39;allison&#39;</span><span class="p">,</span><span class="s1">&#39;marisol&#39;</span><span class="p">,</span><span class="s1">&#39;maddy&#39;</span><span class="p">,</span><span class="s1">&#39;campbell&#39;</span><span class="p">,</span> <span class="s1">&#39;campbell field&#39;</span><span class="p">,</span> <span class="s1">&#39;kirsten</span><span class="se">\\</span><span class="s1">nkirsten&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">]:</span>
+                    <span class="n">delete</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">delete</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
+                <span class="n">indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">adaptive_filter</span><span class="p">(</span><span class="n">data_frame</span><span class="p">):</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">subjcb</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;Q2&#39;</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;responses&#39;</span><span class="p">]):</span>
+                    <span class="n">delete</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">delete</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
+                <span class="n">indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">experiments_filter</span><span class="p">(</span><span class="n">data_frame</span><span class="p">):</span>
+        <span class="n">indexes</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">:</span>
+                    <span class="n">delete</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">delete</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
+                <span class="n">indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">indexes</span><span class="p">)</span>
+
+
+    <span class="c1"># this function takes the data frame and returns subject specific data based on the subid variable</span>
+    <span class="k">def</span> <span class="nf">filterData</span><span class="p">(</span><span class="n">data_frame</span><span class="p">,</span><span class="n">subid</span><span class="p">):</span>
+        <span class="n">filtered_stim_data</span> <span class="o">=</span> <span class="n">data_frame</span><span class="p">[</span><span class="n">data_frame</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">data_frame</span><span class="p">[</span><span class="s1">&#39;listNumber&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+        <span class="n">filtered_stim_data</span> <span class="o">=</span> <span class="n">filtered_stim_data</span><span class="p">[</span><span class="n">filtered_stim_data</span><span class="p">[</span><span class="s1">&#39;trial_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;single-stim&#39;</span><span class="p">]</span>
+        <span class="n">filtered_stim_data</span> <span class="o">=</span>  <span class="n">filtered_stim_data</span><span class="p">[</span><span class="n">filtered_stim_data</span><span class="p">[</span><span class="s1">&#39;uniqueid&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">subid</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">filtered_stim_data</span>
+
+    <span class="k">def</span> <span class="nf">createStimDict</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">stimDict</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">stimDict</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]),</span>
+                        <span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;r&#39;</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;rgb\((.+)\)&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
+                                   <span class="s1">&#39;g&#39;</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;rgb\((.+)\)&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]),</span>
+                                   <span class="s1">&#39;b&#39;</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;rgb\((.+)\)&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">])</span>
+                                   <span class="p">},</span>
+                        <span class="s1">&#39;location&#39;</span> <span class="p">:</span> <span class="p">{</span>
+                            <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;top:(.+)\%;&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="s1">&#39;left&#39;</span> <span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;left:(.+)\%&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+                            <span class="p">},</span>
+                        <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;CATEGORY&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]))],</span>
+                        <span class="s1">&#39;size&#39;</span> <span class="p">:</span> <span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;SIZE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]))],</span>
+                        <span class="s1">&#39;wordLength&#39;</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">])),</span>
+                        <span class="s1">&#39;firstLetter&#39;</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="s1">&#39;listnum&#39;</span> <span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;listNumber&#39;</span><span class="p">]</span>
+                    <span class="p">})</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">stimDict</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]),</span>
+                        <span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;r&#39;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                   <span class="s1">&#39;g&#39;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                                   <span class="s1">&#39;b&#39;</span> <span class="p">:</span> <span class="mi">0</span>
+                                   <span class="p">},</span>
+                        <span class="s1">&#39;location&#39;</span> <span class="p">:</span> <span class="p">{</span>
+                            <span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+                            <span class="s1">&#39;left&#39;</span> <span class="p">:</span> <span class="mi">50</span>
+                            <span class="p">},</span>
+                        <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;CATEGORY&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]))],</span>
+                        <span class="s1">&#39;size&#39;</span> <span class="p">:</span> <span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;SIZE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">]))],</span>
+                        <span class="s1">&#39;wordLength&#39;</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">])),</span>
+                        <span class="s1">&#39;firstLetter&#39;</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&gt;(.+)&lt;&#39;</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;stimulus&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span>
+                        <span class="s1">&#39;listnum&#39;</span> <span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;listNumber&#39;</span><span class="p">]</span>
+                    <span class="p">})</span>
+        <span class="k">return</span> <span class="n">stimDict</span>
+
+    <span class="c1"># this function loads in the recall data into an array of arrays, where each array represents a list of words</span>
+    <span class="k">def</span> <span class="nf">loadRecallData</span><span class="p">(</span><span class="n">subid</span><span class="p">):</span>
+        <span class="n">recalledWords</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">16</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">recpath</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.wav.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+                <span class="n">spamreader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">recpath</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.wav.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+                    <span class="n">spamreader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">spamreader</span><span class="p">:</span>
+                <span class="n">recalledWords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">recalledWords</span>
+
+    <span class="c1"># this function computes accuracy for a series of lists</span>
+    <span class="k">def</span> <span class="nf">computeListAcc</span><span class="p">(</span><span class="n">stimDict</span><span class="p">,</span><span class="n">recalledWords</span><span class="p">):</span>
+        <span class="n">accVec</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">16</span><span class="p">):</span>
+            <span class="n">stim</span> <span class="o">=</span> <span class="p">[</span><span class="n">stim</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">stim</span> <span class="ow">in</span> <span class="n">stimDict</span> <span class="k">if</span> <span class="n">stim</span><span class="p">[</span><span class="s1">&#39;listnum&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">recalled</span><span class="o">=</span> <span class="n">recalledWords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">acc</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">tmpstim</span> <span class="o">=</span> <span class="n">stim</span><span class="p">[:]</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">recalled</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tmpstim</span><span class="p">:</span>
+                    <span class="n">tmpstim</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+                    <span class="n">acc</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">accVec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">stim</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">accVec</span>
+
+    <span class="k">def</span> <span class="nf">getFeatures</span><span class="p">(</span><span class="n">stimDict</span><span class="p">):</span>
+        <span class="n">stimDict_copy</span> <span class="o">=</span> <span class="n">stimDict</span><span class="p">[:]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">stimDict_copy</span><span class="p">:</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;top&#39;</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;left&#39;</span><span class="p">]]</span>
+            <span class="n">item</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">][</span><span class="s1">&#39;r&#39;</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">][</span><span class="s1">&#39;g&#39;</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">][</span><span class="s1">&#39;b&#39;</span><span class="p">]]</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;listnum&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">stimDict_copy</span> <span class="o">=</span> <span class="p">[</span><span class="n">stimDict_copy</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">16</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">stimDict_copy</span><span class="p">),</span> <span class="mi">16</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">stimDict_copy</span>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1"># main program #############################################################</span>
+
+    <span class="c1"># if its not a list, make it one</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dbpath</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">dbpath</span> <span class="o">=</span> <span class="p">[</span><span class="n">dbpath</span><span class="p">]</span>
+
+    <span class="c1"># read in stimulus library</span>
+    <span class="n">wordpool</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">wordpool</span><span class="p">)</span>
+
+    <span class="c1"># add custom filters</span>
+    <span class="k">if</span> <span class="n">filters</span><span class="p">:</span>
+        <span class="n">filter_func</span> <span class="o">=</span> <span class="p">[</span><span class="n">adaptive_filter</span><span class="p">,</span> <span class="n">experimenter_filter</span><span class="p">,</span> <span class="n">experiments_filter</span><span class="p">]</span> <span class="o">+</span> <span class="n">filters</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">filter_func</span> <span class="o">=</span> <span class="p">[</span><span class="n">adaptive_filter</span><span class="p">,</span> <span class="n">experimenter_filter</span><span class="p">,</span> <span class="n">experiments_filter</span><span class="p">]</span>
+
+    <span class="c1"># load in dbs and convert to df, and filter</span>
+    <span class="n">dfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">db2df</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">filter_func</span><span class="o">=</span><span class="n">filter_func</span><span class="p">)</span> <span class="k">for</span> <span class="n">db</span> <span class="ow">in</span> <span class="n">dbpath</span><span class="p">]</span>
+
+    <span class="c1"># concatenate the db files</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">)</span>
+
+    <span class="c1"># subjects who have completed the exp</span>
+    <span class="n">subids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;listNumber&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">15</span><span class="p">][</span><span class="s1">&#39;uniqueid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+    <span class="c1"># remove problematic subjects</span>
+    <span class="k">if</span> <span class="n">remove_subs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">remove_subs</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">subids</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Could not find subject: &#39;</span> <span class="o">+</span> <span class="n">sub</span> <span class="o">+</span> <span class="s1">&#39;, skipping...&#39;</span><span class="p">)</span>
+
+    <span class="c1"># set up data structure to load in subjects</span>
+    <span class="k">if</span> <span class="n">groupby</span><span class="p">:</span>
+        <span class="n">pres</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">groupby</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]))]</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">groupby</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]))]</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">groupby</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]))]</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">groupby</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]))]</span>
+
+        <span class="c1"># make each groupby item a list</span>
+        <span class="n">groupby</span> <span class="o">=</span> <span class="p">[</span><span class="n">exp</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="k">else</span> <span class="p">[</span><span class="n">exp</span><span class="p">]</span> <span class="k">for</span> <span class="n">exp</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pres</span> <span class="o">=</span> <span class="p">[[]]</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="p">[[]]</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="p">[[]]</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="p">[[]]</span>
+
+    <span class="c1"># for each subject that completed the experiment</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">sub</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subids</span><span class="p">):</span>
+
+        <span class="c1"># get the subjects data</span>
+        <span class="n">filteredStimData</span> <span class="o">=</span> <span class="n">filterData</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">sub</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">filteredStimData</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">:</span>
+
+            <span class="c1"># create stim dict</span>
+            <span class="n">stimDict</span> <span class="o">=</span> <span class="n">createStimDict</span><span class="p">(</span><span class="n">filteredStimData</span><span class="p">)</span>
+
+            <span class="n">sub_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">stimDict</span><span class="p">)</span>
+            <span class="n">sub_data</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">idx</span>
+            <span class="n">sub_data</span><span class="p">[</span><span class="s1">&#39;experiment&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">filteredStimData</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">sub_data</span> <span class="o">=</span> <span class="n">sub_data</span><span class="p">[[</span><span class="s1">&#39;experiment&#39;</span><span class="p">,</span><span class="s1">&#39;subject&#39;</span><span class="p">,</span><span class="s1">&#39;listnum&#39;</span><span class="p">,</span><span class="s1">&#39;text&#39;</span><span class="p">,</span><span class="s1">&#39;category&#39;</span><span class="p">,</span><span class="s1">&#39;color&#39;</span><span class="p">,</span><span class="s1">&#39;location&#39;</span><span class="p">,</span><span class="s1">&#39;firstLetter&#39;</span><span class="p">,</span><span class="s1">&#39;size&#39;</span><span class="p">,</span><span class="s1">&#39;wordLength&#39;</span><span class="p">]]</span>
+
+            <span class="c1"># get features from stim dict</span>
+            <span class="n">feats</span> <span class="o">=</span> <span class="n">getFeatures</span><span class="p">(</span><span class="n">stimDict</span><span class="p">)</span>
+
+            <span class="c1"># load in the recall data</span>
+            <span class="n">recalledWords</span> <span class="o">=</span> <span class="n">loadRecallData</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+
+            <span class="c1"># get experiment version</span>
+            <span class="n">exp_version</span> <span class="o">=</span> <span class="n">filteredStimData</span><span class="p">[</span><span class="s1">&#39;exp_version&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># find the idx of the experiment for this subjects</span>
+            <span class="k">if</span> <span class="n">groupby</span><span class="p">:</span>
+                <span class="n">exp_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">([</span><span class="n">exp_version</span> <span class="ow">in</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">exp_idx</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">exp_idx</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="n">pres</span><span class="p">[</span><span class="n">exp_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">sub_data</span><span class="p">[</span><span class="n">sub_data</span><span class="p">[</span><span class="s1">&#39;listnum&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">lst</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">sub_data</span><span class="p">[</span><span class="s1">&#39;listnum&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()])</span>
+                <span class="n">rec</span><span class="p">[</span><span class="n">exp_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recalledWords</span><span class="p">)</span>
+                <span class="n">features</span><span class="p">[</span><span class="n">exp_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+                <span class="n">subs</span><span class="p">[</span><span class="n">exp_idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+
+    <span class="n">eggs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">ipres</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">irec</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">ifeatures</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ids&#39;</span> <span class="p">:</span> <span class="n">isub</span><span class="p">})</span> <span class="k">for</span> <span class="n">ipres</span><span class="p">,</span><span class="n">irec</span><span class="p">,</span><span class="n">ifeatures</span><span class="p">,</span><span class="n">isub</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">subs</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">eggs</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">eggs</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">eggs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="load_example_data"><a class="viewcode-back" href="../../quail.load_example_data.html#quail.load_example_data">[docs]</a><span class="k">def</span> <span class="nf">load_example_data</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;automatic&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads example data</span>
+
+<span class="sd">    The example data is an egg containing 30 subjects who completed a free</span>
+<span class="sd">    recall experiment as described here: https://psyarxiv.com/psh48/. The subjects</span>
+<span class="sd">    studied 8 lists of 16 words each and then performed a free recall test.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataset : str</span>
+<span class="sd">        The dataset to load. Can be &#39;automatic&#39; or &#39;manual&#39;. The free recall</span>
+<span class="sd">        audio recordings for the &#39;automatic&#39; dataset was transcribed by Google</span>
+<span class="sd">        Cloud Speech and the &#39;manual&#39; dataset was transcribed by humans.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : quail.Egg</span>
+<span class="sd">        Example data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># can only be auto or manual</span>
+    <span class="k">assert</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;automatic&#39;</span><span class="p">,</span> <span class="s1">&#39;manual&#39;</span><span class="p">],</span> <span class="s2">&quot;Dataset can only be automatic or manual&quot;</span>
+
+    <span class="c1"># open pickled egg</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/&#39;</span> <span class="o">+</span> <span class="n">dataset</span> <span class="o">+</span> <span class="s1">&#39;.egg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+        <span class="n">egg</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">egg</span></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

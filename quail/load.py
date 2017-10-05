@@ -345,7 +345,32 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
     else:
         return eggs[0]
 
-def load_example_data():
-    with open(os.path.dirname(os.path.abspath(__file__)) + '/data/automatic.egg', 'rb') as handle:
+def load_example_data(dataset='automatic'):
+    """
+    Loads example data
+
+    The example data is an egg containing 30 subjects who completed a free
+    recall experiment as described here: https://psyarxiv.com/psh48/. The subjects
+    studied 8 lists of 16 words each and then performed a free recall test.
+
+    Parameters
+    ----------
+    dataset : str
+        The dataset to load. Can be 'automatic' or 'manual'. The free recall
+        audio recordings for the 'automatic' dataset was transcribed by Google
+        Cloud Speech and the 'manual' dataset was transcribed by humans.
+
+    Returns
+    ----------
+    data : quail.Egg
+        Example data
+    """
+
+    # can only be auto or manual
+    assert dataset in ['automatic', 'manual'], "Dataset can only be automatic or manual"
+
+    # open pickled egg
+    with open(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg', 'rb') as handle:
         egg = pickle.load(handle)
+
     return egg
