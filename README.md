@@ -1,6 +1,5 @@
-<!-- ![Quail logo](images/quail.png)
-
-![Quail example](images/quail_example.png) -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1003184.svg)](https://doi.org/10.5281/zenodo.1003184)
+[![JOSS](http://joss.theoj.org/papers/3fb5123eb2538e06f6a25ded0a088b73/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00424)
 
 ![Quail logo](images/Quail_Logo_small.png)
 
