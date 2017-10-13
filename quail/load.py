@@ -118,7 +118,8 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         indexes=[]
         for line in data_frame.iterrows():
             try:
-                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'test']:
+                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'emily', 'bryan', 'armando', 'Armando Ortiz', 'Maddy/Lucy',
+                                                                      'Paxton', 'lucy']:
                     delete = False
                 else:
                     delete = True
@@ -215,15 +216,30 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         for i in range(0,16):
             try:
                 f = open(recpath + subid + '/' + subid + '-' + str(i) + '.wav.txt', 'rb')
-                spamreader = csv.reader(f, delimiter=' ', quotechar='|')
+                spamreader = csv.reader(f, delimiter=',', quotechar='|')
             except (IOError, OSError) as e:
                 try:
                     f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'rb')
-                    spamreader = csv.reader(f, delimiter=' ', quotechar='|')
+                    spamreader = csv.reader(f, delimiter=',', quotechar='|')
                 except (IOError, OSError) as e:
                     print(e)
-            for row in spamreader:
-                recalledWords.append(row[0].split(','))
+            try:
+                words=[]
+                altformat=True
+                for row in spamreader:
+                    if len(row)>1:
+                        recalledWords.append(row)
+                        altformat=False
+                        break
+                    else:
+                        try:
+                            words.append(row[0])
+                        except:
+                            pass
+                if altformat:
+                    recalledWords.append(words)
+            except:
+                print('couldnt process '+ recpath + subid + '/' + subid + '-' + str(i) + '.wav.txt')
         return recalledWords
 
     # this function computes accuracy for a series of lists
