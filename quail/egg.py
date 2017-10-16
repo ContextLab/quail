@@ -175,3 +175,11 @@ class Egg(object):
             A mega egg comprised of the input eggs stacked together
         """
         return crack_egg(self, subjects, lists)
+
+    def to_dict(self):
+        egg_dict = {
+            'pres' : self.pres.to_dict(orient='records'),
+            'rec' : self.rec.to_dict(orient='records'),
+            'features' : self.features.to_dict(orient='records')
+        }
+        return egg_dict
