@@ -69,24 +69,28 @@ Check out our readthedocs: [here](http://cdl-quail.readthedocs.io/en/latest/).
 We also have a repo with example notebooks from the paper [here](https://github.com/ContextLab/quail-example-notebooks).
 
 
-<!-- <h2>Citing</h2>
+<h2>Citing</h2>
 
 Please cite as:
 
-`Heusser AC, Fitzpatrick PC, Field CE, Ziman K, Manning JR (2017) Quail.  https://github.com/ContextLab/quail`
+`Heusser AC, Fitzpatrick PC, Field CE, Ziman K, Manning JR (2017) Quail: A Python toolbox for analyzing and plotting free recall data. _The Journal of Open Source Software_, _2_(18) https://doi.org/10.21105%2Fjoss.00424 `
 
 Here is a bibtex formatted reference:
 
 ```
-@ARTICLE {,
-    author  = "Heusser AC, Fitzpatrick PC, Field CE, Ziman K, Manning JR",
-    title   = "Quail",
-    journal = "JOSS",
-    year    = "2017",
-    volume  = "",
-    number  = ""
+@ARTICLE {HeusEtal2017b,
+	doi = {10.21105/joss.00424},
+	url = {https://doi.org/10.21105%2Fjoss.00424},
+	year = 2017,
+	month = {oct},
+	publisher = {The Open Journal},
+	volume = {2},
+	number = {18},
+	author = {Andrew C. Heusser and Paxton C. Fitzpatrick and Campbell E. Field and Kirsten Ziman and Jeremy R. Manning},
+	title = {Quail: A Python toolbox for analyzing and plotting free recall data},
+	journal = {The Journal of Open Source Software}
 }
-``` -->
+```
 
 <h2>Contributing</h2>
 
