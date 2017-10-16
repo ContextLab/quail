@@ -73,7 +73,7 @@ We also have a repo with example notebooks from the paper [here](https://github.
 
 Please cite as:
 
-`Heusser AC, Fitzpatrick PC, Field CE, Ziman K, Manning JR (2017) Quail: A Python toolbox for analyzing and plotting free recall data. _The Journal of Open Source Software_, _2_(18) https://doi.org/10.21105%2Fjoss.00424 `
+Heusser AC, Fitzpatrick PC, Field CE, Ziman K, Manning JR (2017) Quail: A Python toolbox for analyzing and plotting free recall data. _The Journal of Open Source Software_, _2_(18) https://doi.org/10.21105%2Fjoss.00424
 
 Here is a bibtex formatted reference:
 
