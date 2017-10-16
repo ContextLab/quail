@@ -50,16 +50,19 @@ class Fingerprint(object):
         saved here.
     """
 
-    def __init__(self, init=None, features='all', state=None, n=0, permute=False, nperms=1000):
+    def __init__(self, init=None, features='all', state=None, n=0, permute=False, nperms=1000,
+                 parallel=False):
 
         self.history = []
 
         if init is not None:
             data = analyze_chunk(init,
-                              analysis=fingerprint_helper,
-                              analysis_type='fingerprint',
-                              pass_features=True,
-                              parallel=False)
+                                analysis=fingerprint_helper,
+                                analysis_type='fingerprint',
+                                pass_features=True,
+                                permute=permute,
+                                n_perms=nperms,
+                                parallel=parallel)
             self.state = np.mean(data, 0)
             self.features = data.columns.values.tolist()
             self.history.append(self.state)
@@ -69,7 +72,8 @@ class Fingerprint(object):
 
         self.n = n
 
-    def update(self, egg):
+    def update(self, egg, permute=False, nperms=1000,
+                 parallel=False):
         """
         In-place method that updates fingerprint with new data
 
@@ -89,7 +93,9 @@ class Fingerprint(object):
                           analysis=fingerprint_helper,
                           analysis_type='fingerprint',
                           pass_features=True,
-                          parallel=False).as_matrix(), 0)
+                          permute=permute,
+                          n_perms=nperms,
+                          parallel=parallel).as_matrix(), 0)
 
         if self.state is None:
 
