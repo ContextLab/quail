@@ -97,11 +97,7 @@ class Fingerprint(object):
                           n_perms=nperms,
                           parallel=parallel).as_matrix(), 0)
 
-<<<<<<< HEAD
         if self.state is not None:
-=======
-        if self.state is None:
->>>>>>> 722c09f712fc68112198e8e16be86c20944e2a89
 
             # multiply states by n
             c = self.state*self.n
@@ -193,15 +189,11 @@ class OptimalPresenter(object):
         """
         Sets a reordering strategy
         """
-<<<<<<< HEAD
+
         self.strategy = strategy
 
     def order(self, egg, method='permute', nperms=2500, strategy=None,
-=======
-        self.set_strategy = strategy
 
-    def order(self, egg, method='permute', nperms=10000, strategy=None,
->>>>>>> 722c09f712fc68112198e8e16be86c20944e2a89
               distfun='euclidean'):
         """
         Reorders a list of stimuli to match a fingerprint
@@ -258,15 +250,9 @@ class OptimalPresenter(object):
             fingerprint = self.get_params('fingerprint').state
 
             # find the closest (or farthest)
-<<<<<<< HEAD
             if strategy=='stabilize':
                 closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distperm)),:].astype(int).tolist()
             elif strategy=='destabilize':
-=======
-            if strategy is 'stabilize':
-                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distperm)),:].astype(int).tolist()
-            elif strategy is 'destabilize':
->>>>>>> 722c09f712fc68112198e8e16be86c20944e2a89
                 closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, distperm)),:].astype(int).tolist()
 
             # return a re-sorted egg
@@ -287,15 +273,9 @@ class OptimalPresenter(object):
             fingerprint = self.get_params('fingerprint').state
 
             # find the closest (or farthest)
-<<<<<<< HEAD
             if strategy=='stabilize':
                 closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
             elif strategy=='destabilize':
-=======
-            if strategy is 'stabilize':
-                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
-            elif strategy is 'destabilize':
->>>>>>> 722c09f712fc68112198e8e16be86c20944e2a89
                 closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
 
             # return a re-sorted egg
@@ -319,15 +299,9 @@ class OptimalPresenter(object):
             orders = np.array(map(lambda x: x[1], results))
 
             # find the closest (or farthest)
-<<<<<<< HEAD
             if strategy=='stabilize':
                 closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
             elif strategy=='destabilize':
-=======
-            if strategy is 'stabilize':
-                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
-            elif strategy is 'destabilize':
->>>>>>> 722c09f712fc68112198e8e16be86c20944e2a89
                 closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
 
             # return a re-sorted egg
@@ -339,7 +313,6 @@ class OptimalPresenter(object):
 
         dist_dict = compute_distances_dict(egg)
 
-<<<<<<< HEAD
         print(type(strategy), strategy, 'inside quail', strategy=='random')
 
         if (strategy=='random') or (method=='random'):
@@ -351,17 +324,6 @@ class OptimalPresenter(object):
         elif method=='best_stick':
             return order_best_stick(self, egg, dist_dict, strategy, nperms, distfun) #
         elif method=='best_choice':
-=======
-        if strategy is 'random' or method is 'random':
-            return shuffle_egg(egg)
-        elif method is 'permute':
-            return order_perm(self, egg, dist_dict, strategy, nperms, distfun) #
-        elif method is 'stick':
-            return order_stick(self, egg, dist_dict, strategy) #
-        elif method is 'best_stick':
-            return order_best_stick(self, egg, dist_dict, strategy, nperms, distfun) #
-        elif method is 'best_choice':
->>>>>>> 722c09f712fc68112198e8e16be86c20944e2a89
             return order_best_choice(self, egg, dist_dict, nperms) #
 
 def order_stick(presenter, egg, dist_dict, strategy):
@@ -475,11 +437,7 @@ def order_stick(presenter, egg, dist_dict, strategy):
     weights = presenter.get_params('fingerprint').state
 
     # invert the weights if strategy is destabilize
-<<<<<<< HEAD
     if strategy=='destabilize':
-=======
-    if strategy is 'destabilize':
->>>>>>> 722c09f712fc68112198e8e16be86c20944e2a89
         weights = 1 - weights
 
     # compute feature stick
