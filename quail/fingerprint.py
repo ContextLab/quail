@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import division
 import numpy as np
 from scipy.spatial.distance import cdist
 import warnings
@@ -68,7 +69,7 @@ class Fingerprint(object):
             self.history.append(self.state)
             n+=1
         else:
-            self.state = None
+            self.state = [.5]*6
 
         self.n = n
 
@@ -89,7 +90,7 @@ class Fingerprint(object):
         # increment n
         self.n+=1
 
-        next_weights = np.mean(analyze_chunk(egg,
+        next_weights = np.nanmean(analyze_chunk(egg,
                           analysis=fingerprint_helper,
                           analysis_type='fingerprint',
                           pass_features=True,
@@ -103,7 +104,7 @@ class Fingerprint(object):
             c = self.state*self.n
 
             # update state
-            self.state = (c+next_weights)/(self.n+1)
+            self.state = np.nansum(np.array([c, next_weights]), axis=0)/(self.n+1)
 
         else:
 
@@ -208,7 +209,7 @@ class OptimalPresenter(object):
 
         nperms : int
             Number of permutations to use. Only used if method='permute'. (default:
-            10,000)
+            2500)
 
         strategy : str or None
             The strategy to use to reorder the list.  This can be 'stabilize',
@@ -312,8 +313,6 @@ class OptimalPresenter(object):
             strategy = self.strategy
 
         dist_dict = compute_distances_dict(egg)
-
-        print(type(strategy), strategy, 'inside quail', strategy=='random')
 
         if (strategy=='random') or (method=='random'):
             return shuffle_egg(egg)
