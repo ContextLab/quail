@@ -195,7 +195,7 @@ class OptimalPresenter(object):
 
     def order(self, egg, method='permute', nperms=2500, strategy=None,
 
-              distfun='euclidean'):
+              distfun='correlation'):
         """
         Reorders a list of stimuli to match a fingerprint
 

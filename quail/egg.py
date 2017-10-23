@@ -2,6 +2,7 @@
 
 import pandas as pd
 from .analysis import recall_matrix
+from .analysis import analyze
 from .helpers import list2pd
 from .helpers import default_dist_funcs
 from .helpers import crack_egg
@@ -183,3 +184,9 @@ class Egg(object):
             'features' : self.features.to_dict(orient='records')
         }
         return egg_dict
+
+    def analyze(self, analysis=None, **kwargs):
+        """
+        Calls analyze function
+        """
+        return analyze(self, analysis=analysis, **kwargs)
