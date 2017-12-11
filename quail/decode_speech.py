@@ -109,21 +109,14 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
 
             return result
 
-        # set up speech decoding options dict
-        opts = types.RecognitionConfig(
-            encoding=enums.RecognitionConfig.AudioEncoding.FLAC,
-            sample_rate_hertz=sample_rate,
-            language_code=language_code,
-            enable_word_time_offsets=enable_word_time_offsets)
-
-        # opts = {}
-        # opts['language_code'] = language_code
-        # opts['max_alternatives'] = max_alternatives
-        # opts['enable_word_time_offsets'] = enable_word_time_offsets
-
-        # load in speech context, note: max 500 words for speech context
-        # if speech_context:
-        #         opts['speech_contexts']=speech_context
+        opts = {}
+        opts['encoding']=enums.RecognitionConfig.AudioEncoding.FLAC
+        opts['language_code'] = language_code
+        opts['sample_rate_hertz'] = sample_rate
+        opts['max_alternatives'] = max_alternatives
+        opts['enable_word_time_offsets'] = enable_word_time_offsets
+        if speech_context:
+            opts['speech_contexts']=[types.SpeechContext(phrases=speech_context)]
 
         # read in wav
         audio = AudioSegment.from_wav(file_path)
