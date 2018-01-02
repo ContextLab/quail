@@ -194,7 +194,6 @@ class OptimalPresenter(object):
         self.strategy = strategy
 
     def order(self, egg, method='permute', nperms=2500, strategy=None,
-
               distfun='correlation'):
         """
         Reorders a list of stimuli to match a fingerprint
@@ -241,12 +240,22 @@ class OptimalPresenter(object):
             # length of list
             pres_len = len(pres)
 
-            results = Parallel(n_jobs=multiprocessing.cpu_count())(
-            delayed(rand_perm)(pres, features, dist_dict, dist_funcs) for i in range(nperms))
+            # THIS MAY BE THE SUPERBUG
+            # results = Parallel(n_jobs=multiprocessing.cpu_count())(
+            # delayed(rand_perm)(pres, features, dist_dict, dist_funcs) for i in range(nperms))
+            #
+            # weights = np.array(map(lambda x: x[0], results))
+            # orders = np.array(map(lambda x: x[1], results))
 
-            weights = np.array(map(lambda x: x[0], results))
-            orders = np.array(map(lambda x: x[1], results))
-
+            weights = []
+            orders = []
+            for i in range(nperms):
+                x = rand_perm(pres, features, dist_dict, dist_funcs)
+                weights.append(x[0])
+                orders.append(x[1])
+            weights = np.array(weights)
+            orders = np.array(orders)
+            
             # get the fingerprint state
             fingerprint = self.get_params('fingerprint').state
 
