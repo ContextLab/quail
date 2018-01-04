@@ -82,7 +82,6 @@ Here is a bibtex formatted reference:
 	doi = {10.21105/joss.00424},
 	url = {https://doi.org/10.21105%2Fjoss.00424},
 	year = 2017,
-	month = {oct},
 	publisher = {The Open Journal},
 	volume = {2},
 	number = {18},

@@ -5,10 +5,13 @@ import csv
 import pickle
 import time
 import warnings
+import pandas as pd
 
 # optional imports for speech decoding
 try:
     from google.cloud import speech
+    from google.cloud.speech import types
+    from google.cloud.speech import enums
     from pydub import AudioSegment
 except:
     pass
@@ -16,7 +19,7 @@ except:
 
 def decode_speech(path, keypath=None, save=False, speech_context=None,
                   sample_rate=44100, max_alternatives=1, language_code='en-US',
-                  return_raw=False):
+                  enable_word_time_offsets=True, return_raw=False):
     """
     Decode speech for a file or folder and return results
 
@@ -58,6 +61,10 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
         Decoding language code.  Default is en-US. See  here for more details:
         https://cloud.google.com/speech/docs/languages
 
+    enable_word_time_offsets : bool
+        Returns timing information s(onsets/offsets) for each word (default is
+        True).
+
     return_raw : boolean
         Intead of returning the parsed results objects (i.e. the words), you can
         return the raw reponse object.  This has more details about the decoding,
@@ -76,7 +83,8 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
     """
 
     # SUBFUNCTIONS
-    def decode_file(file_path, client, speech_context, sample_rate, max_alternatives):
+    def decode_file(file_path, client, speech_context, sample_rate,
+                    max_alternatives, enable_word_time_offsets):
 
         def recognize(chunk, file_path):
             """
@@ -90,26 +98,25 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
                 speech_content = sc.read()
 
             # initialize speech sample
-            sample = client.sample(content=speech_content,
-                                encoding=speech.Encoding.FLAC,
-                                sample_rate_hertz=sample_rate)
+            sample = types.RecognitionAudio(content=speech_content)
 
             # run speech decoding
             try:
-                result = sample.recognize(**opts)
-            except:
+                result = client.recognize(opts, sample)
+            except ValueError as e:
+                print(e)
                 result = None
 
             return result
 
-        # set up speech decoding options dict
         opts = {}
+        opts['encoding']=enums.RecognitionConfig.AudioEncoding.FLAC
         opts['language_code'] = language_code
+        opts['sample_rate_hertz'] = sample_rate
         opts['max_alternatives'] = max_alternatives
-
-        # load in speech context, note: max 500 words for speech context
+        opts['enable_word_time_offsets'] = enable_word_time_offsets
         if speech_context:
-                opts['speech_contexts']=speech_context
+            opts['speech_contexts']=[types.SpeechContext(phrases=speech_context)]
 
         # read in wav
         audio = AudioSegment.from_wav(file_path)
@@ -136,21 +143,43 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
 
     def parse_response(results):
         """Parses response from google speech"""
-        words = []
-        for idx, result in enumerate(results):
-            if result is None:
-                warnings.warn('No speech was decoded for segment %d' % (idx+1))
-                words.append(None)
-            else:
-                try:
-                    for segment in result:
-                        for chunk in segment.transcript.split(' '):
-                            if chunk != '':
-                                words.append(str(chunk).upper())
-                except:
-                    warnings.warn('Error parsing response for segment %d' % (idx+1))
 
+        words = []
+
+        for result in results[0].results:
+                alternative = result.alternatives[0]
+                print('Transcript: {}'.format(alternative.transcript))
+                print('Confidence: {}'.format(alternative.confidence))
+
+                for word_info in alternative.words:
+                    word = word_info.word
+                    start_time = word_info.start_time
+                    end_time = word_info.end_time
+                    print('Word: {}, start_time: {}, end_time: {}'.format(
+                        word,
+                        start_time.seconds + start_time.nanos * 1e-9,
+                        end_time.seconds + end_time.nanos * 1e-9))
+                    words.append((str(word).upper(), start_time.seconds + start_time.nanos * 1e-9,
+                                    end_time.seconds + end_time.nanos * 1e-9))
         return words
+
+    # def parse_response(results):
+    #     """Parses response from google speech"""
+    #     words = []
+    #     for idx, result in enumerate(results):
+    #         if result is None:
+    #             warnings.warn('No speech was decoded for segment %d' % (idx+1))
+    #             words.append(None)
+    #         else:
+    #             try:
+    #                 for segment in result:
+    #                     for chunk in segment.transcript.split(' '):
+    #                         if chunk != '':
+    #                             words.append(str(chunk).upper())
+    #             except:
+    #                 warnings.warn('Error parsing response for segment %d' % (idx+1))
+    #
+    #     return words
 
     # MAIN #####################################################################
 
@@ -158,7 +187,7 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
     if keypath:
         client = speech.Client.from_service_account_json(keypath)
     else:
-        client = speech.Client()
+        client = speech.SpeechClient()
 
     # make a list of files
     files = []
@@ -186,8 +215,10 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
             start = time.time()
 
             # decode file
-            results = decode_file(f, client, speech_context, sample_rate, max_alternatives)
+            results = decode_file(f, client, speech_context, sample_rate,
+                                  max_alternatives, enable_word_time_offsets)
 
+            # parsing response
             parsed_results = parse_response(results)
 
             # save the processed file
@@ -201,9 +232,8 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
                 pickle.dump(results, open(f + ".p", "wb" ) )
 
                 # save a text file with just the words
-                with open(f + ".txt", 'w') as myfile:
-                    wr = csv.writer(myfile,delimiter="\n")
-                    wr.writerow(parsed_results)
+                pd.DataFrame(parsed_results).to_csv(f + '.txt', header=False,
+                                                    index=False)
 
             # print when finished
             print('Finished file ' + str(i+1) + ' of ' + str(len(files)) + ' in ' +
