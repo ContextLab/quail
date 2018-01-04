@@ -69,7 +69,8 @@ class Fingerprint(object):
             self.history.append(self.state)
             n+=1
         else:
-            self.state = [.5]*6
+            self.state = None
+            self.features = None
 
         self.n = n
 
@@ -178,7 +179,7 @@ class OptimalPresenter(object):
         """
         Sets a parameter to a particular value
         """
-        self[name]=value
+        self.params[name]=value
 
     def get_params(self, name):
         """
@@ -255,7 +256,7 @@ class OptimalPresenter(object):
                 orders.append(x[1])
             weights = np.array(weights)
             orders = np.array(orders)
-            
+
             # get the fingerprint state
             fingerprint = self.get_params('fingerprint').state
 
