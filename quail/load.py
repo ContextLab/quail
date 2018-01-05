@@ -118,8 +118,8 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         indexes=[]
         for line in data_frame.iterrows():
             try:
-                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'emily', 'bryan', 'armando', 'Armando Ortiz', 'Maddy/Lucy',
-                                                                      'Paxton', 'lucy']:
+                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'emily', 'bryan', 'armando', 'armando ortiz', 'maddy/lucy',
+                                                                      'paxton', 'lucy']:
                     delete = False
                 else:
                     delete = True
