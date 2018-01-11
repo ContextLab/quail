@@ -12,6 +12,30 @@ from .egg import Egg
 import dill
 import pickle
 import os
+import deepdish as dd
+
+def load_egg(filepath):
+    """
+    Loads pickled egg
+
+    Parameters
+    ----------
+    filepath : str
+        Location of pickled egg
+
+    Returns
+    ----------
+    egg : Egg data object
+        A loaded unpickled egg
+
+    """
+    return Egg(**dd.io.load(filepath))
+    # try:
+    #     with open(filepath, 'rb') as f:
+    #         egg = pickle.load(f)
+    # except:
+    #     print(dd.io.load(f))
+    #     egg = Egg(**dd.io.load(f))
 
 def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=None, experiments=None,
     filters=None):

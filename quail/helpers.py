@@ -100,13 +100,16 @@ def default_dist_funcs(dist_funcs, feature_example):
         Fills in default distance metrics for fingerprint analyses
         """
 
+        if dist_funcs is None:
+            dist_funcs = dict()
+
         for key in feature_example:
             if key in dist_funcs:
                 pass
             elif type(feature_example[key]) is str:
-                dist_funcs[key] = lambda a, b: int(a!=b)
+                dist_funcs[key] = 'lambda a, b: int(a!=b)'
             elif isinstance(feature_example[key], (int, long, float)) or all([isinstance(i, (int, long, float)) for i in feature_example[key]]):
-                dist_funcs[key] = lambda a, b: np.linalg.norm(np.subtract(a,b))
+                dist_funcs[key] = 'lambda a, b: np.linalg.norm(np.subtract(a,b))'
 
         return dist_funcs
 
@@ -135,8 +138,6 @@ def stack_eggs(eggs, meta='concatenate'):
     pres = [egg.pres.loc[sub,:].values.tolist() for egg in eggs for sub in egg.pres.index.levels[0].values.tolist()]
     rec = [egg.rec.loc[sub,:].values.tolist() for egg in eggs for sub in egg.rec.index.levels[0].values.tolist()]
 
-    all_have_features = all([egg.features is not None for egg in eggs])
-
     if meta is 'concatenate':
         new_meta = {}
         for egg in eggs:
@@ -150,14 +151,7 @@ def stack_eggs(eggs, meta='concatenate'):
     elif meta is 'separate':
         new_meta = list(egg.meta for egg in eggs)
 
-    if all_have_features:
-        features = [egg.features.loc[sub,:].values.tolist() for egg in eggs for sub in egg.features.index.levels[0].values.tolist()]
-        new_egg = Egg(pres=pres, rec=rec, features=features, meta=new_meta)
-    else:
-        new_egg = Egg(pres=pres, rec=rec, meta=new_meta)
-
-
-    return new_egg
+    return Egg(pres=pres, rec=rec, meta=new_meta)
 
 def crack_egg(egg, subjects=None, lists=None):
     '''
@@ -208,27 +202,6 @@ def crack_egg(egg, subjects=None, lists=None):
 
     return Egg(pres=pres, rec=rec, **opts)
 
-def load_egg(filepath):
-    """
-    Loads pickled egg
-
-    Parameters
-    ----------
-    filepath : str
-        Location of pickled egg
-
-    Returns
-    ----------
-    egg : Egg data object
-        A loaded unpickled egg
-
-    """
-
-    with open(filepath, 'rb') as f:
-        egg = pickle.load(f)
-
-    return egg
-
 def fill_missing(x):
     """
     Fills in missing lists (assumes end lists are missing)
@@ -256,3 +229,20 @@ def parse_egg(egg):
     feature_list = egg.features.values[0]
     dist_funcs = egg.dist_funcs
     return pres_list, rec_list, feature_list, dist_funcs
+
+def merge_pres_feats(pres, features):
+    """
+    Helper function to merge pres and features to support legacy features argument
+    """
+
+    lst = []
+    exp = []
+    sub = []
+    for psub, fsub in zip(pres, features):
+        for pexp, fexp in zip(psub, fsub):
+            for p, f in zip(pexp, fexp):
+                p.update(f)
+                lst.append(p)
+            exp.append(lst)
+        sub.append(exp)
+    return sub

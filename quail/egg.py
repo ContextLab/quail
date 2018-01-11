@@ -1,14 +1,13 @@
 #!/usr/bin/env python
-
+import pickle
+import time
+import deepdish as dd
+import inspect
+import warnings
 import pandas as pd
 from .analysis import recall_matrix
 from .analysis import analyze
-from .helpers import list2pd
-from .helpers import default_dist_funcs
-from .helpers import crack_egg
-from .helpers import fill_missing
-import pickle
-import time
+from .helpers import list2pd, default_dist_funcs, crack_egg, fill_missing, merge_pres_feats
 
 class Egg(object):
     """
@@ -28,35 +27,42 @@ class Egg(object):
     Parameters
     ----------
 
-    pres : list (subjects) of lists (study lists) of lists (words) of strings
-        This is a nested list containing the presented words.  Internally, it will
-        be converted into a multi-index Pandas DataFrame. Each row represents
-        the presented words for a given list and each column represents a list.
-        The cells should be lowercase words. The index will be a multi-index,
-        where the first level reprensents the subject number and the second level
-        represents the list number.
+    pres : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.
+        This is a nested list containing the presented stimuli/stimulus features.
+        The outer list groups the data into subjects, the middle list groups the
+        data into experiments and the inner list groups the data into stimuli
+        presented together in one block (or list). Each item within the list can
+        be a string representing the stimulus or a dictionary representing the
+        stimuli and its features. If dictionaries are passed, identify the stimulus
+        name using the 'stimulus' key and a string label. To represent additional
+        stimulus features, use any text (str) label as the key and a value of the
+        following types: string, int, float, list, array.
 
-    rec : list (subjects) of lists (study lists) of lists (words) of strings
-        This is a nested list containing the presented words.  Internally, it will
-        be converted into a multi-index Pandas DataFrame. Each row represents
-        the recalled words for a given list and each column represents a list.
-        Each row represents the recalled words for a given list and each column
-        represents a list. The cells should be lowercase words. The index will
-        be a multi-index, where the first level reprensents the subject number
-        and the second level represents the list number
+    rec : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.
+        This is a nested list containing the recalled stimuli/stimulus features.
+        The outer list groups the data into subjects, the middle list groups the
+        data into experiments and the inner list groups the data into stimuli
+        presented together in one block (or list). Each item within the list can
+        be a string representing the stimulus or a dictionary representing the
+        stimuli and its features. If dictionaries are passed, identify the stimulus
+        name using the 'stimulus' key and a string label. To represent additional
+        stimulus features, use any text (str) label as the key and a value of the
+        following types: string, int, float, list, array.
 
-    features : list (subjects) of lists (study lists) of lists (words) of strings
-        This is a nested list containing the presented words.  Internally, it will
-        be converted into a multi-index Pandas DataFrame. Each row represents the
-        presented words for a given list and each column represents a list. The
-        cells should be a dictionary of features, where the keys are the name of
-        the features, and the values are the feature values. The index will be a
-        multi-index, where the first level represents the subject number and the
-        second level represents the list number.
+    features : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.
+        This is DEPRECATED, but left in for legacy support. This is a nested list
+        containing the stimuli/stimulus features. The outer list groups the data
+        into subjects, the middle list groups the data into experiments and the
+        inner list groups the data into stimuli presented together in one block
+        (or list). Each item within the list should be a dictionary representing
+        stimulus features. Each dictionary should contain a text (str) label as
+        the key and a value of the following types: string, int, float, list, array.
 
     dist_funcs : dict (optional)
-        A dictionary of custom distance functions for stimulus features.  Each key should be the name of a feature
-        and each value should be an inline distance function (e.g. `dist_funcs['feature_n'] = lambda a, b: abs(a-b)`)
+        A dictionary of custom distance functions for stimulus features. Each
+        key should be the name of a feature and each value should be a string
+        representation of an inline distance function
+        (e.g. `dist_funcs['feature_n'] = 'lambda a, b: abs(a-b)''`)
 
     meta : dict (optional)
         Meta data about the study (i.e. version, description, date, etc.) can be saved here.
@@ -78,6 +84,26 @@ class Egg(object):
     Attributes
     ----------
 
+    pres : Pandas.DataFrame
+        A multi-index Pandas DataFrame representing the stimuli presented. The
+        rows of the dataframe created represent distinct presentation blocks and
+        the columns represent stimuli presented within a block. Each cell of the
+        dataframe is a dictionary where the 'stimulus' key is a text label of
+        the stimulus and any other text keys are features of the presented
+        stimulus. The dataframe index will be a multi-index, where the first
+        level represents the subject number and the second level represents the
+        list (or presentation block) number.
+
+    rec : Pandas.DataFrame
+        A multi-index Pandas DataFrame representing the stimuli recalled. The
+        rows of the dataframe created represent distinct presentation blocks and
+        the columns represent stimuli presented within a block. Each cell of the
+        dataframe is a dictionary where the 'stimulus' key is a text label of
+        the stimulus and any other text keys are features of the presented
+        stimulus. The dataframe index will be a multi-index, where the first
+        level represents the subject number and the second level represents the
+        list (or presentation block) number.
+
     n_subjects : int
         Number of subjects in the egg object
 
@@ -92,12 +118,15 @@ class Egg(object):
 
     """
 
-    def __init__(self, pres=[[[]]], rec=[[[]]], features=None, dist_funcs=dict(),
-                 meta={}, subjgroup=None, subjname='Subject', listgroup=None, listname='List'):
+    def __init__(self, pres=None, rec=None, features=None, dist_funcs=None,
+                 meta=None, subjgroup=None, subjname='Subject', listgroup=None,
+                 listname='List', date_created=None):
 
+        # check to see if pres is a list(list(list))
         if not all(isinstance(item, list) for sub in pres for item in sub):
             pres = [pres]
 
+        # check to see if rec is a list(list(list))
         if not all(isinstance(item, list) for sub in rec for item in sub):
             rec = [rec]
 
@@ -109,35 +138,76 @@ class Egg(object):
         pres = fill_missing(pres)
         rec = fill_missing(rec)
 
-        self.pres = list2pd(pres)
-        self.rec = list2pd(rec)
-        self.meta = meta
+        # if pres is strings, reformat
+        if type(pres[0][0][0]) is str:
+            pres = [[[{'item' : x} for x in y] for y in z] for z in pres]
+
+        # if pres is strings, reformat
+        if type(rec[0][0][0]) is str:
+            rec = [[[{'item' : x} for x in y] for y in z] for z in rec]
 
         # attach features and dist funcs if they are passed
         if features:
             features = fill_missing(features)
-            self.features = list2pd(features)
-            self.dist_funcs = default_dist_funcs(dist_funcs, features[0][0][0])
+            pres = merge_pres_feats(pres, features)
+
+        # add default dist funcs if some or all are not provided
+        if dist_funcs is None:
+            dist_funcs = {}
+            self.dist_funcs = default_dist_funcs(dist_funcs, pres[0][0][0])
         else:
-            self.features = None
             self.dist_funcs = None
 
-        # attach listgroup and subjgroup
+        # attach the rest of the variables
+        self.pres = list2pd(pres)
+        self.rec = list2pd(rec)
         self.subjgroup=subjgroup
         self.subjname=subjname
         self.listgroup=listgroup
         self.listname=listname
-
-        # attach attributes
         self.n_subjects = len(self.pres.index.levels[0].values)
         self.n_lists = len(self.pres.index.levels[1].values)
         self.list_length = len(self.pres.columns)
-        self.date_created = time.strftime("%c")
+
+        if meta is None:
+            self.meta = {}
+        else:
+            self.meta = meta
+
+        if date_created is None:
+            self.date_created = time.strftime("%c")
+        else:
+            self.date_created = date_created
 
         # attach methods
         self.crack = self.crack
         self.save = self.save
         self.info = self.info
+
+    def get_pres_items(self):
+        """
+        Returns a df of presented items
+        """
+        return self.pres.applymap(lambda x: x['item'])
+
+    def get_pres_features(self):
+        """
+        Returns a df of features for presented items
+        """
+        return self.pres.applymap(lambda x: {k:v for k,v in x.iteritems() if k is not 'item'})
+
+    def get_rec_items(self):
+        """
+        Returns a df of recalled items
+        """
+        return self.rec.applymap(lambda x: x['item'] if x is not None else x)
+
+    def get_rec_features(self):
+        """
+        Returns a df of features for recalled items
+        """
+        return self.rec.applymap(lambda x: {k:v for k,v in x.iteritems() if k is not 'item'} if x is not None else x)
+
 
     def info(self):
         """
@@ -149,14 +219,48 @@ class Egg(object):
         print('Date created: ' + str(self.date_created))
         print('Meta data: ' + str(self.meta))
 
-    def save(self, filepath):
+    def save(self, fname, compression='blosc'):
         """
-        Save a pickled egg
+        Save method for the Egg object
+
+        The data will be saved as a 'egg' file, which is a dictionary containing
+        the elements of a Egg saved in the hd5 format using
+        `deepdish`.
+
+        Parameters
+        ----------
+
+        fname : str
+            A name for the file.  If the file extension (.geo) is not specified,
+            it will be appended.
+
+        compression : str
+            The kind of compression to use.  See the deepdish documentation for
+            options: http://deepdish.readthedocs.io/en/latest/api_io.html#deepdish.io.save
+
         """
 
-        with open(filepath + '.egg', 'wb') as f:
-            pickle.dump(self, f)
-            print('pickle saved.')
+        # put egg vars into a dict
+        egg = {
+            'pres' : self.pres.as_matrix(),
+            'rec' : self.rec.as_matrix(),
+            'features' : self.features.as_matrix(),
+            'dist_funcs' : self.dist_funcs,
+            'subjgroup' : self.subjgroup,
+            'subjname' : self.subjname,
+            'listgroup' : self.listgroup,
+            'listname' : self.listname,
+            'date_created' : self.date_created
+        }
+
+        # if extension wasn't included, add it
+        if fname[-4:]!='.egg':
+            fname+='.egg'
+
+        # save
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            dd.io.save(fname, egg, compression=compression)
 
     def crack(self, subjects=None, lists=None):
         """

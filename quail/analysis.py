@@ -183,7 +183,7 @@ def compute_distances(pres_list, feature_list, dist_funcs):
             for idx2, item2 in enumerate(pres_list):
 
                 # compute the distance between word 1 and word 2 along some feature dimension
-                dists[idx1,idx2] = dist_funcs[feature](feature_list[idx1][feature],feature_list[idx2][feature])
+                dists[idx1,idx2] = eval(dist_funcs[feature])(feature_list[idx1][feature],feature_list[idx2][feature])
 
         # set that distance matrix to the value of a dict where the feature name is the key
         distances[feature] = dists
