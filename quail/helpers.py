@@ -39,33 +39,31 @@ def list2pd(all_data, subjindex=None, listindex=None):
 
     return pd.concat(subs_list_of_dfs)
 
-def format2tidy(df, subjname, listname, subjgroup, **attrs):
-
+def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
     melted_df = pd.melt(df.T)
     melted_df[subjname]=""
     for idx,sub in enumerate(melted_df['Subject'].unique()):
         melted_df.loc[melted_df['Subject']==sub,subjname]=subjgroup[idx]
-    if attrs['analysis_type'] in ['spc']:
+    if analysis is 'spc':
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Proportion Recalled', subjname, 'Position']
-    elif attrs['analysis_type'] in ['pfr', 'pnr']:
+    elif analysis in ['pfr', 'pnr']:
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(attrs['n']), subjname, 'Position']
-    elif attrs['analysis_type'] is 'lagcrp':
+        melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(position), subjname, 'Position']
+    elif analysis is 'lagcrp':
         base = range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
-    elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
+    elif analysis is 'fingerprint' or analysis is 'fingerprint_temporal':
         base = list(df.columns.values)
         melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
-    elif attrs['analysis_type'] is 'accuracy':
+    elif analysis is 'accuracy':
         melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
-    elif attrs['analysis_type'] is 'temporal':
+    elif analysis is 'temporal':
         melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
-
 
     return melted_df
 
@@ -99,12 +97,15 @@ def default_dist_funcs(dist_funcs, feature_example):
         """
         Fills in default distance metrics for fingerprint analyses
         """
+        print(feature_example)
 
         if dist_funcs is None:
             dist_funcs = dict()
 
         for key in feature_example:
             if key in dist_funcs:
+                pass
+            if key is 'item':
                 pass
             elif type(feature_example[key]) is str:
                 dist_funcs[key] = 'lambda a, b: int(a!=b)'
@@ -176,7 +177,7 @@ def crack_egg(egg, subjects=None, lists=None):
     '''
     from .egg import Egg
 
-    all_have_features = egg.features is not None
+    # all_have_features = egg.features is not None
     opts = {}
 
     if subjects is None:
@@ -196,9 +197,9 @@ def crack_egg(egg, subjects=None, lists=None):
     pres = [pres.loc[sub,:].values.tolist() for sub in subjects]
     rec = [rec.loc[sub,:].values.tolist() for sub in subjects]
 
-    if all_have_features:
-        features = egg.features.loc[idx[subjects,lists],egg.features.columns]
-        opts['features'] = [features.loc[sub,:].values.tolist() for sub in subjects]
+    # if all_have_features:
+    #     features = egg.features.loc[idx[subjects,lists],egg.features.columns]
+    #     opts['features'] = [features.loc[sub,:].values.tolist() for sub in subjects]
 
     return Egg(pres=pres, rec=rec, **opts)
 
@@ -224,9 +225,10 @@ def fill_missing(x):
 
 def parse_egg(egg):
     """Parses an egg and returns fields"""
-    pres_list = egg.pres.values[0]
-    rec_list = egg.rec.values[0]
-    feature_list = egg.features.values[0]
+    pres_list = egg.get_pres_items()
+    rec_list = egg.get_rec_items()
+    feature_list = egg.get_pres_features()
+    print(feature_list)
     dist_funcs = egg.dist_funcs
     return pres_list, rec_list, feature_list, dist_funcs
 

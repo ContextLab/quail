@@ -7,6 +7,7 @@ import warnings
 import pandas as pd
 from .analysis import recall_matrix
 from .analysis import analyze
+from .plot import plot
 from .helpers import list2pd, default_dist_funcs, crack_egg, fill_missing, merge_pres_feats
 
 class Egg(object):
@@ -130,33 +131,27 @@ class Egg(object):
         if not all(isinstance(item, list) for sub in rec for item in sub):
             rec = [rec]
 
-        if features is not None:
-            if not all(isinstance(item, list) for sub in features for item in sub):
-                features = [features]
-
         # make sure each subject has same number of lists
         pres = fill_missing(pres)
         rec = fill_missing(rec)
 
         # if pres is strings, reformat
-        if type(pres[0][0][0]) is str:
+        if type(pres[0][0][0]) is not dict:
             pres = [[[{'item' : x} for x in y] for y in z] for z in pres]
 
         # if pres is strings, reformat
-        if type(rec[0][0][0]) is str:
+        if type(rec[0][0][0]) is not dict:
             rec = [[[{'item' : x} for x in y] for y in z] for z in rec]
 
         # attach features and dist funcs if they are passed
-        if features:
+        if features is not None:
+            if not all(isinstance(item, list) for sub in features for item in sub):
+                features = [features]
             features = fill_missing(features)
             pres = merge_pres_feats(pres, features)
 
         # add default dist funcs if some or all are not provided
-        if dist_funcs is None:
-            dist_funcs = {}
-            self.dist_funcs = default_dist_funcs(dist_funcs, pres[0][0][0])
-        else:
-            self.dist_funcs = None
+        self.dist_funcs = default_dist_funcs(dist_funcs, pres[0][0][0])
 
         # attach the rest of the variables
         self.pres = list2pd(pres)
@@ -294,3 +289,33 @@ class Egg(object):
         Calls analyze function
         """
         return analyze(self, analysis=analysis, **kwargs)
+
+class FriedEgg(object):
+    """
+    Object containing results of a quail analyses
+
+    Parameters
+    ----------
+
+    Attributes
+    ----------
+
+    data : List of Pandas.DataFrame
+        List of Dataframes containing result of an analysis
+
+    type : str
+        The type of analysis (e.g. lag-crp)
+
+    """
+
+    def __init__(self, data=None, analysis=None, list_length=None, n_subjects=None,
+                 position=0):
+
+        self.data = data
+        self.analysis = analysis
+        self.list_length = list_length
+        self.n_subjects = n_subjects
+        self.position = position
+
+    def plot(self, **kwargs):
+        return plot(self, **kwargs)

@@ -59,13 +59,16 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
         # get data slice for presentation and recall
         pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+        pres_slice = pres_slice.applymap(lambda x: x['item'])
         pres_slice.list_length = data.list_length
 
         rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+        rec_slice = rec_slice.applymap(lambda x: x['item'] if x is not None else None)
 
         # if features are need for analysis, get the features for this slice of data
         if pass_features:
-            feature_slice = data.features.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+            feature_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
+            feature_slice = feature_slice.applymap(lambda x: {k:v for k,v in x.iteritems() if k is not 'item'})
 
         # generate indices
         index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
@@ -98,17 +101,7 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
         analyzed_data = [perform_analysis(ai, bi) for ai,bi in zip(a,b)]
 
     # concatenate slices
-    analyzed_data = pd.concat(analyzed_data)
-
-    analyzed_data.attrs = {
-        'analysis_type' : analysis_type,
-        'list_length' : data.list_length
-    }
-
-    for key in kwargs:
-        analyzed_data.attrs[key] = kwargs[key]
-
-    return analyzed_data
+    return pd.concat(analyzed_data)
 
 # recall matrix
 def recall_matrix(presented, recalled):
@@ -370,7 +363,7 @@ def spc_helper(pres_slice, rec_slice):
     return prop_recalled
 
 # probability of nth recall
-def pnr_helper(pres_slice, rec_slice, n):
+def pnr_helper(pres_slice, rec_slice, position):
 
     """
     Computes probability of a word being recalled nth (in the appropriate recall
@@ -394,14 +387,14 @@ def pnr_helper(pres_slice, rec_slice, n):
     recall = recall_matrix(pres_slice, rec_slice)
 
     # simple function that returns 1 if item encoded in position n is recalled first
-    def pos_recalled_first(pos,lst,n):
-        return 1 if pos==lst[n] else 0
+    def pos_recalled_first(pos,lst,position):
+        return 1 if pos==lst[position] else 0
 
     # get pfr for each row in recall matrix
-    pnr_matrix = [[pos_recalled_first(pos,lst,n) for pos in range(1,len(lst)+1)] for lst in recall]
+    pnr_matrix = [[pos_recalled_first(pos,lst,position) for pos in range(1,len(lst)+1)] for lst in recall]
 
     # average over rows
-    prob_recalled = np.mean(pnr_matrix,axis=0)
+    prob_recalled = np.mean(pnr_matrix, axis=0)
 
     return prob_recalled
 
@@ -647,7 +640,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
 
 # main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
-            listname='List', analysis=None, n=0, permute=False, n_perms=1000,
+            listname='List', analysis=None, position=0, permute=False, n_perms=1000,
             parallel=False):
     """
     General analysis function that groups data by subject/list number and performs analysis.
@@ -675,7 +668,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         This is the analysis you want to run.  Can be accuracy, spc, pfr,
         temporal or fingerprint
 
-    n : int
+    position : int
         Optional argument for pnr analysis.  Defines encoding position of item
         to run pnr.  Default is 0, and it is zero indexed
 
@@ -703,6 +696,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
 
     """
 
+    from .egg import FriedEgg
+
     # make sure an analysis is specified
     if analysis is None:
         raise ValueError('You must pass an analysis type.')
@@ -724,107 +719,88 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         if data.listname is not None:
             listname = data.listname
 
-    if type(data) != list:
-        data = [data]
-
-    if type(analysis) != list:
-        analysis = [analysis]
-
-    result = [[] for d in range(len(data))]
-
-    for idx,d in enumerate(data):
-        for a in analysis:
-
-            if a is 'accuracy':
-                r = analyze_chunk(d, subjgroup=subjgroup,
-                                  listgroup=listgroup,
-                                  subjname=subjname,
-                                  listname=listname,
-                                  analysis=accuracy_helper,
-                                  analysis_type='accuracy',
-                                  pass_features=False,
-                                  parallel=parallel)
-            elif a is 'spc':
-                r = analyze_chunk(d, subjgroup=subjgroup,
-                                  listgroup=listgroup,
-                                  subjname=subjname,
-                                  listname=listname,
-                                  analysis=spc_helper,
-                                  analysis_type='spc',
-                                  pass_features=False,
-                                  parallel=parallel)
-            elif a is 'pfr':
-                r = analyze_chunk(d, subjgroup=subjgroup,
-                                  listgroup=listgroup,
-                                  subjname=subjname,
-                                  listname=listname,
-                                  analysis=pnr_helper,
-                                  analysis_type='pfr',
-                                  pass_features=False,
-                                  n=0,
-                                  parallel=parallel)
-            elif a is 'pnr':
-                r = analyze_chunk(d, subjgroup=subjgroup,
-                                  listgroup=listgroup,
-                                  subjname=subjname,
-                                  listname=listname,
-                                  analysis=pnr_helper,
-                                  analysis_type='pnr',
-                                  pass_features=False,
-                                  n=n,
-                                  parallel=parallel)
-            elif a is 'lagcrp':
-                r = analyze_chunk(d, subjgroup=subjgroup,
-                                  listgroup=listgroup,
-                                  subjname=subjname,
-                                  listname=listname,
-                                  analysis=lagcrp_helper,
-                                  analysis_type='lagcrp',
-                                  pass_features=False,
-                                  parallel=parallel)
-                # set indices for lagcrp
-                r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
-            elif a is 'fingerprint':
-                r = analyze_chunk(d, subjgroup=subjgroup,
-                                  listgroup=listgroup,
-                                  subjname=subjname,
-                                  listname=listname,
-                                  analysis=fingerprint_helper,
-                                  analysis_type='fingerprint',
-                                  pass_features=True,
-                                  permute=permute,
-                                  n_perms=n_perms,
-                                  parallel=parallel)
-            elif a is 'temporal':
-                r = analyze_chunk(d, subjgroup=subjgroup,
-                                  listgroup=listgroup,
-                                  subjname=subjname,
-                                  listname=listname,
-                                  analysis=temporal_helper,
-                                  analysis_type='temporal',
-                                  permute=permute,
-                                  n_perms=n_perms,
-                                  parallel=parallel)
-            elif a is 'fingerprint_temporal':
-                r = analyze_chunk(d, subjgroup=subjgroup,
-                                  listgroup=listgroup,
-                                  subjname=subjname,
-                                  listname=listname,
-                                  analysis=fingerprint_temporal_helper,
-                                  analysis_type='fingerprint_temporal',
-                                  pass_features=True,
-                                  permute=permute,
-                                  n_perms=n_perms,
-                                  parallel=parallel)
-
-            result[idx].append(r)
+    if analysis is 'accuracy':
+        r = analyze_chunk(data, subjgroup=subjgroup,
+                          listgroup=listgroup,
+                          subjname=subjname,
+                          listname=listname,
+                          analysis=accuracy_helper,
+                          analysis_type='accuracy',
+                          pass_features=False,
+                          parallel=parallel)
+    elif analysis is 'spc':
+        r = analyze_chunk(data, subjgroup=subjgroup,
+                          listgroup=listgroup,
+                          subjname=subjname,
+                          listname=listname,
+                          analysis=spc_helper,
+                          analysis_type='spc',
+                          pass_features=False,
+                          parallel=parallel)
+    elif analysis is 'pfr':
+        r = analyze_chunk(data, subjgroup=subjgroup,
+                          listgroup=listgroup,
+                          subjname=subjname,
+                          listname=listname,
+                          analysis=pnr_helper,
+                          analysis_type='pfr',
+                          pass_features=False,
+                          position=0,
+                          parallel=parallel)
+    elif analysis is 'pnr':
+        r = analyze_chunk(data, subjgroup=subjgroup,
+                          listgroup=listgroup,
+                          subjname=subjname,
+                          listname=listname,
+                          analysis=pnr_helper,
+                          analysis_type='pnr',
+                          pass_features=False,
+                          position=position,
+                          parallel=parallel)
+    elif analysis is 'lagcrp':
+        r = analyze_chunk(data, subjgroup=subjgroup,
+                          listgroup=listgroup,
+                          subjname=subjname,
+                          listname=listname,
+                          analysis=lagcrp_helper,
+                          analysis_type='lagcrp',
+                          pass_features=False,
+                          parallel=parallel)
+        # set indices for lagcrp
+        r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
+    elif analysis is 'fingerprint':
+        r = analyze_chunk(data, subjgroup=subjgroup,
+                          listgroup=listgroup,
+                          subjname=subjname,
+                          listname=listname,
+                          analysis=fingerprint_helper,
+                          analysis_type='fingerprint',
+                          pass_features=True,
+                          permute=permute,
+                          n_perms=n_perms,
+                          parallel=parallel)
+    elif analysis is 'temporal':
+        r = analyze_chunk(data, subjgroup=subjgroup,
+                          listgroup=listgroup,
+                          subjname=subjname,
+                          listname=listname,
+                          analysis=temporal_helper,
+                          analysis_type='temporal',
+                          permute=permute,
+                          n_perms=n_perms,
+                          parallel=parallel)
+    elif analysis is 'fingerprint_temporal':
+        r = analyze_chunk(data, subjgroup=subjgroup,
+                          listgroup=listgroup,
+                          subjname=subjname,
+                          listname=listname,
+                          analysis=fingerprint_temporal_helper,
+                          analysis_type='fingerprint_temporal',
+                          pass_features=True,
+                          permute=permute,
+                          n_perms=n_perms,
+                          parallel=parallel)
 
     # return analysis result
-    if len(data)>1 and len(analysis)>1:
-        return result
-    elif len(data)>1 and len(analysis)==1:
-        return [item[0] for item in result]
-    elif len(data)==1 and len(analysis)>1:
-        return [item for item in result[0]]
-    else:
-        return result[0][0]
+    return FriedEgg(data=r, analysis=analysis, list_length=data.list_length,
+                    n_subjects=data.n_subjects, position=position)

@@ -50,5 +50,6 @@ def test_optimal_presenter_set_strategy():
 
 def test_optimal_presenter_order():
     egg_slice = egg.crack(subjects=[0], lists=[0])
+    print(egg_slice.pres)
     reordered_egg = presenter_params.order(egg_slice, nperms=10)
     assert isinstance(reordered_egg, quail.Egg)
