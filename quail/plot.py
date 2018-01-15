@@ -179,17 +179,15 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
         return ax
 
-    def plot_pnr(data, plot_style, plot_type, listname, subjname, position, **kwargs):
+    def plot_pnr(data, plot_style, plot_type, listname, subjname, position, list_length, **kwargs):
 
         plot_type = plot_type if plot_type is not None else 'list'
-
-        print(data)
 
         if plot_type is 'subject':
             ax = sns.tsplot(data = data, time="Position", value='Probability of Recall: Position ' + str(position), unit="Subject", condition=subjname, **kwargs)
         elif plot_type is 'list':
             ax = sns.tsplot(data = data, time="Position", value='Probability of Recall: Position ' + str(position), unit="Subject", condition=listname, **kwargs)
-        # ax.set_xlim(0,attrs['list_length']-1)
+        ax.set_xlim(0,list_length-1)
 
         return ax
 
@@ -247,7 +245,7 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     elif results.analysis is 'spc':
         ax = plot_spc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
     elif results.analysis is 'pfr' or results.analysis is 'pnr':
-        ax = plot_pnr(tidy_data, plot_style, plot_type, listname, subjname, position=results.position, **kwargs)
+        ax = plot_pnr(tidy_data, plot_style, plot_type, listname, subjname, position=results.position, list_length=results.list_length,  **kwargs)
     elif results.analysis is 'lagcrp':
         ax = plot_lagcrp(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
 

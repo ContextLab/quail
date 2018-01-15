@@ -97,7 +97,6 @@ def default_dist_funcs(dist_funcs, feature_example):
         """
         Fills in default distance metrics for fingerprint analyses
         """
-        print(feature_example)
 
         if dist_funcs is None:
             dist_funcs = dict()
@@ -177,7 +176,10 @@ def crack_egg(egg, subjects=None, lists=None):
     '''
     from .egg import Egg
 
-    # all_have_features = egg.features is not None
+    if hasattr(egg, 'features'):
+        all_have_features = egg.features is not None
+    else:
+        all_have_features=False
     opts = {}
 
     if subjects is None:
@@ -197,11 +199,20 @@ def crack_egg(egg, subjects=None, lists=None):
     pres = [pres.loc[sub,:].values.tolist() for sub in subjects]
     rec = [rec.loc[sub,:].values.tolist() for sub in subjects]
 
-    # if all_have_features:
-    #     features = egg.features.loc[idx[subjects,lists],egg.features.columns]
-    #     opts['features'] = [features.loc[sub,:].values.tolist() for sub in subjects]
+    if all_have_features:
+        features = egg.features.loc[idx[subjects,lists],egg.features.columns]
+        opts['features'] = [features.loc[sub,:].values.tolist() for sub in subjects]
 
     return Egg(pres=pres, rec=rec, **opts)
+
+def df2list(df):
+    """Convert a MultiIndex df to list"""
+    subjects = df.index.levels[0].values.tolist()
+    lists = df.index.levels[1].values.tolist()
+    idx = pd.IndexSlice
+    df = df.loc[idx[subjects,lists],df.columns]
+    df = [df.loc[sub,:].values.tolist() for sub in subjects]
+    return df
 
 def fill_missing(x):
     """
@@ -225,10 +236,9 @@ def fill_missing(x):
 
 def parse_egg(egg):
     """Parses an egg and returns fields"""
-    pres_list = egg.get_pres_items()
-    rec_list = egg.get_rec_items()
-    feature_list = egg.get_pres_features()
-    print(feature_list)
+    pres_list = egg.get_pres_items().values[0]
+    rec_list = egg.get_rec_items().values[0]
+    feature_list = egg.get_pres_features().values[0]
     dist_funcs = egg.dist_funcs
     return pres_list, rec_list, feature_list, dist_funcs
 
@@ -237,11 +247,11 @@ def merge_pres_feats(pres, features):
     Helper function to merge pres and features to support legacy features argument
     """
 
-    lst = []
-    exp = []
     sub = []
     for psub, fsub in zip(pres, features):
+        exp = []
         for pexp, fexp in zip(psub, fsub):
+            lst = []
             for p, f in zip(pexp, fexp):
                 p.update(f)
                 lst.append(p)

@@ -650,8 +650,7 @@ def compute_distances_dict(egg):
 
             # for each feature in dist_funcs
             for feature in dist_funcs:
-
-                distances[item1][item2][feature] = dist_funcs[feature](features_list[idx1][feature],features_list[idx2][feature])
+                distances[item1][item2][feature] = eval(dist_funcs[feature])(features_list[idx1][feature],features_list[idx2][feature])
 
     return distances
 

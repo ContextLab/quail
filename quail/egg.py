@@ -8,7 +8,7 @@ import pandas as pd
 from .analysis import recall_matrix
 from .analysis import analyze
 from .plot import plot
-from .helpers import list2pd, default_dist_funcs, crack_egg, fill_missing, merge_pres_feats
+from .helpers import list2pd, default_dist_funcs, crack_egg, fill_missing, merge_pres_feats, df2list
 
 class Egg(object):
     """
@@ -189,7 +189,7 @@ class Egg(object):
         """
         Returns a df of features for presented items
         """
-        return self.pres.applymap(lambda x: {k:v for k,v in x.iteritems() if k is not 'item'})
+        return self.pres.applymap(lambda x: {k:v for k,v in x.iteritems() if k != 'item'})
 
     def get_rec_items(self):
         """
@@ -201,7 +201,7 @@ class Egg(object):
         """
         Returns a df of features for recalled items
         """
-        return self.rec.applymap(lambda x: {k:v for k,v in x.iteritems() if k is not 'item'} if x is not None else x)
+        return self.rec.applymap(lambda x: {k:v for k,v in x.iteritems() if k != 'item'})
 
 
     def info(self):
@@ -226,7 +226,7 @@ class Egg(object):
         ----------
 
         fname : str
-            A name for the file.  If the file extension (.geo) is not specified,
+            A name for the file.  If the file extension (.egg) is not specified,
             it will be appended.
 
         compression : str
@@ -237,9 +237,8 @@ class Egg(object):
 
         # put egg vars into a dict
         egg = {
-            'pres' : self.pres.as_matrix(),
-            'rec' : self.rec.as_matrix(),
-            'features' : self.features.as_matrix(),
+            'pres' : df2list(self.pres),
+            'rec' : df2list(self.rec),
             'dist_funcs' : self.dist_funcs,
             'subjgroup' : self.subjgroup,
             'subjname' : self.subjname,
@@ -308,12 +307,13 @@ class FriedEgg(object):
 
     """
 
-    def __init__(self, data=None, analysis=None, list_length=None, n_subjects=None,
-                 position=0):
+    def __init__(self, data=None, analysis=None, list_length=None, n_lists=None,
+                 n_subjects=None, position=0):
 
         self.data = data
         self.analysis = analysis
         self.list_length = list_length
+        self.n_lists = n_lists
         self.n_subjects = n_subjects
         self.position = position
 

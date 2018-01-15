@@ -502,7 +502,7 @@ def temporal_helper(pres_slice, rec_slice, permute=False, n_perms=1000):
 
     # define distance function for temporal clustering
     dist_funcs = {
-        'temporal' : lambda a, b : np.abs(a-b)
+        'temporal' : 'lambda a, b : np.abs(a-b)'
     }
 
     # define features (just positions for temporal clustering)
@@ -553,7 +553,6 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
       each number represents clustering along a different feature dimension
 
     """
-    import time
 
     # compute fingerprint for each list within a chunk
     fingerprint_matrix = []
@@ -620,7 +619,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
             nf.append(fi)
 
         dist_funcs_copy = dist_funcs.copy()
-        dist_funcs_copy['temporal'] = lambda a, b : np.abs(a-b)
+        dist_funcs_copy['temporal'] = 'lambda a, b : np.abs(a-b)'
 
         # if there is at least 1 transition
         if len(r)>1:
@@ -803,4 +802,5 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
 
     # return analysis result
     return FriedEgg(data=r, analysis=analysis, list_length=data.list_length,
-                    n_subjects=data.n_subjects, position=position)
+                    n_lists=data.n_lists, n_subjects=data.n_subjects,
+                    position=position)

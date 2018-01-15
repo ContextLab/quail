@@ -15,7 +15,7 @@ import os
 import deepdish as dd
 from .helpers import parse_egg
 
-def load_egg(filepath):
+def load_egg(filepath, update=True):
     """
     Loads pickled egg
 
@@ -24,19 +24,26 @@ def load_egg(filepath):
     filepath : str
         Location of pickled egg
 
+    update : bool
+        If true, updates egg to latest format
+
     Returns
     ----------
     egg : Egg data object
         A loaded unpickled egg
 
     """
-    return Egg(**dd.io.load(filepath))
-    # try:
-    #     with open(filepath, 'rb') as f:
-    #         egg = pickle.load(f)
-    # except:
-    #     print(dd.io.load(f))
-    #     egg = Egg(**dd.io.load(f))
+    try:
+        egg = Egg(**dd.io.load(filepath))
+    except:
+        # if error, try loading old format
+        with open(filepath, 'rb') as f:
+            egg = pickle.load(f)
+
+    if update:
+        return egg.crack()
+    else:
+        return egg
 
 def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=None, experiments=None,
     filters=None):
@@ -414,6 +421,4 @@ def load_example_data(dataset='automatic'):
     with open(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg', 'rb') as handle:
         egg = pickle.load(handle)
 
-    pres, rec, features, dist_funcs = parse_egg(egg)
-
-    return egg
+    return egg.crack()
