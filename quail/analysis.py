@@ -210,7 +210,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
     weights : list
         list of clustering scores for each feature dimension
     """
-
+    print rec_list
     # initialize the weights object for just this list
     weights = {}
     for feature in feature_list[0]:
@@ -221,6 +221,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
         print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
         for feature in feature_list[0]:
             weights[feature] = .5
+
         return [weights[key] for key in weights]
 
     # initialize past word list
@@ -257,17 +258,63 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
                 # compute the weight
                 weights[feature].append(avg_rank / len(dists_filt))
 
+
+
             # keep track of what has been recalled already
             past_idxs.append(pres_list.index(c))
             past_words.append(c)
 
+        elif (c in pres_list and n not in pres_list):
+            print "option 1"
+            print c
+            print n
+            print "________"
+        elif (c not in pres_list and n in pres_list):
+            print "option 2"
+            print c
+            print n
+            print "________"
+        elif (c not in pres_list and n not in pres_list):
+            print "option 3"
+            print c
+            print n
+            print "________"
+        # elif (c in pres_list and n in pres_list) and (c in past_words and n not in past_words):
+        #     print "option 1"
+        #     print "c is " + str(c)
+        #     print "n is " + str(n)
+        #     print "______________"
+        # elif (c in pres_list and n in pres_list) and (c in past_words and n in past_words):
+        #     print "option 2"
+        #     print "c is " + str(c)
+        #     print "n is " + str(n)
+        #     print "______________"
+        # elif (c in pres_list and n in pres_list) and (c in past_words and n not in past_words):
+        #     print "option 3"
+        #     print "c is " + str(c)
+        #     print "n is " + str(n)
+        #     print "______________"
+        # else:
+        #     print c
+        #     print n
+
+
+    print type(weights)
+    print weights
     # average over the cluster scores for a particular dimension
     for feature in weights:
+
+        #print len(weights[feature])
+        #print weights[feature]
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=RuntimeWarning)
+            # print len(weights[feature])
             weights[feature] = np.nanmean(weights[feature])
+            print weights[feature]
+
 
     return [weights[key] for key in weights]
+
 
 # def single_perm(p, r, f, distances):
 #     r_real = compute_feature_weights(p, r, f, distances)
