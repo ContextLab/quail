@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+from builtins import str
+from builtins import object
 import pandas as pd
 from .analysis import recall_matrix
 from .analysis import analyze

@@ -1,3 +1,6 @@
+from __future__ import print_function
+from builtins import str
+from builtins import range
 import os
 import base64
 import json
@@ -123,7 +126,7 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
 
         # segment into 1 minute chunks
         if len(audio)>60000:
-            segments = range(0,len(audio),60000)
+            segments = list(range(0,len(audio),60000))
             if segments[-1]<len(audio):
                 segments.append(len(audio)-1)
             print('Audio clip is longer than 1 minute.  Splitting into %d one minute segments...' % (len(segments)-1))

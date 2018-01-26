@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
 from __future__ import division
+from builtins import str
+from builtins import range
 import pandas as pd
 import numpy as np
 import pickle
+import six
 
 def list2pd(all_data, subjindex=None, listindex=None):
     """
@@ -54,7 +57,7 @@ def format2tidy(df, subjname, listname, subjgroup, **attrs):
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(attrs['n']), subjname, 'Position']
     elif attrs['analysis_type'] is 'lagcrp':
-        base = range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1)
+        base = list(range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1))
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
     elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
@@ -103,9 +106,9 @@ def default_dist_funcs(dist_funcs, feature_example):
         for key in feature_example:
             if key in dist_funcs:
                 pass
-            elif type(feature_example[key]) is str:
+            elif isinstance(feature_example[key], six.string_types):
                 dist_funcs[key] = lambda a, b: int(a!=b)
-            elif isinstance(feature_example[key], (int, long, float)) or all([isinstance(i, (int, long, float)) for i in feature_example[key]]):
+            elif isinstance(feature_example[key], (int, int, float)) or all([isinstance(i, (int, int, float)) for i in feature_example[key]]):
                 dist_funcs[key] = lambda a, b: np.linalg.norm(np.subtract(a,b))
 
         return dist_funcs
@@ -235,7 +238,7 @@ def fill_missing(x):
     """
 
     # find subject with max number of lists
-    maxlen = max(map(lambda xi: len(xi), x))
+    maxlen = max([len(xi) for xi in x])
 
     subs = []
 

@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 from __future__ import division
+from __future__ import print_function
+from builtins import zip
+from builtins import range
+from builtins import object
 import numpy as np
 from scipy.spatial.distance import cdist
 import warnings
@@ -277,8 +281,8 @@ class OptimalPresenter(object):
             results = Parallel(n_jobs=multiprocessing.cpu_count())(
             delayed(stick_perm)(self, egg, dist_dict, strategy) for i in range(nperms))
 
-            weights = np.array(map(lambda x: x[0], results))
-            orders = np.array(map(lambda x: x[1], results))
+            weights = np.array([x[0] for x in results])
+            orders = np.array([x[1] for x in results])
 
             # get the fingerprint state
             fingerprint = self.get_params('fingerprint').state
@@ -306,8 +310,8 @@ class OptimalPresenter(object):
             results = Parallel(n_jobs=multiprocessing.cpu_count())(
             delayed(choice_perm)(self, egg, dist_dict) for i in range(nperms))
 
-            weights = np.array(map(lambda x: x[0], results))
-            orders = np.array(map(lambda x: x[1], results))
+            weights = np.array([x[0] for x in results])
+            orders = np.array([x[1] for x in results])
 
             # find the closest (or farthest)
             if strategy=='stabilize':
@@ -372,7 +376,7 @@ def order_stick(presenter, egg, dist_dict, strategy):
         idx = np.random.choice(len(pres), 1)[0]
 
         # original inds
-        inds = range(len(pres))
+        inds = list(range(len(pres)))
 
         # keep track of the indices
         inds_used = [idx]
@@ -396,7 +400,7 @@ def order_stick(presenter, egg, dist_dict, strategy):
             feature_sample = feature_stick[np.random.choice(len(feature_stick), 1)[0]]
 
             # indices left
-            inds_left = filter(lambda ind: ind not in inds_used, inds)
+            inds_left = [ind for ind in inds if ind not in inds_used]
 
             # make a copy of the words filtering out the already used ones
             words_left = pres[inds_left]
@@ -476,7 +480,7 @@ def order_choice(presenter, egg, dist_dict):
     idx = np.random.choice(len(pres), 1)[0]
 
     # original inds
-    inds = range(len(pres))
+    inds = list(range(len(pres)))
 
     # keep track of the indices
     inds_used = [idx]
@@ -497,7 +501,7 @@ def order_choice(presenter, egg, dist_dict):
     for i in range(len(pres)-1):
 
         # indices left
-        inds_left = filter(lambda ind: ind not in inds_used, inds)
+        inds_left = [ind for ind in inds if ind not in inds_used]
 
         # make a copy of the words filtering out the already used ones
         words_left = pres[inds_left]
@@ -725,7 +729,6 @@ def compute_feature_weights_dict(pres_list, rec_list, feature_list, dist_dict):
 
                 # get the distance vector for the current word
                 # dists = [dist_dict[c][j][feature] for j in dist_dict[c]]
-
                 # distance between current and next word
                 c_dist = dist_dict[c][n][feature]
 
