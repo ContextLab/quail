@@ -12,6 +12,8 @@ recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
 egg = Egg(pres=presented,rec=recalled)
 
 def test_analysis_acc():
+    print(analyze(egg, analysis='accuracy'))
+    print([np.array([1.]),np.array([.75])])
     assert np.array_equal(analyze(egg, analysis='accuracy').values,[np.array([1.]),np.array([.75])])
 
 def test_analysis_spc():

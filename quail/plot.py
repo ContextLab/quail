@@ -1,4 +1,5 @@
 from __future__ import division
+from builtins import str
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -97,7 +98,7 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
             d = d.loc[idx[subjconds, :],:]
 
             # filter subjgroup
-            subjgroup = filter(lambda x: x in subjconds, subjgroup)
+            subjgroup = [x for x in subjgroup if x in subjconds]
 
         if listconds:
             # make sure its a list

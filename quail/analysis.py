@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 from __future__ import division
+from __future__ import print_function
+from builtins import zip
+from builtins import range
+import six
 import numpy as np
 import pandas as pd
 import warnings
@@ -72,7 +76,7 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
         # perform analysis for each data chunk
         if pass_features:
-            return pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
+            return pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in list(feature_slice[0].as_matrix()[0].keys())])
         else:
             return pd.DataFrame([analysis(pres_slice, rec_slice, **kwargs)], index=index)
 
@@ -139,7 +143,7 @@ def recall_matrix(presented, recalled):
         result.fill(np.nan)
         for idx,rec_word in enumerate(rec_list):
             if rec_word in pres_list:
-                if type(rec_word) is str:
+                if isinstance(rec_word, six.string_types):
                     result[idx]=int(pres_list.index(rec_word)+1)
         return result
 
@@ -361,6 +365,8 @@ def spc_helper(pres_slice, rec_slice):
     # compute recall_matrix for data slice
     recall = recall_matrix(pres_slice, rec_slice)
 
+    print(recall)
+
     # get spc for each row in recall matrix
     spc_matrix = [[1 if pos in lst else 0 for pos in range(1,len(lst)+1)] for lst in recall]
 
@@ -520,7 +526,7 @@ def temporal_helper(pres_slice, rec_slice, permute=False, n_perms=1000):
 
         # turn arrays into lists
         p = list(p)
-        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+        r = list([ri for ri in list(r) if isinstance(ri, str)])
 
         if len(r)>1:
 
@@ -533,7 +539,7 @@ def temporal_helper(pres_slice, rec_slice, permute=False, n_perms=1000):
             else:
                 temporal_clustering.append(compute_feature_weights(p, r, f, distances))
         else:
-            temporal_clustering.append([np.nan]*len(f[0].keys()))
+            temporal_clustering.append([np.nan]*len(list(f[0].keys())))
 
     # return average over rows
     return np.nanmean(temporal_clustering, axis=0)
@@ -570,7 +576,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
         # turn arrays into lists
         p = list(p)
         f = list(f)
-        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+        r = list([ri for ri in list(r) if isinstance(ri, str)])
 
         if len(r)>1:
 
@@ -583,7 +589,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
             else:
                 fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
         else:
-            fingerprint_matrix.append([np.nan]*len(f[0].keys()))
+            fingerprint_matrix.append([np.nan]*len(list(f[0].keys())))
 
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
@@ -618,7 +624,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
         # turn arrays into lists
         p = list(p)
         f = list(f)
-        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+        r = list([ri for ri in list(r) if isinstance(ri, str)])
 
         # add in temporal clustering
         nf = []
@@ -641,7 +647,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
             else:
                 fingerprint_matrix.append(compute_feature_weights(p, r, nf, distances))
         else:
-            fingerprint_matrix.append([np.nan]*len(nf[0].keys()))
+            fingerprint_matrix.append([np.nan]*len(list(nf[0].keys())))
 
     return np.nanmean(fingerprint_matrix, axis=0)
 
@@ -783,7 +789,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                                   pass_features=False,
                                   parallel=parallel)
                 # set indices for lagcrp
-                r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
+                r.columns=list(range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1))
             elif a is 'fingerprint':
                 r = analyze_chunk(d, subjgroup=subjgroup,
                                   listgroup=listgroup,

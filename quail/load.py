@@ -1,10 +1,14 @@
 from __future__ import division
+from __future__ import print_function
+from builtins import zip
+from builtins import str
+from builtins import range
 from sqlalchemy import create_engine, MetaData, Table
 import json
 import math
 import re
 import csv
-from itertools import izip_longest
+# from itertools import zip_longest
 from collections import Counter
 import pandas as pd
 import numpy as np
@@ -78,7 +82,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         data = [record['trialdata'] for part in data for record in part]
 
         # filter out fields that we dont want using isNotNumber function
-        filtered_data = [{k:v for (k,v) in part.items() if isNotNumber(k)} for part in data]
+        filtered_data = [{k:v for (k,v) in list(part.items()) if isNotNumber(k)} for part in data]
 
         # Put all subjects' trial data into a dataframe object from the
         # 'pandas' python library: one option among many for analysis
