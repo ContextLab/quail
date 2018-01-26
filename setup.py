@@ -18,8 +18,8 @@ setup(
         "matplotlib>=1.5.1",
         "scipy>=0.17.1",
         "numpy>=1.10.4",
-        "pandas==0.18.1",
-        "grpcio==1.4.0",
+        "pandas",
+        "grpcio",
         "sqlalchemy",
         "dill",
         "requests",
@@ -28,5 +28,6 @@ setup(
         "multiprocessing",
         "pathos",
         "future",
+        "six",
     ]
 )
