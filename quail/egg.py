@@ -174,11 +174,6 @@ class Egg(object):
         else:
             self.date_created = date_created
 
-        # attach methods
-        self.crack = self.crack
-        self.save = self.save
-        self.info = self.info
-
     def get_pres_items(self):
         """
         Returns a df of presented items
@@ -189,7 +184,7 @@ class Egg(object):
         """
         Returns a df of features for presented items
         """
-        return self.pres.applymap(lambda x: {k:v for k,v in x.iteritems() if k != 'item'})
+        return self.pres.applymap(lambda x: {k:v for k,v in x.iteritems() if k != 'item'} if x is not None else None)
 
     def get_rec_items(self):
         """
@@ -201,7 +196,7 @@ class Egg(object):
         """
         Returns a df of features for recalled items
         """
-        return self.rec.applymap(lambda x: {k:v for k,v in x.iteritems() if k != 'item'})
+        return self.rec.applymap(lambda x: {k:v for k,v in x.iteritems() if k != 'item'} if x is not None else None)
 
 
     def info(self):
@@ -279,7 +274,6 @@ class Egg(object):
         egg_dict = {
             'pres' : self.pres.to_dict(orient='records'),
             'rec' : self.rec.to_dict(orient='records'),
-            'features' : self.features.to_dict(orient='records')
         }
         return egg_dict
 

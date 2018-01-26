@@ -10,8 +10,8 @@ mpl.rcParams['pdf.fonttype'] = 42
 
 def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
          listname='List', subjconds=None, listconds=None, plot_type=None,
-         plot_style=None, title=None, legend=True, xlim=None, ylim=None, save_path=None,
-         **kwargs):
+         plot_style=None, title=None, legend=True, xlim=None, ylim=None,
+         save_path=None, show=True, **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
@@ -67,6 +67,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     save_path : str
         Path to save out figure.  Include the file extension, e.g.
         save_path='figure.pdf'
+
+    show : bool
+        If False, do not show figure, but still return ax handle (default True).
 
 
     Returns
@@ -268,6 +271,7 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     if save_path:
         plt.savefig(save_path)
 
-    plt.show()
+    if show:
+        plt.show()
 
     return ax

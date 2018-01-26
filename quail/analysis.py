@@ -799,6 +799,10 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                           permute=permute,
                           n_perms=n_perms,
                           parallel=parallel)
+    else:
+        raise ValueError('Analysis not recognized. Choose one of the following: '
+                         'accuracy, spc, pfr, lag-crp, fingerprint, temporal, '
+                         'fingerprint_temporal')
 
     # return analysis result
     return FriedEgg(data=r, analysis=analysis, list_length=data.list_length,
