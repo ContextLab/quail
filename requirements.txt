@@ -13,3 +13,4 @@ pathos
 future
 six
 deepdish
+joblib

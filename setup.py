@@ -29,5 +29,6 @@ setup(
         "future",
         "six",
         "deepdish",
+        "joblib",
     ]
 )
