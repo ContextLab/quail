@@ -25,9 +25,9 @@ setup(
         "requests",
         "pydub",
         "google-cloud-speech",
-        "multiprocessing",
         "pathos",
         "future",
         "six",
+        "deepdish",
     ]
 )
