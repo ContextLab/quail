@@ -1,11 +1,8 @@
 from __future__ import division
 from sqlalchemy import create_engine, MetaData, Table
 import json
-import math
 import re
 import csv
-from itertools import izip_longest
-from collections import Counter
 import pandas as pd
 import numpy as np
 from .egg import Egg
