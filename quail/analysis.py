@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import warnings
 from .helpers import *
+import six
 
 def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False, **kwargs):
     """
@@ -132,7 +133,7 @@ def recall_matrix(presented, recalled):
         result.fill(np.nan)
         for idx,rec_word in enumerate(rec_list):
             if rec_word in pres_list:
-                if type(rec_word) is str:
+                if isinstance(rec_word, six.string_types):
                     result[idx]=int(pres_list.index(rec_word)+1)
         return result
 

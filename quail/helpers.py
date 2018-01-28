@@ -4,6 +4,7 @@ from __future__ import division
 import pandas as pd
 import numpy as np
 import pickle
+import six
 
 def list2pd(all_data, subjindex=None, listindex=None):
     """
@@ -106,7 +107,7 @@ def default_dist_funcs(dist_funcs, feature_example):
                 pass
             if key is 'item':
                 pass
-            elif type(feature_example[key]) is str:
+            elif isinstance(feature_example[key], six.string_types):
                 dist_funcs[key] = 'lambda a, b: int(a!=b)'
             elif isinstance(feature_example[key], (int, long, float)) or all([isinstance(i, (int, long, float)) for i in feature_example[key]]):
                 dist_funcs[key] = 'lambda a, b: np.linalg.norm(np.subtract(a,b))'

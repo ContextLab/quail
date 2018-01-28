@@ -415,7 +415,13 @@ def load_example_data(dataset='automatic'):
     assert dataset in ['automatic', 'manual'], "Dataset can only be automatic or manual"
 
     # open pickled egg
-    with open(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg', 'rb') as handle:
-        egg = pickle.load(handle)
-
+    try:
+        with open(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg', 'rb') as handle:
+            egg = pickle.load(handle)
+    except:
+        f = dd.io.load(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg')
+        egg = Egg(pres=f['pres'], rec=f['rec'], dist_funcs=f['dist_funcs'],
+                  subjgroup=f['subjgroup'], subjname=f['subjname'],
+                  listgroup=f['listgroup'], listname=f['listname'],
+                  date_created=f['date_created'])
     return egg.crack()

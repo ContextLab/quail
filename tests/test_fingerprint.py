@@ -6,6 +6,7 @@ from quail.fingerprint import Fingerprint, OptimalPresenter
 from quail.load import load_example_data
 
 egg = load_example_data().crack(subjects=[0])
+print(load_example_data().dist_funcs)
 f = Fingerprint()
 f_egg = Fingerprint(init=egg)
 f_egg_perm = Fingerprint(init=egg, permute=True, nperms=10)
