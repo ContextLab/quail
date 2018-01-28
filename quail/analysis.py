@@ -635,9 +635,10 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
             # RE: PROBLEM BELOW: MAYBE BETTER TO NOT RETURN NANS HERE
             fingerprint_matrix.append([np.nan]*len(f[0].keys()))
 
-    # PROBLEM: SHOULD USE NANMEAN, CURRENTLY MAKING ANY SUBS WITH LEN(REC_LIST) < 1 AVG FINGERPRINT A NAN
     # return average over rows
-    return np.nanmean(fingerprint_matrix, axis=0)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=RuntimeWarning)
+        return np.nanmean(fingerprint_matrix, axis=0)
 
 # fingerprint + temporal clustering analysis
 def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute=True, n_perms=1000):
