@@ -210,6 +210,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
     weights : list
         list of clustering scores for each feature dimension
     """
+    print pres_list
     print rec_list
     # initialize the weights object for just this list
     weights = {}
@@ -217,6 +218,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
         weights[feature] = []
 
     # return default list if there is not enough data to compute the fingerprint
+    # PROBLEM: NEEDS TO CATCH LISTS WHERE THERE ARE < 2 WORDS IN THE PRES_LIST IN REC_LIST, NOT JUST ONES WHERE LEN(REC_LIST) < 2
     if len(rec_list) <= 2:
         print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
         for feature in feature_list[0]:
@@ -303,7 +305,6 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
     print weights
     # average over the cluster scores for a particular dimension
     for feature in weights:
-
         #print len(weights[feature])
         #print weights[feature]
         with warnings.catch_warnings():
@@ -311,6 +312,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
             # print len(weights[feature])
             weights[feature] = np.nanmean(weights[feature])
             print weights[feature]
+            print("HELLO")
 
 
     return [weights[key] for key in weights]
@@ -620,7 +622,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
         r = list(filter(lambda ri: isinstance(ri, str), list(r)))
 
         if len(r)>1:
-
+            print r
             # compute distances
             distances = compute_distances(p, f, dist_funcs)
 
@@ -630,10 +632,12 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
             else:
                 fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
         else:
+            # RE: PROBLEM BELOW: MAYBE BETTER TO NOT RETURN NANS HERE
             fingerprint_matrix.append([np.nan]*len(f[0].keys()))
 
+    # PROBLEM: SHOULD USE NANMEAN, CURRENTLY MAKING ANY SUBS WITH LEN(REC_LIST) < 1 AVG FINGERPRINT A NAN
     # return average over rows
-    return np.mean(fingerprint_matrix, axis=0)
+    return np.nanmean(fingerprint_matrix, axis=0)
 
 # fingerprint + temporal clustering analysis
 def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute=True, n_perms=1000):
