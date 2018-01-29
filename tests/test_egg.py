@@ -67,3 +67,8 @@ def test_egg_analyze():
 def test_egg_analyze_error():
     with pytest.raises(ValueError):
         egg.analyze('acc')
+
+def test_egg_recmat():
+    recmat = [[[3, 4, 2, 1, 0], [4, 2, 5, 3, 2]]]
+    egg = Egg(recmat=recmat, list_length=10)
+    assert isinstance(egg, Egg)

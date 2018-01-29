@@ -82,6 +82,16 @@ class Egg(object):
     listname : string (optional)
         Name of the list grouping variable. Default is 'List'.
 
+    recmat : list (subjects) of lists (experiment) of lists (list/block) of ints.
+        An egg can be optionally created directly from recall matrices. A recall
+        matrix specifies sequences by listing out there indices in the order they
+        were recalled (e.g. [4, 2, 1, None, None]).
+
+    list_length : int
+        The length of the presented lists.  Used to create an egg from a recall
+        matrix (optional).  If list_length is not passed, the length of the
+        presented lists is assumed to be the length of the first list passed.
+
     Attributes
     ----------
 
@@ -121,15 +131,25 @@ class Egg(object):
 
     def __init__(self, pres=None, rec=None, features=None, dist_funcs=None,
                  meta=None, subjgroup=None, subjname='Subject', listgroup=None,
-                 listname='List', date_created=None):
+                 listname='List', date_created=None, recmat=None,
+                 list_length=None):
 
-        # check to see if pres is a list(list(list))
-        if not all(isinstance(item, list) for sub in pres for item in sub):
-            pres = [pres]
+        # handle if recmat is passed
+        if recmat is not None:
+            if list_length is None:
+                warnings.warn('Recall matrix passed, but list_length was not '
+                              'defined. Inferring from length of first list')
+                list_length = len(recmat[0][0])
+            pres = [[[str(word) for word in list(range(0,list_length))] for reclist in recsub] for recsub in recmat]
+            rec = [[[str(word) for word in reclist if word is not None] for reclist in recsub] for recsub in recmat]
+        else:
+            # check to see if pres is a list(list(list))
+            if not all(isinstance(item, list) for sub in pres for item in sub):
+                pres = [pres]
 
-        # check to see if rec is a list(list(list))
-        if not all(isinstance(item, list) for sub in rec for item in sub):
-            rec = [rec]
+            # check to see if rec is a list(list(list))
+            if not all(isinstance(item, list) for sub in rec for item in sub):
+                rec = [rec]
 
         # make sure each subject has same number of lists
         pres = fill_missing(pres)
