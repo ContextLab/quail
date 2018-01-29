@@ -105,7 +105,7 @@ def default_dist_funcs(dist_funcs, feature_example):
         for key in feature_example:
             if key in dist_funcs:
                 pass
-            if key is 'item':
+            if key == 'item':
                 pass
             elif isinstance(feature_example[key], six.string_types):
                 dist_funcs[key] = 'lambda a, b: int(a!=b)'
