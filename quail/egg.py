@@ -184,7 +184,7 @@ class Egg(object):
         """
         Returns a df of features for presented items
         """
-        return self.pres.applymap(lambda x: {k:v for k,v in x.iteritems() if k != 'item'} if x is not None else None)
+        return self.pres.applymap(lambda x: {k:v for k,v in x.items() if k != 'item'} if x is not None else None)
 
     def get_rec_items(self):
         """
@@ -196,7 +196,7 @@ class Egg(object):
         """
         Returns a df of features for recalled items
         """
-        return self.rec.applymap(lambda x: {k:v for k,v in x.iteritems() if k != 'item'} if x is not None else None)
+        return self.rec.applymap(lambda x: {k:v for k,v in x.items() if k != 'item'} if x is not None else None)
 
 
     def info(self):
