@@ -6,7 +6,6 @@ from quail.fingerprint import Fingerprint, OptimalPresenter
 from quail.load import load_example_data
 
 egg = load_example_data().crack(subjects=[0])
-print(egg.dist_funcs)
 f = Fingerprint()
 f_egg = Fingerprint(init=egg)
 f_egg_perm = Fingerprint(init=egg, permute=True, nperms=10)
@@ -50,7 +49,6 @@ def test_optimal_presenter_set_strategy():
 
 def test_optimal_presenter_order():
     egg = load_example_data()
-    print(egg.dist_funcs)
     egg_slice = egg.crack(subjects=[0], lists=[0])
     reordered_egg = presenter.order(egg_slice, nperms=10)
     assert isinstance(reordered_egg, quail.Egg)

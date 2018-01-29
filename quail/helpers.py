@@ -109,7 +109,7 @@ def default_dist_funcs(dist_funcs, feature_example):
                 pass
             elif isinstance(feature_example[key], six.string_types):
                 dist_funcs[key] = 'lambda a, b: int(a!=b)'
-            elif isinstance(feature_example[key], (int, long, float)) or all([isinstance(i, (int, long, float)) for i in feature_example[key]]):
+            elif isinstance(feature_example[key], (int, float)) or all([isinstance(i, (int, float)) for i in feature_example[key]]):
                 dist_funcs[key] = 'lambda a, b: np.linalg.norm(np.subtract(a,b))'
 
         return dist_funcs
