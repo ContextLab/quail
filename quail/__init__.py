@@ -5,3 +5,4 @@ from .plot import plot
 from .helpers import stack_eggs, crack_egg, recmat2egg, df2list
 from .decode_speech import decode_speech
 from .fingerprint import Fingerprint, OptimalPresenter
+from .distance import *

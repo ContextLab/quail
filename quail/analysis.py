@@ -3,8 +3,10 @@ from __future__ import division
 import numpy as np
 import pandas as pd
 import warnings
-from .helpers import *
 import six
+from .helpers import *
+from .distance import dist_funcs as dist_funcs_dict
+
 
 def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False, **kwargs):
     """
@@ -142,7 +144,7 @@ def recall_matrix(presented, recalled):
         result.append(recall_pos(pres_list, rec_list))
     return result
 
-def compute_distances(pres_list, feature_list, dist_funcs):
+def compute_distances(pres_list, feature_list, dist_funcs, dist_funcs_dict):
     """
     Compute distances between list words along n feature dimensions
 
@@ -177,7 +179,7 @@ def compute_distances(pres_list, feature_list, dist_funcs):
             for idx2, item2 in enumerate(pres_list):
 
                 # compute the distance between word 1 and word 2 along some feature dimension
-                dists[idx1,idx2] = eval(dist_funcs[feature])(feature_list[idx1][feature],feature_list[idx2][feature])
+                dists[idx1,idx2] = dist_funcs_dict[dist_funcs[feature]](feature_list[idx1][feature],feature_list[idx2][feature])
 
         # set that distance matrix to the value of a dict where the feature name is the key
         distances[feature] = dists
@@ -519,7 +521,7 @@ def temporal_helper(pres_slice, rec_slice, permute=False, n_perms=1000):
         if len(r)>1:
 
             # compute distances
-            distances = compute_distances(p, f, dist_funcs)
+            distances = compute_distances(p, f, dist_funcs, dist_funcs_dict)
 
             # add optional bootstrapping
             if permute:
@@ -568,7 +570,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
         if len(r)>1:
 
             # compute distances
-            distances = compute_distances(p, f, dist_funcs)
+            distances = compute_distances(p, f, dist_funcs, dist_funcs_dict)
 
             # add optional bootstrapping
             if permute:
@@ -626,7 +628,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
         if len(r)>1:
 
             # compute distances
-            distances = compute_distances(p, nf, dist_funcs_copy)
+            distances = compute_distances(p, nf, dist_funcs_copy, dist_funcs_dict)
 
             # add optional bootstrapping
             if permute:
