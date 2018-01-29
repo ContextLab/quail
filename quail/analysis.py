@@ -135,7 +135,7 @@ def recall_matrix(presented, recalled):
         result.fill(np.nan)
         for idx,rec_word in enumerate(rec_list):
             if rec_word in pres_list:
-                if isinstance(rec_word, six.string_types):
+                if isinstance(rec_word, (six.string_types, six.binary_type)):
                     result[idx]=int(pres_list.index(rec_word)+1)
         return result
 
