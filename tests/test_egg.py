@@ -2,13 +2,42 @@
 
 from quail.analysis import analyze
 from quail.egg import Egg, FriedEgg
+from quail.load import load_example_data
 import pytest
 import pandas as pd
 import six
 
-presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
-recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
-egg = Egg(pres=presented,rec=recalled)
+# generate some fake data
+presented = ['CAT', 'DOG', 'SHOE', 'HORSE']
+recalled = ['HORSE', 'DOG', 'CAT']
+
+features = [{
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'C',
+                    'length' : 3
+                 },
+                 {
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'D',
+                    'length' : 3
+                 },
+                 {
+                    'category' : 'object',
+                    'size' : 'smaller',
+                    'starting letter' : 'S',
+                    'length' : 4
+                 },
+                 {
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'H',
+                    'length' : 5
+                 }
+]
+
+egg = Egg(pres=[presented], rec=[recalled], features=[features])
 
 def test_egg_works():
     assert isinstance(egg, Egg)
@@ -23,13 +52,16 @@ def test_pres_cells_are_dicts():
     assert isinstance(egg.pres.loc[0][0][0], dict)
 
 def test_pres_cells_has_item():
-    assert egg.pres.loc[0][0][0]['item']=='cat'
+    assert egg.pres.loc[0][0][0]['item']=='CAT'
 
 def test_pres_cells_has_item():
-    assert egg.rec.loc[0][0][0]['item']=='bat'
+    assert egg.rec.loc[0][0][0]['item']=='HORSE'
 
 def test_distfuncs_is_dict():
     assert isinstance(egg.dist_funcs, dict)
+
+def test_distfuncs_vals():
+    assert all([val in ['euclidean', 'match'] for val in egg.dist_funcs.values()])
 
 def test_egg_meta():
     assert isinstance(egg.meta, dict)
@@ -38,7 +70,7 @@ def test_egg_get_pres_items():
     assert isinstance(egg.get_pres_items(), pd.DataFrame)
 
 def test_egg_get_pres_items_cat():
-    assert egg.get_pres_items()[0][0][0]=='cat'
+    assert egg.get_pres_items()[0][0][0]=='CAT'
 
 def test_egg_get_pres_features():
     assert isinstance(egg.get_pres_features(), pd.DataFrame)
@@ -47,7 +79,7 @@ def test_egg_get_rec_items():
     assert isinstance(egg.get_rec_items(), pd.DataFrame)
 
 def test_egg_get_rec_items_cat():
-    assert egg.get_rec_items()[0][0][0]=='bat'
+    assert egg.get_rec_items()[0][0][0]=='HORSE'
 
 def test_egg_get_rec_features():
     assert isinstance(egg.get_rec_features(), pd.DataFrame)
