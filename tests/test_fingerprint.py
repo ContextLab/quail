@@ -25,7 +25,6 @@ def test_fingerprint_update():
     assert len(f.history)==1
 
 def test_fingerprint_get_features():
-    print(f_egg.get_features())
     assert isinstance(f_egg.get_features(), list)
 
 presenter = OptimalPresenter()
@@ -49,6 +48,7 @@ def test_optimal_presenter_set_strategy():
     assert presenter_params.strategy is 'stabilize'
 
 def test_optimal_presenter_order():
+    egg = load_example_data()
     egg_slice = egg.crack(subjects=[0], lists=[0])
-    reordered_egg = presenter_params.order(egg_slice, nperms=10)
+    reordered_egg = presenter.order(egg_slice, nperms=10)
     assert isinstance(reordered_egg, quail.Egg)

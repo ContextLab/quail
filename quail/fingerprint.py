@@ -12,6 +12,7 @@ import multiprocessing
 from .egg import Egg
 from .helpers import default_dist_funcs, parse_egg
 from .analysis import analyze_chunk, fingerprint_helper, compute_feature_weights
+from .distance import dist_funcs as builtin_dist_funcs
 
 class Fingerprint(object):
     """
@@ -654,8 +655,7 @@ def compute_distances_dict(egg):
 
             # for each feature in dist_funcs
             for feature in dist_funcs:
-
-                distances[item1][item2][feature] = dist_funcs[feature](features_list[idx1][feature],features_list[idx2][feature])
+                distances[item1][item2][feature] = builtin_dist_funcs[dist_funcs[feature]](features_list[idx1][feature],features_list[idx2][feature])
 
     return distances
 

@@ -1,49 +1,45 @@
 # -*- coding: utf-8 -*-
 
-# from quail.analysis import analyze
-# from quail.analysis import recall_matrix
-# from quail.helpers import mldf2list
-# from quail.egg import Egg
-# import numpy as np
-# import pytest
+from quail.analysis import analyze
+from quail.load import load_example_data
+from quail.egg import Egg
+import numpy as np
+import pytest
+import pandas as pd
 
-# def test_recall_matrix():
-#     pres = [[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']],[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
-#     rec = [[['bat', 'bat', 'cat', 'popsicle'],['animal', 'horse', 'cat']],[['bat', 'bat', 'cat', 'popsicle'],['animal', 'horse', 'cat']]]
-#     assert mldf2list(recall_matrix(pres,rec))==[[[2,2,1,0],[2,4,0]],[[2,2,1,0],[2,4,0]]]
+presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
+recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
+egg = Egg(pres=presented,rec=recalled)
 
-# def test_analysis_analyze():
-#     pres = [[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']],[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
-#     rec = [[['bat', 'bat', 'cat', 'popsicle'],['animal', 'horse', 'cat']],[['bat', 'bat', 'cat', 'popsicle'],['animal', 'horse', 'cat']]]
-#     egg = Egg(pres=pres, rec=rec)
-#     analyze(egg, subjgroup=[0,1])
+def test_analysis_acc():
+    assert np.array_equal(analyze(egg, analysis='accuracy').data.values,[np.array([1.]),np.array([.75])])
 
-# def test_analysis_recall_matrix():
-# 	presented=[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
-# 	recalled=[['bat', 'bat', 'cat', 'popsicle'],['animal', 'horse', 'cat']]
-#
-# 	assert recall_matrix(presented, recalled)==[[2, 2, 1, np.nan],[2, 4, -1, np.nan]]
-#
-# def test_analysis_serial_pos():
-# 	recall_matrix=[[4, 3, 1, 0, 0],[4, 5, 0, 0, 0]]
-# 	assert np.array_equal(serial_pos(recall_matrix),np.array([.5, 0, .5, 1, .5]))
-#
-# def test_analysis_pfr():
-# 	recall_matrix1 =[[4, 3, 1, 0, 0],[4, 5, 0, 0, 0]]
-# 	recall_matrix2 =[[1, 2, 3],[3, 2, 1]]
-#
-# 	assert np.array_equal(pfr(recall_matrix1),np.array([0, 0, 0, 1, 0]))
-# 	assert np.array_equal(pfr(recall_matrix2),np.array([.5, 0, .5]))
-#
-# def test_analysis_plr():
-# 	recall_matrix1 =[[4, 3, 1, 0, 0],[4, 5, 0, 0, 0]]
-# 	recall_matrix2 =[[1, 2, 3],[3, 2, 1]]
-# 	recall_matrix3 =[[1, 2, 3],[3, 2, 3]]
-#
-# 	assert np.array_equal(plr(recall_matrix1),np.array([.5, 0, 0, 0, .5]))
-# 	assert np.array_equal(plr(recall_matrix2),np.array([.5, 0, .5]))
-# 	assert np.array_equal(plr(recall_matrix3),np.array([0, 0, 1]))
-#
-# def test_analysis_crp():
-# 	myList=[[8, 7, 1, 2, 3, 5, 6, 4],[8, 7, 1, 2, 3, 5, 6, 4]]
-# 	assert crp(myList)==[[0.0, 0.5, 0.0, 0.0, 0.0, 0.33333333333333331, 0.33333333333333331, 0.75, 0.33333333333333331, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.5, 0.0, 0.0, 0.0, 0.33333333333333331, 0.33333333333333331, 0.75, 0.33333333333333331, 0.0, 0.0, 0.0, 0.0, 0.0]]
+def test_analysis_spc():
+    assert np.array_equal(analyze(egg, analysis='spc').data.values,[np.array([ 1.,  1.,  1.,  1.]),np.array([ 1.,  1.,  0.,  1.])])
+
+def test_analysis_spc_listgroup():
+    assert np.array_equal(analyze(egg, listgroup=[1,1], listname='Frank', analysis='spc').data.values,np.array([[ 1. ,  1. ,  0.5,  1. ]]))
+
+def test_analysis_pfr():
+    assert np.array_equal(analyze(egg, analysis='pfr').data.values,[np.array([ 0.,  1.,  0.,  0.]), np.array([ 0.,  1.,  0.,  0.])])
+
+def test_analysis_pfr_listgroup():
+    assert np.array_equal(analyze(egg, listgroup=['one','one'], analysis='pfr').data.values,np.array([[ 0.,  1.,  0.,  0.]]))
+
+def test_analysis_lagcrp():
+    # example from kahana lab lag-crp tutorial
+    presented=[[['1', '2', '3', '4', '5', '6', '7', '8']]]
+    recalled=[[['8', '7', '1', '2', '3', '5', '6', '4']]]
+    egg = Egg(pres=presented,rec=recalled)
+    assert np.allclose(analyze(egg, analysis='lagcrp').data.values,np.array([[0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.333333, 0.333333, np.nan, 0.75, 0.333333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]), equal_nan=True)
+
+# MULTI SUBJECT
+presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']],[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
+recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']],[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
+multisubj_egg = Egg(pres=presented,rec=recalled)
+
+def test_analysis_acc_multisubj():
+    assert np.array_equal(analyze(multisubj_egg, analysis='accuracy').data.values,np.array([[ 1.],[ .75],[ 1.],[ .75]]))
+
+def test_analysis_spc_multisubj():
+    assert np.array_equal(analyze(multisubj_egg, analysis='spc').data.values,np.array([[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.],[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.]]))

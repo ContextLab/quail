@@ -122,7 +122,7 @@ If you have a question, comment or concern about the software, please post a que
 
 <h2>Testing</h2>
 
-![Build Status](https://travis-ci.com/ContextLab/quail.svg?token=hxjzzuVkr2GZrDkPGN5n&branch=master)
+![Build Status](https://travis-ci.org/ContextLab/quail.svg?branch=master)
 
 
 To test quail, install pytest (`pip install pytest`) and run `pytest` in the quail folder

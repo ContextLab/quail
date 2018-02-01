@@ -9,17 +9,17 @@ import matplotlib as mpl
 
 mpl.rcParams['pdf.fonttype'] = 42
 
-def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
+def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
          listname='List', subjconds=None, listconds=None, plot_type=None,
-         plot_style=None, title=None, legend=True, xlim=None, ylim=None, save_path=None,
-         **kwargs):
+         plot_style=None, title=None, legend=True, xlim=None, ylim=None,
+         save_path=None, show=True, **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
     Parameters
     ----------
-    data : Pandas DataFrame or list of Pandas DataFrames
-        The result of a quail analysis
+    results : quail.FriedEgg
+        Object containing results
 
     subjgroup : list of strings or ints
         String/int variables indicating how to group over subjects.  Must be
@@ -69,6 +69,9 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
         Path to save out figure.  Include the file extension, e.g.
         save_path='figure.pdf'
 
+    show : bool
+        If False, do not show figure, but still return ax handle (default True).
+
 
     Returns
     ----------
@@ -76,171 +79,200 @@ def plot(data, subjgroup=None, subjname='Subject Group', listgroup=None,
         An axis handle for the figure
 
     """
-    if type(data) is not list:
-        data=[data]
 
-    for d in data:
+    def plot_acc(data, plot_style, plot_type, listname, subjname, **kwargs):
 
-        attrs = d.attrs
+        # set defaul style to bar
+        plot_style = plot_style if plot_style is not None else 'bar'
+        plot_type = plot_type if plot_type is not None else 'list'
 
-        # if no grouping, set default to iterate over each list independently
-        subjgroup = subjgroup if subjgroup is not None else d.index.levels[0].values
-        listgroup = listgroup if listgroup is not None else d.index.levels[1].values
+        if plot_style is 'bar':
+            plot_func = sns.barplot
+        elif plot_style is 'swarm':
+            plot_func = sns.swarmplot
+        elif plot_style is 'violin':
+            plot_func = sns.violinplot
 
-        if subjconds:
-            # make sure its a list
-            if type(subjconds) is not list:
-                subjconds=[subjconds]
+        if plot_type is 'list':
+            ax = plot_func(data=data, x=listname, y="Accuracy", **kwargs)
+        elif plot_type is 'subject':
+            ax = plot_func(data=data, x=subjname, y="Accuracy", **kwargs)
+        elif plot_type is 'split':
+            ax = plot_func(data=data, x=subjname, y="Accuracy", hue=listname, **kwargs)
 
-            # slice
-            idx = pd.IndexSlice
-            d = d.sort_index()
-            d = d.loc[idx[subjconds, :],:]
+        return ax
 
-            # filter subjgroup
-            subjgroup = [x for x in subjgroup if x in subjconds]
+    def plot_temporal(data, plot_style, plot_type, listname, subjname, **kwargs):
 
-        if listconds:
-            # make sure its a list
-            if type(listconds) is not list:
-                listconds=[listconds]
+        # set default style to bar
+        plot_style = plot_style if plot_style is not None else 'bar'
+        plot_type = plot_type if plot_type is not None else 'list'
 
-            # slice
-            idx = pd.IndexSlice
-            d = d.sort_index()
-            d = d.loc[idx[:, listconds],:]
+        if plot_style is 'bar':
+            plot_func = sns.barplot
+        elif plot_style is 'swarm':
+            plot_func = sns.swarmplot
+        elif plot_style is 'violin':
+            plot_func = sns.violinplot
 
-        # convert to tiny and format for plotting
-        tidy_data = format2tidy(d, subjname, listname, subjgroup, **attrs)
+        if plot_type is 'list':
+            ax = plot_func(data=data, x=listname, y="Temporal Clustering Score", **kwargs)
+        elif plot_type is 'subject':
+            ax = plot_func(data=data, x=subjname, y="Temporal Clustering Score", **kwargs)
+        elif plot_type is 'split':
+            ax = plot_func(data=data, x=subjname, y="Temporal Clustering Score", hue=listname, **kwargs)
 
-        #plot!
-        if attrs['analysis_type'] is 'accuracy':
+        return ax
 
-            # set defaul style to bar
-            plot_style = plot_style if plot_style is not None else 'bar'
-            plot_type = plot_type if plot_type is not None else 'list'
+    def plot_fingerprint(data, plot_style, plot_type, listname, subjname, **kwargs):
 
-            if plot_style is 'bar':
-                plot_func = sns.barplot
-            elif plot_style is 'swarm':
-                plot_func = sns.swarmplot
-            elif plot_style is 'violin':
-                plot_func = sns.violinplot
+        # set default style to violin
+        plot_style = plot_style if plot_style is not None else 'violin'
+        plot_type = plot_type if plot_type is not None else 'list'
 
-            if plot_type is 'list':
-                ax = plot_func(data=tidy_data, x=listname, y="Accuracy", **kwargs)
-            elif plot_type is 'subject':
-                ax = plot_func(data=tidy_data, x=subjname, y="Accuracy", **kwargs)
-            elif plot_type is 'split':
-                ax = plot_func(data=tidy_data, x=subjname, y="Accuracy", hue=listname, **kwargs)
+        if plot_style is 'bar':
+            plot_func = sns.barplot
+        elif plot_style is 'swarm':
+            plot_func = sns.swarmplot
+        elif plot_style is 'violin':
+            plot_func = sns.violinplot
 
-        elif attrs['analysis_type'] is 'temporal':
+        if plot_type is 'list':
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
+        elif plot_type is 'subject':
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
+        else:
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
 
-            # set default style to bar
-            plot_style = plot_style if plot_style is not None else 'bar'
-            plot_type = plot_type if plot_type is not None else 'list'
+        return ax
 
-            if plot_style is 'bar':
-                plot_func = sns.barplot
-            elif plot_style is 'swarm':
-                plot_func = sns.swarmplot
-            elif plot_style is 'violin':
-                plot_func = sns.violinplot
+    def plot_fingerprint_temporal(data, plot_style, plot_type, listname, subjname, **kwargs):
 
-            if plot_type is 'list':
-                ax = plot_func(data=tidy_data, x=listname, y="Temporal Clustering Score", **kwargs)
-            elif plot_type is 'subject':
-                ax = plot_func(data=tidy_data, x=subjname, y="Temporal Clustering Score", **kwargs)
-            elif plot_type is 'split':
-                ax = plot_func(data=tidy_data, x=subjname, y="Temporal Clustering Score", hue=listname, **kwargs)
+        # set default style to violin
+        plot_style = plot_style if plot_style is not None else 'violin'
+        plot_type = plot_type if plot_type is not None else 'list'
 
-        elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
+        if plot_style is 'bar':
+            plot_func = sns.barplot
+        elif plot_style is 'swarm':
+            plot_func = sns.swarmplot
+        elif plot_style is 'violin':
+            plot_func = sns.violinplot
 
-            # set default style to violin
-            plot_style = plot_style if plot_style is not None else 'violin'
-            plot_type = plot_type if plot_type is not None else 'list'
+        order = list(tidy_data['Feature'].unique())
+        order.remove('temporal')
+        order = order + ['temporal']
+        if plot_type is 'list':
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, order=order, **kwargs)
+        elif plot_type is 'subject':
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, order=order, **kwargs)
+        else:
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", order=order, **kwargs)
 
-            if plot_style is 'bar':
-                plot_func = sns.barplot
-            elif plot_style is 'swarm':
-                plot_func = sns.swarmplot
-            elif plot_style is 'violin':
-                plot_func = sns.violinplot
+        return ax
 
-            if attrs['analysis_type'] is 'fingerprint':
-                if plot_type is 'list':
-                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
-                elif plot_type is 'subject':
-                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
-                else:
-                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
-            else:
-                # move order to the end
-                order = list(tidy_data['Feature'].unique())
-                order.remove('temporal')
-                order = order + ['temporal']
-                if plot_type is 'list':
-                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, order=order, **kwargs)
-                elif plot_type is 'subject':
-                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, order=order, **kwargs)
-                else:
-                    ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", order=order, **kwargs)
+    def plot_spc(data, plot_style, plot_type, listname, subjname, **kwargs):
 
-        elif attrs['analysis_type'] is 'spc':
+        plot_type = plot_type if plot_type is not None else 'list'
 
-            plot_type = plot_type if plot_type is not None else 'list'
+        if plot_type is 'subject':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
+        elif plot_type is 'list':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
+        ax.set_xlim(0, 15)
 
-            if plot_type is 'subject':
-                ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
-            elif plot_type is 'list':
-                ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
-            ax.set_xlim(0,attrs['list_length']-1)
-            # plt.xlabel('$Proportion Recalled$', fontsize = 20)
-            # plt.ylabel('$Subject$', fontsize = 20)
+        return ax
 
-        elif attrs['analysis_type'] is 'pfr' or attrs['analysis_type'] is 'pnr':
-            n=attrs['n']
-            del attrs['n']
+    def plot_pnr(data, plot_style, plot_type, listname, subjname, position, list_length, **kwargs):
 
-            plot_type = plot_type if plot_type is not None else 'list'
+        plot_type = plot_type if plot_type is not None else 'list'
 
-            if plot_type is 'subject':
-                ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Recall: Position ' + str(n), unit="Subject", condition=subjname, **kwargs)
-            elif plot_type is 'list':
-                ax = sns.tsplot(data = tidy_data, time="Position", value='Probability of Recall: Position ' + str(n), unit="Subject", condition=listname, **kwargs)
-            ax.set_xlim(0,attrs['list_length']-1)
+        if plot_type is 'subject':
+            ax = sns.tsplot(data = data, time="Position", value='Probability of Recall: Position ' + str(position), unit="Subject", condition=subjname, **kwargs)
+        elif plot_type is 'list':
+            ax = sns.tsplot(data = data, time="Position", value='Probability of Recall: Position ' + str(position), unit="Subject", condition=listname, **kwargs)
+        ax.set_xlim(0,list_length-1)
 
-        if attrs['analysis_type']=='lagcrp':
+        return ax
 
-            plot_type = plot_type if plot_type is not None else 'list'
+    def plot_lagcrp(data, plot_style, plot_type, listname, subjname, **kwargs):
 
-            if plot_type is 'subject':
-                ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit="Subject", condition=subjname, **kwargs)
-            elif plot_type is 'list':
-                ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit="Subject", condition=listname, **kwargs)
-            ax.set_xlim(-5,5)
+        plot_type = plot_type if plot_type is not None else 'list'
 
-        # add title
-        if title:
-            plt.title(title)
+        if plot_type is 'subject':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit="Subject", condition=subjname, **kwargs)
+        elif plot_type is 'list':
+            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit="Subject", condition=listname, **kwargs)
+        ax.set_xlim(-5,5)
 
-        if legend is False:
-            try:
-                ax.legend_.remove()
-            except:
-                pass
+        return ax
 
-        if xlim:
-            plt.xlim(xlim)
+    # if no grouping, set default to iterate over each list independently
+    subjgroup = subjgroup if subjgroup is not None else results.data.index.levels[0].values
+    listgroup = listgroup if listgroup is not None else results.data.index.levels[1].values
 
-        if ylim:
-            plt.ylim(ylim)
+    if subjconds:
+        # make sure its a list
+        if type(subjconds) is not list:
+            subjconds=[subjconds]
 
-        if save_path:
-            plt.savefig(save_path)
+        # slice
+        idx = pd.IndexSlice
+        results.data = results.data.sort_index()
+        results.data = results.data.loc[idx[subjconds, :],:]
 
+        # filter subjgroup
+        subjgroup = filter(lambda x: x in subjconds, subjgroup)
+
+    if listconds:
+        # make sure its a list
+        if type(listconds) is not list:
+            listconds=[listconds]
+
+        # slice
+        idx = pd.IndexSlice
+        results.data = results.data.sort_index()
+        results.data = results.data.loc[idx[:, listconds],:]
+
+    # convert to tiny and format for plotting
+    tidy_data = format2tidy(results.data, subjname, listname, subjgroup, analysis=results.analysis, position=results.position)
+
+    #plot!
+    if results.analysis is 'accuracy':
+        ax = plot_acc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
+    elif results.analysis is 'temporal':
+        ax = plot_temporal(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
+    elif results.analysis is 'fingerprint':
+        ax = plot_fingerprint(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
+    elif results.analysis is 'fingerprint_temporal':
+        ax = plot_fingerprint_temporal(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
+    elif results.analysis is 'spc':
+        ax = plot_spc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
+    elif results.analysis is 'pfr' or results.analysis is 'pnr':
+        ax = plot_pnr(tidy_data, plot_style, plot_type, listname, subjname, position=results.position, list_length=results.list_length,  **kwargs)
+    elif results.analysis is 'lagcrp':
+        ax = plot_lagcrp(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
+
+    # add title
+    if title:
+        plt.title(title)
+
+    if legend is False:
+        try:
+            ax.legend_.remove()
+        except:
+            pass
+
+    if xlim:
+        plt.xlim(xlim)
+
+    if ylim:
+        plt.ylim(ylim)
+
+    if save_path:
+        plt.savefig(save_path)
+
+    if show:
         plt.show()
-
-
 
     return ax
