@@ -190,7 +190,9 @@ def compute_distances(pres_list, feature_list, dist_funcs):
 
     return distances
 
+
 def compute_feature_weights(pres_list, rec_list, feature_list, distances):
+
     """
     Compute clustering scores along a set of feature dimensions
 
@@ -210,19 +212,19 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
     weights : list
         list of clustering scores for each feature dimension
     """
-    print pres_list
-    print rec_list
+
+
     # initialize the weights object for just this list
     weights = {}
     for feature in feature_list[0]:
         weights[feature] = []
 
-    # return default list if there is not enough data to compute the fingerprint
-    # PROBLEM: NEEDS TO CATCH LISTS WHERE THERE ARE < 2 WORDS IN THE PRES_LIST IN REC_LIST, NOT JUST ONES WHERE LEN(REC_LIST) < 2
-    if len(rec_list) <= 2:
-        print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
+    # return NaNs if there is not enough data to compute the fingerprint
+    if len([i for i in rec_list if i in pres_list]) <= 2:
+
+        print('Not enough recalls to compute fingerprint, setting fingerprint to NaNs')
         for feature in feature_list[0]:
-            weights[feature] = .5
+            weights[feature] = np.nan
 
         return [weights[key] for key in weights]
 
@@ -266,53 +268,12 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
             past_idxs.append(pres_list.index(c))
             past_words.append(c)
 
-        elif (c in pres_list and n not in pres_list):
-            print "option 1"
-            print c
-            print n
-            print "________"
-        elif (c not in pres_list and n in pres_list):
-            print "option 2"
-            print c
-            print n
-            print "________"
-        elif (c not in pres_list and n not in pres_list):
-            print "option 3"
-            print c
-            print n
-            print "________"
-        # elif (c in pres_list and n in pres_list) and (c in past_words and n not in past_words):
-        #     print "option 1"
-        #     print "c is " + str(c)
-        #     print "n is " + str(n)
-        #     print "______________"
-        # elif (c in pres_list and n in pres_list) and (c in past_words and n in past_words):
-        #     print "option 2"
-        #     print "c is " + str(c)
-        #     print "n is " + str(n)
-        #     print "______________"
-        # elif (c in pres_list and n in pres_list) and (c in past_words and n not in past_words):
-        #     print "option 3"
-        #     print "c is " + str(c)
-        #     print "n is " + str(n)
-        #     print "______________"
-        # else:
-        #     print c
-        #     print n
-
-
-    print type(weights)
-    print weights
     # average over the cluster scores for a particular dimension
     for feature in weights:
-        #print len(weights[feature])
-        #print weights[feature]
+
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=RuntimeWarning)
-            # print len(weights[feature])
             weights[feature] = np.nanmean(weights[feature])
-            print weights[feature]
-            print("HELLO")
 
 
     return [weights[key] for key in weights]
@@ -622,7 +583,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
         r = list(filter(lambda ri: isinstance(ri, str), list(r)))
 
         if len(r)>1:
-            print r
+
             # compute distances
             distances = compute_distances(p, f, dist_funcs)
 
@@ -632,7 +593,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
             else:
                 fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
         else:
-            # RE: PROBLEM BELOW: MAYBE BETTER TO NOT RETURN NANS HERE
+            print('Not enough recalls to compute fingerprint, setting fingerprint to NaNs')
             fingerprint_matrix.append([np.nan]*len(f[0].keys()))
 
     # return average over rows
