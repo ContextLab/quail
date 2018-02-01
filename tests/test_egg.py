@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from quail.analysis import analyze
+from quail.analysis.analysis import analyze
 from quail.egg import Egg, FriedEgg
 from quail.load import load_example_data
 import pytest

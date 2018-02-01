@@ -11,7 +11,8 @@ from joblib import Parallel, delayed
 import multiprocessing
 from .egg import Egg
 from .helpers import default_dist_funcs, parse_egg
-from .analysis import analyze_chunk, fingerprint_helper, compute_feature_weights
+from .analysis.analysis import _analyze_chunk
+from .analysis.fingerprint import fingerprint_helper, compute_feature_weights
 from .distance import dist_funcs as builtin_dist_funcs
 
 class Fingerprint(object):
@@ -62,7 +63,7 @@ class Fingerprint(object):
         self.history = []
 
         if init is not None:
-            data = analyze_chunk(init,
+            data = _analyze_chunk(init,
                                 analysis=fingerprint_helper,
                                 analysis_type='fingerprint',
                                 pass_features=True,
@@ -96,7 +97,7 @@ class Fingerprint(object):
         # increment n
         self.n+=1
 
-        next_weights = np.nanmean(analyze_chunk(egg,
+        next_weights = np.nanmean(_analyze_chunk(egg,
                           analysis=fingerprint_helper,
                           analysis_type='fingerprint',
                           pass_features=True,

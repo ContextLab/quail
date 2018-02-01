@@ -8,8 +8,8 @@ import deepdish as dd
 import inspect
 import warnings
 import pandas as pd
-from .analysis import recall_matrix
-from .analysis import analyze
+from .analysis.recmat import recall_matrix
+from .analysis.analysis import analyze
 from .plot import plot
 from .helpers import list2pd, default_dist_funcs, crack_egg, fill_missing, merge_pres_feats, df2list
 

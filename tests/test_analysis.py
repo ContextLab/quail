@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from quail.analysis import analyze
+from quail.analysis.analysis import analyze
 from quail.load import load_example_data
 from quail.egg import Egg
 import numpy as np
@@ -12,6 +12,7 @@ recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
 egg = Egg(pres=presented,rec=recalled)
 
 def test_analysis_acc():
+    print(analyze(egg, analysis='accuracy').data.values)
     assert np.array_equal(analyze(egg, analysis='accuracy').data.values,[np.array([1.]),np.array([.75])])
 
 def test_analysis_spc():
