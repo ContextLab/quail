@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 from __future__ import division
+from builtins import str
+from builtins import range
 import pandas as pd
 import numpy as np
 import pickle
@@ -237,7 +239,7 @@ def fill_missing(x):
     """
 
     # find subject with max number of lists
-    maxlen = max(map(lambda xi: len(xi), x))
+    maxlen = max([len(xi) for xi in x])
 
     subs = []
 

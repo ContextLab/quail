@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 from __future__ import division
+from __future__ import print_function
+from builtins import zip
+from builtins import range
+import six
 import numpy as np
 import pandas as pd
 import warnings
@@ -78,7 +82,7 @@ def analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, list
 
         # perform analysis for each data chunk
         if pass_features:
-            return pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in feature_slice[0].as_matrix()[0].keys()])
+            return pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in list(feature_slice[0].as_matrix()[0].keys())])
         else:
             return pd.DataFrame([analysis(pres_slice, rec_slice, **kwargs)], index=index)
 
@@ -516,7 +520,7 @@ def temporal_helper(pres_slice, rec_slice, permute=False, n_perms=1000):
 
         # turn arrays into lists
         p = list(p)
-        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+        r = list([ri for ri in list(r) if isinstance(ri, str)])
 
         if len(r)>1:
 
@@ -529,7 +533,7 @@ def temporal_helper(pres_slice, rec_slice, permute=False, n_perms=1000):
             else:
                 temporal_clustering.append(compute_feature_weights(p, r, f, distances))
         else:
-            temporal_clustering.append([np.nan]*len(f[0].keys()))
+            temporal_clustering.append([np.nan]*len(list(f[0].keys())))
 
     # return average over rows
     return np.nanmean(temporal_clustering, axis=0)
@@ -565,7 +569,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
         # turn arrays into lists
         p = list(p)
         f = list(f)
-        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+        r = list([ri for ri in list(r) if isinstance(ri, str)])
 
         if len(r)>1:
 
@@ -578,7 +582,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute
             else:
                 fingerprint_matrix.append(compute_feature_weights(p, r, f, distances))
         else:
-            fingerprint_matrix.append([np.nan]*len(f[0].keys()))
+            fingerprint_matrix.append([np.nan]*len(list(f[0].keys())))
 
     # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
@@ -613,7 +617,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
         # turn arrays into lists
         p = list(p)
         f = list(f)
-        r = list(filter(lambda ri: isinstance(ri, str), list(r)))
+        r = list([ri for ri in list(r) if isinstance(ri, str)])
 
         # add in temporal clustering
         nf = []
@@ -636,7 +640,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
             else:
                 fingerprint_matrix.append(compute_feature_weights(p, r, nf, distances))
         else:
-            fingerprint_matrix.append([np.nan]*len(nf[0].keys()))
+            fingerprint_matrix.append([np.nan]*len(list(nf[0].keys())))
 
     return np.nanmean(fingerprint_matrix, axis=0)
 
