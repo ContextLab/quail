@@ -21,7 +21,7 @@ from .fingerprint import fingerprint_helper, fingerprint_temporal_helper
 # main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
             listname='List', analysis=None, position=0, permute=False, n_perms=1000,
-            parallel=False, match='exact', distance='euclidean'):
+            parallel=False, match='exact', distance='correlation'):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 

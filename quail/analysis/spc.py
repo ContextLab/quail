@@ -9,8 +9,22 @@ def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     ----------
     pres_slice : Pandas Dataframe
         chunk of presentation data to be analyzed
+
     rec_slice : Pandas Dataframe
         chunk of recall data to be analyzed
+
+    match : str (exact, best or smooth)
+        Matching approach to compute recall matrix.  If exact, the presented and
+        recalled items must be identical (default).  If best, the recalled item
+        that is most similar to the presented items will be selected. If smooth,
+        a weighted average of all presented items will be used, where the
+        weights are derived from the similarity between the recalled item and
+        each presented item.
+
+    distance : str
+        The distance function used to compare presented and recalled items.
+        Applies only to 'best' and 'smooth' matching approaches.  Can be any
+        distance function supported by numpy.spatial.distance.cdist.
 
     Returns
     ----------
@@ -19,17 +33,16 @@ def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
 
     """
 
-    # compute recall_matrix for data slice
+    def spc(lst):
+        return [1 if pos in lst else 0 for pos in range(1,len(lst)+1)]
+
     recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
 
-    # get spc for each row in recall matrix
     if match in ['exact', 'best']:
-        spc_matrix = [[1 if pos in lst else 0 for pos in range(1,len(lst)+1)] for lst in recall]
+        result = [spc(lst) for lst in recall]
     else:
-        spc_matrix = recall
+        result = recall
 
-    # average over rows
-    prop_recalled = np.nanmean(spc_matrix, axis=0)
-    print(prop_recalled)
+    prop_recalled = np.nanmean(result, axis=0)
 
     return prop_recalled
