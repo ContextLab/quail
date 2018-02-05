@@ -21,7 +21,7 @@ from .fingerprint import fingerprint_helper, fingerprint_temporal_helper
 # main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
             listname='List', analysis=None, position=0, permute=False, n_perms=1000,
-            parallel=False):
+            parallel=False, match='exact', distance='euclidean'):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -107,7 +107,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                           analysis=accuracy_helper,
                           analysis_type='accuracy',
                           pass_features=False,
-                          parallel=parallel)
+                          parallel=parallel,
+                          match=match,
+                          distance=distance)
     elif analysis is 'spc':
         r = _analyze_chunk(data, subjgroup=subjgroup,
                           listgroup=listgroup,
@@ -116,7 +118,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                           analysis=spc_helper,
                           analysis_type='spc',
                           pass_features=False,
-                          parallel=parallel)
+                          parallel=parallel,
+                          match=match,
+                          distance=distance)
     elif analysis is 'pfr':
         r = _analyze_chunk(data, subjgroup=subjgroup,
                           listgroup=listgroup,
@@ -225,19 +229,6 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, lis
         DataFrame containing the analysis results
 
     """
-    # if no grouping, set default to iterate over each list independently
-    subjgroup = subjgroup if subjgroup else data.pres.index.levels[0].values
-    listgroup = listgroup if listgroup else data.pres.index.levels[1].values
-
-    # create a dictionary for grouping
-    subjdict = {subj : data.pres.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
-    # listdict = {lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
-
-    # allow for lists of listgroup arguments
-    if all(isinstance(el, list) for el in listgroup):
-        listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgrpsub)] for lst in set(listgrpsub)} for listgrpsub in listgroup]
-    else:
-        listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
 
     # perform the analysis
     def perform_analysis(subj, lst):
@@ -248,7 +239,7 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, lis
         pres_slice.list_length = data.list_length
 
         rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-        rec_slice = rec_slice.applymap(lambda x: x['item'] if x is not None else None)
+        rec_slice = rec_slice.applymap(lambda x: x['item'] if x is not None else np.nan)
 
         # if features are need for analysis, get the features for this slice of data
         if pass_features:
@@ -264,6 +255,20 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, lis
         else:
             return pd.DataFrame([analysis(pres_slice, rec_slice, **kwargs)], index=index)
 
+
+    # if no grouping, set default to iterate over each list independently
+    subjgroup = subjgroup if subjgroup else data.pres.index.levels[0].values
+    listgroup = listgroup if listgroup else data.pres.index.levels[1].values
+
+    # create a dictionary for grouping
+    subjdict = {subj : data.pres.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
+
+    # allow for lists of listgroup arguments
+    if all(isinstance(el, list) for el in listgroup):
+        listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgrpsub)] for lst in set(listgrpsub)} for listgrpsub in listgroup]
+    else:
+        listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
+
     # create list of chunks to process
     a=[]
     b=[]
@@ -277,13 +282,13 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, lis
     del kwargs['parallel']
 
     # if we're running permutation tests, use multiprocessing
-    if parallel==True:
+    if parallel:
         import multiprocessing
         from pathos.multiprocessing import ProcessingPool as Pool
         p = Pool(multiprocessing.cpu_count())
         analyzed_data = p.map(perform_analysis, a, b)
     else:
-        analyzed_data = [perform_analysis(ai, bi) for ai,bi in zip(a,b)]
+        analyzed_data = [perform_analysis(ai, bi) for ai, bi in zip(a, b)]
 
     # concatenate slices
     return pd.concat(analyzed_data)

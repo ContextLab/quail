@@ -1,7 +1,7 @@
 import numpy as np
 from .recmat import recall_matrix
 
-def spc_helper(pres_slice, rec_slice):
+def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     """
     Computes probability of a word being recalled (in the appropriate recall list), given its presentation position
 
@@ -20,12 +20,16 @@ def spc_helper(pres_slice, rec_slice):
     """
 
     # compute recall_matrix for data slice
-    recall = recall_matrix(pres_slice, rec_slice)
+    recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
 
     # get spc for each row in recall matrix
-    spc_matrix = [[1 if pos in lst else 0 for pos in range(1,len(lst)+1)] for lst in recall]
+    if match in ['exact', 'best']:
+        spc_matrix = [[1 if pos in lst else 0 for pos in range(1,len(lst)+1)] for lst in recall]
+    else:
+        spc_matrix = recall
 
     # average over rows
-    prop_recalled = np.mean(spc_matrix, axis=0)
+    prop_recalled = np.nanmean(spc_matrix, axis=0)
+    print(prop_recalled)
 
     return prop_recalled

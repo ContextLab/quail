@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 from .recmat import recall_matrix
 
-def accuracy_helper(pres_slice, rec_slice):
+def accuracy_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     """
     Computes proportion of words recalled
 
@@ -21,7 +21,7 @@ def accuracy_helper(pres_slice, rec_slice):
     """
 
     # compute recall_matrix for data slice
-    recall = recall_matrix(pres_slice, rec_slice)
+    recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
 
     # simple function that returns 1 if item encoded in position n is in recall list
     def compute_acc(lst):

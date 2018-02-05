@@ -1,3 +1,4 @@
+from __future__ import division
 import warnings
 import numpy as np
 from ..distance import dist_funcs as dist_funcs_dict
@@ -230,19 +231,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
     return [weights[key] for key in weights]
 
 def permute_fingerprint_serial(p, r, f, distances, n_perms=100):
-
-    r_perms = []
-    r_real = compute_feature_weights(p, r, f, distances)
-
-    for iperm in range(n_perms):
-        r_perm = list(np.random.permutation(r))
-        r_perms.append(compute_feature_weights(p, r_perm, f, distances))
-
-    r_perms_bool = []
-    for perm in r_perms:
-        r_perm_bool = []
-        for idx, feature_perm in enumerate(perm):
-            r_perm_bool.append(feature_perm < r_real[idx])
-        r_perms_bool.append(r_perm_bool)
-
-    return np.sum(np.array(r_perms_bool), axis=0) / n_perms
+    perms = [compute_feature_weights(p, list(np.random.permutation(r)), f, distances) for i in range(n_perms)]
+    real = compute_feature_weights(p, r, f, distances)
+    bools = [[f < r for f, r in zip(perm, real)] for perm in perms]
+    return np.sum(np.array(bools), axis=0) / n_perms

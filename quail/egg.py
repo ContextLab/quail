@@ -8,6 +8,7 @@ import deepdish as dd
 import inspect
 import warnings
 import pandas as pd
+import numpy as np
 from .analysis.recmat import recall_matrix
 from .analysis.analysis import analyze
 from .plot import plot
@@ -160,11 +161,11 @@ class Egg(object):
 
         # if pres is strings, reformat
         if type(pres[0][0][0]) is not dict:
-            pres = [[[{'item' : x} for x in y] for y in z] for z in pres]
+            pres = [[[{'item' : np.asarray(x)} for x in y] for y in z] for z in pres]
 
         # if pres is strings, reformat
         if type(rec[0][0][0]) is not dict:
-            rec = [[[{'item' : x} for x in y] for y in z] for z in rec]
+            rec = [[[{'item' : np.asarray(x)} for x in y] for y in z] for z in rec]
 
         # attach features and dist funcs if they are passed
         if features is not None:
@@ -177,8 +178,8 @@ class Egg(object):
         self.dist_funcs = default_dist_funcs(dist_funcs, pres[0][0][0])
 
         # attach the rest of the variables
-        self.pres = list2pd(pres)
-        self.rec = list2pd(rec)
+        self.pres = list2pd(pres).applymap(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
+        self.rec = list2pd(rec).applymap(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
         self.subjgroup=subjgroup
         self.subjname=subjname
         self.listgroup=listgroup

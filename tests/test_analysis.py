@@ -44,3 +44,29 @@ def test_analysis_acc_multisubj():
 
 def test_analysis_spc_multisubj():
     assert np.array_equal(analyze(multisubj_egg, analysis='spc').data.values,np.array([[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.],[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.]]))
+
+def test_acc_best_euclidean():
+    presented=[[[10, 20, 30, 40],[10, 20, 30, 40]]]
+    recalled=[[[20, 10, 40, 30],[20, 40, 10]]]
+    egg = Egg(pres=presented,rec=recalled)
+    assert np.array_equal(egg.analyze('accuracy', match='best').data.values,[np.array([1.]),np.array([.75])])
+
+def test_acc_best_euclidean_3D():
+    presented=[[[[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]],
+                [[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]]]]
+    recalled=[[[[20, 0, 0], [10, 0, 0], [40, 0, 0], [30, 0, 0]],
+               [[20, 0, 0], [40, 0, 0], [10, 0, 0]]]]
+    egg = Egg(pres=presented,rec=recalled)
+    assert np.array_equal(egg.analyze('accuracy', match='best').data.values,[np.array([1.]),np.array([.75])])
+
+def test_acc_smooth_euclidean():
+    presented=[[[10, 20, 30, 40],[10, 20, 30, 40]]]
+    recalled=[[[20, 10, 40, 30],[20, 40, 10]]]
+    egg = Egg(pres=presented,rec=recalled)
+
+def test_acc_smooth_euclidean_3d():
+    presented=[[[[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]],
+                [[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]]]]
+    recalled=[[[[20, 0, 0], [10, 0, 0], [40, 0, 0], [30, 0, 0]],
+               [[20, 0, 0], [40, 0, 0], [10, 0, 0]]]]
+    egg = Egg(pres=presented,rec=recalled)

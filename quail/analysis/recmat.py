@@ -1,7 +1,10 @@
 import numpy as np
+import pandas as pd
 import six
+from scipy.spatial.distance import cdist
+from ..helpers import check_nan
 
-def recall_matrix(presented, recalled):
+def recall_matrix(presented, recalled, match='exact', distance='euclidean'):
     """
     Computes recall matrix given list of presented and list of recalled words
 
@@ -21,19 +24,26 @@ def recall_matrix(presented, recalled):
       negative ints represent words recalled from previous lists
 
     """
+    def _format(p, r):
+        p = np.matrix([np.array(i) for i in p])
+        if p.shape[0]==1:
+            p=p.T
+        r = map(lambda x: [np.nan]*p.shape[1] if check_nan(x) else x, r)
+        r = np.matrix([np.array(i) for i in r])
+        if r.shape[0]==1:
+            r=r.T
+        return p, r
 
-    def recall_pos(pres_list,rec_list):
-        pres_list = list(pres_list)
-        rec_list = list(rec_list)
-        result = np.zeros(len(pres_list)) if len(pres_list)>=len(rec_list) else np.zeros(len(rec_list))
-        result.fill(np.nan)
-        for idx,rec_word in enumerate(rec_list):
-            if rec_word in pres_list:
-                if isinstance(rec_word, (six.string_types, six.binary_type)):
-                    result[idx]=int(pres_list.index(rec_word)+1)
-        return result
-
-    result = []
-    for pres_list, rec_list in zip(presented.values, recalled.values):
-        result.append(recall_pos(pres_list, rec_list))
+    result = np.empty(recalled.shape)
+    for idx, (p, r) in enumerate(zip(presented.values, recalled.values)):
+        if match is 'exact':
+            m = [np.where(x==p)[0] for x in r]
+            result[idx,:] = [x[0]+1 if len(x)>0 else np.nan for x in m]
+        elif match is 'best':
+            p, r = _format(p, r)
+            m = 1 - cdist(r, p, distance)
+            result[idx, :] = np.argmax(m, 1)+1
+        elif match is 'smooth':
+            p, r = _format(p, r)
+            result = 1 - cdist(r, p, distance)
     return result

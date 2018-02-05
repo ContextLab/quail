@@ -277,3 +277,10 @@ def merge_pres_feats(pres, features):
             exp.append(lst)
         sub.append(exp)
     return sub
+
+def check_nan(x):
+    y = pd.isnull(x)
+    if type(y) is bool:
+        return y
+    else:
+        return False
