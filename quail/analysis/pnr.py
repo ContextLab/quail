@@ -1,8 +1,7 @@
 import numpy as np
 from .recmat import recall_matrix
 
-# probability of nth recall
-def pnr_helper(pres_slice, rec_slice, position):
+def pnr_helper(pres_slice, rec_slice, position, match='exact', distance='euclidean'):
 
     """
     Computes probability of a word being recalled nth (in the appropriate recall
@@ -12,8 +11,25 @@ def pnr_helper(pres_slice, rec_slice, position):
     ----------
     pres_slice : Pandas Dataframe
         chunk of presentation data to be analyzed
+
     rec_slice : Pandas Dataframe
         chunk of recall data to be analyzed
+
+    position : int
+        Position of item to be analyzed
+
+    match : str (exact, best or smooth)
+        Matching approach to compute recall matrix.  If exact, the presented and
+        recalled items must be identical (default).  If best, the recalled item
+        that is most similar to the presented items will be selected. If smooth,
+        a weighted average of all presented items will be used, where the
+        weights are derived from the similarity between the recalled item and
+        each presented item.
+
+    distance : str
+        The distance function used to compare presented and recalled items.
+        Applies only to 'best' and 'smooth' matching approaches.  Can be any
+        distance function supported by numpy.spatial.distance.cdist.
 
     Returns
     ----------
@@ -21,18 +37,14 @@ def pnr_helper(pres_slice, rec_slice, position):
       each number represents the probability of nth recall for a word presented in given position/index
 
     """
+    def pnr(lst, position):
+        return [1 if pos==lst[position] else 0 for pos in range(1,len(lst)+1)]
 
-    # compute recall_matrix for data slice
-    recall = recall_matrix(pres_slice, rec_slice)
+    recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
 
-    # simple function that returns 1 if item encoded in position n is recalled first
-    def pos_recalled_first(pos,lst,position):
-        return 1 if pos==lst[position] else 0
+    if match in ['exact', 'best']:
+        result = [pnr(lst, position) for lst in recall]
+    else:
+        result = recall
 
-    # get pfr for each row in recall matrix
-    pnr_matrix = [[pos_recalled_first(pos,lst,position) for pos in range(1,len(lst)+1)] for lst in recall]
-
-    # average over rows
-    prob_recalled = np.mean(pnr_matrix, axis=0)
-
-    return prob_recalled
+    return np.mean(result, axis=0)

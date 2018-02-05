@@ -38,11 +38,11 @@ def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
 
     recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
 
+    print(recall)
+
     if match in ['exact', 'best']:
         result = [spc(lst) for lst in recall]
     else:
         result = recall
 
-    prop_recalled = np.nanmean(result, axis=0)
-
-    return prop_recalled
+    return np.nanmean(result, axis=0)

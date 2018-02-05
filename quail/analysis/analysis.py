@@ -130,7 +130,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                           analysis_type='pfr',
                           pass_features=False,
                           position=0,
-                          parallel=parallel)
+                          parallel=parallel,
+                          match=match,
+                          distance=distance)
     elif analysis is 'pnr':
         r = _analyze_chunk(data, subjgroup=subjgroup,
                           listgroup=listgroup,
@@ -140,7 +142,9 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                           analysis_type='pnr',
                           pass_features=False,
                           position=position,
-                          parallel=parallel)
+                          parallel=parallel,
+                          match=match,
+                          distance=distance)
     elif analysis is 'lagcrp':
         r = _analyze_chunk(data, subjgroup=subjgroup,
                           listgroup=listgroup,

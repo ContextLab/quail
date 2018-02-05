@@ -18,7 +18,7 @@ def test_spc_best_euclidean():
     presented=[[[10, 20, 30, 40],[10, 20, 30, 40]]]
     recalled=[[[20, 10, 40, 30],[20, 40, 10]]]
     egg = Egg(pres=presented,rec=recalled)
-    assert np.array_equal(egg.analyze('spc', match='best').data.values,[np.array([1., 1., 1., 1.]),np.array([1., 1., 0., 1.])])
+    assert np.array_equal(egg.analyze('spc', match='best', distance='euclidean').data.values,[np.array([1., 1., 1., 1.]),np.array([1., 1., 0., 1.])])
 
 def test_acc_best_euclidean_3d():
     presented=[[[[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]],
@@ -26,7 +26,7 @@ def test_acc_best_euclidean_3d():
     recalled=[[[[20, 0, 0], [10, 0, 0], [40, 0, 0], [30, 0, 0]],
                [[20, 0, 0], [40, 0, 0], [10, 0, 0]]]]
     egg = Egg(pres=presented,rec=recalled)
-    assert np.array_equal(egg.analyze('spc', match='best').data.values,[np.array([1., 1., 1., 1.]),np.array([1., 1., 0., 1.])])
+    assert np.array_equal(egg.analyze('spc', match='best', distance='euclidean').data.values,[np.array([1., 1., 1., 1.]),np.array([1., 1., 0., 1.])])
 
 def test_acc_smooth_correlation_3d():
     presented=[[[[10, 0, 10], [20, 0, 0], [30, 0, -10], [40, 0, -20]],
