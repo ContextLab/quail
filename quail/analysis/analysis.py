@@ -99,95 +99,49 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         if data.listname is not None:
             listname = data.listname
 
+    opts = {
+        'subjgroup' : subjgroup,
+        'listgroup' : listgroup,
+        'subjname' : subjname,
+        'parallel' : parallel,
+        'match' : match,
+        'distance' : distance
+    }
+
     if analysis is 'accuracy':
-        r = _analyze_chunk(data, subjgroup=subjgroup,
-                          listgroup=listgroup,
-                          subjname=subjname,
-                          listname=listname,
-                          analysis=accuracy_helper,
-                          analysis_type='accuracy',
-                          pass_features=False,
-                          parallel=parallel,
-                          match=match,
-                          distance=distance)
+        opts.update(dict(analysis=accuracy_helper, analysis_type='accuracy',
+                         pass_features=False))
+        r = _analyze_chunk(data, **opts)
     elif analysis is 'spc':
-        r = _analyze_chunk(data, subjgroup=subjgroup,
-                          listgroup=listgroup,
-                          subjname=subjname,
-                          listname=listname,
-                          analysis=spc_helper,
-                          analysis_type='spc',
-                          pass_features=False,
-                          parallel=parallel,
-                          match=match,
-                          distance=distance)
+        opts.update(dict(analysis=spc_helper, analysis_type='spc',
+                         pass_features=False))
+        r = _analyze_chunk(data, **opts)
     elif analysis is 'pfr':
-        r = _analyze_chunk(data, subjgroup=subjgroup,
-                          listgroup=listgroup,
-                          subjname=subjname,
-                          listname=listname,
-                          analysis=pnr_helper,
-                          analysis_type='pfr',
-                          pass_features=False,
-                          position=0,
-                          parallel=parallel,
-                          match=match,
-                          distance=distance)
+        opts.update(dict(analysis=pnr_helper, analysis_type='pfr',
+                         pass_features=False, position=0))
+        r = _analyze_chunk(data, **opts)
     elif analysis is 'pnr':
-        r = _analyze_chunk(data, subjgroup=subjgroup,
-                          listgroup=listgroup,
-                          subjname=subjname,
-                          listname=listname,
-                          analysis=pnr_helper,
-                          analysis_type='pnr',
-                          pass_features=False,
-                          position=position,
-                          parallel=parallel,
-                          match=match,
-                          distance=distance)
+        opts.update(dict(analysis=pnr_helper, analysis_type='pnr',
+                         pass_features=False, position=position))
+        r = _analyze_chunk(data, **opts)
     elif analysis is 'lagcrp':
-        r = _analyze_chunk(data, subjgroup=subjgroup,
-                          listgroup=listgroup,
-                          subjname=subjname,
-                          listname=listname,
-                          analysis=lagcrp_helper,
-                          analysis_type='lagcrp',
-                          pass_features=False,
-                          parallel=parallel)
-        # set indices for lagcrp
+        opts.update(dict(analysis=lagcrp_helper, analysis_type='lagcrp',
+                         pass_features=False))
+        r = _analyze_chunk(data, **opts)
         r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
     elif analysis is 'fingerprint':
-        r = _analyze_chunk(data, subjgroup=subjgroup,
-                          listgroup=listgroup,
-                          subjname=subjname,
-                          listname=listname,
-                          analysis=fingerprint_helper,
-                          analysis_type='fingerprint',
-                          pass_features=True,
-                          permute=permute,
-                          n_perms=n_perms,
-                          parallel=parallel)
+        opts.update(dict(analysis=fingerprint_helper, analysis_type='fingerprint',
+                         pass_features=True, permute=permute, n_perms=n_perms))
+        r = _analyze_chunk(data, **opts)
     elif analysis is 'temporal':
-        r = _analyze_chunk(data, subjgroup=subjgroup,
-                          listgroup=listgroup,
-                          subjname=subjname,
-                          listname=listname,
-                          analysis=temporal_helper,
-                          analysis_type='temporal',
-                          permute=permute,
-                          n_perms=n_perms,
-                          parallel=parallel)
+        opts.update(dict(analysis=temporal_helper, analysis_type='temporal',
+                         pass_features=True, permute=permute, n_perms=n_perms))
+        r = _analyze_chunk(data, **opts)
     elif analysis is 'fingerprint_temporal':
-        r = _analyze_chunk(data, subjgroup=subjgroup,
-                          listgroup=listgroup,
-                          subjname=subjname,
-                          listname=listname,
-                          analysis=fingerprint_temporal_helper,
-                          analysis_type='fingerprint_temporal',
-                          pass_features=True,
-                          permute=permute,
-                          n_perms=n_perms,
-                          parallel=parallel)
+        opts.update(dict(analysis=fingerprint_temporal_helper,
+                         analysis_type='fingerprint_temporal',
+                         pass_features=True, permute=permute, n_perms=n_perms))
+        r = _analyze_chunk(data, **opts)
     else:
         raise ValueError('Analysis not recognized. Choose one of the following: '
                          'accuracy, spc, pfr, lag-crp, fingerprint, temporal, '

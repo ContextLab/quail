@@ -3,7 +3,7 @@ from .recmat import recall_matrix
 import pandas as pd
 
 # lag-crp
-def lagcrp_helper(pres_slice, rec_slice):
+def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     """
     Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)
 

@@ -4,7 +4,8 @@ import numpy as np
 from ..distance import dist_funcs as dist_funcs_dict
 
 # fingerprint analysis
-def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute=False, n_perms=1000):
+def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs,
+                       permute=False, n_perms=1000):
     """
     Computes clustering along a set of feature dimensions
 
