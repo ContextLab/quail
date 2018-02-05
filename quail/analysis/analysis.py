@@ -20,8 +20,9 @@ from .fingerprint import fingerprint_helper, fingerprint_temporal_helper
 
 # main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
-            listname='List', analysis=None, position=0, permute=False, n_perms=1000,
-            parallel=False, match='exact', distance='correlation'):
+            listname='List', analysis=None, position=0, permute=False,
+            n_perms=1000, parallel=False, match='exact',
+            distance='correlation'):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -69,20 +70,32 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         Option to use multiprocessing (this can help speed up the permutations
         tests in the clustering calculations)
 
+    match : str (exact, best or smooth)
+        Matching approach to compute recall matrix.  If exact, the presented and
+        recalled items must be identical (default).  If best, the recalled item
+        that is most similar to the presented items will be selected. If smooth,
+        a weighted average of all presented items will be used, where the
+        weights are derived from the similarity between the recalled item and
+        each presented item.
+
+    distance : str
+        The distance function used to compare presented and recalled items.
+        Applies only to 'best' and 'smooth' matching approaches.  Can be any
+        distance function supported by numpy.spatial.distance.cdist.
+
+
     Returns
     ----------
-    analyzed_data : Pandas DataFrame
-        DataFrame containing the analysis results
+    analyzed_data : quail.FriedEgg
+        Class instance containing the analysis results
 
     """
 
     from ..egg import FriedEgg
 
-    # make sure an analysis is specified
     if analysis is None:
         raise ValueError('You must pass an analysis type.')
 
-    # check if subject/list grouping variables exist on the egg
     if hasattr(data, 'subjgroup'):
         if data.subjgroup is not None:
             subjgroup = data.subjgroup
@@ -147,14 +160,16 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
                          'accuracy, spc, pfr, lag-crp, fingerprint, temporal, '
                          'fingerprint_temporal')
 
-    # return analysis result
     return FriedEgg(data=r, analysis=analysis, list_length=data.list_length,
                     n_lists=data.n_lists, n_subjects=data.n_subjects,
                     position=position)
 
-def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, listname='List', analysis=None, analysis_type=None, pass_features=False, **kwargs):
+def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
+                   listname='List', analysis=None, analysis_type=None,
+                   pass_features=False, **kwargs):
     """
-    Private function that groups data by subject/list number and performs analysis for a chunk of data.
+    Private function that groups data by subject/list number and performs
+    analysis for a chunk of data.
 
     Parameters
     ----------
@@ -179,7 +194,8 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None, lis
         This function analyzes data and returns it.
 
     pass_features : bool
-        Logical indicating whether the analyses uses the features field of the Egg
+        Logical indicating whether the analyses uses the features field of the
+        Egg
 
     Returns
     ----------

@@ -20,17 +20,14 @@ def accuracy_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
 
     """
 
-    # compute recall_matrix for data slice
-    recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
-
-    # simple function that returns 1 if item encoded in position n is in recall list
     def compute_acc(lst):
         return len([i for i in np.unique(lst) if i>0])/(pres_slice.list_length)
 
-    # get spc for each row in recall matrix
-    acc_matrix = [compute_acc(lst) for lst in recall]
+    recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
 
-    # average over rows
-    prop_recalled = np.nanmean(acc_matrix, axis=0)
+    if match in ['exact', 'best']:
+        result = [compute_acc(lst) for lst in recall]
+    else:
+        result = np.nanmean(recall, axis=1)
 
-    return prop_recalled
+    return np.nanmean(result, axis=0)
