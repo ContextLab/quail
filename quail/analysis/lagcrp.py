@@ -11,6 +11,7 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     ----------
     pres_slice : Pandas Dataframe
         chunk of presentation data to be analyzed
+
     rec_slice : Pandas Dataframe
         chunk of recall data to be analyzed
 
@@ -22,7 +23,8 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     """
 
     def compute_lagcrp(rec, lstlen):
-
+        """Computes lag-crp for a given recall list"""
+        
         def check_pair(a, b):
             if (a>0 and b>0) and (a!=b):
                 return True
@@ -88,8 +90,10 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
         recall = recall_matrix(pres_slice, rec_slice, match=match,
                                distance=distance)
         lagcrp = [compute_lagcrp(lst, pres_slice.list_length) for lst in recall]
-    else:
+    elif match is 'smooth':
         lagcrp = [compute_nlagcrp(pres_slice, rec_slice, ts=ts,
                                   distance=distance) for lst in recall]
+    else:
+        raise ValueError('Match must be set to exact, best or smooth.')
 
     return np.mean(lagcrp, axis=0)
