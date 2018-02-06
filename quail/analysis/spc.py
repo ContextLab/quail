@@ -36,12 +36,12 @@ def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     def spc(lst):
         return [1 if pos in lst else 0 for pos in range(1,len(lst)+1)]
 
-    recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
+    recmat = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
 
     if match in ['exact', 'best']:
-        result = [spc(lst) for lst in recall]
+        result = [spc(lst) for lst in recmat]
     elif match is 'smooth':
-        result = recall
+        result = recmat
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
 

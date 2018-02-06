@@ -16,6 +16,20 @@ def recall_matrix(presented, recalled, match='exact', distance='euclidean'):
     recalled : list of list of strings
       recalledWords are the words recalled by the subject, in order, grouped by list
 
+    match : str (exact, best or smooth)
+        Matching approach to compute recall matrix.  If exact, the presented and
+        recalled items must be identical (default).  If best, the recalled item
+        that is most similar to the presented items will be selected. If smooth,
+        a weighted average of all presented items will be used, where the
+        weights are derived from the similarity between the recalled item and
+        each presented item.
+
+    distance : str
+        The distance function used to compare presented and recalled items.
+        Applies only to 'best' and 'smooth' matching approaches.  Can be any
+        distance function supported by numpy.spatial.distance.cdist.
+
+
     Returns
     ----------
     recall_matrix : list of lists of ints
@@ -34,8 +48,11 @@ def recall_matrix(presented, recalled, match='exact', distance='euclidean'):
             r=r.T
         return p, r
 
+    if isinstance(presented, pd.DataFrame):
+        presented, recalled = (presented.values, recalled.values)
+
     result = np.empty(recalled.shape)
-    for idx, (p, r) in enumerate(zip(presented.values, recalled.values)):
+    for idx, (p, r) in enumerate(zip(presented, recalled)):
         if match is 'exact':
             m = [np.where(x==p)[0] for x in r]
             result[idx,:] = [x[0]+1 if len(x)>0 else np.nan for x in m]
@@ -45,5 +62,5 @@ def recall_matrix(presented, recalled, match='exact', distance='euclidean'):
             result[idx, :] = np.argmax(m, 1)+1
         elif match is 'smooth':
             p, r = _format(p, r)
-            result = 1 - cdist(r, p, distance)
+            result[idx, :] = np.mean(1 - cdist(r, p, distance), 0)
     return result
