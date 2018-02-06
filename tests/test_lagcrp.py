@@ -23,7 +23,7 @@ def test_lagcrp_best_euclidean_3d():
     egg = Egg(pres=presented, rec=recalled)
     assert np.allclose(egg.analyze('lagcrp', match='best', distance='euclidean').data.values,np.array([[0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.333333, 0.333333, np.nan, 0.75, 0.333333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]), equal_nan=True)
 
-def test_lagcrp_smooth_correlation():
+def test_lagcrp_smooth_euclidean_3d():
     presented=[[[[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0], [50, 0, 0],
                  [60, 0, 0], [70, 0, 0], [80, 0, 0]]]]
     recalled=[[[[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0], [50, 0, 0],
