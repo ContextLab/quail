@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
 from __future__ import division
+from builtins import str
+from builtins import range
 import pandas as pd
 import numpy as np
 import pickle
+import six
 
 def list2pd(all_data, subjindex=None, listindex=None):
     """
@@ -39,33 +42,31 @@ def list2pd(all_data, subjindex=None, listindex=None):
 
     return pd.concat(subs_list_of_dfs)
 
-def format2tidy(df, subjname, listname, subjgroup, **attrs):
-
+def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
     melted_df = pd.melt(df.T)
     melted_df[subjname]=""
     for idx,sub in enumerate(melted_df['Subject'].unique()):
         melted_df.loc[melted_df['Subject']==sub,subjname]=subjgroup[idx]
-    if attrs['analysis_type'] in ['spc']:
+    if analysis is 'spc':
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Proportion Recalled', subjname, 'Position']
-    elif attrs['analysis_type'] in ['pfr', 'pnr']:
+    elif analysis in ['pfr', 'pnr']:
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
-        melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(attrs['n']), subjname, 'Position']
-    elif attrs['analysis_type'] is 'lagcrp':
+        melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(position), subjname, 'Position']
+    elif analysis is 'lagcrp':
         base = range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
-    elif attrs['analysis_type'] is 'fingerprint' or attrs['analysis_type'] is 'fingerprint_temporal':
+    elif analysis is 'fingerprint' or analysis is 'fingerprint_temporal':
         base = list(df.columns.values)
         melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
-    elif attrs['analysis_type'] is 'accuracy':
+    elif analysis is 'accuracy':
         melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
-    elif attrs['analysis_type'] is 'temporal':
+    elif analysis is 'temporal':
         melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
-
 
     return melted_df
 
@@ -100,13 +101,18 @@ def default_dist_funcs(dist_funcs, feature_example):
         Fills in default distance metrics for fingerprint analyses
         """
 
+        if dist_funcs is None:
+            dist_funcs = dict()
+
         for key in feature_example:
             if key in dist_funcs:
                 pass
-            elif type(feature_example[key]) is str:
-                dist_funcs[key] = lambda a, b: int(a!=b)
-            elif isinstance(feature_example[key], (int, long, float)) or all([isinstance(i, (int, long, float)) for i in feature_example[key]]):
-                dist_funcs[key] = lambda a, b: np.linalg.norm(np.subtract(a,b))
+            if key == 'item':
+                pass
+            elif isinstance(feature_example[key], (six.string_types, six.binary_type)):
+                dist_funcs[key] = 'match'
+            elif isinstance(feature_example[key], (int, np.integer, float)) or all([isinstance(i, (int, np.integer, float)) for i in feature_example[key]]):
+                dist_funcs[key] = 'euclidean'
 
         return dist_funcs
 
@@ -135,8 +141,6 @@ def stack_eggs(eggs, meta='concatenate'):
     pres = [egg.pres.loc[sub,:].values.tolist() for egg in eggs for sub in egg.pres.index.levels[0].values.tolist()]
     rec = [egg.rec.loc[sub,:].values.tolist() for egg in eggs for sub in egg.rec.index.levels[0].values.tolist()]
 
-    all_have_features = all([egg.features is not None for egg in eggs])
-
     if meta is 'concatenate':
         new_meta = {}
         for egg in eggs:
@@ -150,14 +154,7 @@ def stack_eggs(eggs, meta='concatenate'):
     elif meta is 'separate':
         new_meta = list(egg.meta for egg in eggs)
 
-    if all_have_features:
-        features = [egg.features.loc[sub,:].values.tolist() for egg in eggs for sub in egg.features.index.levels[0].values.tolist()]
-        new_egg = Egg(pres=pres, rec=rec, features=features, meta=new_meta)
-    else:
-        new_egg = Egg(pres=pres, rec=rec, meta=new_meta)
-
-
-    return new_egg
+    return Egg(pres=pres, rec=rec, meta=new_meta)
 
 def crack_egg(egg, subjects=None, lists=None):
     '''
@@ -182,7 +179,10 @@ def crack_egg(egg, subjects=None, lists=None):
     '''
     from .egg import Egg
 
-    all_have_features = egg.features is not None
+    if hasattr(egg, 'features'):
+        all_have_features = egg.features is not None
+    else:
+        all_have_features=False
     opts = {}
 
     if subjects is None:
@@ -208,26 +208,30 @@ def crack_egg(egg, subjects=None, lists=None):
 
     return Egg(pres=pres, rec=rec, **opts)
 
-def load_egg(filepath):
+def df2list(df):
     """
-    Loads pickled egg
+    Convert a MultiIndex df to list
 
     Parameters
     ----------
-    filepath : str
-        Location of pickled egg
+
+    df : pandas.DataFrame
+        A MultiIndex DataFrame where the first level is subjects and the second
+        level is lists (e.g. egg.pres)
 
     Returns
     ----------
-    egg : Egg data object
-        A loaded unpickled egg
+
+    lst : a list of lists of lists of values
+        The input df reformatted as a list
 
     """
-
-    with open(filepath, 'rb') as f:
-        egg = pickle.load(f)
-
-    return egg
+    subjects = df.index.levels[0].values.tolist()
+    lists = df.index.levels[1].values.tolist()
+    idx = pd.IndexSlice
+    df = df.loc[idx[subjects,lists],df.columns]
+    lst = [df.loc[sub,:].values.tolist() for sub in subjects]
+    return lst
 
 def fill_missing(x):
     """
@@ -235,7 +239,7 @@ def fill_missing(x):
     """
 
     # find subject with max number of lists
-    maxlen = max(map(lambda xi: len(xi), x))
+    maxlen = max([len(xi) for xi in x])
 
     subs = []
 
@@ -248,3 +252,28 @@ def fill_missing(x):
             new_sub = sub
         subs.append(new_sub)
     return subs
+
+def parse_egg(egg):
+    """Parses an egg and returns fields"""
+    pres_list = egg.get_pres_items().values[0]
+    rec_list = egg.get_rec_items().values[0]
+    feature_list = egg.get_pres_features().values[0]
+    dist_funcs = egg.dist_funcs
+    return pres_list, rec_list, feature_list, dist_funcs
+
+def merge_pres_feats(pres, features):
+    """
+    Helper function to merge pres and features to support legacy features argument
+    """
+
+    sub = []
+    for psub, fsub in zip(pres, features):
+        exp = []
+        for pexp, fexp in zip(psub, fsub):
+            lst = []
+            for p, f in zip(pexp, fexp):
+                p.update(f)
+                lst.append(p)
+            exp.append(lst)
+        sub.append(exp)
+    return sub

@@ -1,0 +1,856 @@
+10/17/2017 09:12:06 AM Authenticating...
+10/17/2017 09:12:06 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:06 AM https://api.twitter.com:443 "POST /oauth2/token HTTP/1.1" 200 152
+10/17/2017 09:12:06 AM Loading spam model...
+10/17/2017 09:12:06 AM Done loading spam filter model.
+10/17/2017 09:12:06 AM Loading sentiment model...
+10/17/2017 09:12:07 AM Done loading sentiment model.
+10/17/2017 09:12:07 AM Loading companies file.
+10/17/2017 09:12:08 AM Getting tweets for 01 Communique Laboratory Inc
+10/17/2017 09:12:08 AM PARAMS: {'q': '01 Communique Laboratory Inc'}
+10/17/2017 09:12:08 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:08 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=01+Communique+Laboratory+Inc HTTP/1.1" 200 301
+10/17/2017 09:12:08 AM Filtering spam.
+10/17/2017 09:12:08 AM Adding sentiments.
+10/17/2017 09:12:08 AM Getting tweets for 024 Pharma Inc
+10/17/2017 09:12:08 AM PARAMS: {'q': '024 Pharma Inc'}
+10/17/2017 09:12:08 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:08 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=024+Pharma+Inc HTTP/1.1" 200 271
+10/17/2017 09:12:08 AM Filtering spam.
+10/17/2017 09:12:08 AM Adding sentiments.
+10/17/2017 09:12:08 AM Getting tweets for 1 Page Ltd
+10/17/2017 09:12:08 AM PARAMS: {'q': '1 Page Ltd'}
+10/17/2017 09:12:08 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:09 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1+Page+Ltd HTTP/1.1" 200 52434
+10/17/2017 09:12:09 AM Filtering spam.
+10/17/2017 09:12:09 AM Adding sentiments.
+10/17/2017 09:12:09 AM Getting tweets for 1010 Printing Group Ltd
+10/17/2017 09:12:09 AM PARAMS: {'q': '1010 Printing Group Ltd'}
+10/17/2017 09:12:09 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:09 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1010+Printing+Group+Ltd HTTP/1.1" 200 291
+10/17/2017 09:12:09 AM Filtering spam.
+10/17/2017 09:12:09 AM Adding sentiments.
+10/17/2017 09:12:09 AM Getting tweets for 11 88 0 Solutions AG
+10/17/2017 09:12:09 AM PARAMS: {'q': '11 88 0 Solutions AG'}
+10/17/2017 09:12:09 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:09 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=11+88+0+Solutions+AG HTTP/1.1" 200 7956
+10/17/2017 09:12:09 AM Filtering spam.
+10/17/2017 09:12:09 AM Adding sentiments.
+10/17/2017 09:12:09 AM Getting tweets for 141 Capital Inc
+10/17/2017 09:12:09 AM PARAMS: {'q': '141 Capital Inc'}
+10/17/2017 09:12:09 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:10 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=141+Capital+Inc HTTP/1.1" 200 10259
+10/17/2017 09:12:10 AM Filtering spam.
+10/17/2017 09:12:10 AM Adding sentiments.
+10/17/2017 09:12:10 AM Getting tweets for 1-800-Attorney Inc
+10/17/2017 09:12:10 AM PARAMS: {'q': '1-800-Attorney Inc'}
+10/17/2017 09:12:10 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:10 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1-800-Attorney+Inc HTTP/1.1" 200 277
+10/17/2017 09:12:10 AM Filtering spam.
+10/17/2017 09:12:10 AM Adding sentiments.
+10/17/2017 09:12:10 AM Getting tweets for 1847 Holdings LLC
+10/17/2017 09:12:10 AM PARAMS: {'q': '1847 Holdings LLC'}
+10/17/2017 09:12:10 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:10 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1847+Holdings+LLC HTTP/1.1" 200 276
+10/17/2017 09:12:10 AM Filtering spam.
+10/17/2017 09:12:10 AM Adding sentiments.
+10/17/2017 09:12:10 AM Getting tweets for 1867 Western Financial Corp
+10/17/2017 09:12:10 AM PARAMS: {'q': '1867 Western Financial Corp'}
+10/17/2017 09:12:10 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:11 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1867+Western+Financial+Corp HTTP/1.1" 200 299
+10/17/2017 09:12:11 AM Filtering spam.
+10/17/2017 09:12:11 AM Adding sentiments.
+10/17/2017 09:12:11 AM Getting tweets for 1PM Industries Inc
+10/17/2017 09:12:11 AM PARAMS: {'q': '1PM Industries Inc'}
+10/17/2017 09:12:11 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:11 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1PM+Industries+Inc HTTP/1.1" 200 60159
+10/17/2017 09:12:11 AM Filtering spam.
+10/17/2017 09:12:11 AM Adding sentiments.
+10/17/2017 09:12:11 AM Getting tweets for 1st Capital Bank
+10/17/2017 09:12:11 AM PARAMS: {'q': '1st Capital Bank'}
+10/17/2017 09:12:11 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:11 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1st+Capital+Bank HTTP/1.1" 200 89536
+10/17/2017 09:12:11 AM Filtering spam.
+10/17/2017 09:12:11 AM Adding sentiments.
+10/17/2017 09:12:11 AM Getting tweets for 1st Colonial Bancorp Inc
+10/17/2017 09:12:11 AM PARAMS: {'q': '1st Colonial Bancorp Inc'}
+10/17/2017 09:12:11 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:12 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1st+Colonial+Bancorp+Inc HTTP/1.1" 200 293
+10/17/2017 09:12:12 AM Filtering spam.
+10/17/2017 09:12:12 AM Adding sentiments.
+10/17/2017 09:12:12 AM Getting tweets for 1st NRG Corp
+10/17/2017 09:12:12 AM PARAMS: {'q': '1st NRG Corp'}
+10/17/2017 09:12:12 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:12 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1st+NRG+Corp HTTP/1.1" 200 13653
+10/17/2017 09:12:12 AM Filtering spam.
+10/17/2017 09:12:12 AM Adding sentiments.
+10/17/2017 09:12:12 AM Getting tweets for 1st Prestige Wealth Management
+10/17/2017 09:12:12 AM PARAMS: {'q': '1st Prestige Wealth Management'}
+10/17/2017 09:12:12 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:12 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1st+Prestige+Wealth+Management HTTP/1.1" 200 305
+10/17/2017 09:12:12 AM Filtering spam.
+10/17/2017 09:12:12 AM Adding sentiments.
+10/17/2017 09:12:12 AM Getting tweets for 1st Summit Bancorp Johnstown Inc
+10/17/2017 09:12:12 AM PARAMS: {'q': '1st Summit Bancorp Johnstown Inc'}
+10/17/2017 09:12:12 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:12 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1st+Summit+Bancorp+Johnstown+Inc HTTP/1.1" 200 311
+10/17/2017 09:12:12 AM Filtering spam.
+10/17/2017 09:12:12 AM Adding sentiments.
+10/17/2017 09:12:12 AM Getting tweets for 20/20 Global Inc
+10/17/2017 09:12:12 AM PARAMS: {'q': '20/20 Global Inc'}
+10/17/2017 09:12:12 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:13 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=20%2F20+Global+Inc HTTP/1.1" 200 53657
+10/17/2017 09:12:13 AM Filtering spam.
+10/17/2017 09:12:13 AM Adding sentiments.
+10/17/2017 09:12:13 AM Getting tweets for 2050 Motors Inc
+10/17/2017 09:12:13 AM PARAMS: {'q': '2050 Motors Inc'}
+10/17/2017 09:12:13 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:13 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=2050+Motors+Inc HTTP/1.1" 200 4832
+10/17/2017 09:12:13 AM Filtering spam.
+10/17/2017 09:12:13 AM Adding sentiments.
+10/17/2017 09:12:13 AM Getting tweets for 2242749 Ontario Ltd
+10/17/2017 09:12:13 AM PARAMS: {'q': '2242749 Ontario Ltd'}
+10/17/2017 09:12:13 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:14 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=2242749+Ontario+Ltd HTTP/1.1" 200 281
+10/17/2017 09:12:14 AM Filtering spam.
+10/17/2017 09:12:14 AM Adding sentiments.
+10/17/2017 09:12:14 AM Getting tweets for 22nd Century Group Inc
+10/17/2017 09:12:14 AM PARAMS: {'q': '22nd Century Group Inc'}
+10/17/2017 09:12:14 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:14 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=22nd+Century+Group+Inc HTTP/1.1" 200 38891
+10/17/2017 09:12:14 AM Filtering spam.
+10/17/2017 09:12:14 AM Adding sentiments.
+10/17/2017 09:12:14 AM Getting tweets for 24/7 Kid Doc Inc
+10/17/2017 09:12:14 AM PARAMS: {'q': '24/7 Kid Doc Inc'}
+10/17/2017 09:12:14 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:14 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=24%2F7+Kid+Doc+Inc HTTP/1.1" 200 281
+10/17/2017 09:12:14 AM Filtering spam.
+10/17/2017 09:12:14 AM Adding sentiments.
+10/17/2017 09:12:14 AM Getting tweets for 24Holdings Inc
+10/17/2017 09:12:14 AM PARAMS: {'q': '24Holdings Inc'}
+10/17/2017 09:12:14 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:14 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=24Holdings+Inc HTTP/1.1" 200 269
+10/17/2017 09:12:14 AM Filtering spam.
+10/17/2017 09:12:14 AM Adding sentiments.
+10/17/2017 09:12:14 AM Getting tweets for 2G Energy AG
+10/17/2017 09:12:14 AM PARAMS: {'q': '2G Energy AG'}
+10/17/2017 09:12:14 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:15 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=2G+Energy+AG HTTP/1.1" 200 3022
+10/17/2017 09:12:15 AM Filtering spam.
+10/17/2017 09:12:15 AM Adding sentiments.
+10/17/2017 09:12:15 AM Getting tweets for 2Go Group Inc
+10/17/2017 09:12:15 AM PARAMS: {'q': '2Go Group Inc'}
+10/17/2017 09:12:15 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:15 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=2Go+Group+Inc HTTP/1.1" 200 2699
+10/17/2017 09:12:15 AM Filtering spam.
+10/17/2017 09:12:15 AM Adding sentiments.
+10/17/2017 09:12:15 AM Getting tweets for 30DC Inc
+10/17/2017 09:12:15 AM PARAMS: {'q': '30DC Inc'}
+10/17/2017 09:12:15 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:15 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=30DC+Inc HTTP/1.1" 200 257
+10/17/2017 09:12:15 AM Filtering spam.
+10/17/2017 09:12:15 AM Adding sentiments.
+10/17/2017 09:12:15 AM Getting tweets for 361 Degrees International Ltd
+10/17/2017 09:12:15 AM PARAMS: {'q': '361 Degrees International Ltd'}
+10/17/2017 09:12:15 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:15 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=361+Degrees+International+Ltd HTTP/1.1" 200 303
+10/17/2017 09:12:15 AM Filtering spam.
+10/17/2017 09:12:15 AM Adding sentiments.
+10/17/2017 09:12:15 AM Getting tweets for 361 Degrees International Ltd ADR
+10/17/2017 09:12:15 AM PARAMS: {'q': '361 Degrees International Ltd ADR'}
+10/17/2017 09:12:15 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:16 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=361+Degrees+International+Ltd+ADR HTTP/1.1" 200 313
+10/17/2017 09:12:16 AM Filtering spam.
+10/17/2017 09:12:16 AM Adding sentiments.
+10/17/2017 09:12:16 AM Getting tweets for 37 Capital Inc
+10/17/2017 09:12:16 AM PARAMS: {'q': '37 Capital Inc'}
+10/17/2017 09:12:16 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:16 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=37+Capital+Inc HTTP/1.1" 200 37746
+10/17/2017 09:12:16 AM Filtering spam.
+10/17/2017 09:12:16 AM Adding sentiments.
+10/17/2017 09:12:16 AM Getting tweets for 3D MakerJet Inc
+10/17/2017 09:12:16 AM PARAMS: {'q': '3D MakerJet Inc'}
+10/17/2017 09:12:16 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:16 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3D+MakerJet+Inc HTTP/1.1" 200 8444
+10/17/2017 09:12:16 AM Filtering spam.
+10/17/2017 09:12:16 AM Adding sentiments.
+10/17/2017 09:12:16 AM Getting tweets for 3-D Matrix Ltd
+10/17/2017 09:12:16 AM PARAMS: {'q': '3-D Matrix Ltd'}
+10/17/2017 09:12:16 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:17 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3-D+Matrix+Ltd HTTP/1.1" 200 8884
+10/17/2017 09:12:17 AM Filtering spam.
+10/17/2017 09:12:17 AM Adding sentiments.
+10/17/2017 09:12:17 AM Getting tweets for 3D Pioneer Systems Inc
+10/17/2017 09:12:17 AM PARAMS: {'q': '3D Pioneer Systems Inc'}
+10/17/2017 09:12:17 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:17 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3D+Pioneer+Systems+Inc HTTP/1.1" 200 289
+10/17/2017 09:12:17 AM Filtering spam.
+10/17/2017 09:12:17 AM Adding sentiments.
+10/17/2017 09:12:17 AM Getting tweets for 3D Signatures Inc
+10/17/2017 09:12:17 AM PARAMS: {'q': '3D Signatures Inc'}
+10/17/2017 09:12:17 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:17 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3D+Signatures+Inc HTTP/1.1" 200 26456
+10/17/2017 09:12:17 AM Filtering spam.
+10/17/2017 09:12:17 AM Adding sentiments.
+10/17/2017 09:12:17 AM Getting tweets for 3D Systems Corp
+10/17/2017 09:12:17 AM PARAMS: {'q': '3D Systems Corp'}
+10/17/2017 09:12:17 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:18 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3D+Systems+Corp HTTP/1.1" 200 36071
+10/17/2017 09:12:18 AM Filtering spam.
+10/17/2017 09:12:18 AM Adding sentiments.
+10/17/2017 09:12:18 AM Getting tweets for 3D Total Solutions Inc
+10/17/2017 09:12:18 AM PARAMS: {'q': '3D Total Solutions Inc'}
+10/17/2017 09:12:18 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:18 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3D+Total+Solutions+Inc HTTP/1.1" 200 289
+10/17/2017 09:12:18 AM Filtering spam.
+10/17/2017 09:12:18 AM Adding sentiments.
+10/17/2017 09:12:18 AM Getting tweets for 3DIcon Corp
+10/17/2017 09:12:18 AM PARAMS: {'q': '3DIcon Corp'}
+10/17/2017 09:12:18 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:18 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3DIcon+Corp HTTP/1.1" 200 263
+10/17/2017 09:12:18 AM Filtering spam.
+10/17/2017 09:12:18 AM Adding sentiments.
+10/17/2017 09:12:18 AM Getting tweets for 3Dshopping.com Inc
+10/17/2017 09:12:18 AM PARAMS: {'q': '3Dshopping.com Inc'}
+10/17/2017 09:12:18 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:18 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3Dshopping.com+Inc HTTP/1.1" 200 277
+10/17/2017 09:12:18 AM Filtering spam.
+10/17/2017 09:12:18 AM Adding sentiments.
+10/17/2017 09:12:18 AM Getting tweets for 3DX Industries Inc
+10/17/2017 09:12:18 AM PARAMS: {'q': '3DX Industries Inc'}
+10/17/2017 09:12:18 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:19 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3DX+Industries+Inc HTTP/1.1" 200 2499
+10/17/2017 09:12:19 AM Filtering spam.
+10/17/2017 09:12:19 AM Adding sentiments.
+10/17/2017 09:12:19 AM Getting tweets for 3i Group PLC ADR
+10/17/2017 09:12:19 AM PARAMS: {'q': '3i Group PLC ADR'}
+10/17/2017 09:12:19 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:19 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3i+Group+PLC+ADR HTTP/1.1" 200 277
+10/17/2017 09:12:19 AM Filtering spam.
+10/17/2017 09:12:19 AM Adding sentiments.
+10/17/2017 09:12:19 AM Getting tweets for 3M Co
+10/17/2017 09:12:19 AM PARAMS: {'q': '3M Co'}
+10/17/2017 09:12:19 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:19 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3M+Co HTTP/1.1" 200 54583
+10/17/2017 09:12:19 AM Filtering spam.
+10/17/2017 09:12:19 AM Adding sentiments.
+10/17/2017 09:12:19 AM Getting tweets for 3Pea International Inc
+10/17/2017 09:12:19 AM PARAMS: {'q': '3Pea International Inc'}
+10/17/2017 09:12:19 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:20 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3Pea+International+Inc HTTP/1.1" 200 42448
+10/17/2017 09:12:20 AM Filtering spam.
+10/17/2017 09:12:20 AM Adding sentiments.
+10/17/2017 09:12:20 AM Getting tweets for 3Power Energy Group Inc
+10/17/2017 09:12:20 AM PARAMS: {'q': '3Power Energy Group Inc'}
+10/17/2017 09:12:20 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:20 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3Power+Energy+Group+Inc HTTP/1.1" 200 2510
+10/17/2017 09:12:20 AM Filtering spam.
+10/17/2017 09:12:20 AM Adding sentiments.
+10/17/2017 09:12:20 AM Getting tweets for 3SBio Inc ADR
+10/17/2017 09:12:20 AM PARAMS: {'q': '3SBio Inc ADR'}
+10/17/2017 09:12:20 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:20 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3SBio+Inc+ADR HTTP/1.1" 200 269
+10/17/2017 09:12:20 AM Filtering spam.
+10/17/2017 09:12:20 AM Adding sentiments.
+10/17/2017 09:12:20 AM Getting tweets for 3TL Technologies Corp
+10/17/2017 09:12:20 AM PARAMS: {'q': '3TL Technologies Corp'}
+10/17/2017 09:12:20 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:20 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=3TL+Technologies+Corp HTTP/1.1" 200 285
+10/17/2017 09:12:20 AM Filtering spam.
+10/17/2017 09:12:20 AM Adding sentiments.
+10/17/2017 09:12:20 AM Getting tweets for 420 Property Management Inc
+10/17/2017 09:12:20 AM PARAMS: {'q': '420 Property Management Inc'}
+10/17/2017 09:12:20 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:21 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=420+Property+Management+Inc HTTP/1.1" 200 24340
+10/17/2017 09:12:21 AM Filtering spam.
+10/17/2017 09:12:21 AM Adding sentiments.
+10/17/2017 09:12:21 AM Getting tweets for 49 North Resources Inc
+10/17/2017 09:12:21 AM PARAMS: {'q': '49 North Resources Inc'}
+10/17/2017 09:12:21 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:21 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=49+North+Resources+Inc HTTP/1.1" 200 289
+10/17/2017 09:12:21 AM Filtering spam.
+10/17/2017 09:12:21 AM Adding sentiments.
+10/17/2017 09:12:21 AM Getting tweets for 4Cable TV International Inc
+10/17/2017 09:12:21 AM PARAMS: {'q': '4Cable TV International Inc'}
+10/17/2017 09:12:21 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:22 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=4Cable+TV+International+Inc HTTP/1.1" 200 4744
+10/17/2017 09:12:22 AM Filtering spam.
+10/17/2017 09:12:22 AM Adding sentiments.
+10/17/2017 09:12:22 AM Getting tweets for 4imprint Group PLC
+10/17/2017 09:12:22 AM PARAMS: {'q': '4imprint Group PLC'}
+10/17/2017 09:12:22 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:22 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=4imprint+Group+PLC HTTP/1.1" 200 2951
+10/17/2017 09:12:22 AM Filtering spam.
+10/17/2017 09:12:22 AM Adding sentiments.
+10/17/2017 09:12:22 AM Getting tweets for 4imprint Group PLC ADR
+10/17/2017 09:12:22 AM PARAMS: {'q': '4imprint Group PLC ADR'}
+10/17/2017 09:12:22 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:22 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=4imprint+Group+PLC+ADR HTTP/1.1" 200 289
+10/17/2017 09:12:22 AM Filtering spam.
+10/17/2017 09:12:22 AM Adding sentiments.
+10/17/2017 09:12:22 AM Getting tweets for 4Licensing Corp
+10/17/2017 09:12:22 AM PARAMS: {'q': '4Licensing Corp'}
+10/17/2017 09:12:22 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:22 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=4Licensing+Corp HTTP/1.1" 200 271
+10/17/2017 09:12:22 AM Filtering spam.
+10/17/2017 09:12:22 AM Adding sentiments.
+10/17/2017 09:12:22 AM Getting tweets for 4SC AG
+10/17/2017 09:12:22 AM PARAMS: {'q': '4SC AG'}
+10/17/2017 09:12:22 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:23 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=4SC+AG HTTP/1.1" 200 47426
+10/17/2017 09:12:23 AM Filtering spam.
+10/17/2017 09:12:23 AM Adding sentiments.
+10/17/2017 09:12:23 AM Getting tweets for 500.com Ltd ADR
+10/17/2017 09:12:23 AM PARAMS: {'q': '500.com Ltd ADR'}
+10/17/2017 09:12:23 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:23 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=500.com+Ltd+ADR HTTP/1.1" 200 273
+10/17/2017 09:12:23 AM Filtering spam.
+10/17/2017 09:12:23 AM Adding sentiments.
+10/17/2017 09:12:23 AM Getting tweets for 58.com Inc ADR repr Class A
+10/17/2017 09:12:23 AM PARAMS: {'q': '58.com Inc ADR repr Class A'}
+10/17/2017 09:12:23 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:23 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=58.com+Inc+ADR+repr+Class+A HTTP/1.1" 200 303
+10/17/2017 09:12:23 AM Filtering spam.
+10/17/2017 09:12:23 AM Adding sentiments.
+10/17/2017 09:12:23 AM Getting tweets for 5Barz International Inc
+10/17/2017 09:12:23 AM PARAMS: {'q': '5Barz International Inc'}
+10/17/2017 09:12:23 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:24 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=5Barz+International+Inc HTTP/1.1" 200 289
+10/17/2017 09:12:24 AM Filtering spam.
+10/17/2017 09:12:24 AM Adding sentiments.
+10/17/2017 09:12:24 AM Getting tweets for 5EL SA
+10/17/2017 09:12:24 AM PARAMS: {'q': '5EL SA'}
+10/17/2017 09:12:24 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:24 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=5EL+SA HTTP/1.1" 200 116710
+10/17/2017 09:12:24 AM Filtering spam.
+10/17/2017 09:12:24 AM Adding sentiments.
+10/17/2017 09:12:24 AM Getting tweets for 6D Global Technologies Inc
+10/17/2017 09:12:24 AM PARAMS: {'q': '6D Global Technologies Inc'}
+10/17/2017 09:12:24 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:24 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=6D+Global+Technologies+Inc HTTP/1.1" 200 297
+10/17/2017 09:12:24 AM Filtering spam.
+10/17/2017 09:12:24 AM Adding sentiments.
+10/17/2017 09:12:24 AM Getting tweets for 727 Communications Inc
+10/17/2017 09:12:24 AM PARAMS: {'q': '727 Communications Inc'}
+10/17/2017 09:12:24 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:25 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=727+Communications+Inc HTTP/1.1" 200 287
+10/17/2017 09:12:25 AM Filtering spam.
+10/17/2017 09:12:25 AM Adding sentiments.
+10/17/2017 09:12:25 AM Getting tweets for 7digital Group PLC
+10/17/2017 09:12:25 AM PARAMS: {'q': '7digital Group PLC'}
+10/17/2017 09:12:25 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:25 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=7digital+Group+PLC HTTP/1.1" 200 2998
+10/17/2017 09:12:25 AM Filtering spam.
+10/17/2017 09:12:25 AM Adding sentiments.
+10/17/2017 09:12:25 AM Getting tweets for 8000 Inc
+10/17/2017 09:12:25 AM PARAMS: {'q': '8000 Inc'}
+10/17/2017 09:12:25 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:25 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=8000+Inc HTTP/1.1" 200 57557
+10/17/2017 09:12:25 AM Filtering spam.
+10/17/2017 09:12:25 AM Adding sentiments.
+10/17/2017 09:12:25 AM Getting tweets for 808 Renewable Energy Corp
+10/17/2017 09:12:25 AM PARAMS: {'q': '808 Renewable Energy Corp'}
+10/17/2017 09:12:25 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:26 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=808+Renewable+Energy+Corp HTTP/1.1" 200 295
+10/17/2017 09:12:26 AM Filtering spam.
+10/17/2017 09:12:26 AM Adding sentiments.
+10/17/2017 09:12:26 AM Getting tweets for 88 Energy Ltd
+10/17/2017 09:12:26 AM PARAMS: {'q': '88 Energy Ltd'}
+10/17/2017 09:12:26 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:26 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=88+Energy+Ltd HTTP/1.1" 200 3052
+10/17/2017 09:12:26 AM Filtering spam.
+10/17/2017 09:12:26 AM Adding sentiments.
+10/17/2017 09:12:26 AM Getting tweets for 88 Energy Ltd ADR
+10/17/2017 09:12:26 AM PARAMS: {'q': '88 Energy Ltd ADR'}
+10/17/2017 09:12:26 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:26 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=88+Energy+Ltd+ADR HTTP/1.1" 200 279
+10/17/2017 09:12:26 AM Filtering spam.
+10/17/2017 09:12:26 AM Adding sentiments.
+10/17/2017 09:12:26 AM Getting tweets for 888 Holdings PLC
+10/17/2017 09:12:26 AM PARAMS: {'q': '888 Holdings PLC'}
+10/17/2017 09:12:26 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:26 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=888+Holdings+PLC HTTP/1.1" 200 23787
+10/17/2017 09:12:26 AM Filtering spam.
+10/17/2017 09:12:26 AM Adding sentiments.
+10/17/2017 09:12:26 AM Getting tweets for 92 Resources Corp
+10/17/2017 09:12:26 AM PARAMS: {'q': '92 Resources Corp'}
+10/17/2017 09:12:26 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:27 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=92+Resources+Corp HTTP/1.1" 200 47053
+10/17/2017 09:12:27 AM Filtering spam.
+10/17/2017 09:12:27 AM Adding sentiments.
+10/17/2017 09:12:27 AM Getting tweets for A  C United Agriculture Developing Inc
+10/17/2017 09:12:27 AM PARAMS: {'q': 'A  C United Agriculture Developing Inc'}
+10/17/2017 09:12:27 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:27 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A++C+United+Agriculture+Developing+Inc HTTP/1.1" 200 327
+10/17/2017 09:12:27 AM Filtering spam.
+10/17/2017 09:12:27 AM Adding sentiments.
+10/17/2017 09:12:27 AM Getting tweets for A A Importing Inc Co
+10/17/2017 09:12:27 AM PARAMS: {'q': 'A A Importing Inc Co'}
+10/17/2017 09:12:27 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:28 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A+A+Importing+Inc+Co HTTP/1.1" 200 287
+10/17/2017 09:12:28 AM Filtering spam.
+10/17/2017 09:12:28 AM Adding sentiments.
+10/17/2017 09:12:28 AM Getting tweets for A Clean Slate Inc
+10/17/2017 09:12:28 AM PARAMS: {'q': 'A Clean Slate Inc'}
+10/17/2017 09:12:28 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:28 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A+Clean+Slate+Inc HTTP/1.1" 200 61509
+10/17/2017 09:12:28 AM Filtering spam.
+10/17/2017 09:12:28 AM Adding sentiments.
+10/17/2017 09:12:28 AM Getting tweets for A H Belo Corp A
+10/17/2017 09:12:28 AM PARAMS: {'q': 'A H Belo Corp A'}
+10/17/2017 09:12:28 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:28 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A+H+Belo+Corp+A HTTP/1.1" 200 2721
+10/17/2017 09:12:28 AM Filtering spam.
+10/17/2017 09:12:28 AM Adding sentiments.
+10/17/2017 09:12:28 AM Getting tweets for A I S Resources Ltd
+10/17/2017 09:12:28 AM PARAMS: {'q': 'A I S Resources Ltd'}
+10/17/2017 09:12:28 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:28 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A+I+S+Resources+Ltd HTTP/1.1" 200 3212
+10/17/2017 09:12:28 AM Filtering spam.
+10/17/2017 09:12:28 AM Adding sentiments.
+10/17/2017 09:12:28 AM Getting tweets for A. P. Moller Maersk A/S A
+10/17/2017 09:12:28 AM PARAMS: {'q': 'A. P. Moller Maersk A/S A'}
+10/17/2017 09:12:28 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:29 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A.+P.+Moller+Maersk+A%2FS+A HTTP/1.1" 200 303
+10/17/2017 09:12:29 AM Filtering spam.
+10/17/2017 09:12:29 AM Adding sentiments.
+10/17/2017 09:12:29 AM Getting tweets for A. P. Moller Maersk A/S ADR
+10/17/2017 09:12:29 AM PARAMS: {'q': 'A. P. Moller Maersk A/S ADR'}
+10/17/2017 09:12:29 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:29 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A.+P.+Moller+Maersk+A%2FS+ADR HTTP/1.1" 200 307
+10/17/2017 09:12:29 AM Filtering spam.
+10/17/2017 09:12:29 AM Adding sentiments.
+10/17/2017 09:12:29 AM Getting tweets for A. P. Moller Maersk A/S B
+10/17/2017 09:12:29 AM PARAMS: {'q': 'A. P. Moller Maersk A/S B'}
+10/17/2017 09:12:29 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:29 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A.+P.+Moller+Maersk+A%2FS+B HTTP/1.1" 200 303
+10/17/2017 09:12:29 AM Filtering spam.
+10/17/2017 09:12:29 AM Adding sentiments.
+10/17/2017 09:12:29 AM Getting tweets for A.M. Castle  Co
+10/17/2017 09:12:29 AM PARAMS: {'q': 'A.M. Castle  Co'}
+10/17/2017 09:12:29 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:30 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A.M.+Castle++Co HTTP/1.1" 200 62510
+10/17/2017 09:12:31 AM Filtering spam.
+10/17/2017 09:12:31 AM Adding sentiments.
+10/17/2017 09:12:31 AM Getting tweets for A.O. Smith Corp
+10/17/2017 09:12:31 AM PARAMS: {'q': 'A.O. Smith Corp'}
+10/17/2017 09:12:31 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:31 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A.O.+Smith+Corp HTTP/1.1" 200 42702
+10/17/2017 09:12:31 AM Filtering spam.
+10/17/2017 09:12:31 AM Adding sentiments.
+10/17/2017 09:12:31 AM Getting tweets for A.S. Roma SpA
+10/17/2017 09:12:31 AM PARAMS: {'q': 'A.S. Roma SpA'}
+10/17/2017 09:12:31 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:31 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A.S.+Roma+SpA HTTP/1.1" 200 269
+10/17/2017 09:12:31 AM Filtering spam.
+10/17/2017 09:12:31 AM Adding sentiments.
+10/17/2017 09:12:31 AM Getting tweets for A1 Group Inc
+10/17/2017 09:12:31 AM PARAMS: {'q': 'A1 Group Inc'}
+10/17/2017 09:12:31 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:31 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A1+Group+Inc HTTP/1.1" 200 6075
+10/17/2017 09:12:32 AM Filtering spam.
+10/17/2017 09:12:32 AM Adding sentiments.
+10/17/2017 09:12:32 AM Getting tweets for A10 Networks Inc
+10/17/2017 09:12:32 AM PARAMS: {'q': 'A10 Networks Inc'}
+10/17/2017 09:12:32 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:32 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A10+Networks+Inc HTTP/1.1" 200 38001
+10/17/2017 09:12:32 AM Filtering spam.
+10/17/2017 09:12:32 AM Adding sentiments.
+10/17/2017 09:12:32 AM Getting tweets for A2A SpA
+10/17/2017 09:12:32 AM PARAMS: {'q': 'A2A SpA'}
+10/17/2017 09:12:32 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:32 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A2A+SpA HTTP/1.1" 200 5269
+10/17/2017 09:12:32 AM Filtering spam.
+10/17/2017 09:12:32 AM Adding sentiments.
+10/17/2017 09:12:32 AM Getting tweets for A2A SpA ADR
+10/17/2017 09:12:32 AM PARAMS: {'q': 'A2A SpA ADR'}
+10/17/2017 09:12:32 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:32 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=A2A+SpA+ADR HTTP/1.1" 200 265
+10/17/2017 09:12:32 AM Filtering spam.
+10/17/2017 09:12:32 AM Adding sentiments.
+10/17/2017 09:12:32 AM Getting tweets for AA PLC
+10/17/2017 09:12:32 AM PARAMS: {'q': 'AA PLC'}
+10/17/2017 09:12:32 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:33 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AA+PLC HTTP/1.1" 200 30645
+10/17/2017 09:12:33 AM Filtering spam.
+10/17/2017 09:12:33 AM Adding sentiments.
+10/17/2017 09:12:33 AM Getting tweets for AAA Century Group USA Inc
+10/17/2017 09:12:33 AM PARAMS: {'q': 'AAA Century Group USA Inc'}
+10/17/2017 09:12:33 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:33 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAA+Century+Group+USA+Inc HTTP/1.1" 200 296
+10/17/2017 09:12:33 AM Filtering spam.
+10/17/2017 09:12:33 AM Adding sentiments.
+10/17/2017 09:12:33 AM Getting tweets for AAC Holdings Inc
+10/17/2017 09:12:33 AM PARAMS: {'q': 'AAC Holdings Inc'}
+10/17/2017 09:12:33 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:33 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAC+Holdings+Inc HTTP/1.1" 200 38920
+10/17/2017 09:12:33 AM Filtering spam.
+10/17/2017 09:12:33 AM Adding sentiments.
+10/17/2017 09:12:33 AM Getting tweets for AAC Technologies Holdings Inc
+10/17/2017 09:12:33 AM PARAMS: {'q': 'AAC Technologies Holdings Inc'}
+10/17/2017 09:12:33 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:34 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAC+Technologies+Holdings+Inc HTTP/1.1" 200 3049
+10/17/2017 09:12:34 AM Filtering spam.
+10/17/2017 09:12:34 AM Adding sentiments.
+10/17/2017 09:12:34 AM Getting tweets for AAC Technologies Holdings Inc ADR
+10/17/2017 09:12:34 AM PARAMS: {'q': 'AAC Technologies Holdings Inc ADR'}
+10/17/2017 09:12:34 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:34 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAC+Technologies+Holdings+Inc+ADR HTTP/1.1" 200 313
+10/17/2017 09:12:34 AM Filtering spam.
+10/17/2017 09:12:34 AM Adding sentiments.
+10/17/2017 09:12:34 AM Getting tweets for AAG Energy Holdings Ltd
+10/17/2017 09:12:34 AM PARAMS: {'q': 'AAG Energy Holdings Ltd'}
+10/17/2017 09:12:34 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:34 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAG+Energy+Holdings+Ltd HTTP/1.1" 200 291
+10/17/2017 09:12:34 AM Filtering spam.
+10/17/2017 09:12:34 AM Adding sentiments.
+10/17/2017 09:12:34 AM Getting tweets for AAK AB
+10/17/2017 09:12:34 AM PARAMS: {'q': 'AAK AB'}
+10/17/2017 09:12:34 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:34 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAK+AB HTTP/1.1" 200 58350
+10/17/2017 09:12:34 AM Filtering spam.
+10/17/2017 09:12:34 AM Adding sentiments.
+10/17/2017 09:12:34 AM Getting tweets for AAK AB ADR
+10/17/2017 09:12:34 AM PARAMS: {'q': 'AAK AB ADR'}
+10/17/2017 09:12:34 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:35 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAK+AB+ADR HTTP/1.1" 200 263
+10/17/2017 09:12:35 AM Filtering spam.
+10/17/2017 09:12:35 AM Adding sentiments.
+10/17/2017 09:12:35 AM Getting tweets for Aalberts Industries NV
+10/17/2017 09:12:35 AM PARAMS: {'q': 'Aalberts Industries NV'}
+10/17/2017 09:12:35 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:35 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aalberts+Industries+NV HTTP/1.1" 200 287
+10/17/2017 09:12:35 AM Filtering spam.
+10/17/2017 09:12:35 AM Adding sentiments.
+10/17/2017 09:12:35 AM Getting tweets for Aalberts Industries NV ADR
+10/17/2017 09:12:35 AM PARAMS: {'q': 'Aalberts Industries NV ADR'}
+10/17/2017 09:12:35 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:35 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aalberts+Industries+NV+ADR HTTP/1.1" 200 297
+10/17/2017 09:12:35 AM Filtering spam.
+10/17/2017 09:12:35 AM Adding sentiments.
+10/17/2017 09:12:35 AM Getting tweets for Aamaxan Transport Group Inc
+10/17/2017 09:12:35 AM PARAMS: {'q': 'Aamaxan Transport Group Inc'}
+10/17/2017 09:12:35 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:35 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aamaxan+Transport+Group+Inc HTTP/1.1" 200 299
+10/17/2017 09:12:35 AM Filtering spam.
+10/17/2017 09:12:35 AM Adding sentiments.
+10/17/2017 09:12:35 AM Getting tweets for AAP Inc
+10/17/2017 09:12:35 AM PARAMS: {'q': 'AAP Inc'}
+10/17/2017 09:12:35 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:36 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAP+Inc HTTP/1.1" 200 108618
+10/17/2017 09:12:36 AM Filtering spam.
+10/17/2017 09:12:36 AM Adding sentiments.
+10/17/2017 09:12:36 AM Getting tweets for AAR Corp
+10/17/2017 09:12:36 AM PARAMS: {'q': 'AAR Corp'}
+10/17/2017 09:12:36 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:36 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AAR+Corp HTTP/1.1" 200 44255
+10/17/2017 09:12:36 AM Filtering spam.
+10/17/2017 09:12:36 AM Adding sentiments.
+10/17/2017 09:12:36 AM Getting tweets for Aareal Bank AG
+10/17/2017 09:12:36 AM PARAMS: {'q': 'Aareal Bank AG'}
+10/17/2017 09:12:36 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:37 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aareal+Bank+AG HTTP/1.1" 200 26100
+10/17/2017 09:12:37 AM Filtering spam.
+10/17/2017 09:12:37 AM Adding sentiments.
+10/17/2017 09:12:37 AM Getting tweets for Aareal Bank AG ADR
+10/17/2017 09:12:37 AM PARAMS: {'q': 'Aareal Bank AG ADR'}
+10/17/2017 09:12:37 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:37 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aareal+Bank+AG+ADR HTTP/1.1" 200 281
+10/17/2017 09:12:37 AM Filtering spam.
+10/17/2017 09:12:37 AM Adding sentiments.
+10/17/2017 09:12:37 AM Getting tweets for Aarons Inc
+10/17/2017 09:12:37 AM PARAMS: {'q': 'Aarons Inc'}
+10/17/2017 09:12:37 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:37 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aarons+Inc HTTP/1.1" 200 36691
+10/17/2017 09:12:37 AM Filtering spam.
+10/17/2017 09:12:37 AM Adding sentiments.
+10/17/2017 09:12:37 AM Getting tweets for AB Biotics
+10/17/2017 09:12:37 AM PARAMS: {'q': 'AB Biotics'}
+10/17/2017 09:12:37 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:38 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AB+Biotics HTTP/1.1" 200 261
+10/17/2017 09:12:38 AM Filtering spam.
+10/17/2017 09:12:38 AM Adding sentiments.
+10/17/2017 09:12:38 AM Getting tweets for AB International Group Corp
+10/17/2017 09:12:38 AM PARAMS: {'q': 'AB International Group Corp'}
+10/17/2017 09:12:38 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:38 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AB+International+Group+Corp HTTP/1.1" 200 299
+10/17/2017 09:12:38 AM Filtering spam.
+10/17/2017 09:12:38 AM Adding sentiments.
+10/17/2017 09:12:38 AM Getting tweets for AB Science
+10/17/2017 09:12:38 AM PARAMS: {'q': 'AB Science'}
+10/17/2017 09:12:38 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:38 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AB+Science HTTP/1.1" 200 63654
+10/17/2017 09:12:38 AM Filtering spam.
+10/17/2017 09:12:38 AM Adding sentiments.
+10/17/2017 09:12:38 AM Getting tweets for Abacus Mining  Exploration Corp
+10/17/2017 09:12:38 AM PARAMS: {'q': 'Abacus Mining  Exploration Corp'}
+10/17/2017 09:12:38 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:38 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abacus+Mining++Exploration+Corp HTTP/1.1" 200 309
+10/17/2017 09:12:38 AM Filtering spam.
+10/17/2017 09:12:38 AM Adding sentiments.
+10/17/2017 09:12:38 AM Getting tweets for Abakan Inc
+10/17/2017 09:12:38 AM PARAMS: {'q': 'Abakan Inc'}
+10/17/2017 09:12:38 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:39 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abakan+Inc HTTP/1.1" 200 261
+10/17/2017 09:12:39 AM Filtering spam.
+10/17/2017 09:12:39 AM Adding sentiments.
+10/17/2017 09:12:39 AM Getting tweets for Abattis Bioceuticals Corp
+10/17/2017 09:12:39 AM PARAMS: {'q': 'Abattis Bioceuticals Corp'}
+10/17/2017 09:12:39 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:39 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abattis+Bioceuticals+Corp HTTP/1.1" 200 30042
+10/17/2017 09:12:39 AM Filtering spam.
+10/17/2017 09:12:39 AM Adding sentiments.
+10/17/2017 09:12:39 AM Getting tweets for ABB India Ltd ADR
+10/17/2017 09:12:39 AM PARAMS: {'q': 'ABB India Ltd ADR'}
+10/17/2017 09:12:39 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:39 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=ABB+India+Ltd+ADR HTTP/1.1" 200 279
+10/17/2017 09:12:39 AM Filtering spam.
+10/17/2017 09:12:39 AM Adding sentiments.
+10/17/2017 09:12:39 AM Getting tweets for ABB Ltd
+10/17/2017 09:12:39 AM PARAMS: {'q': 'ABB Ltd'}
+10/17/2017 09:12:39 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:40 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=ABB+Ltd HTTP/1.1" 200 38151
+10/17/2017 09:12:40 AM Filtering spam.
+10/17/2017 09:12:40 AM Adding sentiments.
+10/17/2017 09:12:40 AM Getting tweets for ABB Ltd ADR
+10/17/2017 09:12:40 AM PARAMS: {'q': 'ABB Ltd ADR'}
+10/17/2017 09:12:40 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:40 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=ABB+Ltd+ADR HTTP/1.1" 200 7133
+10/17/2017 09:12:40 AM Filtering spam.
+10/17/2017 09:12:40 AM Adding sentiments.
+10/17/2017 09:12:40 AM Getting tweets for Abbott Laboratories
+10/17/2017 09:12:40 AM PARAMS: {'q': 'Abbott Laboratories'}
+10/17/2017 09:12:40 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:40 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abbott+Laboratories HTTP/1.1" 200 37884
+10/17/2017 09:12:40 AM Filtering spam.
+10/17/2017 09:12:40 AM Adding sentiments.
+10/17/2017 09:12:40 AM Getting tweets for AbbVie Inc
+10/17/2017 09:12:40 AM PARAMS: {'q': 'AbbVie Inc'}
+10/17/2017 09:12:40 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:41 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=AbbVie+Inc HTTP/1.1" 200 45398
+10/17/2017 09:12:41 AM Filtering spam.
+10/17/2017 09:12:41 AM Adding sentiments.
+10/17/2017 09:12:41 AM Getting tweets for Abby Inc
+10/17/2017 09:12:41 AM PARAMS: {'q': 'Abby Inc'}
+10/17/2017 09:12:41 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:41 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abby+Inc HTTP/1.1" 200 60358
+10/17/2017 09:12:41 AM Filtering spam.
+10/17/2017 09:12:41 AM Adding sentiments.
+10/17/2017 09:12:41 AM Getting tweets for ABC Records Management and Data Storage Inc
+10/17/2017 09:12:41 AM PARAMS: {'q': 'ABC Records Management and Data Storage Inc'}
+10/17/2017 09:12:41 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:42 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=ABC+Records+Management+and+Data+Storage+Inc HTTP/1.1" 200 337
+10/17/2017 09:12:42 AM Filtering spam.
+10/17/2017 09:12:42 AM Adding sentiments.
+10/17/2017 09:12:42 AM Getting tweets for Abcam PLC
+10/17/2017 09:12:42 AM PARAMS: {'q': 'Abcam PLC'}
+10/17/2017 09:12:42 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:42 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abcam+PLC HTTP/1.1" 200 24014
+10/17/2017 09:12:42 AM Filtering spam.
+10/17/2017 09:12:42 AM Adding sentiments.
+10/17/2017 09:12:42 AM Getting tweets for Abcam PLC ADR
+10/17/2017 09:12:42 AM PARAMS: {'q': 'Abcam PLC ADR'}
+10/17/2017 09:12:42 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:42 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abcam+PLC+ADR HTTP/1.1" 200 269
+10/17/2017 09:12:42 AM Filtering spam.
+10/17/2017 09:12:42 AM Adding sentiments.
+10/17/2017 09:12:42 AM Getting tweets for ABCO Energy Inc
+10/17/2017 09:12:42 AM PARAMS: {'q': 'ABCO Energy Inc'}
+10/17/2017 09:12:42 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:42 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=ABCO+Energy+Inc HTTP/1.1" 200 2482
+10/17/2017 09:12:42 AM Filtering spam.
+10/17/2017 09:12:42 AM Adding sentiments.
+10/17/2017 09:12:42 AM Getting tweets for Abcourt Mines Inc
+10/17/2017 09:12:42 AM PARAMS: {'q': 'Abcourt Mines Inc'}
+10/17/2017 09:12:42 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:43 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abcourt+Mines+Inc HTTP/1.1" 200 276
+10/17/2017 09:12:43 AM Filtering spam.
+10/17/2017 09:12:43 AM Adding sentiments.
+10/17/2017 09:12:43 AM Getting tweets for Aben Resources Ltd
+10/17/2017 09:12:43 AM PARAMS: {'q': 'Aben Resources Ltd'}
+10/17/2017 09:12:43 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:43 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aben+Resources+Ltd HTTP/1.1" 200 279
+10/17/2017 09:12:43 AM Filtering spam.
+10/17/2017 09:12:43 AM Adding sentiments.
+10/17/2017 09:12:43 AM Getting tweets for Abengoa SA ADR
+10/17/2017 09:12:43 AM PARAMS: {'q': 'Abengoa SA ADR'}
+10/17/2017 09:12:43 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:43 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abengoa+SA+ADR HTTP/1.1" 200 271
+10/17/2017 09:12:43 AM Filtering spam.
+10/17/2017 09:12:43 AM Adding sentiments.
+10/17/2017 09:12:43 AM Getting tweets for Abengoa SA B
+10/17/2017 09:12:43 AM PARAMS: {'q': 'Abengoa SA B'}
+10/17/2017 09:12:43 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:43 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abengoa+SA+B HTTP/1.1" 200 267
+10/17/2017 09:12:43 AM Filtering spam.
+10/17/2017 09:12:43 AM Adding sentiments.
+10/17/2017 09:12:43 AM Getting tweets for Abengoa SA Class A
+10/17/2017 09:12:43 AM PARAMS: {'q': 'Abengoa SA Class A'}
+10/17/2017 09:12:43 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:44 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abengoa+SA+Class+A HTTP/1.1" 200 281
+10/17/2017 09:12:44 AM Filtering spam.
+10/17/2017 09:12:44 AM Adding sentiments.
+10/17/2017 09:12:44 AM Getting tweets for Abercrombie  Fitch Co Class A
+10/17/2017 09:12:44 AM PARAMS: {'q': 'Abercrombie  Fitch Co Class A'}
+10/17/2017 09:12:44 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:44 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abercrombie++Fitch+Co+Class+A HTTP/1.1" 200 307
+10/17/2017 09:12:44 AM Filtering spam.
+10/17/2017 09:12:44 AM Adding sentiments.
+10/17/2017 09:12:44 AM Getting tweets for Aberdeen Asset Management PLC
+10/17/2017 09:12:44 AM PARAMS: {'q': 'Aberdeen Asset Management PLC'}
+10/17/2017 09:12:44 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:44 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aberdeen+Asset+Management+PLC HTTP/1.1" 200 43557
+10/17/2017 09:12:44 AM Filtering spam.
+10/17/2017 09:12:44 AM Adding sentiments.
+10/17/2017 09:12:44 AM Getting tweets for Aberdeen Asset Management PLC ADR
+10/17/2017 09:12:44 AM PARAMS: {'q': 'Aberdeen Asset Management PLC ADR'}
+10/17/2017 09:12:44 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:45 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aberdeen+Asset+Management+PLC+ADR HTTP/1.1" 200 313
+10/17/2017 09:12:45 AM Filtering spam.
+10/17/2017 09:12:45 AM Adding sentiments.
+10/17/2017 09:12:45 AM Getting tweets for Aberdeen International Inc
+10/17/2017 09:12:45 AM PARAMS: {'q': 'Aberdeen International Inc'}
+10/17/2017 09:12:45 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:45 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aberdeen+International+Inc HTTP/1.1" 200 2935
+10/17/2017 09:12:45 AM Filtering spam.
+10/17/2017 09:12:45 AM Adding sentiments.
+10/17/2017 09:12:45 AM Getting tweets for Abertis Infraestructuras SA
+10/17/2017 09:12:45 AM PARAMS: {'q': 'Abertis Infraestructuras SA'}
+10/17/2017 09:12:45 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:45 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abertis+Infraestructuras+SA HTTP/1.1" 200 42892
+10/17/2017 09:12:45 AM Filtering spam.
+10/17/2017 09:12:46 AM Adding sentiments.
+10/17/2017 09:12:46 AM Getting tweets for Abertis Infraestructuras SA ADR
+10/17/2017 09:12:46 AM PARAMS: {'q': 'Abertis Infraestructuras SA ADR'}
+10/17/2017 09:12:46 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:46 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abertis+Infraestructuras+SA+ADR HTTP/1.1" 200 307
+10/17/2017 09:12:46 AM Filtering spam.
+10/17/2017 09:12:46 AM Adding sentiments.
+10/17/2017 09:12:46 AM Getting tweets for ABG Sundal Collier Holding ASA
+10/17/2017 09:12:46 AM PARAMS: {'q': 'ABG Sundal Collier Holding ASA'}
+10/17/2017 09:12:46 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:46 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=ABG+Sundal+Collier+Holding+ASA HTTP/1.1" 200 307
+10/17/2017 09:12:46 AM Filtering spam.
+10/17/2017 09:12:46 AM Adding sentiments.
+10/17/2017 09:12:46 AM Getting tweets for Abilene Oil and Gas Ltd
+10/17/2017 09:12:46 AM PARAMS: {'q': 'Abilene Oil and Gas Ltd'}
+10/17/2017 09:12:46 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:46 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abilene+Oil+and+Gas+Ltd HTTP/1.1" 200 293
+10/17/2017 09:12:46 AM Filtering spam.
+10/17/2017 09:12:46 AM Adding sentiments.
+10/17/2017 09:12:46 AM Getting tweets for Abington Resources Ltd
+10/17/2017 09:12:46 AM PARAMS: {'q': 'Abington Resources Ltd'}
+10/17/2017 09:12:46 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:46 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abington+Resources+Ltd HTTP/1.1" 200 287
+10/17/2017 09:12:46 AM Filtering spam.
+10/17/2017 09:12:46 AM Adding sentiments.
+10/17/2017 09:12:46 AM Getting tweets for Abivax SA
+10/17/2017 09:12:46 AM PARAMS: {'q': 'Abivax SA'}
+10/17/2017 09:12:46 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:47 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Abivax+SA HTTP/1.1" 200 2727
+10/17/2017 09:12:47 AM Filtering spam.
+10/17/2017 09:12:47 AM Adding sentiments.
+10/17/2017 09:12:47 AM Getting tweets for Ablynx NV ADR
+10/17/2017 09:12:47 AM PARAMS: {'q': 'Ablynx NV ADR'}
+10/17/2017 09:12:47 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:47 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Ablynx+NV+ADR HTTP/1.1" 200 269
+10/17/2017 09:12:47 AM Filtering spam.
+10/17/2017 09:12:47 AM Adding sentiments.
+10/17/2017 09:12:47 AM Getting tweets for ABM Industries Inc
+10/17/2017 09:12:47 AM PARAMS: {'q': 'ABM Industries Inc'}
+10/17/2017 09:12:47 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:47 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=ABM+Industries+Inc HTTP/1.1" 200 22645
+10/17/2017 09:12:47 AM Filtering spam.
+10/17/2017 09:12:47 AM Adding sentiments.
+10/17/2017 09:12:47 AM Getting tweets for ABM Resources NL
+10/17/2017 09:12:47 AM PARAMS: {'q': 'ABM Resources NL'}
+10/17/2017 09:12:47 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:48 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=ABM+Resources+NL HTTP/1.1" 200 275
+10/17/2017 09:12:48 AM Filtering spam.
+10/17/2017 09:12:48 AM Adding sentiments.
+10/17/2017 09:12:48 AM Getting tweets for Aboitiz Equity Ventures Inc ADR
+10/17/2017 09:12:48 AM PARAMS: {'q': 'Aboitiz Equity Ventures Inc ADR'}
+10/17/2017 09:12:48 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:48 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aboitiz+Equity+Ventures+Inc+ADR HTTP/1.1" 200 309
+10/17/2017 09:12:48 AM Filtering spam.
+10/17/2017 09:12:48 AM Adding sentiments.
+10/17/2017 09:12:48 AM Getting tweets for Aboitiz Power Corp
+10/17/2017 09:12:48 AM PARAMS: {'q': 'Aboitiz Power Corp'}
+10/17/2017 09:12:48 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:48 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aboitiz+Power+Corp HTTP/1.1" 200 6928
+10/17/2017 09:12:48 AM Filtering spam.
+10/17/2017 09:12:48 AM Adding sentiments.
+10/17/2017 09:12:48 AM Getting tweets for Aboitiz Power Corp ADR
+10/17/2017 09:12:48 AM PARAMS: {'q': 'Aboitiz Power Corp ADR'}
+10/17/2017 09:12:48 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:12:48 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=Aboitiz+Power+Corp+ADR HTTP/1.1" 200 288
+10/17/2017 09:12:48 AM Filtering spam.
+10/17/2017 09:12:48 AM Adding sentiments.
+10/17/2017 09:12:48 AM Getting tweets for Absecon Bancorp
+10/17/2017 09:12:48 AM PARAMS: {'q': 'Absecon Bancorp'}
+10/17/2017 09:12:48 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:00 AM Authenticating...
+10/17/2017 09:13:00 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:00 AM https://api.twitter.com:443 "POST /oauth2/token HTTP/1.1" 200 152
+10/17/2017 09:13:00 AM Loading spam model...
+10/17/2017 09:13:01 AM Done loading spam filter model.
+10/17/2017 09:13:01 AM Loading sentiment model...
+10/17/2017 09:13:01 AM Done loading sentiment model.
+10/17/2017 09:13:01 AM Loading companies file.
+10/17/2017 09:13:02 AM Getting tweets for 01 Communique Laboratory Inc
+10/17/2017 09:13:02 AM PARAMS: {'q': '01 Communique Laboratory Inc'}
+10/17/2017 09:13:02 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:02 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=01+Communique+Laboratory+Inc HTTP/1.1" 200 301
+10/17/2017 09:13:02 AM Filtering spam.
+10/17/2017 09:13:02 AM Adding sentiments.
+10/17/2017 09:13:02 AM Getting tweets for 024 Pharma Inc
+10/17/2017 09:13:02 AM PARAMS: {'q': '024 Pharma Inc'}
+10/17/2017 09:13:02 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:03 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=024+Pharma+Inc HTTP/1.1" 200 271
+10/17/2017 09:13:03 AM Filtering spam.
+10/17/2017 09:13:03 AM Adding sentiments.
+10/17/2017 09:13:03 AM Getting tweets for 1 Page Ltd
+10/17/2017 09:13:03 AM PARAMS: {'q': '1 Page Ltd'}
+10/17/2017 09:13:03 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:03 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1+Page+Ltd HTTP/1.1" 200 52435
+10/17/2017 09:13:03 AM Filtering spam.
+10/17/2017 09:13:03 AM Adding sentiments.
+10/17/2017 09:13:03 AM Getting tweets for 1010 Printing Group Ltd
+10/17/2017 09:13:03 AM PARAMS: {'q': '1010 Printing Group Ltd'}
+10/17/2017 09:13:03 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:03 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1010+Printing+Group+Ltd HTTP/1.1" 200 291
+10/17/2017 09:13:03 AM Filtering spam.
+10/17/2017 09:13:03 AM Adding sentiments.
+10/17/2017 09:13:03 AM Getting tweets for 11 88 0 Solutions AG
+10/17/2017 09:13:03 AM PARAMS: {'q': '11 88 0 Solutions AG'}
+10/17/2017 09:13:03 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:04 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=11+88+0+Solutions+AG HTTP/1.1" 200 7956
+10/17/2017 09:13:04 AM Filtering spam.
+10/17/2017 09:13:04 AM Adding sentiments.
+10/17/2017 09:13:04 AM Getting tweets for 141 Capital Inc
+10/17/2017 09:13:04 AM PARAMS: {'q': '141 Capital Inc'}
+10/17/2017 09:13:04 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:04 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=141+Capital+Inc HTTP/1.1" 200 10259
+10/17/2017 09:13:04 AM Filtering spam.
+10/17/2017 09:13:04 AM Adding sentiments.
+10/17/2017 09:13:04 AM Getting tweets for 1-800-Attorney Inc
+10/17/2017 09:13:04 AM PARAMS: {'q': '1-800-Attorney Inc'}
+10/17/2017 09:13:04 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:04 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1-800-Attorney+Inc HTTP/1.1" 200 277
+10/17/2017 09:13:04 AM Filtering spam.
+10/17/2017 09:13:04 AM Adding sentiments.
+10/17/2017 09:13:04 AM Getting tweets for 1847 Holdings LLC
+10/17/2017 09:13:04 AM PARAMS: {'q': '1847 Holdings LLC'}
+10/17/2017 09:13:04 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:04 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1847+Holdings+LLC HTTP/1.1" 200 277
+10/17/2017 09:13:04 AM Filtering spam.
+10/17/2017 09:13:04 AM Adding sentiments.
+10/17/2017 09:13:04 AM Getting tweets for 1867 Western Financial Corp
+10/17/2017 09:13:04 AM PARAMS: {'q': '1867 Western Financial Corp'}
+10/17/2017 09:13:04 AM Starting new HTTPS connection (1): api.twitter.com
+10/17/2017 09:13:05 AM https://api.twitter.com:443 "GET /1.1/search/tweets.json?q=1867+Western+Financial+Corp HTTP/1.1" 200 299
+10/17/2017 09:13:05 AM Filtering spam.
+10/17/2017 09:13:05 AM Adding sentiments.
+10/17/2017 09:13:05 AM Getting tweets for 1PM Industries Inc
+10/17/2017 09:13:05 AM PARAMS: {'q': '1PM Industries Inc'}
+10/17/2017 09:13:05 AM Starting new HTTPS connection (1): api.twitter.com

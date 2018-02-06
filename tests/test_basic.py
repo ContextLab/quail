@@ -12,26 +12,28 @@ recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
 egg = Egg(pres=presented,rec=recalled)
 
 def test_analysis_acc():
-    assert np.array_equal(analyze(egg, analysis='accuracy').values,[np.array([1.]),np.array([.75])])
+    print(analyze(egg, analysis='accuracy'))
+    print([np.array([1.]),np.array([.75])])
+    assert np.array_equal(analyze(egg, analysis='accuracy').data.values,[np.array([1.]),np.array([.75])])
 
 def test_analysis_spc():
-    assert np.array_equal(analyze(egg, analysis='spc').values,[np.array([ 1.,  1.,  1.,  1.]),np.array([ 1.,  1.,  0.,  1.])])
+    assert np.array_equal(analyze(egg, analysis='spc').data.values,[np.array([ 1.,  1.,  1.,  1.]),np.array([ 1.,  1.,  0.,  1.])])
 
 def test_analysis_spc_listgroup():
-    assert np.array_equal(analyze(egg, listgroup=[1,1], listname='Frank', analysis='spc').values,np.array([[ 1. ,  1. ,  0.5,  1. ]]))
+    assert np.array_equal(analyze(egg, listgroup=[1,1], listname='Frank', analysis='spc').data.values,np.array([[ 1. ,  1. ,  0.5,  1. ]]))
 
 def test_analysis_pfr():
-    assert np.array_equal(analyze(egg, analysis='pfr').values,[np.array([ 0.,  1.,  0.,  0.]), np.array([ 0.,  1.,  0.,  0.])])
+    assert np.array_equal(analyze(egg, analysis='pfr').data.values,[np.array([ 0.,  1.,  0.,  0.]), np.array([ 0.,  1.,  0.,  0.])])
 
 def test_analysis_pfr_listgroup():
-    assert np.array_equal(analyze(egg, listgroup=['one','one'], analysis='pfr').values,np.array([[ 0.,  1.,  0.,  0.]]))
+    assert np.array_equal(analyze(egg, listgroup=['one','one'], analysis='pfr').data.values,np.array([[ 0.,  1.,  0.,  0.]]))
 
 def test_analysis_lag_crp():
     # example from kahana lab lag-crp tutorial
     presented=[[['1', '2', '3', '4', '5', '6', '7', '8']]]
     recalled=[[['8', '7', '1', '2', '3', '5', '6', '4']]]
     egg = Egg(pres=presented,rec=recalled)
-    assert np.allclose(analyze(egg, analysis='lagcrp').values,np.array([[0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.333333, 0.333333, np.nan, 0.75, 0.333333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]), equal_nan=True)
+    assert np.allclose(analyze(egg, analysis='lagcrp').data.values,np.array([[0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.333333, 0.333333, np.nan, 0.75, 0.333333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]), equal_nan=True)
 
 # MULTI SUBJECT
 presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']],[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
@@ -39,10 +41,10 @@ recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']],[['bat', 'c
 multisubj_egg = Egg(pres=presented,rec=recalled)
 
 def test_analysis_acc_multisubj():
-    assert np.array_equal(analyze(multisubj_egg, analysis='accuracy').values,np.array([[ 1.],[ .75],[ 1.],[ .75]]))
+    assert np.array_equal(analyze(multisubj_egg, analysis='accuracy').data.values,np.array([[ 1.],[ .75],[ 1.],[ .75]]))
 
 def test_analysis_spc_multisubj():
-    assert np.array_equal(analyze(multisubj_egg, analysis='spc').values,np.array([[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.],[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.]]))
+    assert np.array_equal(analyze(multisubj_egg, analysis='spc').data.values,np.array([[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.],[ 1.,  1.,  1.,  1.],[ 1.,  1.,  0.,  1.]]))
 
 def test_egg():
     list1 = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]

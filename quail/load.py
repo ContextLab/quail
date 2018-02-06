@@ -1,17 +1,50 @@
 from __future__ import division
+from __future__ import print_function
+from builtins import zip
+from builtins import str
+from builtins import range
 from sqlalchemy import create_engine, MetaData, Table
 import json
-import math
 import re
 import csv
-from itertools import izip_longest
-from collections import Counter
 import pandas as pd
 import numpy as np
 from .egg import Egg
 import dill
 import pickle
 import os
+import deepdish as dd
+from .helpers import parse_egg
+
+def load_egg(filepath, update=True):
+    """
+    Loads pickled egg
+
+    Parameters
+    ----------
+    filepath : str
+        Location of pickled egg
+
+    update : bool
+        If true, updates egg to latest format
+
+    Returns
+    ----------
+    egg : Egg data object
+        A loaded unpickled egg
+
+    """
+    try:
+        egg = Egg(**dd.io.load(filepath))
+    except:
+        # if error, try loading old format
+        with open(filepath, 'rb') as f:
+            egg = pickle.load(f)
+
+    if update:
+        return egg.crack()
+    else:
+        return egg
 
 def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=None, experiments=None,
     filters=None):
@@ -78,7 +111,7 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         data = [record['trialdata'] for part in data for record in part]
 
         # filter out fields that we dont want using isNotNumber function
-        filtered_data = [{k:v for (k,v) in part.items() if isNotNumber(k)} for part in data]
+        filtered_data = [{k:v for (k,v) in list(part.items()) if isNotNumber(k)} for part in data]
 
         # Put all subjects' trial data into a dataframe object from the
         # 'pandas' python library: one option among many for analysis
@@ -118,8 +151,8 @@ def load(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=Non
         indexes=[]
         for line in data_frame.iterrows():
             try:
-                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'emily', 'bryan', 'armando', 'Armando Ortiz', 'Maddy/Lucy',
-                                                                      'Paxton', 'lucy']:
+                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'emily', 'bryan', 'armando', 'armando ortiz', 'maddy/lucy',
+                                                                      'paxton', 'lucy']:
                     delete = False
                 else:
                     delete = True
@@ -386,7 +419,13 @@ def load_example_data(dataset='automatic'):
     assert dataset in ['automatic', 'manual'], "Dataset can only be automatic or manual"
 
     # open pickled egg
-    with open(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg', 'rb') as handle:
-        egg = pickle.load(handle)
-
-    return egg
+    try:
+        with open(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg', 'rb') as handle:
+            egg = pickle.load(handle)
+    except:
+        f = dd.io.load(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg')
+        egg = Egg(pres=f['pres'], rec=f['rec'], dist_funcs=f['dist_funcs'],
+                  subjgroup=f['subjgroup'], subjname=f['subjname'],
+                  listgroup=f['listgroup'], listname=f['listname'],
+                  date_created=f['date_created'])
+    return egg.crack()
