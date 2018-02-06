@@ -2,12 +2,20 @@ import pytest
 import numpy as np
 from quail.egg import Egg
 
-def test_lagcrp():
+def test_lagcrp_exact():
     # example from kahana lab lag-crp tutorial
     presented=[[['1', '2', '3', '4', '5', '6', '7', '8']]]
     recalled=[[['8', '7', '1', '2', '3', '5', '6', '4']]]
     egg = Egg(pres=presented, rec=recalled)
     assert np.allclose(egg.analyze('lagcrp').data.values,np.array([[0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.333333, 0.333333, np.nan, 0.75, 0.333333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]), equal_nan=True)
+
+# def test_lagcrp_exact_3d():
+#     presented=[[[[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0], [50, 0, 0],
+#                  [60, 0, 0], [70, 0, 0], [80, 0, 0]]]]
+#     recalled=[[[[80, 0, 0], [70, 0, 0], [10, 0, 0], [20, 0, 0], [30, 0, 0],
+#                 [50, 0, 0], [60, 0, 0], [40, 0, 0]]]]
+#     egg = Egg(pres=presented, rec=recalled)
+#     assert np.allclose(egg.analyze('lagcrp', match='exact').data.values,np.array([[0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.333333, 0.333333, np.nan, 0.75, 0.333333, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]), equal_nan=True)
 
 def test_lagcrp_best_euclidean():
     presented=[[[10, 20, 30, 40, 50, 60, 70, 80]]]
