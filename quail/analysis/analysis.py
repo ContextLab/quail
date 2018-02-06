@@ -86,7 +86,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
 
     Returns
     ----------
-    analyzed_data : quail.FriedEgg
+    result : quail.FriedEgg
         Class instance containing the analysis results
 
     """

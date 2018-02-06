@@ -5,7 +5,9 @@ import pandas as pd
 # lag-crp
 def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     """
-    Computes probabilities for each transition distance (probability that a word recalled will be a given distance--in presentation order--from the previous recalled word)
+    Computes probabilities for each transition distance (probability that a word
+    recalled will be a given distance--in presentation order--from the previous
+    recalled word).
 
     Parameters
     ----------
@@ -15,16 +17,30 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     rec_slice : Pandas Dataframe
         chunk of recall data to be analyzed
 
+    match : str (exact, best or smooth)
+        Matching approach to compute recall matrix.  If exact, the presented and
+        recalled items must be identical (default).  If best, the recalled item
+        that is most similar to the presented items will be selected. If smooth,
+        a weighted average of all presented items will be used, where the
+        weights are derived from the similarity between the recalled item and
+        each presented item.
+
+    distance : str
+        The distance function used to compare presented and recalled items.
+        Applies only to 'best' and 'smooth' matching approaches.  Can be any
+        distance function supported by numpy.spatial.distance.cdist.
+
     Returns
     ----------
-    prob_recalled : numpy array
-      each float is the probability of transition distance (distnaces indexed by position, from -(n-1) to (n-1), excluding zero
+    prec : numpy array
+      each float is the probability of transition distance (distnaces indexed by
+      position, from -(n-1) to (n-1), excluding zero
 
     """
 
     def compute_lagcrp(rec, lstlen):
         """Computes lag-crp for a given recall list"""
-        
+
         def check_pair(a, b):
             if (a>0 and b>0) and (a!=b):
                 return True

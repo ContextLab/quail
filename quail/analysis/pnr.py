@@ -44,7 +44,9 @@ def pnr_helper(pres_slice, rec_slice, position, match='exact', distance='euclide
 
     if match in ['exact', 'best']:
         result = [pnr(lst, position) for lst in recall]
-    else:
+    elif match is 'smooth':
         result = recall
+    else:
+        raise ValueError('Match must be set to exact, best or smooth.')
 
     return np.mean(result, axis=0)

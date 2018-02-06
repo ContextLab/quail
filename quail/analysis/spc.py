@@ -28,7 +28,7 @@ def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
 
     Returns
     ----------
-    prop_recalled : numpy array
+    prec : numpy array
       each number represents the probability of recall for a word presented in given position/index
 
     """
@@ -40,7 +40,9 @@ def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
 
     if match in ['exact', 'best']:
         result = [spc(lst) for lst in recall]
-    else:
+    elif match is 'smooth':
         result = recall
+    else:
+        raise ValueError('Match must be set to exact, best or smooth.')
 
     return np.nanmean(result, axis=0)

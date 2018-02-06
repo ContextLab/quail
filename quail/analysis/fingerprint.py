@@ -3,7 +3,6 @@ import warnings
 import numpy as np
 from ..distance import dist_funcs as dist_funcs_dict
 
-# fingerprint analysis
 def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs,
                        permute=False, n_perms=1000):
     """
@@ -12,18 +11,21 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs,
     Parameters
     ----------
     pres_slice : Pandas Dataframe
-        chunk of presentation data to be analyzed
+        Chunk of presentation data to be analyzed
+
     rec_slice : Pandas Dataframe
-        chunk of recall data to be analyzed
+        Chunk of recall data to be analyzed
+
     feature_slice : Pandas Dataframe
-        chunk of features data to be analyzed
+        Chunk of features data to be analyzed
+
     dist_funcs : dict
         Dictionary of distance functions for feature clustering analyses
 
     Returns
     ----------
-    probabilities : numpy array
-      each number represents clustering along a different feature dimension
+    probabilities : Numpy array
+      Each number represents clustering along a different feature dimension
 
     """
 
@@ -32,17 +34,13 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs,
 
     for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix()):
 
-        # turn arrays into lists
         p = list(p)
         f = list(f)
         r = list([ri for ri in list(r) if isinstance(ri, str)])
 
         if len(r)>1:
-
-            # compute distances
             distances = compute_distances(p, f, dist_funcs, dist_funcs_dict)
 
-            # add optional bootstrapping
             if permute:
                 fingerprint_matrix.append(permute_fingerprint_serial(p, r, f, distances, n_perms=n_perms))
             else:
@@ -50,11 +48,10 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs,
         else:
             fingerprint_matrix.append([np.nan]*len(list(f[0].keys())))
 
-    # return average over rows
     return np.mean(fingerprint_matrix, axis=0)
 
-# fingerprint + temporal clustering analysis
-def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs, permute=True, n_perms=1000):
+def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice,
+                                dist_funcs, permute=True, n_perms=1000):
     """
     Computes clustering along a set of feature dimensions
 
@@ -62,10 +59,13 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
     ----------
     pres_slice : Pandas Dataframe
         chunk of presentation data to be analyzed
+
     rec_slice : Pandas Dataframe
         chunk of recall data to be analyzed
+
     feature_slice : Pandas Dataframe
         chunk of features data to be analyzed
+
     dist_funcs : dict
         Dictionary of distance functions for feature clustering analyses
 
@@ -75,17 +75,15 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
       each number represents clustering along a different feature dimension
 
     """
-    # compute fingerprint for each list within a chunk
+
     fingerprint_matrix = []
 
     for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix()):
 
-        # turn arrays into lists
         p = list(p)
         f = list(f)
         r = list([ri for ri in list(r) if isinstance(ri, str)])
 
-        # add in temporal clustering
         nf = []
         for idx, fi in enumerate(f):
             fi['temporal'] = idx
@@ -94,13 +92,9 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice, dist_funcs
         dist_funcs_copy = dist_funcs.copy()
         dist_funcs_copy['temporal'] = 'lambda a, b : np.abs(a-b)'
 
-        # if there is at least 1 transition
         if len(r)>1:
-
-            # compute distances
             distances = compute_distances(p, nf, dist_funcs_copy, dist_funcs_dict)
 
-            # add optional bootstrapping
             if permute:
                 fingerprint_matrix.append(permute_fingerprint_serial(p, r, nf, distances, n_perms=n_perms))
             else:
@@ -118,8 +112,10 @@ def compute_distances(pres_list, feature_list, dist_funcs, dist_funcs_dict):
     ----------
     pres_list : list
         list of presented words
+
     feature_list : list
         list of feature dicts for presented words
+
     dist_funcs : dict
         dict of distance functions for each feature
 
@@ -160,10 +156,13 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
     ----------
     pres_list : list
         list of presented words
+
     rec_list : list
         list of recalled words
+
     feature_list : list
         list of feature dicts for presented words
+
     distances : dict
         dict of distance matrices for each feature
 
@@ -180,7 +179,8 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
 
     # return default list if there is not enough data to compute the fingerprint
     if len(rec_list) <= 2:
-        print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
+        print('Not enough recalls to compute fingerprint, returning default'
+              'fingerprint.. (everything is .5)')
         for feature in feature_list[0]:
             weights[feature] = .5
         return [weights[key] for key in weights]

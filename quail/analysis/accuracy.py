@@ -27,7 +27,9 @@ def accuracy_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
 
     if match in ['exact', 'best']:
         result = [compute_acc(lst) for lst in recall]
-    else:
+    elif match is 'smooth':
         result = np.nanmean(recall, axis=1)
+    else:
+        raise ValueError('Match must be set to exact, best or smooth.')
 
     return np.nanmean(result, axis=0)
