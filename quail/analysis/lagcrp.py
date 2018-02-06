@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
 from .recmat import recall_matrix
-from ..helpers import r2z, z2r
+from scipy.spatial.distance import cdist
+from ..helpers import check_nan
 
 def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
                   ts=None):
@@ -84,17 +85,17 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
         crp.insert(int(len(crp) / 2), np.nan)
         return crp
 
-    def compute_nlagcrp(recmat, ts=None, distance='correlation'):
+    def compute_nlagcrp(distmat, ts=None):
 
         def lagcrp_model(s):
             idx = list(range(0, -s, -1))
             return np.array([list(range(i, i+s)) for i in idx])
 
-        model = lagcrp_model(recmat.shape[1])
+        model = lagcrp_model(distmat.shape[1])
         lagcrp = np.zeros(ts * 2)
-        for rdx in range(len(recmat)-1):
-            item = recmat[rdx, :]
-            next_item = recmat[rdx+1, :]
+        for rdx in range(len(distmat)-1):
+            item = distmat[rdx, :]
+            next_item = distmat[rdx+1, :]
             outer = np.outer(item, next_item)
             lagcrp += np.array(list(map(lambda lag: np.mean(outer[model==lag]), range(-ts, ts))))
         lagcrp /= ts
@@ -102,15 +103,27 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
         lagcrp.insert(int(len(lagcrp) / 2), np.nan)
         return np.array(lagcrp)
 
-    recmat = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
-
-    if not ts:
-        ts = recmat.shape[1]
+    def _format(p, r):
+        p = np.matrix([np.array(i) for i in p])
+        if p.shape[0]==1:
+            p=p.T
+        r = map(lambda x: [np.nan]*p.shape[1] if check_nan(x) else x, r)
+        r = np.matrix([np.array(i) for i in r])
+        if r.shape[0]==1:
+            r=r.T
+        return p, r
 
     if match in ['exact', 'best']:
+        recmat = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
         lagcrp = [compute_lagcrp(lst, pres_slice.list_length) for lst in recmat]
     elif match is 'smooth':
-        lagcrp = [compute_nlagcrp(recmat, ts=ts, distance=distance)]
+        if not ts:
+            ts = pres_slice.shape[1]
+        distmat = []
+        for p, r in zip(pres_slice.values, rec_slice.values):
+            p, r = _format(p, r)
+            distmat.append(1 - cdist(p, r, distance))
+        lagcrp = [compute_nlagcrp(d, ts=ts) for d in distmat]
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
     return np.nanmean(lagcrp, axis=0)
