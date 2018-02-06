@@ -21,63 +21,75 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
 
     """
 
-    # compute recall_matrix for data slice
-    recall = recall_matrix(pres_slice, rec_slice)
+    def compute_lagcrp(rec, lstlen):
 
-    def check_pair(a, b):
-        if (a>0 and b>0) and (a!=b):
-            return True
-        else:
-            return False
-
-    def compute_actual(recall_list, list_length):
-        arr=pd.Series(data=np.zeros((list_length)*2), index=list(range(-list_length,0))+list(range(1,list_length+1)))
-        recalled=[]
-        for trial in range(0,list_length-1):
-            a=recall_list[trial]
-            b=recall_list[trial+1]
-            if check_pair(a, b) and (a not in recalled) and (b not in recalled):
-                arr[b-a]+=1
-            recalled.append(a)
-        return arr
-
-    def compute_possible(recall_list, list_length):
-        arr=pd.Series(data=np.zeros((list_length)*2), index=list(range(-list_length,0))+list(range(1,list_length+1)))
-        recalled=[]
-        for trial in recall_list:
-
-            if np.isnan(trial):
-                pass
+        def check_pair(a, b):
+            if (a>0 and b>0) and (a!=b):
+                return True
             else:
+                return False
 
-                low_bound=int(1-trial)
-                up_bound=int(list_length-trial)
+        def compute_actual(rec, lstlen):
+            arr=pd.Series(data=np.zeros((lstlen)*2),
+                          index=list(range(-lstlen,0))+list(range(1,lstlen+1)))
+            recalled=[]
+            for trial in range(0,lstlen-1):
+                a=rec[trial]
+                b=rec[trial+1]
+                if check_pair(a, b) and (a not in recalled) and (b not in recalled):
+                    arr[b-a]+=1
+                recalled.append(a)
+            return arr
 
-                chances=list(range(low_bound,0))+list(range(1,up_bound+1))
-                #ALL transitions
+        def compute_possible(rec, lstlen):
+            arr=pd.Series(data=np.zeros((lstlen)*2),
+                          index=list(range(-lstlen,0))+list(range(1,lstlen+1)))
+            recalled=[]
+            for trial in rec:
+                if np.isnan(trial):
+                    pass
+                else:
+                    lbound=int(1-trial)
+                    ubound=int(lstlen-trial)
+                    chances=list(range(lbound,0))+list(range(1,ubound+1))
+                    for each in recalled:
+                        if each-trial in chances:
+                            chances.remove(each-trial)
+                    arr[chances]+=1
+                    recalled.append(trial)
+            return arr
 
-                #remove transitions not possible
-                for each in recalled:
-                    if each-trial in chances:
-                        chances.remove(each-trial)
+        actual = compute_actual(rec, lstlen)
+        possible = compute_possible(rec, lstlen)
+        crp = [0.0 if j == 0 else i / j for i, j in zip(actual, possible)]
+        crp.insert(int(len(crp) / 2), np.nan)
+        return crp
 
-                #update array with possible transitions
-                arr[chances]+=1
+    def compute_nlagcrp(pres, rec, ts=None, distance='correlation'):
 
-                recalled.append(trial)
+        def lagcrp_model(s):
+            idx = list(range(0, -s, -1))
+            return np.array([list(range(i, i+s)) for i in idx])
 
-        return arr
+        if not ts:
+            ts = int(pres.shape[1]/10)
 
-    ########
+        model = lagcrp_model(ts)
+        lagcrp = np.zeros(ts * 2)
+        for rdx in range(len(rec)-1):
+            item = 1 - cdist(rec[rdx,:].reshape(1, -1), pres, distance)
+            next_item = 1 - cdist(rec[rdx+1,:].reshape(1,-1), pres, distance)
+            outer = np.outer(item, next_item)
+            lagcrp += np.array(list(map(lambda lag: np.mean(r2z(outer[model==lag])), range(-ts, ts))))
+        lagcrp /= ts
+        return z2r(lagcrp)
 
-    list_crp = []
-    for n_list in recall:
-        actual = compute_actual(n_list, pres_slice.list_length)
-        possible = compute_possible(n_list, pres_slice.list_length)
-        crp = [0.0 if j==0 else i/j for i,j in zip(actual,possible)]
-        crp.insert(int(len(crp)/2),np.nan)
-        list_crp.append(crp)
+    if match in ['exact', 'best']:
+        recall = recall_matrix(pres_slice, rec_slice, match=match,
+                               distance=distance)
+        lagcrp = [compute_lagcrp(lst, pres_slice.list_length) for lst in recall]
+    else:
+        lagcrp = [compute_nlagcrp(pres_slice, rec_slice, ts=ts,
+                                  distance=distance) for lst in recall]
 
-    prob_recalled = np.mean(list_crp, axis=0)
-
-    return prob_recalled
+    return np.mean(lagcrp, axis=0)
