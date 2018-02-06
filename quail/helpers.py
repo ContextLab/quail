@@ -284,3 +284,41 @@ def check_nan(x):
         return y
     else:
         return False
+
+def r2z(r):
+    """
+    Function that calculates the Fisher z-transformation
+
+    Parameters
+    ----------
+    r : int or ndarray
+        Correlation value
+
+    Returns
+    ----------
+    result : int or ndarray
+        Fishers z transformed correlation value
+
+
+    """
+    with np.errstate(invalid='ignore', divide='ignore'):
+        return 0.5 * (np.log(1 + r) - np.log(1 - r))
+
+def z2r(z):
+    """
+    Function that calculates the inverse Fisher z-transformation
+
+    Parameters
+    ----------
+    z : int or ndarray
+        Fishers z transformed correlation value
+
+    Returns
+    ----------
+    result : int or ndarray
+        Correlation value
+
+
+    """
+    with np.errstate(invalid='ignore', divide='ignore'):
+        return (np.exp(2 * z) - 1) / (np.exp(2 * z) + 1)

@@ -1,9 +1,10 @@
 import numpy as np
-from .recmat import recall_matrix
 import pandas as pd
+from .recmat import recall_matrix
+from ..helpers import r2z, z2r
 
-# lag-crp
-def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
+def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
+                  ts=None):
     """
     Computes probabilities for each transition distance (probability that a word
     recalled will be a given distance--in presentation order--from the previous
@@ -83,33 +84,33 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
         crp.insert(int(len(crp) / 2), np.nan)
         return crp
 
-    def compute_nlagcrp(pres, rec, ts=None, distance='correlation'):
+    def compute_nlagcrp(recmat, ts=None, distance='correlation'):
 
         def lagcrp_model(s):
             idx = list(range(0, -s, -1))
             return np.array([list(range(i, i+s)) for i in idx])
 
-        if not ts:
-            ts = int(pres.shape[1]/10)
-
-        model = lagcrp_model(ts)
+        model = lagcrp_model(recmat.shape[1])
         lagcrp = np.zeros(ts * 2)
-        for rdx in range(len(rec)-1):
-            item = 1 - cdist(rec[rdx,:].reshape(1, -1), pres, distance)
-            next_item = 1 - cdist(rec[rdx+1,:].reshape(1,-1), pres, distance)
+        for rdx in range(len(recmat)-1):
+            item = recmat[rdx, :]
+            next_item = recmat[rdx+1, :]
             outer = np.outer(item, next_item)
-            lagcrp += np.array(list(map(lambda lag: np.mean(r2z(outer[model==lag])), range(-ts, ts))))
+            lagcrp += np.array(list(map(lambda lag: np.mean(outer[model==lag]), range(-ts, ts))))
         lagcrp /= ts
-        return z2r(lagcrp)
+        lagcrp = list(lagcrp)
+        lagcrp.insert(int(len(lagcrp) / 2), np.nan)
+        return np.array(lagcrp)
+
+    recmat = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
+
+    if not ts:
+        ts = recmat.shape[1]
 
     if match in ['exact', 'best']:
-        recall = recall_matrix(pres_slice, rec_slice, match=match,
-                               distance=distance)
-        lagcrp = [compute_lagcrp(lst, pres_slice.list_length) for lst in recall]
+        lagcrp = [compute_lagcrp(lst, pres_slice.list_length) for lst in recmat]
     elif match is 'smooth':
-        lagcrp = [compute_nlagcrp(pres_slice, rec_slice, ts=ts,
-                                  distance=distance) for lst in recall]
+        lagcrp = [compute_nlagcrp(recmat, ts=ts, distance=distance)]
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
-
-    return np.mean(lagcrp, axis=0)
+    return np.nanmean(lagcrp, axis=0)
