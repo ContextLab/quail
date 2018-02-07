@@ -118,7 +118,6 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         'subjname' : subjname,
         'parallel' : parallel,
     }
-    print(features)
 
     if analysis is 'accuracy':
         opts.update(dict(analysis=accuracy_helper, analysis_type='accuracy',
@@ -133,12 +132,12 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
     elif analysis is 'pfr':
         opts.update(dict(analysis=pnr_helper, analysis_type='pfr',
                          pass_features=False, position=0, match=match,
-                         distance=distance))
+                         distance=distance, features=features))
         r = _analyze_chunk(data, **opts)
     elif analysis is 'pnr':
         opts.update(dict(analysis=pnr_helper, analysis_type='pnr',
                          pass_features=False, position=position, match=match,
-                         distance=distance))
+                         distance=distance, features=features))
         r = _analyze_chunk(data, **opts)
     elif analysis is 'lagcrp':
         opts.update(dict(analysis=lagcrp_helper, analysis_type='lagcrp',

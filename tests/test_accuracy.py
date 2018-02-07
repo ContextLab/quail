@@ -26,7 +26,6 @@ def test_acc_best_euclidean_3d():
     egg = Egg(pres=presented,rec=recalled)
     assert np.array_equal(egg.analyze('accuracy', match='best', distance='euclidean', features='feature1').data.values,[np.array([1.]),np.array([.75])])
 
-
 def test_acc_best_euclidean_3d_2features():
     presented = [[[{'item' : i, 'feature1' : [i*10, 0, 0], 'feature2' : 0} for i in range(1, 5)] for i in range(2)]]
     recalled=[[[{'item' : i, 'feature1' : [i*10, 0, 0], 'feature2': 0} for i in [2, 1, 4, 3]],[{'item' : i, 'feature1' : [i*10, 0, 0], 'feature2':0} for i in [2, 4, 1]]]]

@@ -1,7 +1,8 @@
 import numpy as np
 from .recmat import recall_matrix
 
-def pnr_helper(pres_slice, rec_slice, position, match='exact', distance='euclidean'):
+def pnr_helper(pres_slice, rec_slice, position, match='exact',
+               distance='euclidean', features=None):
 
     """
     Computes probability of a word being recalled nth (in the appropriate recall
@@ -40,12 +41,15 @@ def pnr_helper(pres_slice, rec_slice, position, match='exact', distance='euclide
     def pnr(lst, position):
         return [1 if pos==lst[position] else 0 for pos in range(1,len(lst)+1)]
 
-    recall = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
+    opts = dict(match=match, distance=distance, features=features)
+    if match is 'exact':
+        opts.update({'features' : 'item'})
+    recmat = recall_matrix(pres_slice, rec_slice, **opts)
 
     if match in ['exact', 'best']:
-        result = [pnr(lst, position) for lst in recall]
+        result = [pnr(lst, position) for lst in recmat]
     elif match is 'smooth':
-        result = recall
+        result = recmat
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
 
