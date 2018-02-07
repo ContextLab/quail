@@ -1,7 +1,8 @@
 import numpy as np
 from .recmat import recall_matrix
 
-def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
+def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
+               features=None):
     """
     Computes probability of a word being recalled (in the appropriate recall list), given its presentation position
 
@@ -34,9 +35,12 @@ def spc_helper(pres_slice, rec_slice, match='exact', distance='euclidean'):
     """
 
     def spc(lst):
-        return [1 if pos in lst else 0 for pos in range(1,len(lst)+1)]
+        return [1 if pos in lst else 0 for pos in range(1, len(lst)+1)]
 
-    recmat = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
+    opts = dict(match=match, distance=distance, features=features)
+    if match is 'exact':
+        opts.update({'features' : 'item'})
+    recmat = recall_matrix(pres_slice, rec_slice, **opts)
 
     if match in ['exact', 'best']:
         result = [spc(lst) for lst in recmat]

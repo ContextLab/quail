@@ -56,7 +56,8 @@ def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(position), subjname, 'Position']
     elif analysis is 'lagcrp':
-        base = range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1)
+        base = list(range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1))
+        print(df, base)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
     elif analysis is 'fingerprint' or analysis is 'fingerprint_temporal':
@@ -322,3 +323,13 @@ def z2r(z):
     """
     with np.errstate(invalid='ignore', divide='ignore'):
         return (np.exp(2 * z) - 1) / (np.exp(2 * z) + 1)
+
+def _format(p, r):
+    p = np.matrix([np.array(i) for i in p])
+    if p.shape[0]==1:
+        p=p.T
+    r = map(lambda x: [np.nan]*p.shape[1] if check_nan(x) else x, r)
+    r = np.matrix([np.array(i) for i in r])
+    if r.shape[0]==1:
+        r=r.T
+    return p, r

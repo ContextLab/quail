@@ -25,8 +25,5 @@ recalled_words = [[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']],[['
 # create egg
 egg = quail.Egg(pres=presented_words, rec=recalled_words)
 
-#analysis
-analyzed_data = quail.analyze(egg, analysis='accuracy')
-
-#plot by list
-quail.plot(analyzed_data, plot_style='violin', title='Average Recall Accuracy')
+# analyze and plot
+egg.analyze('accuracy').plot(plot_style='violin', title='Average Recall Accuracy')

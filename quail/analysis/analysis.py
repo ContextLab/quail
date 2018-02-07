@@ -22,7 +22,7 @@ from .fingerprint import fingerprint_helper, fingerprint_temporal_helper
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
             listname='List', analysis=None, position=0, permute=False,
             n_perms=1000, parallel=False, match='exact',
-            distance='correlation'):
+            distance='euclidean', features=None):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -117,29 +117,31 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         'listgroup' : listgroup,
         'subjname' : subjname,
         'parallel' : parallel,
-        'match' : match,
-        'distance' : distance
     }
+    print(features)
 
     if analysis is 'accuracy':
         opts.update(dict(analysis=accuracy_helper, analysis_type='accuracy',
-                         pass_features=False))
+                         pass_features=False, match=match, distance=distance))
         r = _analyze_chunk(data, **opts)
     elif analysis is 'spc':
         opts.update(dict(analysis=spc_helper, analysis_type='spc',
-                         pass_features=False))
+                         pass_features=False, match=match, distance=distance,
+                         features=features))
         r = _analyze_chunk(data, **opts)
     elif analysis is 'pfr':
         opts.update(dict(analysis=pnr_helper, analysis_type='pfr',
-                         pass_features=False, position=0))
+                         pass_features=False, position=0, match=match,
+                         distance=distance))
         r = _analyze_chunk(data, **opts)
     elif analysis is 'pnr':
         opts.update(dict(analysis=pnr_helper, analysis_type='pnr',
-                         pass_features=False, position=position))
+                         pass_features=False, position=position, match=match,
+                         distance=distance))
         r = _analyze_chunk(data, **opts)
     elif analysis is 'lagcrp':
         opts.update(dict(analysis=lagcrp_helper, analysis_type='lagcrp',
-                         pass_features=False))
+                         pass_features=False, match=match, distance=distance))
         r = _analyze_chunk(data, **opts)
         r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
     elif analysis is 'fingerprint':
@@ -166,7 +168,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
 
 def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
                    listname='List', analysis=None, analysis_type=None,
-                   pass_features=False, **kwargs):
+                   pass_features=False, features=None, **kwargs):
     """
     Private function that groups data by subject/list number and performs
     analysis for a chunk of data.
@@ -209,11 +211,11 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
 
         # get data slice for presentation and recall
         pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-        pres_slice = pres_slice.applymap(lambda x: x['item'])
+        # pres_slice = pres_slice.applymap(lambda x: x['item'])
         pres_slice.list_length = data.list_length
 
         rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-        rec_slice = rec_slice.applymap(lambda x: x['item'] if x is not None else np.nan)
+        # rec_slice = rec_slice.applymap(lambda x: x['item'] if x is not None else np.nan)
 
         # if features are need for analysis, get the features for this slice of data
         if pass_features:
@@ -227,7 +229,7 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
         if pass_features:
             return pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in list(feature_slice[0].as_matrix()[0].keys())])
         else:
-            return pd.DataFrame([analysis(pres_slice, rec_slice, **kwargs)], index=index)
+            return pd.DataFrame([analysis(pres_slice, rec_slice, features=features, **kwargs)], index=index)
 
 
     # if no grouping, set default to iterate over each list independently

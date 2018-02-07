@@ -2,9 +2,10 @@ import numpy as np
 import pandas as pd
 import six
 from scipy.spatial.distance import cdist
-from ..helpers import check_nan
+from ..helpers import check_nan, _format
 
-def recall_matrix(presented, recalled, match='exact', distance='euclidean'):
+def recall_matrix(presented, recalled, match='exact', distance='euclidean',
+                  features=None):
     """
     Computes recall matrix given list of presented and list of recalled words
 
@@ -38,29 +39,45 @@ def recall_matrix(presented, recalled, match='exact', distance='euclidean'):
       negative ints represent words recalled from previous lists
 
     """
-    def _format(p, r):
-        p = np.matrix([np.array(i) for i in p])
-        if p.shape[0]==1:
-            p=p.T
-        r = map(lambda x: [np.nan]*p.shape[1] if check_nan(x) else x, r)
-        r = np.matrix([np.array(i) for i in r])
-        if r.shape[0]==1:
-            r=r.T
-        return p, r
+    def recmat(presented, recalled, match, distance):
+        result = np.empty(recalled.shape)
+        for idx, (p, r) in enumerate(zip(presented, recalled)):
+            if match is 'exact':
+                m = [np.where(x==p)[0] for x in r]
+                result[idx,:] = [x[0]+1 if len(x)>0 else np.nan for x in m]
+            elif match is 'best':
+                p, r = _format(p, r)
+                result = - cdist(r, p, distance)
+            elif match is 'smooth':
+                p, r = _format(p, r)
+                result = - cdist(r, p, distance)
+        return result
 
-    if isinstance(presented, pd.DataFrame):
-        presented, recalled = (presented.values, recalled.values)
+    def feature_filter(presented, recalled, feature):
+        presented = presented.applymap(lambda x: x[feature]).values
+        recalled = recalled.applymap(lambda x: x[feature] if x['item'] is not np.nan else np.nan).values
+        return presented, recalled
 
-    result = np.empty(recalled.shape)
-    for idx, (p, r) in enumerate(zip(presented, recalled)):
-        if match is 'exact':
-            m = [np.where(x==p)[0] for x in r]
-            result[idx,:] = [x[0]+1 if len(x)>0 else np.nan for x in m]
-        elif match is 'best':
-            p, r = _format(p, r)
-            m = 1 - cdist(r, p, distance)
-            result[idx, :] = np.argmax(m, 1)+1
-        elif match is 'smooth':
-            p, r = _format(p, r)
-            result[idx, :] = np.mean(1 - cdist(r, p, distance), 0)
-    return result
+    def recmat_by_feature(presented, recalled, feature, match, distance):
+        p, r = feature_filter(presented, recalled, feature)
+        return recmat(p, r, match, distance)
+
+
+    if match in ['best', 'smooth']:
+        if not features:
+            features = [k for k,v in presented.loc[0][0].values[0].items() if k!='item']
+            if not features:
+                raise('No features found.  Cannot match with best or smooth strategy')
+
+    if not isinstance(features, list):
+        features = [features]
+
+    result = np.mean([recmat_by_feature(presented, recalled, feature, match,
+                                        distance) for feature in features], 0)
+
+    if match is 'best':
+        result = np.argmax(result, 1)+1
+    elif match is 'smooth':
+        result = np.mean(result, 1)
+
+    return np.atleast_2d(result)
