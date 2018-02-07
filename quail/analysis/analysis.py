@@ -122,7 +122,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
 
     if analysis is 'accuracy':
         opts.update(dict(analysis=accuracy_helper, analysis_type='accuracy',
-                         pass_features=False, match=match, distance=distance))
+                         pass_features=False, match=match, distance=distance,
+                         features=features))
         r = _analyze_chunk(data, **opts)
     elif analysis is 'spc':
         opts.update(dict(analysis=spc_helper, analysis_type='spc',
