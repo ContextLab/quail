@@ -57,7 +57,6 @@ def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
         melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(position), subjname, 'Position']
     elif analysis is 'lagcrp':
         base = list(range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1))
-        print(df, base)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
     elif analysis is 'fingerprint' or analysis is 'fingerprint_temporal':
@@ -68,7 +67,6 @@ def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
         melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
     elif analysis is 'temporal':
         melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
-
     return melted_df
 
 def recmat2egg(recmat, list_length=None):

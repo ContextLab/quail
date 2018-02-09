@@ -28,6 +28,7 @@ def fingerprint_helper(pres_slice, rec_slice, feature_slice, dist_funcs,
       Each number represents clustering along a different feature dimension
 
     """
+    print(pres_slice)
 
     # compute fingerprint for each list within a chunk
     fingerprint_matrix = []

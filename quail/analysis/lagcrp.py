@@ -5,7 +5,7 @@ from scipy.spatial.distance import cdist
 from ..helpers import check_nan
 
 def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
-                  ts=None):
+                  ts=None, features=None):
     """
     Computes probabilities for each transition distance (probability that a word
     recalled will be a given distance--in presentation order--from the previous
@@ -40,7 +40,7 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
 
     """
 
-    def compute_lagcrp(rec, lstlen):
+    def lagcrp(rec, lstlen):
         """Computes lag-crp for a given recall list"""
 
         def check_pair(a, b):
@@ -85,7 +85,7 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
         crp.insert(int(len(crp) / 2), np.nan)
         return crp
 
-    def compute_nlagcrp(distmat, ts=None):
+    def nlagcrp(distmat, ts=None):
 
         def lagcrp_model(s):
             idx = list(range(0, -s, -1))
@@ -113,17 +113,18 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
             r=r.T
         return p, r
 
+    opts = dict(match=match, distance=distance, features=features)
+    if match is 'exact':
+        opts.update({'features' : 'item'})
+    recmat = recall_matrix(pres_slice, rec_slice, **opts)
+
     if match in ['exact', 'best']:
-        recmat = recall_matrix(pres_slice, rec_slice, match=match, distance=distance)
-        lagcrp = [compute_lagcrp(lst, pres_slice.list_length) for lst in recmat]
+
+        lagcrp = [lagcrp(lst, pres_slice.list_length) for lst in recmat]
     elif match is 'smooth':
         if not ts:
             ts = pres_slice.shape[1]
-        distmat = []
-        for p, r in zip(pres_slice.values, rec_slice.values):
-            p, r = _format(p, r)
-            distmat.append(1 - cdist(p, r, distance))
-        lagcrp = [compute_nlagcrp(d, ts=ts) for d in distmat]
+        lagcrp = nlagcrp(recmat, ts=ts)
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
     return np.nanmean(lagcrp, axis=0)

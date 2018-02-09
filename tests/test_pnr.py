@@ -8,7 +8,7 @@ def test_analysis_pfr():
     egg = Egg(pres=presented,rec=recalled)
     assert np.array_equal(egg.analyze('pfr').data.values,[np.array([ 0.,  1.,  0.,  0.]), np.array([ 0.,  1.,  0.,  0.])])
 
-def test_analysis_pnr():
+def test_analysis_pnr_pos1():
     presented=[[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]]
     recalled=[[['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]]
     egg = Egg(pres=presented, rec=recalled)

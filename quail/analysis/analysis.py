@@ -141,7 +141,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         r = _analyze_chunk(data, **opts)
     elif analysis is 'lagcrp':
         opts.update(dict(analysis=lagcrp_helper, analysis_type='lagcrp',
-                         pass_features=False, match=match, distance=distance))
+                         pass_features=False, match=match, distance=distance,
+                         features=features))
         r = _analyze_chunk(data, **opts)
         r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
     elif analysis is 'fingerprint':

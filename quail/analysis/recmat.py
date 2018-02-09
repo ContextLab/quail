@@ -62,7 +62,6 @@ def recall_matrix(presented, recalled, match='exact', distance='euclidean',
         p, r = feature_filter(presented, recalled, feature)
         return recmat(p, r, match, distance)
 
-
     if match in ['best', 'smooth']:
         if not features:
             features = [k for k,v in presented.loc[0][0].values[0].items() if k!='item']
@@ -78,6 +77,6 @@ def recall_matrix(presented, recalled, match='exact', distance='euclidean',
     if match is 'best':
         result = np.argmax(result, 1)+1
     elif match is 'smooth':
-        result = np.mean(result, 1)
+        pass
 
     return np.atleast_2d(result)
