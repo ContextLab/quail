@@ -1,7 +1,7 @@
 import numpy as np
 from .recmat import recall_matrix
 
-def pnr_helper(pres_slice, rec_slice, position, match='exact',
+def pnr_helper(egg, position, match='exact',
                distance='euclidean', features=None):
 
     """
@@ -10,11 +10,8 @@ def pnr_helper(pres_slice, rec_slice, position, match='exact',
 
     Parameters
     ----------
-    pres_slice : Pandas Dataframe
-        chunk of presentation data to be analyzed
-
-    rec_slice : Pandas Dataframe
-        chunk of recall data to be analyzed
+    egg : quail.Egg
+        Data to analyze
 
     position : int
         Position of item to be analyzed
@@ -44,7 +41,7 @@ def pnr_helper(pres_slice, rec_slice, position, match='exact',
     opts = dict(match=match, distance=distance, features=features)
     if match is 'exact':
         opts.update({'features' : 'item'})
-    recmat = recall_matrix(pres_slice, rec_slice, **opts)
+    recmat = recall_matrix(egg, **opts)
 
     if match in ['exact', 'best']:
         result = [pnr(lst, position) for lst in recmat]

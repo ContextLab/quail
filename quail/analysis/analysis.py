@@ -15,8 +15,8 @@ from .accuracy import accuracy_helper
 from .spc import spc_helper
 from .pnr import pnr_helper
 from .lagcrp import lagcrp_helper
-from .temporal import temporal_helper
-from .fingerprint import fingerprint_helper, fingerprint_temporal_helper
+from .clustering import fingerprint_helper, temporal_helper, \
+fingerprint_temporal_helper
 
 # main analysis function
 def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
@@ -147,7 +147,8 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
     elif analysis is 'fingerprint':
         opts.update(dict(analysis=fingerprint_helper, analysis_type='fingerprint',
-                         pass_features=True, permute=permute, n_perms=n_perms))
+                         pass_features=False, permute=permute, n_perms=n_perms,
+                         features=features))
         r = _analyze_chunk(data, **opts)
     elif analysis is 'temporal':
         opts.update(dict(analysis=temporal_helper, analysis_type='temporal',
@@ -208,30 +209,13 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
     """
 
     # perform the analysis
-    def perform_analysis(subj, lst):
-
-        # get data slice for presentation and recall
-        pres_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-        # pres_slice = pres_slice.applymap(lambda x: x['item'])
-        pres_slice.list_length = data.list_length
-
-        rec_slice = data.rec.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-        # rec_slice = rec_slice.applymap(lambda x: x['item'] if x is not None else np.nan)
-
-        # if features are need for analysis, get the features for this slice of data
-        if pass_features:
-            feature_slice = data.pres.loc[[(s,l) for s in subjdict[subj] for l in listdict[subj][lst] if all(~pd.isnull(data.pres.loc[(s,l)]))]]
-            feature_slice = feature_slice.applymap(lambda x: {k:v for k,v in x.items() if k != 'item'})
-
-        # generate indices
+    def perform_analysis(c):
+        subj, lst = c
+        subjects = [s for s in subjdict[subj]]
+        lists = [l for l in listdict[subj][lst]]
+        s = data.crack(lists=lists, subjects=subjects)
         index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
-
-        # perform analysis for each data chunk
-        if pass_features:
-            return pd.DataFrame([analysis(pres_slice, rec_slice, feature_slice, data.dist_funcs, **kwargs)], index=index, columns=[feature for feature in list(feature_slice[0].as_matrix()[0].keys())])
-        else:
-            return pd.DataFrame([analysis(pres_slice, rec_slice, features=features, **kwargs)], index=index)
-
+        return pd.DataFrame([analysis(s, features=features, **kwargs)], index=index)
 
     # if no grouping, set default to iterate over each list independently
     subjgroup = subjgroup if subjgroup else data.pres.index.levels[0].values
@@ -246,13 +230,8 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
     else:
         listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
 
-    # create list of chunks to process
-    a=[]
-    b=[]
-    for subj in subjdict:
-        for lst in listdict[0]:
-            a.append(subj)
-            b.append(lst)
+    # analysis chunks
+    chunks = [(subj, lst) for subj in subjdict for lst in listdict[0]]
 
     # handle parellel kwarg
     parallel=kwargs['parallel']
@@ -263,9 +242,9 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
         import multiprocessing
         from pathos.multiprocessing import ProcessingPool as Pool
         p = Pool(multiprocessing.cpu_count())
-        analyzed_data = p.map(perform_analysis, a, b)
+        analyzed_data = p.map(perform_analysis, chunks)
     else:
-        analyzed_data = [perform_analysis(ai, bi) for ai, bi in zip(a, b)]
+        analyzed_data = [perform_analysis(c) for c in chunks]
 
     # concatenate slices
     return pd.concat(analyzed_data)

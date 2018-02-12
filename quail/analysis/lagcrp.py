@@ -4,7 +4,7 @@ from .recmat import recall_matrix
 from scipy.spatial.distance import cdist
 from ..helpers import check_nan
 
-def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
+def lagcrp_helper(egg, match='exact', distance='euclidean',
                   ts=None, features=None):
     """
     Computes probabilities for each transition distance (probability that a word
@@ -13,11 +13,8 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
 
     Parameters
     ----------
-    pres_slice : Pandas Dataframe
-        chunk of presentation data to be analyzed
-
-    rec_slice : Pandas Dataframe
-        chunk of recall data to be analyzed
+    egg : quail.Egg
+        Data to analyze
 
     match : str (exact, best or smooth)
         Matching approach to compute recall matrix.  If exact, the presented and
@@ -116,14 +113,13 @@ def lagcrp_helper(pres_slice, rec_slice, match='exact', distance='euclidean',
     opts = dict(match=match, distance=distance, features=features)
     if match is 'exact':
         opts.update({'features' : 'item'})
-    recmat = recall_matrix(pres_slice, rec_slice, **opts)
+    recmat = recall_matrix(egg, **opts)
 
     if match in ['exact', 'best']:
-
-        lagcrp = [lagcrp(lst, pres_slice.list_length) for lst in recmat]
+        lagcrp = [lagcrp(lst, egg.list_length) for lst in recmat]
     elif match is 'smooth':
         if not ts:
-            ts = pres_slice.shape[1]
+            ts = egg.pres.shape[1]
         lagcrp = nlagcrp(recmat, ts=ts)
     else:
         raise ValueError('Match must be set to exact, best or smooth.')

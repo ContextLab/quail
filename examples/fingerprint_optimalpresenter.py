@@ -39,7 +39,8 @@ dist_funcs = {
                 'length' : lambda a, b: np.linalg.norm(np.subtract(a,b))
 }
 
-egg = quail.Egg(pres=[next_presented], rec=[next_recalled], features=[next_features], dist_funcs=dist_funcs)
+egg = quail.Egg(pres=[next_presented], rec=[next_recalled], features=[next_features],
+                dist_funcs=dist_funcs)
 
 # initialize fingerprint
 fingerprint = Fingerprint(init=egg)
@@ -56,4 +57,4 @@ fingerprint.update(egg)
 # reorder next list
 resorted_egg = presenter.order(egg, method='permute', nperms=100)
 
-print(resorted_egg.pres)
+# print(resorted_egg.pres)

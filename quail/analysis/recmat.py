@@ -4,7 +4,7 @@ import six
 from scipy.spatial.distance import cdist
 from ..helpers import check_nan, _format
 
-def recall_matrix(presented, recalled, match='exact', distance='euclidean',
+def recall_matrix(egg, match='exact', distance='euclidean',
                   features=None):
     """
     Computes recall matrix given list of presented and list of recalled words
@@ -61,6 +61,9 @@ def recall_matrix(presented, recalled, match='exact', distance='euclidean',
     def recmat_by_feature(presented, recalled, feature, match, distance):
         p, r = feature_filter(presented, recalled, feature)
         return recmat(p, r, match, distance)
+
+    presented = egg.pres
+    recalled = egg.rec
 
     if match in ['best', 'smooth']:
         if not features:
