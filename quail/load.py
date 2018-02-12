@@ -35,14 +35,18 @@ def load(filepath, update=True):
 
     """
 
-    if filepath is 'automatic' or 'example':
-        return load_example_data('automatic')
-    elif filepath is 'manual':
-        return load_example_data('manual')
+    if filepath == 'automatic' or filepath == 'example':
+        fpath = os.path.dirname(os.path.abspath(__file__)) + '/data/automatic.egg'
+        return load_egg(fpath)
+    elif filepath == 'manual':
+        fpath = os.path.dirname(os.path.abspath(__file__)) + '/data/manual.egg'
+        return load_egg(fpath, update=False)
     elif filepath.split('.')[-1]=='egg':
         return load_egg(filepath, update=update)
     elif filepath.split('.')[-1]=='fegg':
         return load_egg(filepath, update=False)
+    else:
+        raise ValueError('Could not load file.')
 
 
 def load_egg(filepath, update=True):

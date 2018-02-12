@@ -57,8 +57,8 @@ class Fingerprint(object):
         saved here.
     """
 
-    def __init__(self, init=None, features='all', state=None, n=0, permute=False, nperms=1000,
-                 parallel=False):
+    def __init__(self, init=None, features='all', state=None, n=0,
+                 permute=False, nperms=1000, parallel=False):
 
         self.history = []
 
@@ -201,7 +201,7 @@ class OptimalPresenter(object):
         self.strategy = strategy
 
     def order(self, egg, method='permute', nperms=2500, strategy=None,
-              distfun='correlation'):
+              distfun='correlation', fingerprint=None):
         """
         Reorders a list of stimuli to match a fingerprint
 
@@ -229,13 +229,19 @@ class OptimalPresenter(object):
             https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.cdist.html
             (default: euclidean)
 
+        fingerprint : quail.Fingerprint or np.array
+            Fingerprint (or just the state of a fingerprint) to reorder by. If
+            None, the list will be reordered according to the fingerprint
+            attached to the presenter object.
+
         Returns
         ----------
         egg : quail.Egg
             Egg re-sorted to match fingerprint
         """
 
-        def order_perm(self, egg, dist_dict, strategy, nperm, distperm):
+        def order_perm(self, egg, dist_dict, strategy, nperm, distperm,
+                       fingerprint):
             """
             This function re-sorts a list by computing permutations of a given
             list and choosing the one that maximizes/minimizes variance.
@@ -247,13 +253,6 @@ class OptimalPresenter(object):
             # length of list
             pres_len = len(pres)
 
-            # THIS MAY BE THE SUPERBUG
-            # results = Parallel(n_jobs=multiprocessing.cpu_count())(
-            # delayed(rand_perm)(pres, features, dist_dict, dist_funcs) for i in range(nperms))
-            #
-            # weights = np.array(map(lambda x: x[0], results))
-            # orders = np.array(map(lambda x: x[1], results))
-
             weights = []
             orders = []
             for i in range(nperms):
@@ -263,19 +262,17 @@ class OptimalPresenter(object):
             weights = np.array(weights)
             orders = np.array(orders)
 
-            # get the fingerprint state
-            fingerprint = self.get_params('fingerprint').state
-
             # find the closest (or farthest)
             if strategy=='stabilize':
-                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distperm)),:].astype(int).tolist()
+                closest = orders[np.nanargmin(cdist(np.array(fingerprint, ndmin=2), weights, distperm)),:].astype(int).tolist()
             elif strategy=='destabilize':
-                closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, distperm)),:].astype(int).tolist()
+                closest = orders[np.nanargmax(cdist(np.array(fingerprint, ndmin=2), weights, distperm)),:].astype(int).tolist()
 
             # return a re-sorted egg
             return Egg(pres=[list(pres[closest])], rec=[list(pres[closest])], features=[list(features[closest])])
 
-        def order_best_stick(self, egg, dist_dict, strategy, nperms, distfun):
+        def order_best_stick(self, egg, dist_dict, strategy, nperms, distfun,
+                             fingerprint):
 
             # parse egg
             pres, rec, features, dist_funcs = parse_egg(egg)
@@ -286,22 +283,17 @@ class OptimalPresenter(object):
             weights = np.array([x[0] for x in results])
             orders = np.array([x[1] for x in results])
 
-            # get the fingerprint state
-            fingerprint = self.get_params('fingerprint').state
-
             # find the closest (or farthest)
             if strategy=='stabilize':
-                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
+                closest = orders[np.nanargmin(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
             elif strategy=='destabilize':
-                closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
+                closest = orders[np.nanargmax(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
 
             # return a re-sorted egg
             return Egg(pres=[list(pres[closest])], rec=[list(pres[closest])], features=[list(features[closest])], dist_funcs=dist_funcs)
 
-        def order_best_choice(self, egg, dist_dict, nperms, distfun):
-
-            # get the fingerprint state
-            fingerprint = self.get_params('fingerprint').state
+        def order_best_choice(self, egg, dist_dict, nperms, distfun,
+                              fingerprint):
 
             # get strategy
             strategy = self.strategy
@@ -317,9 +309,9 @@ class OptimalPresenter(object):
 
             # find the closest (or farthest)
             if strategy=='stabilize':
-                closest = orders[np.argmin(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
+                closest = orders[np.nanargmin(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
             elif strategy=='destabilize':
-                closest = orders[np.argmax(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
+                closest = orders[np.nanargmax(cdist(np.array(fingerprint, ndmin=2), weights, distfun)),:].astype(int).tolist()
 
             # return a re-sorted egg
             return Egg(pres=[list(pres[closest])], rec=[list(pres[closest])], features=[list(features[closest])], dist_funcs=dist_funcs)
@@ -330,18 +322,28 @@ class OptimalPresenter(object):
 
         dist_dict = compute_distances_dict(egg)
 
+        if fingerprint is None:
+            fingerprint = self.get_params('fingerprint').state
+        elif isinstance(fingerprint, Fingerprint):
+            fingerprint = fingerprint.state
+        else:
+            print('using custom fingerprint')
+
         if (strategy=='random') or (method=='random'):
             return shuffle_egg(egg)
         elif method=='permute':
-            return order_perm(self, egg, dist_dict, strategy, nperms, distfun) #
+            return order_perm(self, egg, dist_dict, strategy, nperms, distfun,
+                              fingerprint) #
         elif method=='stick':
-            return order_stick(self, egg, dist_dict, strategy) #
+            return order_stick(self, egg, dist_dict, strategy, fingerprint) #
         elif method=='best_stick':
-            return order_best_stick(self, egg, dist_dict, strategy, nperms, distfun) #
+            return order_best_stick(self, egg, dist_dict, strategy, nperms,
+                                    distfun, fingerprint) #
         elif method=='best_choice':
-            return order_best_choice(self, egg, dist_dict, nperms) #
+            return order_best_choice(self, egg, dist_dict, nperms,
+                                     fingerprint) #
 
-def order_stick(presenter, egg, dist_dict, strategy):
+def order_stick(presenter, egg, dist_dict, strategy, fingerprint):
     """
     Reorders a list according to strategy
     """
@@ -449,7 +451,7 @@ def order_stick(presenter, egg, dist_dict, strategy):
     features = presenter.get_params('fingerprint').get_features()
     alpha = presenter.get_params('alpha')
     tau = presenter.get_params('tau')
-    weights = presenter.get_params('fingerprint').state
+    weights = fingerprint
 
     # invert the weights if strategy is destabilize
     if strategy=='destabilize':
@@ -461,13 +463,10 @@ def order_stick(presenter, egg, dist_dict, strategy):
     # reorder list
     return reorder_list(egg, feature_stick, dist_dict, tau)
 
-def order_choice(presenter, egg, dist_dict):
+def order_choice(presenter, egg, dist_dict, fingerprint):
 
     # get strategy
     strategy = presenter.strategy
-
-    # get fingerprint
-    fingerprint = presenter.get_params('fingerprint').state
 
     # get tau
     tau = presenter.get_params('tau')

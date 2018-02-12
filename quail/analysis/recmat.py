@@ -11,11 +11,8 @@ def recall_matrix(egg, match='exact', distance='euclidean',
 
     Parameters
     ----------
-    presented : list of list of strings
-      presentedWords are the words presented in the experiment, in order, grouped by list
-
-    recalled : list of list of strings
-      recalledWords are the words recalled by the subject, in order, grouped by list
+    egg : quail.Egg
+        Data to analyze
 
     match : str (exact, best or smooth)
         Matching approach to compute recall matrix.  If exact, the presented and

@@ -215,7 +215,11 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
         lists = [l for l in listdict[subj][lst]]
         s = data.crack(lists=lists, subjects=subjects)
         index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
-        return pd.DataFrame([analysis(s, features=features, **kwargs)], index=index)
+        opts = dict()
+        if analysis_type is 'fingerprint':
+            opts.update({'columns' : data.feature_names})
+        return pd.DataFrame([analysis(s, features=features, **kwargs)],
+                            index=index, **opts)
 
     # if no grouping, set default to iterate over each list independently
     subjgroup = subjgroup if subjgroup else data.pres.index.levels[0].values

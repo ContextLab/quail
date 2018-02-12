@@ -187,6 +187,7 @@ class Egg(object):
 
         # attach the rest of the variables
         self.pres = list2pd(pres).applymap(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
+        self.feature_names = list(self.get_pres_features()[0][0][0])
         self.rec = list2pd(rec).applymap(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
         self.subjgroup=subjgroup
         self.subjname=subjname
