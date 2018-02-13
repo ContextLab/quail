@@ -2,6 +2,7 @@ from __future__ import division
 import warnings
 import numpy as np
 from ..distance import dist_funcs as dist_funcs_dict
+import six
 
 def fingerprint_helper(egg, permute=False, n_perms=1000,
                        match='exact', distance='euclidean', features=None):
@@ -10,14 +11,8 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
 
     Parameters
     ----------
-    pres_slice : Pandas Dataframe
-        Chunk of presentation data to be analyzed
-
-    rec_slice : Pandas Dataframe
-        Chunk of recall data to be analyzed
-
-    feature_slice : Pandas Dataframe
-        Chunk of features data to be analyzed
+    egg : quail.Egg
+        Data to analyze
 
     dist_funcs : dict
         Dictionary of distance functions for feature clustering analyses
@@ -37,11 +32,9 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
     dist_funcs = egg.dist_funcs
 
     for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix()):
-
         p = list(p)
         f = list(f)
-        r = list([ri for ri in list(r) if isinstance(ri, str)])
-
+        r = list([ri for ri in list(r) if isinstance(ri, (six.string_types, np.bytes_))])
         if len(r)>1:
             distances = compute_distances(p, f, dist_funcs, dist_funcs_dict)
 
@@ -61,11 +54,8 @@ def temporal_helper(egg, permute=False, n_perms=1000, match='exact',
 
     Parameters
     ----------
-    pres_slice : Pandas Dataframe
-        chunk of presentation data to be analyzed
-
-    rec_slice : Pandas Dataframe
-        chunk of recall data to be analyzed
+    egg : quail.Egg
+        Data to analyze
 
     Returns
     ----------
@@ -88,7 +78,7 @@ def temporal_helper(egg, permute=False, n_perms=1000, match='exact',
 
     for p, r in zip(pres_slice.as_matrix(), rec_slice.as_matrix()):
         p = list(p)
-        r = list([ri for ri in list(r) if isinstance(ri, str)])
+        r = list([ri for ri in list(r) if isinstance(ri, (six.string_types, np.bytes_))])
         if len(r)>1:
             distances = compute_distances(p, f, dist_funcs, dist_funcs_dict)
             if permute:
@@ -99,24 +89,15 @@ def temporal_helper(egg, permute=False, n_perms=1000, match='exact',
             temporal_clustering.append([np.nan]*len(list(f[0].keys())))
     return np.nanmean(temporal_clustering, axis=0)
 
-def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice,
-                                dist_funcs, permute=True, n_perms=1000):
+def fingerprint_temporal_helper(egg, permute=False, n_perms=1000, match='exact',
+                    distance='euclidean', features=None):
     """
     Computes clustering along a set of feature dimensions
 
     Parameters
     ----------
-    pres_slice : Pandas Dataframe
-        chunk of presentation data to be analyzed
-
-    rec_slice : Pandas Dataframe
-        chunk of recall data to be analyzed
-
-    feature_slice : Pandas Dataframe
-        chunk of features data to be analyzed
-
-    dist_funcs : dict
-        Dictionary of distance functions for feature clustering analyses
+    egg : quail.Egg
+        Data to analyze
 
     Returns
     ----------
@@ -125,13 +106,18 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice,
 
     """
 
+    feature_slice = egg.get_pres_features()
+    pres_slice = egg.get_pres_items()
+    rec_slice = egg.get_rec_items()
+    dist_funcs = egg.dist_funcs
+
     fingerprint_matrix = []
 
     for p, r, f in zip(pres_slice.as_matrix(), rec_slice.as_matrix(), feature_slice.as_matrix()):
 
         p = list(p)
         f = list(f)
-        r = list([ri for ri in list(r) if isinstance(ri, str)])
+        r = list([ri for ri in list(r) if isinstance(ri, (six.string_types, np.bytes_))])
 
         nf = []
         for idx, fi in enumerate(f):
@@ -139,7 +125,7 @@ def fingerprint_temporal_helper(pres_slice, rec_slice, feature_slice,
             nf.append(fi)
 
         dist_funcs_copy = dist_funcs.copy()
-        dist_funcs_copy['temporal'] = 'lambda a, b : np.abs(a-b)'
+        dist_funcs_copy['temporal'] = 'euclidean'
 
         if len(r)>1:
             distances = compute_distances(p, nf, dist_funcs_copy, dist_funcs_dict)

@@ -160,8 +160,6 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             plot_func = sns.violinplot
 
         order = list(tidy_data['Feature'].unique())
-        order.remove('temporal')
-        order = order + ['temporal']
         if plot_type is 'list':
             ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, order=order, **kwargs)
         elif plot_type is 'subject':

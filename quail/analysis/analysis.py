@@ -218,6 +218,8 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
         opts = dict()
         if analysis_type is 'fingerprint':
             opts.update({'columns' : data.feature_names})
+        elif analysis_type is 'fingerprint_temporal':
+            opts.update({'columns' : data.feature_names+['temporal']})
         return pd.DataFrame([analysis(s, features=features, **kwargs)],
                             index=index, **opts)
 
