@@ -18,14 +18,5 @@ import quail
 #load data
 egg = quail.load_example_data()
 
-#analysis
-fegg = egg.analyze('spc', listgroup=['average']*8)
-
-#plot
-fegg.plot(title='Serial Position Curve')
-
-import json
-eggd = egg.to_json()
-eggd
-
-json.dumps(eggd)
+# analyze and plot
+egg.analyze('spc', listgroup=['average']*8).plot(title='Serial Position Curve')

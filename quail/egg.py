@@ -161,11 +161,11 @@ class Egg(object):
 
         # if pres is strings, reformat
         if type(pres[0][0][0]) is not dict:
-            pres = [[[{'item' : np.asarray(x)} for x in y] for y in z] for z in pres]
+            pres = [[[{'item' : x} for x in y] for y in z] for z in pres]
 
         # if pres is strings, reformat
         if type(rec[0][0][0]) is not dict:
-            rec = [[[{'item' : np.asarray(x)} for x in y] for y in z] for z in rec]
+            rec = [[[{'item' : x} for x in y] for y in z] for z in rec]
 
         # if item is missing from pres, add it
         if 'item' not in pres[0][0][0]:
