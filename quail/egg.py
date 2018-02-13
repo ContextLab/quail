@@ -310,6 +310,13 @@ class Egg(object):
         }
         return egg_dict
 
+    def to_json(self):
+        egg_dict = {
+            'pres' : self.pres.to_json(orient='records'),
+            'rec' : self.rec.to_json(orient='records'),
+        }
+        return egg_dict
+
     def analyze(self, analysis=None, **kwargs):
         """
         Calls analyze function
