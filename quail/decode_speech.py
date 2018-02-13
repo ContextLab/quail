@@ -16,6 +16,7 @@ try:
     from google.cloud.speech import types
     from google.cloud.speech import enums
     from pydub import AudioSegment
+    from google.oauth2 import service_account
 except:
     pass
 
@@ -188,7 +189,9 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
 
     # initialize speech client
     if keypath:
-        client = speech.Client.from_service_account_json(keypath)
+        credentials = service_account.Credentials.from_service_account_file(keypath)
+        scoped_credentials = credentials.with_scopes(['https://www.googleapis.com/auth/cloud-platform'])
+        client = speech.SpeechClient(credentials=scoped_credentials)
     else:
         client = speech.SpeechClient()
 
