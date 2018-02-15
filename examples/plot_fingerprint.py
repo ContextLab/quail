@@ -23,4 +23,4 @@ import quail
 egg = quail.load('example')
 
 # analyze and plot
-egg.analyze('fingerprint', listgroup=['average']*8).plot(title='Memory Fingerprint')
+egg.analyze('fingerprint', listgroup=['average']*8, features=['temporal']).plot(title='Memory Fingerprint')

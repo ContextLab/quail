@@ -170,10 +170,14 @@ class Egg(object):
         # if item is missing from pres, add it
         if 'item' not in pres[0][0][0]:
             [[[x.update({'item' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
+        if 'temporal' not in pres[0][0][0]:
+            [[[x.update({'temporal' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
 
         # if item is missing from rec, add it
         if 'item' not in rec[0][0][0]:
             [[[x.update({'item' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
+        if 'temporal' not in rec[0][0][0]:
+            [[[x.update({'temporal' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
 
         # attach features and dist funcs if they are passed
         if features is not None:
@@ -213,11 +217,15 @@ class Egg(object):
         """
         return self.pres.applymap(lambda x: x['item'])
 
-    def get_pres_features(self):
+    def get_pres_features(self, features=None):
         """
         Returns a df of features for presented items
         """
-        return self.pres.applymap(lambda x: {k:v for k,v in x.items() if k != 'item'} if x is not None else None)
+        if features is None:
+            features = self.dist_funcs.keys()
+        elif not isinstance(features, list):
+            features = [features]
+        return self.pres.applymap(lambda x: {k:v for k,v in x.items() if k in features} if x is not None else None)
 
     def get_rec_items(self):
         """
@@ -225,10 +233,14 @@ class Egg(object):
         """
         return self.rec.applymap(lambda x: x['item'] if x is not None else x)
 
-    def get_rec_features(self):
+    def get_rec_features(self, features=None):
         """
         Returns a df of features for recalled items
         """
+        if features is None:
+            features = self.dist_funcs.keys()
+        elif not isinstance(features, list):
+            features = [features]
         return self.rec.applymap(lambda x: {k:v for k,v in x.items() if k != 'item'} if x is not None else None)
 
 

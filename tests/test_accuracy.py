@@ -38,15 +38,6 @@ def test_acc_best_euclidean_3d_features_not_set():
     egg = Egg(pres=presented,rec=recalled)
     assert np.array_equal(egg.analyze('accuracy', match='best', distance='euclidean').data.values,[np.array([1.]),np.array([.75])])
 
-def test_acc_best_euclidean_3d_exception_no_features():
-    presented=[[[[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]],
-                [[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]]]]
-    recalled=[[[[20, 0, 0], [10, 0, 0], [40, 0, 0], [30, 0, 0]],
-               [[20, 0, 0], [40, 0, 0], [10, 0, 0]]]]
-    egg = Egg(pres=presented,rec=recalled)
-    with pytest.raises(Exception):
-        assert np.array_equal(egg.analyze('accuracy', match='best', distance='euclidean').data.values,[np.array([1.]),np.array([.75])])
-
 def test_acc_best_euclidean_3d_exception_item_specified():
     presented=[[[[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]],
                 [[10, 0, 0], [20, 0, 0], [30, 0, 0], [40, 0, 0]]]]

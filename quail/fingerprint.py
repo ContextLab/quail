@@ -12,7 +12,7 @@ import multiprocessing
 from .egg import Egg
 from .helpers import default_dist_funcs, parse_egg
 from .analysis.analysis import _analyze_chunk
-from .analysis.clustering import fingerprint_helper, compute_feature_weights
+from .analysis.clustering import fingerprint_helper, _get_weight
 from .distance import dist_funcs as builtin_dist_funcs
 
 class Fingerprint(object):

@@ -15,11 +15,20 @@ from .accuracy import accuracy_helper
 from .spc import spc_helper
 from .pnr import pnr_helper
 from .lagcrp import lagcrp_helper
-from .clustering import fingerprint_helper, temporal_helper, \
-fingerprint_temporal_helper
+from .clustering import fingerprint_helper
+
+analyses = {
+    'accuracy' : accuracy_helper,
+    'spc' : spc_helper,
+    'pfr' : pnr_helper,
+    'pnr' : pnr_helper,
+    'lagcrp' : lagcrp_helper,
+    'fingerprint' : fingerprint_helper,
+    'temporal' : fingerprint_helper
+}
 
 # main analysis function
-def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
+def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
             listname='List', analysis=None, position=0, permute=False,
             n_perms=1000, parallel=False, match='exact',
             distance='euclidean', features=None):
@@ -28,7 +37,7 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
 
     Parameters
     ----------
-    data : Egg data object
+    egg : Egg data object
         The data to be analyzed
 
     subjgroup : list of strings or ints
@@ -90,87 +99,61 @@ def analyze(data, subjgroup=None, listgroup=None, subjname='Subject',
         Class instance containing the analysis results
 
     """
-
-    from ..egg import FriedEgg
-
     if analysis is None:
         raise ValueError('You must pass an analysis type.')
 
-    if hasattr(data, 'subjgroup'):
-        if data.subjgroup is not None:
-            subjgroup = data.subjgroup
+    if analysis not in analyses.keys():
+        raise ValueError('Analysis not recognized. Choose one of the following: '
+                        'accuracy, spc, pfr, lag-crp, fingerprint, temporal')
 
-    if hasattr(data, 'subjname'):
-        if data.subjname is not None:
-            subjname = data.subjname
+    from ..egg import FriedEgg
 
-    if hasattr(data, 'listgroup'):
-        if data.listgroup is not None:
-            listgroup = data.listgroup
+    if hasattr(egg, 'subjgroup'):
+        if egg.subjgroup is not None:
+            subjgroup = egg.subjgroup
 
-    if hasattr(data, 'listname'):
-        if data.listname is not None:
-            listname = data.listname
+    if hasattr(egg, 'subjname'):
+        if egg.subjname is not None:
+            subjname = egg.subjname
+
+    if hasattr(egg, 'listgroup'):
+        if egg.listgroup is not None:
+            listgroup = egg.listgroup
+
+    if hasattr(egg, 'listname'):
+        if egg.listname is not None:
+            listname = egg.listname
+
+    if features is None:
+        features = egg.feature_names
 
     opts = {
         'subjgroup' : subjgroup,
         'listgroup' : listgroup,
         'subjname' : subjname,
         'parallel' : parallel,
+        'match' : match,
+        'distance' : distance,
+        'features' : features,
+        'analysis_type' : analysis,
+        'analysis' : analyses[analysis]
     }
 
-    if analysis is 'accuracy':
-        opts.update(dict(analysis=accuracy_helper, analysis_type='accuracy',
-                         pass_features=False, match=match, distance=distance,
-                         features=features))
-        r = _analyze_chunk(data, **opts)
-    elif analysis is 'spc':
-        opts.update(dict(analysis=spc_helper, analysis_type='spc',
-                         pass_features=False, match=match, distance=distance,
-                         features=features))
-        r = _analyze_chunk(data, **opts)
-    elif analysis is 'pfr':
-        opts.update(dict(analysis=pnr_helper, analysis_type='pfr',
-                         pass_features=False, position=0, match=match,
-                         distance=distance, features=features))
-        r = _analyze_chunk(data, **opts)
+    if analysis is 'pfr':
+        opts.update({'position' : 0})
     elif analysis is 'pnr':
-        opts.update(dict(analysis=pnr_helper, analysis_type='pnr',
-                         pass_features=False, position=position, match=match,
-                         distance=distance, features=features))
-        r = _analyze_chunk(data, **opts)
-    elif analysis is 'lagcrp':
-        opts.update(dict(analysis=lagcrp_helper, analysis_type='lagcrp',
-                         pass_features=False, match=match, distance=distance,
-                         features=features))
-        r = _analyze_chunk(data, **opts)
-        r.columns=range(-int((len(r.columns)-1)/2),int((len(r.columns)-1)/2)+1)
-    elif analysis is 'fingerprint':
-        opts.update(dict(analysis=fingerprint_helper, analysis_type='fingerprint',
-                         pass_features=False, permute=permute, n_perms=n_perms,
-                         features=features))
-        r = _analyze_chunk(data, **opts)
-    elif analysis is 'temporal':
-        opts.update(dict(analysis=temporal_helper, analysis_type='temporal',
-                         pass_features=True, permute=permute, n_perms=n_perms))
-        r = _analyze_chunk(data, **opts)
-    elif analysis is 'fingerprint_temporal':
-        opts.update(dict(analysis=fingerprint_temporal_helper,
-                         analysis_type='fingerprint_temporal',
-                         pass_features=True, permute=permute, n_perms=n_perms))
-        r = _analyze_chunk(data, **opts)
-    else:
-        raise ValueError('Analysis not recognized. Choose one of the following: '
-                         'accuracy, spc, pfr, lag-crp, fingerprint, temporal, '
-                         'fingerprint_temporal')
+        opts.update({'position' : position})
+    if analysis is 'temporal':
+        opts.update({'features' : ['temporal']})
 
-    return FriedEgg(data=r, analysis=analysis, list_length=data.list_length,
-                    n_lists=data.n_lists, n_subjects=data.n_subjects,
-                    position=position)
+    return FriedEgg(data=_analyze_chunk(egg, **opts), analysis=analysis,
+                    list_length=egg.list_length, n_lists=egg.n_lists,
+                    n_subjects=egg.n_subjects, position=position)
 
 def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
                    listname='List', analysis=None, analysis_type=None,
-                   pass_features=False, features=None, **kwargs):
+                   pass_features=False, features=None, parallel=False,
+                   **kwargs):
     """
     Private function that groups data by subject/list number and performs
     analysis for a chunk of data.
@@ -209,7 +192,7 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
     """
 
     # perform the analysis
-    def perform_analysis(c):
+    def _analysis(c):
         subj, lst = c
         subjects = [s for s in subjdict[subj]]
         lists = [l for l in listdict[subj][lst]]
@@ -217,40 +200,30 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
         index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
         opts = dict()
         if analysis_type is 'fingerprint':
-            opts.update({'columns' : data.feature_names})
-        elif analysis_type is 'fingerprint_temporal':
-            opts.update({'columns' : data.feature_names+['temporal']})
+                opts.update({'columns' : features})
+        elif analysis_type is 'lagcrp':
+            opts.update({'columns' : range(-data.list_length,data.list_length+1)})
         return pd.DataFrame([analysis(s, features=features, **kwargs)],
                             index=index, **opts)
 
-    # if no grouping, set default to iterate over each list independently
     subjgroup = subjgroup if subjgroup else data.pres.index.levels[0].values
     listgroup = listgroup if listgroup else data.pres.index.levels[1].values
 
-    # create a dictionary for grouping
     subjdict = {subj : data.pres.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
 
-    # allow for lists of listgroup arguments
     if all(isinstance(el, list) for el in listgroup):
         listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgrpsub)] for lst in set(listgrpsub)} for listgrpsub in listgroup]
     else:
         listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
 
-    # analysis chunks
     chunks = [(subj, lst) for subj in subjdict for lst in listdict[0]]
 
-    # handle parellel kwarg
-    parallel=kwargs['parallel']
-    del kwargs['parallel']
-
-    # if we're running permutation tests, use multiprocessing
     if parallel:
         import multiprocessing
         from pathos.multiprocessing import ProcessingPool as Pool
         p = Pool(multiprocessing.cpu_count())
-        analyzed_data = p.map(perform_analysis, chunks)
+        res = p.map(_analysis, chunks)
     else:
-        analyzed_data = [perform_analysis(c) for c in chunks]
+        res = [_analysis(c) for c in chunks]
 
-    # concatenate slices
-    return pd.concat(analyzed_data)
+    return pd.concat(res)
