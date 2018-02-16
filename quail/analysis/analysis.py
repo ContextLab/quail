@@ -145,6 +145,8 @@ def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
         opts.update({'position' : position})
     if analysis is 'temporal':
         opts.update({'features' : ['temporal']})
+    if analysis in ['temporal', 'fingerprint']:
+        opts.update({'permute' : permute, 'n_perms' : n_perms})
 
     return FriedEgg(data=_analyze_chunk(egg, **opts), analysis=analysis,
                     list_length=egg.list_length, n_lists=egg.n_lists,

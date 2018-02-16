@@ -10,9 +10,9 @@ import warnings
 from joblib import Parallel, delayed
 import multiprocessing
 from .egg import Egg
-from .helpers import default_dist_funcs, parse_egg
+from .helpers import default_dist_funcs, parse_egg, shuffle_egg
 from .analysis.analysis import _analyze_chunk
-from .analysis.clustering import fingerprint_helper, _get_weight
+from .analysis.clustering import fingerprint_helper, _get_weights
 from .distance import dist_funcs as builtin_dist_funcs
 
 class Fingerprint(object):
@@ -658,22 +658,6 @@ def compute_distances_dict(egg):
                 distances[item1][item2][feature] = builtin_dist_funcs[dist_funcs[feature]](features_list[idx1][feature],features_list[idx2][feature])
 
     return distances
-
-def shuffle_egg(egg):
-    """ Shuffle an Egg's recalls"""
-
-    pres, rec, features, dist_funcs = parse_egg(egg)
-
-    if pres.ndim==1:
-        pres = pres.reshape(1, pres.shape[0])
-        rec = rec.reshape(1, rec.shape[0])
-        features = features.reshape(1, features.shape[0])
-
-    for ilist in range(rec.shape[0]):
-        idx = np.random.permutation(rec.shape[1])
-        rec[ilist,:] = rec[ilist,idx]
-
-    return Egg(pres=pres, rec=rec, features=features, dist_funcs=dist_funcs)
 
 def compute_feature_weights_dict(pres_list, rec_list, feature_list, dist_dict):
     """

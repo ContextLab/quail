@@ -43,7 +43,13 @@ egg = Egg(pres=[[presented]],rec=[[recalled]])
 
 egg.analyze('fingerprint')
 
-# def test_spc():
-#     print(egg.analyze('fingerprint').data.values)
-#     fwea
-#     assert np.array_equal(egg.analyze('fingerprint').data.values,[np.array([ 1.,  1.,  1.,  1.]),np.array([ 1.,  1.,  0.,  1.])])
+def test_fingerprint():
+    assert np.allclose(egg.analyze('fingerprint').data.values[0],np.array(
+        [0.79166667, 0.60416667, 0.5, 0.5, 0.79166667]))
+
+def test_fingerprint_permute_runs():
+    assert egg.analyze('fingerprint', permute=True, n_perms=3)
+
+# def test_fingerprint_best():
+#     assert np.allclose(egg.analyze('fingerprint', match='best').data.values[0],np.array(
+#         [0.79166667, 0.60416667, 0.5, 0.5, 0.79166667]))

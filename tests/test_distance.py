@@ -23,9 +23,9 @@ def test_euclidean_array():
 def test_correlation_list():
     a = [0, 1, 0]
     b = [0, 1, 0]
-    assert np.equal(correlation(a, b), 1)
+    assert np.equal(correlation(a, b), 0)
 
 def test_correlation_array():
     a = np.array([0, 1, 0])
     b = np.array([0, 1, 0])
-    assert np.equal(correlation(a, b), 1)
+    assert np.equal(correlation(a, b), 0)

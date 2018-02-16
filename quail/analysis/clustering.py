@@ -1,8 +1,10 @@
 from __future__ import division
 import warnings
 import numpy as np
-from ..distance import dist_funcs as distdict
 import six
+from scipy.spatial.distance import cdist
+from ..distance import dist_funcs as distdict
+from ..helpers import shuffle_egg
 
 def fingerprint_helper(egg, permute=False, n_perms=1000,
                        match='exact', distance='euclidean', features=None):
@@ -24,41 +26,32 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
 
     """
 
-    inds = egg.pres.index.tolist()
-    slices = [egg.crack(subjects=[i], lists=[j]) for i, j in inds]
-
     if features is None:
         features = egg.dist_funcs.keys()
 
+    inds = egg.pres.index.tolist()
+    slices = [egg.crack(subjects=[i], lists=[j]) for i, j in inds]
+
+    weights = _get_weights(slices, features, distdict, permute, n_perms, match,
+                            distance)
+    return np.nanmean(weights, axis=0)
+
+def _get_weights(slices, features, distdict, permute, n_perms, match, distance):
     weights = np.zeros((len(slices), len(features)))
     for sdx, s in enumerate(slices):
         for fdx, f in enumerate(features):
-            weights[sdx, fdx] = _get_weight(s, f, distdict)
-    return np.nanmean(weights, axis=0)
+            if match is 'exact':
+                weights[sdx, fdx] = _get_weight_exact(s, f, distdict, permute,
+                                                      n_perms)
+            elif match is 'best':
+                weights[sdx, fdx] = _get_weight_best(s, f, distdict, permute,
+                                                      n_perms, distance)
+    return weights
 
-def _get_weight(egg, feature, distdict):
-    """
-    Compute clustering scores along a set of feature dimensions
+def _get_weight_exact(egg, feature, distdict, permute, n_perms):
 
-    Parameters
-    ----------
-    egg : quail.Egg
-
-    distances : matrix
-        distance matrix for a given feature
-
-    Returns
-    ----------
-    weight : float
-        clustering score along a particular dimension for a list
-    """
-
-    def get_distmat(egg, feature, distdict):
-        from scipy.spatial.distance import cdist
-        f = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().as_matrix()[0]])
-        if 1 in f.shape:
-            f = f.T
-        return cdist(f, f, distdict[egg.dist_funcs[feature]])
+    if permute:
+        return _permute(egg, feature, distdict, _get_weight_exact, n_perms)
 
     pres = list(egg.get_pres_items().as_matrix()[0])
     rec = list(egg.get_rec_items().as_matrix()[0])
@@ -66,7 +59,7 @@ def _get_weight(egg, feature, distdict):
     if len(rec) <= 2:
         warnings.warn('Not enough recalls to compute fingerprint, returning default'
               'fingerprint.. (everything is .5)')
-        return .5
+        return np.nan
 
     distmat = get_distmat(egg, feature, distdict)
 
@@ -77,12 +70,69 @@ def _get_weight(egg, feature, distdict):
         c, n = rec[i], rec[i + 1]
         if (c in pres and n in pres) and (c not in past_words and n not in past_words):
             dists = distmat[pres.index(c),:]
-            cdist = dists[pres.index(n)]
+            di = dists[pres.index(n)]
             dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
-            ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == cdist)[0]+1) / len(dists_filt))
+            ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0]+1) / len(dists_filt))
             past_idxs.append(pres.index(c))
             past_words.append(c)
     return np.nanmean(ranks)
+
+def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
+
+    if permute:
+        return _permute(egg, feature, distdict, _get_weight_best, n_perms)
+
+    rec = list(egg.get_rec_items().as_matrix()[0])
+    if len(rec) <= 2:
+        warnings.warn('Not enough recalls to compute fingerprint, returning default'
+              'fingerprint.. (everything is .5)')
+        return np.nan
+
+    distmat = get_distmat(egg, feature, distdict)
+    matchmat = get_match(egg, feature, distdict)
+
+    ranks = []
+    for i in range(len(rec)-1):
+        cdx, ndx = np.argmin(matchmat[i, :]), np.argmin(matchmat[i+1, :])
+        dists = distmat[cdx, :]
+        di = dists[ndx]
+        dists_filt = np.array([dist for idx, dist in enumerate(dists)])
+        ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0]+1) / len(dists_filt))
+    return np.nanmean(ranks)
+
+def _get_weight_smooth(egg, feature, distdict, permute, n_perms, distance):
+
+    if permute:
+        return _permute(egg, feature, distdict, _get_weight_smooth, n_perms)
+
+    rec = list(egg.get_rec_items().as_matrix()[0])
+    if len(rec) <= 2:
+        warnings.warn('Not enough recalls to compute fingerprint, returning default'
+              'fingerprint.. (everything is .5)')
+        return np.nan
+
+    distmat = get_distmat(egg, feature, distdict)
+    matchmat = get_match(egg, feature, distdict)
+
+    ranks = []
+    for i in range(len(rec)-1):
+        cdx, ndx = np.argmin(matchmat[i, :]), np.argmin(matchmat[i+1, :])
+        dists = distmat[cdx, :]
+        di = dists[ndx]
+        dists_filt = np.array([dist for idx, dist in enumerate(dists)])
+        ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0]+1) / len(dists_filt))
+    return np.nanmean(ranks)
+
+def get_distmat(egg, feature, distdict):
+    f = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().as_matrix()[0]])
+    if 1 in f.shape:
+        f = f.T
+    return cdist(f, f, distdict[egg.dist_funcs[feature]])
+
+def get_match(egg, feature, distdict):
+    p = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().as_matrix()[0]]).T
+    r = np.atleast_2d([xi[feature] for xi in egg.get_rec_features().as_matrix()[0]]).T
+    return cdist(p, r, distdict[egg.dist_funcs[feature]])
 
 def compute_feature_weights(pres_list, rec_list, feature_list, distances):
     """
@@ -167,8 +217,8 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
 
     return [weights[key] for key in weights]
 
-def permute_fingerprint_serial(p, r, f, distances, n_perms=100):
-    perms = [compute_feature_weights(p, list(np.random.permutation(r)), f, distances) for i in range(n_perms)]
-    real = compute_feature_weights(p, r, f, distances)
-    bools = [[f < r for f, r in zip(perm, real)] for perm in perms]
+def _permute(egg, feature, distdict, func, n_perms=100):
+    perms = [func(shuffle_egg(egg), feature, distdict, False, None) for i in range(n_perms)]
+    real = func(egg, feature, distdict, False, None)
+    bools = [perm < real for perm in perms]
     return np.sum(np.array(bools), axis=0) / n_perms

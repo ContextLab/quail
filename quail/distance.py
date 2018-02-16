@@ -14,7 +14,7 @@ def correlation(a, b):
         b = np.array(b)
     a = a.reshape(1, -1)
     b = b.reshape(1, -1)
-    return 1 - cdist(a, b, 'correlation')
+    return cdist(a, b, 'correlation')
 
 def euclidean(a, b):
     "Returns euclidean distance between a and b"
