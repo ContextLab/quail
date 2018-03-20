@@ -31,7 +31,7 @@ analyses = {
 def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
             listname='List', analysis=None, position=0, permute=False,
             n_perms=1000, parallel=False, match='exact',
-            distance='euclidean', features=None):
+            distance='euclidean', features=None, ts=None):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -147,6 +147,8 @@ def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
         opts.update({'features' : ['temporal']})
     if analysis in ['temporal', 'fingerprint']:
         opts.update({'permute' : permute, 'n_perms' : n_perms})
+    if analysis is 'lagcrp':
+        opts.update({'ts' : ts})
 
     return FriedEgg(data=_analyze_chunk(egg, **opts), analysis=analysis,
                     list_length=egg.list_length, n_lists=egg.n_lists,
@@ -204,7 +206,10 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
         if analysis_type is 'fingerprint':
                 opts.update({'columns' : features})
         elif analysis_type is 'lagcrp':
-            opts.update({'columns' : range(-data.list_length,data.list_length+1)})
+            if kwargs['ts']:
+                opts.update({'columns' : range(-kwargs['ts'],kwargs['ts']+1)})
+            else:
+                opts.update({'columns' : range(-data.list_length,data.list_length+1)})
         return pd.DataFrame([analysis(s, features=features, **kwargs)],
                             index=index, **opts)
 

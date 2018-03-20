@@ -114,13 +114,12 @@ def lagcrp_helper(egg, match='exact', distance='euclidean',
     if match is 'exact':
         opts.update({'features' : 'item'})
     recmat = recall_matrix(egg, **opts)
-
+    if not ts:
+        ts = egg.pres.shape[1]
     if match in ['exact', 'best']:
         lagcrp = [lagcrp(lst, egg.list_length) for lst in recmat]
     elif match is 'smooth':
-        if not ts:
-            ts = egg.pres.shape[1]
-        lagcrp = nlagcrp(recmat, ts=ts)
+        lagcrp = np.atleast_2d(nlagcrp(recmat, ts=ts))
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
     return np.nanmean(lagcrp, axis=0)

@@ -10,7 +10,7 @@ def spc_helper(egg, match='exact', distance='euclidean',
     ----------
     egg : quail.Egg
         Data to analyze
-        
+
     match : str (exact, best or smooth)
         Matching approach to compute recall matrix.  If exact, the presented and
         recalled items must be identical (default).  If best, the recalled item

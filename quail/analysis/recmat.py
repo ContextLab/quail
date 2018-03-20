@@ -44,10 +44,10 @@ def recall_matrix(egg, match='exact', distance='euclidean',
                 result[idx,:] = [x[0]+1 if len(x)>0 else np.nan for x in m]
             elif match is 'best':
                 p, r = _format(p, r)
-                result = - cdist(r, p, distance)
+                result = 1 - cdist(r, p, distance)
             elif match is 'smooth':
                 p, r = _format(p, r)
-                result = - cdist(r, p, distance)
+                result = 1 - cdist(r, p, distance)
         return result
 
     def feature_filter(presented, recalled, feature):

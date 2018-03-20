@@ -46,7 +46,7 @@ def pnr_helper(egg, position, match='exact',
     if match in ['exact', 'best']:
         result = [pnr(lst, position) for lst in recmat]
     elif match is 'smooth':
-        result = recmat
+        result = (recmat*([1]+list(np.zeros(recmat.shape[1]-1)))).T
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
 
