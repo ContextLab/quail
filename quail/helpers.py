@@ -47,7 +47,7 @@ def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
     melted_df[subjname]=""
     for idx,sub in enumerate(melted_df['Subject'].unique()):
         melted_df.loc[melted_df['Subject']==sub,subjname]=subjgroup[idx]
-    if analysis is 'spc':
+    if analysis=='spc':
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Proportion Recalled', subjname, 'Position']
@@ -55,17 +55,17 @@ def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(position), subjname, 'Position']
-    elif analysis is 'lagcrp':
+    elif analysis=='lagcrp':
         base = list(range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1))
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
-    elif analysis is 'fingerprint' or analysis is 'fingerprint_temporal':
+    elif analysis=='fingerprint' or analysis=='fingerprint_temporal':
         base = list(df.columns.values)
         melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
-    elif analysis is 'accuracy':
+    elif analysis=='accuracy':
         melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
-    elif analysis is 'temporal':
+    elif analysis=='temporal':
         melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
     return melted_df
 
