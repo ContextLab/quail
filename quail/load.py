@@ -9,7 +9,7 @@ import re
 import csv
 import pandas as pd
 import numpy as np
-from .egg import Egg
+from .egg import Egg, FriedEgg
 import dill
 import pickle
 import os
@@ -44,10 +44,40 @@ def load(filepath, update=True):
     elif filepath.split('.')[-1]=='egg':
         return load_egg(filepath, update=update)
     elif filepath.split('.')[-1]=='fegg':
-        return load_egg(filepath, update=False)
+        return load_fegg(filepath, update=False)
     else:
         raise ValueError('Could not load file.')
 
+def load_fegg(filepath, update=True):
+    """
+    Loads pickled egg
+
+    Parameters
+    ----------
+    filepath : str
+        Location of pickled egg
+
+    update : bool
+        If true, updates egg to latest format
+
+    Returns
+    ----------
+    egg : Egg data object
+        A loaded unpickled egg
+
+    """
+    try:
+        egg = FriedEgg(**dd.io.load(filepath))
+    except ValueError as e:
+        print(e)
+        # if error, try loading old format
+        with open(filepath, 'rb') as f:
+            egg = pickle.load(f)
+
+    if update:
+        return egg.crack()
+    else:
+        return egg
 
 def load_egg(filepath, update=True):
     """
@@ -68,6 +98,7 @@ def load_egg(filepath, update=True):
 
     """
     try:
+        print(dd.io.load(filepath))
         egg = Egg(**dd.io.load(filepath))
     except:
         # if error, try loading old format

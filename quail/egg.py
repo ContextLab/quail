@@ -354,7 +354,7 @@ class FriedEgg(object):
     """
 
     def __init__(self, data=None, analysis=None, list_length=None, n_lists=None,
-                 n_subjects=None, position=0):
+                 n_subjects=None, position=0, date_created=None):
 
         self.data = data
         self.analysis = analysis
@@ -362,6 +362,11 @@ class FriedEgg(object):
         self.n_lists = n_lists
         self.n_subjects = n_subjects
         self.position = position
+
+        if date_created is None:
+            self.date_created = time.strftime("%c")
+        else:
+            self.date_created = date_created
 
     def plot(self, **kwargs):
         return plot(self, **kwargs)
