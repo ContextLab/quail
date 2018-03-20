@@ -236,20 +236,22 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     tidy_data = format2tidy(results.data, subjname, listname, subjgroup, analysis=results.analysis, position=results.position)
 
     #plot!
-    if results.analysis is 'accuracy':
+    if results.analysis=='accuracy':
         ax = plot_acc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'temporal':
+    elif results.analysis=='temporal':
         ax = plot_temporal(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'fingerprint':
+    elif results.analysis=='fingerprint':
         ax = plot_fingerprint(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'fingerprint_temporal':
+    elif results.analysis=='fingerprint_temporal':
         ax = plot_fingerprint_temporal(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'spc':
+    elif results.analysis=='spc':
         ax = plot_spc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'pfr' or results.analysis is 'pnr':
+    elif results.analysis=='pfr' or results.analysis=='pnr':
         ax = plot_pnr(tidy_data, plot_style, plot_type, listname, subjname, position=results.position, list_length=results.list_length,  **kwargs)
-    elif results.analysis is 'lagcrp':
+    elif results.analysis=='lagcrp':
         ax = plot_lagcrp(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
+    else:
+        raise ValueError("Did not recognize analysis.")
 
     # add title
     if title:
