@@ -98,7 +98,6 @@ def load_egg(filepath, update=True):
 
     """
     try:
-        print(dd.io.load(filepath))
         egg = Egg(**dd.io.load(filepath))
     except:
         # if error, try loading old format
