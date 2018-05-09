@@ -50,7 +50,7 @@ def lagcrp_helper(egg, match='exact', distance='euclidean',
             arr=pd.Series(data=np.zeros((lstlen)*2),
                           index=list(range(-lstlen,0))+list(range(1,lstlen+1)))
             recalled=[]
-            for trial in range(0,lstlen-1):
+            for trial in range(0,len(rec)-1):
                 a=rec[trial]
                 b=rec[trial+1]
                 if check_pair(a, b) and (a not in recalled) and (b not in recalled):
@@ -88,13 +88,17 @@ def lagcrp_helper(egg, match='exact', distance='euclidean',
             idx = list(range(0, -s, -1))
             return np.array([list(range(i, i+s)) for i in idx])
 
+        # remove nan columns
+        distmat = distmat[:,~np.all(np.isnan(distmat), axis=0)].T
+
         model = lagcrp_model(distmat.shape[1])
         lagcrp = np.zeros(ts * 2)
         for rdx in range(len(distmat)-1):
             item = distmat[rdx, :]
             next_item = distmat[rdx+1, :]
-            outer = np.outer(item, next_item)
-            lagcrp += np.array(list(map(lambda lag: np.mean(outer[model==lag]), range(-ts, ts))))
+            if not np.isnan(item).any() and not np.isnan(next_item).any():
+                outer = np.outer(item, next_item)
+                lagcrp += np.array(list(map(lambda lag: np.mean(outer[model==lag]), range(-ts, ts))))
         lagcrp /= ts
         lagcrp = list(lagcrp)
         lagcrp.insert(int(len(lagcrp) / 2), np.nan)
@@ -119,7 +123,7 @@ def lagcrp_helper(egg, match='exact', distance='euclidean',
     if match in ['exact', 'best']:
         lagcrp = [lagcrp(lst, egg.list_length) for lst in recmat]
     elif match is 'smooth':
-        lagcrp = np.atleast_2d(nlagcrp(recmat, ts=ts))
+        lagcrp = np.atleast_2d(np.mean([nlagcrp(r, ts=ts) for r in recmat], 0))
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
     return np.nanmean(lagcrp, axis=0)

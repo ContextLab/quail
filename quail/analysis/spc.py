@@ -32,7 +32,10 @@ def spc_helper(egg, match='exact', distance='euclidean',
     """
 
     def spc(lst):
-        return [1 if pos in lst else 0 for pos in range(1, len(lst)+1)]
+        d = np.zeros_like(egg.pres.values[0])
+        inds = np.array(lst[~np.isnan(lst)]).astype(int)
+        d[inds-1]=1
+        return d
 
     opts = dict(match=match, distance=distance, features=features)
     if match is 'exact':
@@ -42,8 +45,7 @@ def spc_helper(egg, match='exact', distance='euclidean',
     if match in ['exact', 'best']:
         result = [spc(lst) for lst in recmat]
     elif match is 'smooth':
-        result = recmat
+        result = np.nanmean(recmat, 2)
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
-
-    return np.nanmean(result, axis=0)
+    return np.mean(result, 0)

@@ -177,7 +177,7 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             ax = sns.tsplot(data = data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
         elif plot_type is 'list':
             ax = sns.tsplot(data = data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
-        ax.set_xlim(0, 15)
+        ax.set_xlim(0, data['Position'].max())
 
         return ax
 
