@@ -214,7 +214,7 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
         indexes=[]
         for line in data_frame.iterrows():
             try:
-                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'emily', 'bryan', 'armando', 'armando ortiz', 'maddy/lucy',
+                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','allison\nallison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\nkirsten', 'emily', 'bryan', 'armando', 'armando ortiz', 'maddy/lucy',
                                                                       'paxton', 'lucy']:
                     delete = False
                 else:
@@ -376,7 +376,7 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
 
     # add custom filters
     if filters:
-        filter_func = [adaptive_filter, experimenter_filter, experiments_filter] + filters
+        filter_func = [adaptive_filter, experimeter_filter, experiments_filter] + filters
     else:
         filter_func = [adaptive_filter, experimenter_filter, experiments_filter]
 
