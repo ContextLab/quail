@@ -215,7 +215,7 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
         for line in data_frame.iterrows():
             try:
                 if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','allison\nallison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\nkirsten', 'emily', 'bryan', 'armando', 'armando ortiz', 'maddy/lucy',
-                                                                      'paxton', 'lucy']:
+                                                                      'paxton', 'lucy', 'campbell\ncampbell']:
                     delete = False
                 else:
                     delete = True
