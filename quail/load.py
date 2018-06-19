@@ -15,6 +15,7 @@ import pickle
 import os
 import deepdish as dd
 from .helpers import parse_egg
+import traceback
 
 def load(filepath, update=True):
     """
@@ -311,11 +312,11 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
         recalledWords = []
         for i in range(0,16):
             try:
-                f = open(recpath + subid + '/' + subid + '-' + str(i) + '.wav.txt', 'rb')
+                f = open(recpath + subid + '/' + subid + '-' + str(i) + '.wav.txt', 'r')
                 spamreader = csv.reader(f, delimiter=',', quotechar='|')
             except (IOError, OSError) as e:
                 try:
-                    f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'rb')
+                    f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'r')
                     spamreader = csv.reader(f, delimiter=',', quotechar='|')
                 except (IOError, OSError) as e:
                     print(e)
