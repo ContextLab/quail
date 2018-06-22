@@ -71,8 +71,8 @@ def _recmat(presented, recalled, match, distance, whiten=False):
         result = np.empty(tuple(list(presented.shape)+[recalled.shape[1]]))*np.nan
 
     for i, idx in enumerate(presented.index.get_values()):
-        p = presented.loc[idx].get_values()
-        r = recalled.loc[idx].dropna().get_values()
+        p = np.stack(presented.loc[idx].get_values())
+        r = np.stack(recalled.loc[idx].dropna().get_values())
         if (p.ndim==1 or r.ndim==1):
             p = np.atleast_2d(p).T
             r = np.atleast_2d(r).T
