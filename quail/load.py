@@ -106,7 +106,13 @@ def load_egg(filepath, update=True):
             egg = pickle.load(f)
 
     if update:
-        return egg.crack()
+        if egg.meta:
+            old_meta = egg.meta
+            egg.crack()
+            egg.meta = old_meta
+            return egg
+        else:
+            return egg.crack()
     else:
         return egg
 
