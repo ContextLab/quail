@@ -14,7 +14,7 @@ import dill
 import pickle
 import os
 import deepdish as dd
-from .helpers import parse_egg
+from .helpers import parse_egg, stack_eggs
 import traceback
 
 def load(filepath, update=True):
@@ -461,13 +461,13 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
 
     # map feature dictionaries in pres df to rec df
     def checkword(x):
-    if x is None:
-        return x
-    else:
-        try:
-            return stim_dict[x['item']]
-        except:
+        if x is None:
             return x
+        else:
+            try:
+                return stim_dict[x['item']]
+            except:
+                return x
 
     # convert utf-8 bytes type to string
     def update_types(egg):
@@ -497,7 +497,7 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
             e.rec = e.rec.applymap(lambda x: checkword(x))
             eggs.append(e)
 
-        edited_egg = quail.stack_eggs(eggs)
+        edited_egg = stack_eggs(eggs)
         egg = edited_egg.crack(subjects=[i for i in range(egg.n_subjects,egg.n_subjects*2)])
         egg.meta = old_meta
 
