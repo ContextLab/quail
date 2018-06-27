@@ -471,7 +471,7 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
 
     # convert utf-8 bytes type to string
     def update_types(egg):
-        featlist = list(egg.rec.loc[0].loc[0].values.tolist()[0].keys())
+        featlist = list(egg.pres.loc[0].loc[0].values.tolist()[0].keys())
         def update1df(df):
             for sub in range(egg.n_subjects):
                 for liszt in range(egg.n_lists):
@@ -486,24 +486,23 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
         update1df(egg.pres)
         update1df(egg.rec)
 
-    def map_features(egg):
-        old_meta = egg.meta    # store metadata for new egg object
-        eggs = [egg]
+    for egg in eggs:
+        update_types(egg)
+        old_meta = egg.meta
+        temp_eggs = [egg]
 
         for i in range(egg.n_subjects):
             e = egg.crack(subjects=[i])
             stim = e.pres.values.ravel()
             stim_dict = {str(x['item']) : {k:v for k, v in iter(x.items())} for x in stim}
+
             e.rec = e.rec.applymap(lambda x: checkword(x))
-            eggs.append(e)
+            temp_eggs.append(e)
 
-        edited_egg = stack_eggs(eggs)
-        egg = edited_egg.crack(subjects=[i for i in range(egg.n_subjects,egg.n_subjects*2)])
-        egg.meta = old_meta
-
-    for egg in eggs:
-        update_types(egg)
-        map_features(egg)
+        edited_egg = stack_eggs(temp_eggs)
+        mapped_egg = edited_egg.crack(subjects=[i for i in range(egg.n_subjects,egg.n_subjects*2)])
+        mapped_egg.meta = old_meta
+        eggs[eggs.index(egg)] = mapped_egg
 
     if len(eggs)>1:
         return eggs
