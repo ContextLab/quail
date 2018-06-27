@@ -459,6 +459,52 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
 
     eggs = [Egg(pres=ipres, rec=irec, features=ifeatures, meta={'ids' : isub}) for ipres,irec,ifeatures,isub in zip(pres, rec, features, subs)]
 
+    # map feature dictionaries in pres df to rec df
+    def checkword(x):
+    if x is None:
+        return x
+    else:
+        try:
+            return stim_dict[x['item']]
+        except:
+            return x
+
+    # convert utf-8 bytes type to string
+    def update_types(egg):
+        featlist = list(egg.rec.loc[0].loc[0].values.tolist()[0].keys())
+        def update1df(df):
+            for sub in range(egg.n_subjects):
+                for liszt in range(egg.n_lists):
+                    for item in range(len(df.loc[sub].loc[liszt].values.tolist())):
+                        for feat in featlist:
+                            if feat in df.loc[sub].loc[liszt].values.tolist()[item].keys():
+                                if isinstance(df.loc[sub].loc[liszt].values.tolist()[item][feat], np.bytes_):
+                                    try:
+                                        df.loc[sub].loc[liszt].values.tolist()[item][feat] = str(df.loc[sub].loc[liszt].values.tolist()[item][feat], 'utf-8')
+                                    except:
+                                        print("Subject " + str(sub) + ", list " + str(liszt) + ", item " + str(item) + ", feature " + str(feat) + ": Could not convert type " + str(type(egg.rec.loc[sub].loc[liszt].values.tolist()[item][feat])) + " to string.")
+        update1df(egg.pres)
+        update1df(egg.rec)
+
+    def map_features(egg):
+        old_meta = egg.meta    # store metadata for new egg object
+        eggs = [egg]
+
+        for i in range(egg.n_subjects):
+            e = egg.crack(subjects=[i])
+            stim = e.pres.values.ravel()
+            stim_dict = {str(x['item']) : {k:v for k, v in iter(x.items())} for x in stim}
+            e.rec = e.rec.applymap(lambda x: checkword(x))
+            eggs.append(e)
+
+        edited_egg = quail.stack_eggs(eggs)
+        egg = edited_egg.crack(subjects=[i for i in range(egg.n_subjects,egg.n_subjects*2)])
+        egg.meta = old_meta
+
+    for egg in eggs:
+        update_types(egg)
+        map_features(egg)
+
     if len(eggs)>1:
         return eggs
     else:
