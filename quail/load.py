@@ -15,7 +15,6 @@ import pickle
 import os
 import deepdish as dd
 from .helpers import parse_egg, stack_eggs
-import traceback
 
 def load(filepath, update=True):
     """
