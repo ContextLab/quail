@@ -63,33 +63,6 @@ def _feature_filter(presented, recalled, feature):
     recalled = recalled.applymap(lambda x: x[feature] if x['item'] is not np.nan else np.nan)
     return presented, recalled
 
-# def _recmat(presented, recalled, match, distance, whiten=False):
-#     if match in ('exact', 'best'):
-#         result = np.empty(presented.shape)*np.nan
-#     else:
-#         result = np.empty(tuple(list(presented.shape)+[recalled.shape[1]]))*np.nan
-#
-#     for i, idx in enumerate(presented.index.get_values()):
-#         p = np.stack(presented.loc[idx].get_values())
-#         r = np.stack(recalled.loc[idx].dropna().get_values())
-#         if match is 'exact':
-#             m = [np.where(x==p)[0] for x in r]
-#             print(m)
-#             result[idx, :] = [x[0]+1 if len(x)>0 else np.nan for x in m]
-#         elif match is 'best':
-#             res = np.empty(p.shape[0])*np.nan
-#             tmp = 1 - cdist(r, p, distance)
-#             if whiten:
-#                 tmp = _whiten(p, tmp)
-#             tmp = np.array(np.argmax(tmp, 1)+1).astype(np.float64)
-#             res[:r.shape[0]]=tmp
-#             result[i, :] = res
-#         elif match is 'smooth':
-#             tmp = 1 - cdist(r, p, distance)
-#             if whiten:
-#                 tmp = _whiten(p, tmp)
-#             result[i, :, :tmp.shape[0]] = tmp.T
-#     return result
 
 def _recmat(presented, recalled, match, distance, whiten=False):
     if match in ('exact', 'best'):
