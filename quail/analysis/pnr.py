@@ -47,7 +47,6 @@ def pnr_helper(egg, position, match='exact',
         result = [pnr(lst, position) for lst in recmat]
     elif match is 'smooth':
         result = np.atleast_2d(recmat[:, :, 0])
-
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
     return np.nanmean(result, axis=0)

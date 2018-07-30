@@ -44,7 +44,7 @@ def spc_helper(egg, match='exact', distance='euclidean',
 
     if match in ['exact', 'best']:
         result = [spc(lst) for lst in recmat]
-    elif match is 'smooth':
+    elif match == 'smooth':
         result = np.nanmean(recmat, 2)
     else:
         raise ValueError('Match must be set to exact, best or smooth.')

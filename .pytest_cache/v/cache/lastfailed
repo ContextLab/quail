@@ -1,3 +1,13 @@
 {
-  "tests/test_recmat.py::test_exact": true
+  "tests/test_accuracy.py::test_acc_best_euclidean": true, 
+  "tests/test_accuracy.py::test_acc_best_euclidean_3d_features_not_set": true, 
+  "tests/test_lagcrp.py::test_lagcrp_best_euclidean": true, 
+  "tests/test_pnr.py::test_acc_best_euclidean_3d_features_not_set": true, 
+  "tests/test_pnr.py::test_pfr_best_euclidean": true, 
+  "tests/test_pnr.py::test_pfr_best_euclidean_3d": true, 
+  "tests/test_pnr.py::test_pfr_best_euclidean_3d_2features": true, 
+  "tests/test_recmat.py::test_exact": true, 
+  "tests/test_spc.py::test_spc_best_euclidean": true, 
+  "tests/test_spc.py::test_spc_best_euclidean_3d_2features": true, 
+  "tests/test_spc.py::test_spc_best_euclidean_3d_features_not_set": true
 }

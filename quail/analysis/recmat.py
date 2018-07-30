@@ -72,21 +72,20 @@ def _recmat(presented, recalled, match, distance, whiten=False):
     for i, idx in enumerate(presented.index.get_values()):
         p = np.stack(presented.loc[idx].get_values())
         r = np.stack(recalled.loc[idx].dropna().get_values())
+        if (p.ndim==1 or r.ndim==1):
+            p = np.atleast_2d(p).T
+            r = np.atleast_2d(r).T
         if match is 'exact':
-            m = [np.where(x==p)[0] for x in r]
-            result[idx, :] = [x[0]+1 if len(x)>0 else np.nan for x in m]
+            m = [np.where((p==x).all(axis=1)) for x in r]
+            result[i, :] = [x[0]+1 if len(x)>0 else np.nan for x in m]+[np.nan]*(result.shape[1]-len(m))
         elif match is 'best':
             res = np.empty(p.shape[0])*np.nan
             tmp = 1 - cdist(r, p, distance)
-            if whiten:
-                tmp = _whiten(p, tmp)
             tmp = np.array(np.argmax(tmp, 1)+1).astype(np.float64)
             res[:r.shape[0]]=tmp
             result[i, :] = res
         elif match is 'smooth':
             tmp = 1 - cdist(r, p, distance)
-            if whiten:
-                tmp = _whiten(p, tmp)
             result[i, :, :tmp.shape[0]] = tmp.T
     return result
 

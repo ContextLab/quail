@@ -270,6 +270,7 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plt.ylim(ylim)
 
     if save_path:
+        mpl.rcParams['pdf.fonttype'] = 42
         plt.savefig(save_path)
 
     if show:
