@@ -12,7 +12,7 @@ mpl.rcParams['pdf.fonttype'] = 42
 def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
          listname='List', subjconds=None, listconds=None, plot_type=None,
          plot_style=None, title=None, legend=True, xlim=None, ylim=None,
-         save_path=None, show=True, **kwargs):
+         save_path=None, show=True, ax=None, **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
@@ -71,6 +71,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
     show : bool
         If False, do not show figure, but still return ax handle (default True).
+
+    ax : Matplotlib.Axes object or None
+        A plot object to draw to. If None, a new one is created and returned.
 
 
     Returns
@@ -234,6 +237,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
     # convert to tiny and format for plotting
     tidy_data = format2tidy(results.data, subjname, listname, subjgroup, analysis=results.analysis, position=results.position)
+
+    if not ax==None:
+        kwargs['ax']=ax
 
     #plot!
     if results.analysis=='accuracy':
