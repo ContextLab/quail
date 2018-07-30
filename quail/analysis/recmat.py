@@ -65,7 +65,8 @@ def _feature_filter(presented, recalled, feature):
 
 def _recmat(presented, recalled, match, distance, whiten=False):
     if match in ('exact', 'best'):
-        result = np.empty(presented.shape)*np.nan
+        cols = max(presented.shape[1], recalled.shape[1])
+        result = np.empty((presented.shape[0], cols))*np.nan
     else:
         result = np.empty(tuple(list(presented.shape)+[recalled.shape[1]]))*np.nan
 
@@ -76,8 +77,8 @@ def _recmat(presented, recalled, match, distance, whiten=False):
             p = np.atleast_2d(p).T
             r = np.atleast_2d(r).T
         if match is 'exact':
-            m = [np.where((p==x).all(axis=1)) for x in r]
-            result[i, :] = [x[0]+1 if len(x)>0 else np.nan for x in m]+[np.nan]*(result.shape[1]-len(m))
+            m = [np.where((p==x).all(axis=1))[0] for x in r]
+            result[i, :len(m)] = [x[0]+1 if len(x)>0 else np.nan for x in m]
         elif match is 'best':
             res = np.empty(p.shape[0])*np.nan
             tmp = 1 - cdist(r, p, distance)
