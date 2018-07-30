@@ -47,7 +47,7 @@ def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
     melted_df[subjname]=""
     for idx,sub in enumerate(melted_df['Subject'].unique()):
         melted_df.loc[melted_df['Subject']==sub,subjname]=subjgroup[idx]
-    if analysis is 'spc':
+    if analysis=='spc':
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Proportion Recalled', subjname, 'Position']
@@ -55,19 +55,18 @@ def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Probability of Recall: Position ' + str(position), subjname, 'Position']
-    elif analysis is 'lagcrp':
-        base = range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1)
+    elif analysis=='lagcrp':
+        base = list(range(int(-len(df.columns.values)/2),int(len(df.columns.values)/2)+1))
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Conditional Response Probability', subjname, 'Position']
-    elif analysis is 'fingerprint' or analysis is 'fingerprint_temporal':
+    elif analysis=='fingerprint' or analysis=='fingerprint_temporal':
         base = list(df.columns.values)
         melted_df['Feature'] = base * int(melted_df.shape[0] / len(base))
         melted_df.columns = ['Subject', listname, 'Clustering Score', subjname, 'Feature']
-    elif analysis is 'accuracy':
+    elif analysis=='accuracy':
         melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
-    elif analysis is 'temporal':
+    elif analysis=='temporal':
         melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
-
     return melted_df
 
 def recmat2egg(recmat, list_length=None):
@@ -188,12 +187,12 @@ def crack_egg(egg, subjects=None, lists=None):
     if subjects is None:
         subjects = egg.pres.index.levels[0].values.tolist()
     elif type(subjects) is not list:
-        subjects = list(subjects)
+        subjects = [subjects]
 
     if lists is None:
         lists = egg.pres.index.levels[1].values.tolist()
     elif type(lists) is not list:
-        lists = list(lists)
+        lists = [lists]
 
     idx = pd.IndexSlice
     pres = egg.pres.loc[idx[subjects,lists],egg.pres.columns]
@@ -277,3 +276,74 @@ def merge_pres_feats(pres, features):
             exp.append(lst)
         sub.append(exp)
     return sub
+
+def check_nan(x):
+    y = pd.isnull(x)
+    if type(y) is bool:
+        return y
+    else:
+        return False
+
+def r2z(r):
+    """
+    Function that calculates the Fisher z-transformation
+
+    Parameters
+    ----------
+    r : int or ndarray
+        Correlation value
+
+    Returns
+    ----------
+    result : int or ndarray
+        Fishers z transformed correlation value
+
+
+    """
+    with np.errstate(invalid='ignore', divide='ignore'):
+        return 0.5 * (np.log(1 + r) - np.log(1 - r))
+
+def z2r(z):
+    """
+    Function that calculates the inverse Fisher z-transformation
+
+    Parameters
+    ----------
+    z : int or ndarray
+        Fishers z transformed correlation value
+
+    Returns
+    ----------
+    result : int or ndarray
+        Correlation value
+
+
+    """
+    with np.errstate(invalid='ignore', divide='ignore'):
+        return (np.exp(2 * z) - 1) / (np.exp(2 * z) + 1)
+
+def _format(p, r):
+    p = np.matrix([np.array(i) for i in p])
+    if p.shape[0]==1:
+        p=p.T
+    r = map(lambda x: [np.nan]*p.shape[1] if check_nan(x) else x, r)
+    r = np.matrix([np.array(i) for i in r])
+    if r.shape[0]==1:
+        r=r.T
+    return p, r
+
+def shuffle_egg(egg):
+    """ Shuffle an Egg's recalls"""
+    from .egg import Egg
+    pres, rec, features, dist_funcs = parse_egg(egg)
+
+    if pres.ndim==1:
+        pres = pres.reshape(1, pres.shape[0])
+        rec = rec.reshape(1, rec.shape[0])
+        features = features.reshape(1, features.shape[0])
+
+    for ilist in range(rec.shape[0]):
+        idx = np.random.permutation(rec.shape[1])
+        rec[ilist,:] = rec[ilist,idx]
+
+    return Egg(pres=pres, rec=rec, features=features, dist_funcs=dist_funcs)

@@ -8,8 +8,9 @@ import deepdish as dd
 import inspect
 import warnings
 import pandas as pd
-from .analysis import recall_matrix
-from .analysis import analyze
+import numpy as np
+from .analysis.recmat import recall_matrix
+from .analysis.analysis import analyze
 from .plot import plot
 from .helpers import list2pd, default_dist_funcs, crack_egg, fill_missing, merge_pres_feats, df2list
 
@@ -166,6 +167,18 @@ class Egg(object):
         if type(rec[0][0][0]) is not dict:
             rec = [[[{'item' : x} for x in y] for y in z] for z in rec]
 
+        # if item is missing from pres, add it
+        if 'item' not in pres[0][0][0]:
+            [[[x.update({'item' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
+        if 'temporal' not in pres[0][0][0]:
+            [[[x.update({'temporal' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
+
+        # if item is missing from rec, add it
+        if 'item' not in rec[0][0][0]:
+            [[[x.update({'item' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
+        if 'temporal' not in rec[0][0][0]:
+            [[[x.update({'temporal' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
+
         # attach features and dist funcs if they are passed
         if features is not None:
             if not all(isinstance(item, list) for sub in features for item in sub):
@@ -177,8 +190,9 @@ class Egg(object):
         self.dist_funcs = default_dist_funcs(dist_funcs, pres[0][0][0])
 
         # attach the rest of the variables
-        self.pres = list2pd(pres)
-        self.rec = list2pd(rec)
+        self.pres = list2pd(pres).applymap(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
+        self.feature_names = list(self.get_pres_features()[0][0][0])
+        self.rec = list2pd(rec).applymap(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
         self.subjgroup=subjgroup
         self.subjname=subjname
         self.listgroup=listgroup
@@ -203,11 +217,15 @@ class Egg(object):
         """
         return self.pres.applymap(lambda x: x['item'])
 
-    def get_pres_features(self):
+    def get_pres_features(self, features=None):
         """
         Returns a df of features for presented items
         """
-        return self.pres.applymap(lambda x: {k:v for k,v in x.items() if k != 'item'} if x is not None else None)
+        if features is None:
+            features = self.dist_funcs.keys()
+        elif not isinstance(features, list):
+            features = [features]
+        return self.pres.applymap(lambda x: {k:v for k,v in x.items() if k in features} if x is not None else None)
 
     def get_rec_items(self):
         """
@@ -215,10 +233,14 @@ class Egg(object):
         """
         return self.rec.applymap(lambda x: x['item'] if x is not None else x)
 
-    def get_rec_features(self):
+    def get_rec_features(self, features=None):
         """
         Returns a df of features for recalled items
         """
+        if features is None:
+            features = self.dist_funcs.keys()
+        elif not isinstance(features, list):
+            features = [features]
         return self.rec.applymap(lambda x: {k:v for k,v in x.items() if k != 'item'} if x is not None else None)
 
 
@@ -262,7 +284,8 @@ class Egg(object):
             'subjname' : self.subjname,
             'listgroup' : self.listgroup,
             'listname' : self.listname,
-            'date_created' : self.date_created
+            'date_created' : self.date_created,
+            'meta' : self.meta
         }
 
         # if extension wasn't included, add it
@@ -300,6 +323,13 @@ class Egg(object):
         }
         return egg_dict
 
+    def to_json(self):
+        egg_dict = {
+            'pres' : self.pres.to_json(orient='records'),
+            'rec' : self.rec.to_json(orient='records'),
+        }
+        return egg_dict
+
     def analyze(self, analysis=None, **kwargs):
         """
         Calls analyze function
@@ -325,7 +355,7 @@ class FriedEgg(object):
     """
 
     def __init__(self, data=None, analysis=None, list_length=None, n_lists=None,
-                 n_subjects=None, position=0):
+                 n_subjects=None, position=0, date_created=None):
 
         self.data = data
         self.analysis = analysis
@@ -334,5 +364,49 @@ class FriedEgg(object):
         self.n_subjects = n_subjects
         self.position = position
 
+        if date_created is None:
+            self.date_created = time.strftime("%c")
+        else:
+            self.date_created = date_created
+
     def plot(self, **kwargs):
         return plot(self, **kwargs)
+
+    def save(self, fname, compression='blosc'):
+        """
+        Save method for the FriedEgg object
+
+        The data will be saved as a 'fegg' file, which is a dictionary containing
+        the elements of a FriedEgg saved in the hd5 format using
+        `deepdish`.
+
+        Parameters
+        ----------
+
+        fname : str
+            A name for the file.  If the file extension (.fegg) is not specified,
+            it will be appended.
+
+        compression : str
+            The kind of compression to use.  See the deepdish documentation for
+            options: http://deepdish.readthedocs.io/en/latest/api_io.html#deepdish.io.save
+
+        """
+
+        egg = {
+            'data' : self.data,
+            'analysis' : self.analysis,
+            'list_length' : self.list_length,
+            'n_lists' : self.n_lists,
+            'n_subjects' : self.n_subjects,
+            'position' : self.position,
+            'date_created' : self.date_created,
+            'meta' : self.meta
+        }
+
+        if fname[-4:]!='.fegg':
+            fname+='.fegg'
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            dd.io.save(fname, egg, compression=compression)

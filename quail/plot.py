@@ -12,7 +12,7 @@ mpl.rcParams['pdf.fonttype'] = 42
 def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
          listname='List', subjconds=None, listconds=None, plot_type=None,
          plot_style=None, title=None, legend=True, xlim=None, ylim=None,
-         save_path=None, show=True, **kwargs):
+         save_path=None, show=True, ax=None, **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
 
@@ -71,6 +71,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
     show : bool
         If False, do not show figure, but still return ax handle (default True).
+
+    ax : Matplotlib.Axes object or None
+        A plot object to draw to. If None, a new one is created and returned.
 
 
     Returns
@@ -160,14 +163,12 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             plot_func = sns.violinplot
 
         order = list(tidy_data['Feature'].unique())
-        order.remove('temporal')
-        order = order + ['temporal']
         if plot_type is 'list':
-            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, order=order, **kwargs)
+            ax = plot_func(data=data, x="Feature", y="Clustering Score", hue=listname, order=order, **kwargs)
         elif plot_type is 'subject':
-            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, order=order, **kwargs)
+            ax = plot_func(data=data, x="Feature", y="Clustering Score", hue=subjname, order=order, **kwargs)
         else:
-            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", order=order, **kwargs)
+            ax = plot_func(data=data, x="Feature", y="Clustering Score", order=order, **kwargs)
 
         return ax
 
@@ -176,10 +177,10 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_type = plot_type if plot_type is not None else 'list'
 
         if plot_type is 'subject':
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
+            ax = sns.tsplot(data = data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
         elif plot_type is 'list':
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
-        ax.set_xlim(0, 15)
+            ax = sns.tsplot(data = data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
+        ax.set_xlim(0, data['Position'].max())
 
         return ax
 
@@ -200,9 +201,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_type = plot_type if plot_type is not None else 'list'
 
         if plot_type is 'subject':
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit="Subject", condition=subjname, **kwargs)
+            ax = sns.tsplot(data = data, time="Position", value="Conditional Response Probability", unit="Subject", condition=subjname, **kwargs)
         elif plot_type is 'list':
-            ax = sns.tsplot(data = tidy_data, time="Position", value="Conditional Response Probability", unit="Subject", condition=listname, **kwargs)
+            ax = sns.tsplot(data = data, time="Position", value="Conditional Response Probability", unit="Subject", condition=listname, **kwargs)
         ax.set_xlim(-5,5)
 
         return ax
@@ -237,21 +238,26 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     # convert to tiny and format for plotting
     tidy_data = format2tidy(results.data, subjname, listname, subjgroup, analysis=results.analysis, position=results.position)
 
+    if not ax==None:
+        kwargs['ax']=ax
+
     #plot!
-    if results.analysis is 'accuracy':
+    if results.analysis=='accuracy':
         ax = plot_acc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'temporal':
+    elif results.analysis=='temporal':
         ax = plot_temporal(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'fingerprint':
+    elif results.analysis=='fingerprint':
         ax = plot_fingerprint(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'fingerprint_temporal':
+    elif results.analysis=='fingerprint_temporal':
         ax = plot_fingerprint_temporal(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'spc':
+    elif results.analysis=='spc':
         ax = plot_spc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
-    elif results.analysis is 'pfr' or results.analysis is 'pnr':
+    elif results.analysis=='pfr' or results.analysis=='pnr':
         ax = plot_pnr(tidy_data, plot_style, plot_type, listname, subjname, position=results.position, list_length=results.list_length,  **kwargs)
-    elif results.analysis is 'lagcrp':
+    elif results.analysis=='lagcrp':
         ax = plot_lagcrp(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
+    else:
+        raise ValueError("Did not recognize analysis.")
 
     # add title
     if title:
@@ -270,6 +276,7 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plt.ylim(ylim)
 
     if save_path:
+        mpl.rcParams['pdf.fonttype'] = 42
         plt.savefig(save_path)
 
     if show:

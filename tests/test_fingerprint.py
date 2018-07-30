@@ -1,54 +1,55 @@
-# -*- coding: utf-8 -*-
-
+from quail.egg import Egg
+import numpy as np
 import pytest
-import quail
-from quail.fingerprint import Fingerprint, OptimalPresenter
-from quail.load import load_example_data
 
-egg = load_example_data().crack(subjects=[0])
-f = Fingerprint()
-f_egg = Fingerprint(init=egg)
-f_egg_perm = Fingerprint(init=egg, permute=True, nperms=10)
+# generate some fake data
+presented = ['CAT', 'DOG', 'SHOE', 'HORSE']
+recalled = ['HORSE', 'DOG', 'CAT']
 
-def test_fingerprint_init():
-    assert isinstance(f, quail.Fingerprint)
+features = {'CAT' : {
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'C',
+                    'length' : 3
+                 },
+            'DOG' : {
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'D',
+                    'length' : 3
+                 },
+            'SHOE' : {
+                    'category' : 'object',
+                    'size' : 'smaller',
+                    'starting letter' : 'S',
+                    'length' : 4
+                 },
+            'HORSE' :  {
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'H',
+                    'length' : 5
+                 }}
 
-def test_fingerprint_init_with_egg():
-    assert isinstance(f, quail.Fingerprint)
+presented = list(map(lambda x: {'item' : x}, presented))
+for p in presented:
+    p.update(**features[p['item']])
 
-def test_fingerprint_init_with_egg_permute():
-    assert isinstance(f_egg_perm, quail.Fingerprint)
+recalled = list(map(lambda x: {'item' : x}, recalled))
+for r in recalled:
+    r.update(**features[r['item']])
 
-def test_fingerprint_update():
-    f.update(egg)
-    assert isinstance(f, quail.Fingerprint)
-    assert len(f.history)==1
+egg = Egg(pres=[[presented]],rec=[[recalled]])
 
-def test_fingerprint_get_features():
-    assert isinstance(f_egg.get_features(), list)
+egg.analyze('fingerprint')
 
-presenter = OptimalPresenter()
-params = {
-    'fingerprint' : f
-}
-presenter_params = OptimalPresenter(params=params, strategy='stabilize')
+def test_fingerprint():
+    assert np.allclose(egg.analyze('fingerprint').data.values[0],np.array(
+        [0.79166667,  0.79166667, 0.5, 0.60416667, 0.5,]))
 
-def test_optimal_presenter_init():
-    assert isinstance(presenter, quail.OptimalPresenter)
+def test_fingerprint_permute_runs():
+    assert egg.analyze('fingerprint', permute=True, n_perms=3)
 
-def test_optimal_presenter_init_w_params():
-    assert isinstance(presenter_params, quail.OptimalPresenter)
-
-def test_optimal_presenter_set_params():
-    presenter_params.set_params('alpha', 3)
-    assert presenter_params.get_params('alpha') is 3
-
-def test_optimal_presenter_set_strategy():
-    presenter_params.set_strategy('stabilize')
-    assert presenter_params.strategy is 'stabilize'
-
-def test_optimal_presenter_order():
-    egg = load_example_data()
-    egg_slice = egg.crack(subjects=[0], lists=[0])
-    reordered_egg = presenter.order(egg_slice, nperms=10)
-    assert isinstance(reordered_egg, quail.Egg)
+# def test_fingerprint_best():
+#     assert np.allclose(egg.analyze('fingerprint', match='best').data.values[0],np.array(
+#         [0.79166667, 0.60416667, 0.5, 0.5, 0.79166667]))

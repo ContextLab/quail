@@ -7,3 +7,6 @@ quail.egg-info/
 data/*.wav.*
 tests/__pycache__/*
 dist/*
+*/__pycache__
+.pytest_cache/*
+venv/

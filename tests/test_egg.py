@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from quail.analysis import analyze
+from quail.analysis.analysis import analyze
 from quail.egg import Egg, FriedEgg
 from quail.load import load_example_data
 import pytest
@@ -89,6 +89,9 @@ def test_egg_crack():
 
 def test_egg_crack_n_lists():
     assert egg.crack(lists=[0]).n_lists==1
+
+def test_egg_crack_subjects():
+    assert egg.crack(lists=[0], subjects=[0]).n_lists==1
 
 def test_egg_to_dict():
     assert isinstance(egg.to_dict(), dict)

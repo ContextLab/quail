@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from quail.analysis import analyze
+from quail.analysis.analysis import analyze
 from quail.load import load_example_data
 from quail.egg import Egg
 import numpy as np

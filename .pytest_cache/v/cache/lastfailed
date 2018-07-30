@@ -1,0 +1,4 @@
+{
+  "tests/test_accuracy.py::test_acc_best_euclidean_3d_features_not_set": true,
+  "tests/test_recmat.py::test_exact": true
+}
