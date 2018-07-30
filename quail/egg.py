@@ -284,7 +284,8 @@ class Egg(object):
             'subjname' : self.subjname,
             'listgroup' : self.listgroup,
             'listname' : self.listname,
-            'date_created' : self.date_created
+            'date_created' : self.date_created,
+            'meta' : self.meta
         }
 
         # if extension wasn't included, add it
@@ -399,7 +400,8 @@ class FriedEgg(object):
             'n_lists' : self.n_lists,
             'n_subjects' : self.n_subjects,
             'position' : self.position,
-            'date_created' : self.date_created
+            'date_created' : self.date_created,
+            'meta' : self.meta
         }
 
         if fname[-4:]!='.fegg':

@@ -14,7 +14,7 @@ import dill
 import pickle
 import os
 import deepdish as dd
-from .helpers import parse_egg
+from .helpers import parse_egg, stack_eggs
 
 def load(filepath, update=True):
     """
@@ -105,7 +105,13 @@ def load_egg(filepath, update=True):
             egg = pickle.load(f)
 
     if update:
-        return egg.crack()
+        if egg.meta:
+            old_meta = egg.meta
+            egg.crack()
+            egg.meta = old_meta
+            return egg
+        else:
+            return egg.crack()
     else:
         return egg
 
@@ -214,8 +220,8 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
         indexes=[]
         for line in data_frame.iterrows():
             try:
-                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','marisol','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\\nkirsten', 'emily', 'bryan', 'armando', 'armando ortiz', 'maddy/lucy',
-                                                                      'paxton', 'lucy']:
+                if json.loads(line[1]['responses'])['Q1'].lower() in ['kirsten','allison','allison\nallison','marisol', 'marisol ','marisiol', 'maddy','campbell', 'campbell field', 'kirsten\nkirsten', 'emily', 'bryan', 'armando', 'armando ortiz',
+                                                                      'maddy/lucy','paxton', 'lucy','campbell\ncampbell','madison','darya','rachael']:
                     delete = False
                 else:
                     delete = True
@@ -311,11 +317,11 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
         recalledWords = []
         for i in range(0,16):
             try:
-                f = open(recpath + subid + '/' + subid + '-' + str(i) + '.wav.txt', 'rb')
+                f = open(recpath + subid + '/' + subid + '-' + str(i) + '.wav.txt', 'r')
                 spamreader = csv.reader(f, delimiter=',', quotechar='|')
             except (IOError, OSError) as e:
                 try:
-                    f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'rb')
+                    f = open(recpath + subid + '-' + str(i) + '.wav.txt', 'r')
                     spamreader = csv.reader(f, delimiter=',', quotechar='|')
                 except (IOError, OSError) as e:
                     print(e)
@@ -376,7 +382,7 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
 
     # add custom filters
     if filters:
-        filter_func = [adaptive_filter, experimenter_filter, experiments_filter] + filters
+        filter_func = [adaptive_filter, experimeter_filter, experiments_filter] + filters
     else:
         filter_func = [adaptive_filter, experimenter_filter, experiments_filter]
 
@@ -451,6 +457,51 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
                 subs[exp_idx[0]].append(sub)
 
     eggs = [Egg(pres=ipres, rec=irec, features=ifeatures, meta={'ids' : isub}) for ipres,irec,ifeatures,isub in zip(pres, rec, features, subs)]
+
+    # map feature dictionaries in pres df to rec df
+    def checkword(x):
+        if x is None:
+            return x
+        else:
+            try:
+                return stim_dict[x['item']]
+            except:
+                return x
+
+    # convert utf-8 bytes type to string
+    def update_types(egg):
+        featlist = list(egg.pres.loc[0].loc[0].values.tolist()[0].keys())
+        def update1df(df):
+            for sub in range(egg.n_subjects):
+                for liszt in range(egg.n_lists):
+                    for item in range(len(df.loc[sub].loc[liszt].values.tolist())):
+                        for feat in featlist:
+                            if feat in df.loc[sub].loc[liszt].values.tolist()[item].keys():
+                                if isinstance(df.loc[sub].loc[liszt].values.tolist()[item][feat], np.bytes_):
+                                    try:
+                                        df.loc[sub].loc[liszt].values.tolist()[item][feat] = str(df.loc[sub].loc[liszt].values.tolist()[item][feat], 'utf-8')
+                                    except:
+                                        print("Subject " + str(sub) + ", list " + str(liszt) + ", item " + str(item) + ", feature " + str(feat) + ": Could not convert type " + str(type(egg.rec.loc[sub].loc[liszt].values.tolist()[item][feat])) + " to string.")
+        update1df(egg.pres)
+        update1df(egg.rec)
+
+    for egg in eggs:
+        update_types(egg)
+        old_meta = egg.meta
+        temp_eggs = [egg]
+
+        for i in range(egg.n_subjects):
+            e = egg.crack(subjects=[i])
+            stim = e.pres.values.ravel()
+            stim_dict = {str(x['item']) : {k:v for k, v in iter(x.items())} for x in stim}
+
+            e.rec = e.rec.applymap(lambda x: checkword(x))
+            temp_eggs.append(e)
+
+        edited_egg = stack_eggs(temp_eggs)
+        mapped_egg = edited_egg.crack(subjects=[i for i in range(egg.n_subjects,egg.n_subjects*2)])
+        mapped_egg.meta = old_meta
+        eggs[eggs.index(egg)] = mapped_egg
 
     if len(eggs)>1:
         return eggs

@@ -1,4 +1,4 @@
-from .load import load, load_example_data, load_egg
+from .load import load, load_example_data, load_egg, loadEL
 from .egg import Egg, FriedEgg
 from .analysis.analysis import analyze
 from .plot import plot

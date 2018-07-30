@@ -63,6 +63,7 @@ def _feature_filter(presented, recalled, feature):
     recalled = recalled.applymap(lambda x: x[feature] if x['item'] is not np.nan else np.nan)
     return presented, recalled
 
+
 def _recmat(presented, recalled, match, distance, whiten=False):
     if match in ('exact', 'best'):
         cols = max(presented.shape[1], recalled.shape[1])
