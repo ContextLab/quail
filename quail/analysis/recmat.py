@@ -5,8 +5,7 @@ import hypertools as hyp
 from scipy.spatial.distance import cdist
 from ..helpers import check_nan, _format
 
-def recall_matrix(egg, match='exact', distance='euclidean',
-                  features=None, whiten=False):
+def recall_matrix(egg, match='exact', distance='euclidean', features=None):
     """
     Computes recall matrix given list of presented and list of recalled words
 
@@ -50,81 +49,56 @@ def recall_matrix(egg, match='exact', distance='euclidean',
     if not isinstance(features, list):
         features = [features]
 
-    result = np.nanmean([_recmat_by_feature(egg.pres, egg.rec, feature, match,
-                                        distance) for feature in features], 0)
-    return np.atleast_2d(result)
-
-def _recmat_by_feature(presented, recalled, feature, match, distance):
-    p, r = _feature_filter(presented, recalled, feature)
-    return _recmat(p, r, match, distance)
-
-def _feature_filter(presented, recalled, feature):
-    presented = presented.applymap(lambda x: x[feature])
-    recalled = recalled.applymap(lambda x: x[feature] if x['item'] is not np.nan else np.nan)
-    return presented, recalled
-
-
-def _recmat(presented, recalled, match, distance, whiten=False):
-    if match in ('exact', 'best'):
-        cols = max(presented.shape[1], recalled.shape[1])
-        result = np.empty((presented.shape[0], cols))*np.nan
+    if match=='exact':
+        features=['item']
+        return _recmat_exact(egg.pres, egg.rec, features)
     else:
-        result = np.empty(tuple(list(presented.shape)+[recalled.shape[1]]))*np.nan
+        return _recmat_smooth(egg.pres, egg.rec, features, distance, match)
 
-    for i, idx in enumerate(presented.index.get_values()):
-        p = np.stack(presented.loc[idx].get_values())
-        r = np.stack(recalled.loc[idx].dropna().get_values())
-        if (p.ndim==1 or r.ndim==1):
-            p = np.atleast_2d(p).T
-            r = np.atleast_2d(r).T
-        if match is 'exact':
+
+def _recmat_exact(presented, recalled, features):
+    lists = presented.index.get_values()
+    cols = max(presented.shape[1], recalled.shape[1])
+    result = np.empty((presented.shape[0], cols))*np.nan
+    for li, l in enumerate(lists):
+        p_list = presented.loc[l]
+        r_list = recalled.loc[l]
+        for i, feature in enumerate(features):
+            get_feature = lambda x: np.array(x[feature]) if x['item'] is not np.nan else np.nan
+            p = np.vstack(p_list.apply(get_feature).get_values())
+            r = r_list.dropna().apply(get_feature).get_values()
+            r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
             m = [np.where((p==x).all(axis=1))[0] for x in r]
-            result[i, :len(m)] = [x[0]+1 if len(x)>0 else np.nan for x in m]
-        elif match is 'best':
-            res = np.empty(p.shape[0])*np.nan
-            tmp = 1 - cdist(r, p, distance)
-            tmp = np.array(np.argmax(tmp, 1)+1).astype(np.float64)
-            res[:r.shape[0]]=tmp
-            result[i, :] = res
-        elif match is 'smooth':
-            tmp = 1 - cdist(r, p, distance)
-            result[i, :, :tmp.shape[0]] = tmp.T
+            result[li, :len(m)] = [x[0]+1 if len(x)>0 else np.nan for x in m]
     return result
 
-def _whiten(X, recmat):
-    # return np.dot(np.linalg.inv(np.corrcoef(p)), recmat.T).T
+def _recmat_smooth(presented, recalled, features, distance, match):
 
-   # get the covariance matrix
-   X_norm = hyp.normalize(X, normalize='within')
-   Xcov = np.dot(X_norm, X_norm.T)
+    if match == 'best':
+        func = np.argmax
+    elif match == 'smooth':
+        func = np.mean
 
-   # eigenvalue decomposition of the covariance matrix
-   d, V = np.linalg.eigh(Xcov)
+    simmtx = _similarity_smooth(presented, recalled, features, distance)
+    recmat = np.atleast_3d([func(s, 1) for s in simmtx]).astype(np.float64)
 
-   # a fudge factor can be used so that eigenvectors associated with
-   # small eigenvalues do not get overamplified.
-   D = np.diag(1. / np.sqrt(d+.00001))
+    if match == 'best':
+        recmat+=1
 
-   # whitening matrix
-   W = np.dot(np.dot(V, D), V.T)
+    recmat[np.isnan(simmtx).any(2)]=np.nan
+    return recmat
 
-   # multiply by the whitening matrix
-   return np.dot(recmat, W)
-
-# result = np.empty(recalled.shape)
-# for idx, (p, r) in enumerate(zip(presented, recalled)):
-#     if match is 'exact':
-#         m = [np.where(x==p)[0] for x in r]
-#         result[idx, :] = [x[0]+1 if len(x)>0 else np.nan for x in m]
-#     elif match is 'best':
-#         p, r = _format(p, r)
-#         tmp = 1 - cdist(r, p, distance)
-#         nans = np.argwhere(np.isnan(tmp))
-#         tmp = np.array(np.argmax(tmp, 1)+1).astype(np.float64)
-#         if nans!=[]:
-#             tmp[np.unique(nans[:,0])]=np.nan
-#         result[idx, :] = tmp
-#     elif match is 'smooth':
-#         p, r = _format(p, r)
-#         result[idx, :] = np.mean(1 - cdist(r, p, distance), 0)
-# return result
+def _similarity_smooth(presented, recalled, features, distance):
+    lists = presented.index.get_values()
+    res = np.empty((len(lists), len(features), presented.iloc[0].shape[0], recalled.iloc[0].shape[0]))*np.nan
+    for li, l in enumerate(lists):
+        p_list = presented.loc[l]
+        r_list = recalled.loc[l]
+        for i, feature in enumerate(features):
+            get_feature = lambda x: np.array(x[feature]) if x['item'] is not np.nan else np.nan
+            p = np.vstack(p_list.apply(get_feature).get_values())
+            r = r_list.dropna().apply(get_feature).get_values()
+            r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
+            tmp = 1 - cdist(r, p, distance)
+            res[li, i, :tmp.shape[0], :] =  tmp
+    return np.mean(res, 1)

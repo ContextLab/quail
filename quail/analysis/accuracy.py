@@ -33,7 +33,7 @@ def accuracy_helper(egg, match='exact', distance='euclidean',
     """
 
     def acc(lst):
-        return len([i for i in np.unique(lst) if i>0])/(egg.list_length)
+        return len([i for i in np.unique(lst) if i>=0])/(egg.list_length)
 
     opts = dict(match=match, distance=distance, features=features)
     if match is 'exact':
