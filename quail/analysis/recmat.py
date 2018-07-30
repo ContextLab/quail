@@ -27,10 +27,6 @@ def recall_matrix(egg, match='exact', distance='euclidean', features=None):
         Applies only to 'best' and 'smooth' matching approaches.  Can be any
         distance function supported by numpy.spatial.distance.cdist.
 
-    whiten : bool
-        If True, the recall model will be whitened by the pres model.
-
-
     Returns
     ----------
     recall_matrix : list of lists of ints
