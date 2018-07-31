@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import six
-import hypertools as hyp
 from scipy.spatial.distance import cdist
 from ..helpers import check_nan, _format
 
