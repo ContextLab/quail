@@ -36,10 +36,10 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         Name of the list grouping variable
 
     subjconds : list
-        List of subject conditions (str) to plot
+        List of subject hues (str) to plot
 
     listconds : list
-        List of list conditions (str) to plot
+        List of list hues (str) to plot
 
     plot_type : string
         Specifies the type of plot. If list (default), the list groupings (listgroup)
@@ -177,9 +177,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_type = plot_type if plot_type is not None else 'list'
 
         if plot_type is 'subject':
-            ax = sns.tsplot(data = data, time="Position", value="Proportion Recalled", unit="Subject", condition=subjname, **kwargs)
+            ax = sns.lineplot(data = data, x="Position", y="Proportion Recalled", hue=subjname, **kwargs)
         elif plot_type is 'list':
-            ax = sns.tsplot(data = data, time="Position", value="Proportion Recalled", unit="Subject", condition=listname, **kwargs)
+            ax = sns.lineplot(data = data, x="Position", y="Proportion Recalled", hue=listname, **kwargs)
         ax.set_xlim(0, data['Position'].max())
 
         return ax
@@ -189,9 +189,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_type = plot_type if plot_type is not None else 'list'
 
         if plot_type is 'subject':
-            ax = sns.tsplot(data = data, time="Position", value='Probability of Recall: Position ' + str(position), unit="Subject", condition=subjname, **kwargs)
+            ax = sns.lineplot(data = data, x="Position", y='Probability of Recall: Position ' + str(position), hue=subjname, **kwargs)
         elif plot_type is 'list':
-            ax = sns.tsplot(data = data, time="Position", value='Probability of Recall: Position ' + str(position), unit="Subject", condition=listname, **kwargs)
+            ax = sns.lineplot(data = data, x="Position", y='Probability of Recall: Position ' + str(position), hue=listname, **kwargs)
         ax.set_xlim(0,list_length-1)
 
         return ax
@@ -201,9 +201,11 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_type = plot_type if plot_type is not None else 'list'
 
         if plot_type is 'subject':
-            ax = sns.tsplot(data = data, time="Position", value="Conditional Response Probability", unit="Subject", condition=subjname, **kwargs)
+            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=subjname, **kwargs)
+            sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=subjname, ax=ax, legend=False, **kwargs)
         elif plot_type is 'list':
-            ax = sns.tsplot(data = data, time="Position", value="Conditional Response Probability", unit="Subject", condition=listname, **kwargs)
+            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=listname, **kwargs)
+            sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=listname, ax=ax, legend=False, **kwargs)
         ax.set_xlim(-5,5)
 
         return ax
@@ -278,8 +280,5 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     if save_path:
         mpl.rcParams['pdf.fonttype'] = 42
         plt.savefig(save_path)
-
-    if show:
-        plt.show()
 
     return ax

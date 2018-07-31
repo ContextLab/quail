@@ -53,8 +53,8 @@ def _get_weight_exact(egg, feature, distdict, permute, n_perms):
     if permute:
         return _permute(egg, feature, distdict, _get_weight_exact, n_perms)
 
-    pres = list(egg.get_pres_items().as_matrix()[0])
-    rec = list(egg.get_rec_items().as_matrix()[0])
+    pres = list(egg.get_pres_items().values[0])
+    rec = list(egg.get_rec_items().values[0])
 
     if len(rec) <= 2:
         warnings.warn('Not enough recalls to compute fingerprint, returning default'
@@ -82,7 +82,7 @@ def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
     if permute:
         return _permute(egg, feature, distdict, _get_weight_best, n_perms)
 
-    rec = list(egg.get_rec_items().as_matrix()[0])
+    rec = list(egg.get_rec_items().values[0])
     if len(rec) <= 2:
         warnings.warn('Not enough recalls to compute fingerprint, returning default'
               'fingerprint.. (everything is .5)')
@@ -105,7 +105,7 @@ def _get_weight_smooth(egg, feature, distdict, permute, n_perms, distance):
     if permute:
         return _permute(egg, feature, distdict, _get_weight_smooth, n_perms)
 
-    rec = list(egg.get_rec_items().as_matrix()[0])
+    rec = list(egg.get_rec_items().values[0])
     if len(rec) <= 2:
         warnings.warn('Not enough recalls to compute fingerprint, returning default'
               'fingerprint.. (everything is .5)')
@@ -124,14 +124,14 @@ def _get_weight_smooth(egg, feature, distdict, permute, n_perms, distance):
     return np.nanmean(ranks)
 
 def get_distmat(egg, feature, distdict):
-    f = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().as_matrix()[0]])
+    f = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().values[0]])
     if 1 in f.shape:
         f = f.T
     return cdist(f, f, distdict[egg.dist_funcs[feature]])
 
 def get_match(egg, feature, distdict):
-    p = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().as_matrix()[0]]).T
-    r = np.atleast_2d([xi[feature] for xi in egg.get_rec_features().as_matrix()[0]]).T
+    p = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().values[0]]).T
+    r = np.atleast_2d([xi[feature] for xi in egg.get_rec_features().values[0]]).T
     return cdist(p, r, distdict[egg.dist_funcs[feature]])
 
 def compute_feature_weights(pres_list, rec_list, feature_list, distances):

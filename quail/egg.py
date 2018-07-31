@@ -372,6 +372,12 @@ class FriedEgg(object):
     def plot(self, **kwargs):
         return plot(self, **kwargs)
 
+    def get_data(self):
+        """
+        Return a copy of the data
+        """
+        return self.data.copy()
+
     def save(self, fname, compression='blosc'):
         """
         Save method for the FriedEgg object
