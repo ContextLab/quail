@@ -25,7 +25,7 @@ setup(
         "requests",
         "pydub",
         "google-cloud-speech",
-        "google-cloud",
+        "google-cloud>=0.32.0,<0.34.0",
         "pathos",
         "future",
         "six",
