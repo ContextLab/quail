@@ -24,7 +24,7 @@ setup(
         "dill",
         "requests",
         "pydub",
-        "google-cloud-speech",
+        "google-cloud-speech<0.31dev,>=0.30.0",
         "google-cloud>=0.32.0,<0.34.0",
         "pathos",
         "future",
