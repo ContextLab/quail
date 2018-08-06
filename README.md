@@ -34,6 +34,14 @@ To install quail in the recommended way, run:
 
 `pip install quail`
 
+This will install quail with basic functionality.  To install with speech decoding dependencies (Note: you will still need to install ffmpeg manually on your computer since it is not pip installable. For instructions, see [here](http://cdl-quail.readthedocs.io/en/latest/tutorial/speech_decoding.html)):
+
+`pip install quail[speech-decoding]`
+
+For CDL users, you can install speech decoding and efficient learning capabilities like this:
+
+`pip install quail[speech-decoding, efficient-learning]`
+
 To install directly from this repo (not recommended, but you'll get the "bleeding edge" version of the code):
 
 `git clone https://github.com/ContextLab/quail.git`
