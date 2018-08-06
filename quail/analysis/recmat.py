@@ -85,7 +85,7 @@ def _recmat_smooth(presented, recalled, features, distance, match):
 
 def _similarity_smooth(presented, recalled, features, distance):
     lists = presented.index.get_values()
-    res = np.empty((len(lists), len(features), presented.iloc[0].shape[0], recalled.iloc[0].shape[0]))*np.nan
+    res = np.empty((len(lists), len(features), recalled.iloc[0].shape[0], presented.iloc[0].shape[0]))*np.nan
     for li, l in enumerate(lists):
         p_list = presented.loc[l]
         r_list = recalled.loc[l]
