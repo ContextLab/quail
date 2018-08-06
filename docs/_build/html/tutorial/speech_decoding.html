@@ -143,7 +143,7 @@ allow us to send the files to Google Speech. To set up:</p>
 <div class="section" id="on-a-mac">
 <h2>On a mac:<a class="headerlink" href="#on-a-mac" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Make sure you have brew installed. If you don&#8217;t, paste this into your
+<li>Make sure you have brew installed. If you don’t, paste this into your
 terminal window:</li>
 </ul>
 <p><code class="docutils literal"><span class="pre">/usr/bin/ruby</span> <span class="pre">-e</span> <span class="pre">&quot;$(curl</span> <span class="pre">-fsSL</span> <span class="pre">https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span></code></p>
@@ -167,33 +167,30 @@ comes out to ~$0.38 per subject. To set it up, follow these steps:</p>
 number)</li>
 </ul>
 </li>
-<li>Create a project.</li>
-</ol>
-<ul class="simple">
-<li>Click &#8220;Select a project&#8221;, and create a new one. You can have a single
-project for all recall studies, or a separate project for each study.
-Then, navigate to your new project.</li>
+<li>Create a project.<ul>
+<li>Click “Select a project”, and create a new one. You can have a
+single project for all recall studies, or a separate project for
+each study. Then, navigate to your new project.</li>
 </ul>
-<ol class="arabic simple" start="4">
-<li>Enable to Speech API.</li>
-</ol>
-<ul class="simple">
-<li>Click the &#8220;Dashboard&#8221; icon.</li>
-<li>Click &#8220;Enable API&#8221;</li>
-<li>Click &#8220;Speech API&#8221; which will be listed under &#8220;Google Cloud Machine
-Learning&#8221;.</li>
-<li>Click &#8220;Enable&#8221;.</li>
+</li>
+<li>Enable to Speech API.<ul>
+<li>Click the “Dashboard” icon.</li>
+<li>Click “Enable API”</li>
+<li>Click “Speech API” which will be listed under “Google Cloud
+Machine Learning”.</li>
+<li>Click “Enable”.</li>
 </ul>
-<ol class="arabic simple" start="5">
-<li>Set up a service account.</li>
-</ol>
-<ul class="simple">
-<li>Click &#8220;Credentials&#8221;.</li>
-<li>Click &#8220;Create credentials&#8221; and select &#8220;Service account key&#8221;.</li>
-<li>Click &#8220;Service account&#8221; and select &#8220;new service account&#8221;.</li>
-<li>Name the account (&#8220;owner&#8221;) and then select the role &#8220;Project-&gt;Owner&#8221;.</li>
-<li>Click &#8220;Create&#8221;.</li>
+</li>
+<li>Set up a service account.<ul>
+<li>Click “Credentials”.</li>
+<li>Click “Create credentials” and select “Service account key”.</li>
+<li>Click “Service account” and select “new service account”.</li>
+<li>Name the account (“owner”) and then select the role
+“Project-&gt;Owner”.</li>
+<li>Click “Create”.</li>
 </ul>
+</li>
+</ol>
 <p>If you followed these steps, a JSON formatted API keyfile will be
 downloaded to your local computer. This file is your ticket to speech
 decoding, so keep it safe. Everything should now be setup! Below is a
@@ -215,7 +212,7 @@ this, edit your .bash_profile, adding the line:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s1">&#39;/path/to/keyfile.JSON&#39;</span>
 </pre></div>
 </div>
-<p>You&#8217;ll need to launch a fresh terminal instance and then the
+<p>You’ll need to launch a fresh terminal instance and then the
 <code class="docutils literal"><span class="pre">decode_speech</span></code> function should work without the explicit keypath:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># decode speech</span>
 <span class="n">recall_data</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">decode_speech</span><span class="p">(</span><span class="s1">&#39;../data/sample.wav&#39;</span><span class="p">)</span>
@@ -244,7 +241,7 @@ this, edit your .bash_profile, adding the line:</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

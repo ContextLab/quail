@@ -117,83 +117,78 @@
 <h1>quail.plot<a class="headerlink" href="#quail-plot" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="quail.plot">
-<code class="descclassname">quail.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>data</em>, <em>subjgroup=None</em>, <em>subjname='Subject Group'</em>, <em>listgroup=None</em>, <em>listname='List'</em>, <em>subjconds=None</em>, <em>listconds=None</em>, <em>plot_type=None</em>, <em>plot_style=None</em>, <em>title=None</em>, <em>legend=True</em>, <em>xlim=None</em>, <em>ylim=None</em>, <em>save_path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/plot.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.plot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">quail.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>results</em>, <em>subjgroup=None</em>, <em>subjname='Subject Group'</em>, <em>listgroup=None</em>, <em>listname='List'</em>, <em>subjconds=None</em>, <em>listconds=None</em>, <em>plot_type=None</em>, <em>plot_style=None</em>, <em>title=None</em>, <em>legend=True</em>, <em>xlim=None</em>, <em>ylim=None</em>, <em>save_path=None</em>, <em>show=True</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/plot.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>General plot function that groups data by subject/list number and performs analysis.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>data</strong> : Pandas DataFrame or list of Pandas DataFrames</p>
-<blockquote>
-<div><p>The result of a quail analysis</p>
-</div></blockquote>
-<p><strong>subjgroup</strong> : list of strings or ints</p>
-<blockquote>
-<div><p>String/int variables indicating how to group over subjects.  Must be
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">quail.FriedEgg</span></dt>
+<dd><p class="first last">Object containing results</p>
+</dd>
+<dt><strong>subjgroup</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of strings or ints</span></dt>
+<dd><p class="first last">String/int variables indicating how to group over subjects.  Must be
 the length of the number of subjects</p>
-</div></blockquote>
-<p><strong>subjname</strong> : string</p>
-<blockquote>
-<div><p>Name of the subject grouping variable</p>
-</div></blockquote>
-<p><strong>listgroup</strong> : list of strings or ints</p>
-<blockquote>
-<div><p>String/int variables indicating how to group over list.  Must be
+</dd>
+<dt><strong>subjname</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Name of the subject grouping variable</p>
+</dd>
+<dt><strong>listgroup</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of strings or ints</span></dt>
+<dd><p class="first last">String/int variables indicating how to group over list.  Must be
 the length of the number of lists</p>
-</div></blockquote>
-<p><strong>listname</strong> : string</p>
-<blockquote>
-<div><p>Name of the list grouping variable</p>
-</div></blockquote>
-<p><strong>subjconds</strong> : list</p>
-<blockquote>
-<div><p>List of subject conditions (str) to plot</p>
-</div></blockquote>
-<p><strong>listconds</strong> : list</p>
-<blockquote>
-<div><p>List of list conditions (str) to plot</p>
-</div></blockquote>
-<p><strong>plot_type</strong> : string</p>
-<blockquote>
-<div><p>Specifies the type of plot. If list (default), the list groupings (listgroup)
+</dd>
+<dt><strong>listname</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Name of the list grouping variable</p>
+</dd>
+<dt><strong>subjconds</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of subject hues (str) to plot</p>
+</dd>
+<dt><strong>listconds</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of list hues (str) to plot</p>
+</dd>
+<dt><strong>plot_type</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Specifies the type of plot. If list (default), the list groupings (listgroup)
 will determine the plot grouping. If subject, the subject groupings
 (subjgroup) will determine the plot grouping. If split (currenty just
 works for accuracy plots), both listgroup and subjgroup will determine
 the plot groupings</p>
-</div></blockquote>
-<p><strong>plot_style</strong> : string</p>
-<blockquote>
-<div><p>Specifies the style of the plot.  This currently works only for
+</dd>
+<dt><strong>plot_style</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Specifies the style of the plot.  This currently works only for
 accuracy and fingerprint plots. The plot style can be bar (default for
 accruacy plot), violin (default for fingerprint plots) or swarm.</p>
-</div></blockquote>
-<p><strong>title</strong> : string</p>
-<blockquote>
-<div><p>The title of the plot</p>
-</div></blockquote>
-<p><strong>legend</strong> : bool</p>
-<blockquote>
-<div><p>If true (default), a legend is plotted.</p>
-</div></blockquote>
-<p><strong>ylim</strong> : list of numbers</p>
-<blockquote>
-<div><p>A ymin/max can be specified by a list of the form [ymin, ymax]</p>
-</div></blockquote>
-<p><strong>xlim</strong> : list of numbers</p>
-<blockquote>
-<div><p>A xmin/max can be specified by a list of the form [xmin, xmax]</p>
-</div></blockquote>
-<p><strong>save_path</strong> : str</p>
-<blockquote>
-<div><p>Path to save out figure.  Include the file extension, e.g.
+</dd>
+<dt><strong>title</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">The title of the plot</p>
+</dd>
+<dt><strong>legend</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">If true (default), a legend is plotted.</p>
+</dd>
+<dt><strong>ylim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of numbers</span></dt>
+<dd><p class="first last">A ymin/max can be specified by a list of the form [ymin, ymax]</p>
+</dd>
+<dt><strong>xlim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of numbers</span></dt>
+<dd><p class="first last">A xmin/max can be specified by a list of the form [xmin, xmax]</p>
+</dd>
+<dt><strong>save_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">Path to save out figure.  Include the file extension, e.g.
 save_path=&#8217;figure.pdf&#8217;</p>
-</div></blockquote>
+</dd>
+<dt><strong>show</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">If False, do not show figure, but still return ax handle (default True).</p>
+</dd>
+<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Matplotlib.Axes object or None</span></dt>
+<dd><p class="first last">A plot object to draw to. If None, a new one is created and returned.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>ax</strong> : matplotlib.Axes.Axis</p>
-<blockquote class="last">
-<div><p>An axis handle for the figure</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">matplotlib.Axes.Axis</span></dt>
+<dd><p class="first last">An axis handle for the figure</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -222,7 +217,7 @@ save_path=&#8217;figure.pdf&#8217;</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

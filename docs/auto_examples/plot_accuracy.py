@@ -15,10 +15,10 @@ This example plots free recall accuracy for a single subject.
 import quail
 
 #load data
-egg = quail.load_example_data()
+egg = quail.load('example')
 
 #analysis
-analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['condition1']*4+['condition2']*4)
+fegg = egg.analyze('accuracy', listgroup=['condition1']*4+['condition2']*4)
 
 #plot by list
-quail.plot(analyzed_data, plot_style='violin', title='Average Recall Accuracy')
+fegg.plot(plot_style='violin', title='Average Recall Accuracy')

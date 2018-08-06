@@ -3,26 +3,22 @@ The Egg data object
 ===================
 
 This tutorial will go over the basics of the ``Egg`` data object, the
-essential quail data structure that contains all the data you need to
-run analyses and plot the results. An egg is made up of two primary
+essential ``quail`` data structure that contains all the data you need
+to run analyses and plot the results. An egg is made up of two primary
 pieces of data:
 
-1. ``pres`` data - words/stimuli that were presented to a subject
+1. ``pres`` data - stimuli/features that were presented to a subject
 
-2. ``rec`` data - words/stimuli that were recalled by the subject.
+2. ``rec`` data - stimuli/features that were recalled by the subject.
 
 You cannot create an ``egg`` without both of these components.
 Additionally, there are a few optional fields:
 
-1. ``features`` data - features that describe each of the stimuli (for
-   example, the category of the word, word length, etc.). This field is
-   required for fingerprint analysis (see the fingerprint tutorial).
-
-2. ``dist_funcs`` dictionary - this field allows you to control the
+1. ``dist_funcs`` dictionary - this field allows you to control the
    distance functions for each of the stimulus features. For more on
    this, see the fingerprint tutorial.
 
-3. ``meta`` dictionary - this is an optional field that allows you to
+2. ``meta`` dictionary - this is an optional field that allows you to
    store custom meta data about the dataset, such as the date collected,
    experiment version etc.
 
@@ -33,21 +29,29 @@ and create an ``egg`` from scratch.
 Load in the library
 -------------------
 
-.. code:: ipython2
+.. code:: ipython3
 
     import quail
+    %matplotlib inline
+
+
+.. parsed-literal::
+
+    /usr/local/lib/python3.6/site-packages/pydub/utils.py:165: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+
 
 The ``pres`` data structure
 ---------------------------
 
 The first piece of an ``egg`` is the ``pres`` data, or in other words
-the words/stimuli that were presented to the subject. For a single
-subject's data, the form of the input will be a list of lists, where
-each list is comprised of the words presented to the subject during a
-particular study block. Let's create a fake dataset of one subject who
-saw two encoding lists:
+the stimuli that were presented to the subject. For a single subject’s
+data, the form of the input will be a list of lists, where each list is
+comprised of the words presented to the subject during a particular
+study block. Let’s create a fake dataset of one subject who saw two
+encoding lists:
 
-.. code:: ipython2
+.. code:: ipython3
 
     presented_words = [['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
 
@@ -55,25 +59,25 @@ The ``rec`` data structure
 --------------------------
 
 The second fundamental component of an egg is the ``rec`` data, or the
-words/stimuli that were recalled by the subject. Now, let's create the
+words/stimuli that were recalled by the subject. Now, let’s create the
 recall lists:
 
-.. code:: ipython2
+.. code:: ipython3
 
     recalled_words = [['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]
 
-We now have the two components necessary to build an ``egg``, so let's
+We now have the two components necessary to build an ``egg``, so let’s
 do that and then take a look at the result.
 
-.. code:: ipython2
+.. code:: ipython3
 
     egg = quail.Egg(pres=presented_words, rec=recalled_words)
 
-That's it! We've created our first ``egg``. Let's take a closer look at
+That’s it! We’ve created our first ``egg``. Let’s take a closer look at
 how the ``egg`` is setup. We can use the ``info`` method to get a quick
 snapshot of the ``egg``:
 
-.. code:: ipython2
+.. code:: ipython3
 
     egg.info()
 
@@ -83,16 +87,16 @@ snapshot of the ``egg``:
     Number of subjects: 1
     Number of lists per subject: 2
     Number of words per list: 4
-    Date created: Mon May 15 14:33:36 2017
+    Date created: Mon Aug  6 14:43:19 2018
     Meta data: {}
 
 
-Now, let's take a closer look at how the ``egg`` is structured. First,
+Now, let’s take a closer look at how the ``egg`` is structured. First,
 we will check out the ``pres`` field:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    egg.pres
+    egg.get_pres_items()
 
 
 
@@ -100,6 +104,19 @@ we will check out the ``pres`` field:
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -144,12 +161,12 @@ we will check out the ``pres`` field:
 As you can see above, the ``pres`` field was turned into a multi-index
 Pandas DataFrame organized by subject and by list. This is how the
 ``pres`` data is stored within an egg, which will make more sense when
-we consider larger datasets with more subjects. Next, let's take a look
+we consider larger datasets with more subjects. Next, let’s take a look
 at the ``rec`` data:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    egg.rec
+    egg.get_rec_items()
 
 
 
@@ -157,6 +174,19 @@ at the ``rec`` data:
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -190,7 +220,7 @@ at the ``rec`` data:
           <td>animal</td>
           <td>horse</td>
           <td>zoo</td>
-          <td>None</td>
+          <td>NaN</td>
         </tr>
       </tbody>
     </table>
@@ -199,15 +229,14 @@ at the ``rec`` data:
 
 
 The ``rec`` data is also stored as a DataFrame. Notice that if the
-number of recalled words is shorter than the number of presented words
-(as it typically will be), those columns are filled with a ``None``
-value. Now, let's create an ``egg`` with two subject's data and take a
-look at the result.
+number of recalled words is shorter than the number of presented words,
+those columns are filled with a ``NaN`` value. Now, let’s create an
+``egg`` with two subject’s data and take a look at the result.
 
 Multisubject ``eggs``
 ---------------------
 
-.. code:: ipython2
+.. code:: ipython3
 
     # presented words
     sub1_presented=[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
@@ -222,15 +251,27 @@ Multisubject ``eggs``
     recalled_words = [sub1_recalled, sub2_recalled]
     
     # create Egg
-    multisubject_egg = quail.Egg(pres=presented_words,rec=recalled_words)
+    multisubject_egg = quail.Egg(pres=presented_words, rec=recalled_words)
+    
+    multisubject_egg.info()
+
+
+.. parsed-literal::
+
+    Number of subjects: 2
+    Number of lists per subject: 2
+    Number of words per list: 4
+    Date created: Mon Aug  6 14:43:19 2018
+    Meta data: {}
+
 
 As you can see above, in order to create an ``egg`` with more than one
-subject's data, all you do is create a list of subjects. Let's see how
+subject’s data, all you do is create a list of subjects. Let’s see how
 the ``pres`` data is organized in the egg with more than one subject:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    multisubject_egg.pres
+    multisubject_egg.get_pres_items()
 
 
 
@@ -238,6 +279,19 @@ the ``pres`` data is organized in the egg with more than one subject:
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -298,9 +352,9 @@ Looks identical to the single subject data, but now we have two unique
 subject identifiers in the ``DataFrame``. The ``rec`` data is set up in
 the same way:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    multisubject_egg.rec
+    multisubject_egg.get_rec_items()
 
 
 
@@ -308,6 +362,19 @@ the same way:
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -341,7 +408,7 @@ the same way:
           <td>animal</td>
           <td>horse</td>
           <td>zoo</td>
-          <td>None</td>
+          <td>NaN</td>
         </tr>
         <tr>
           <th rowspan="2" valign="top">1</th>
@@ -367,94 +434,142 @@ the same way:
 As you add more subjects, they are simply appended to the bottom of the
 df with a unique subject identifier.
 
-The ``features`` data structure
--------------------------------
+Adding features to the egg
+--------------------------
 
-The ``features`` data structure is an optional field that can be added
-to an egg. It contains features of the presented words that are required
-for the fingerprint analysis. The ``features`` data is set up like the
-``pres`` and ``rec`` data, but instead of a single word, there is a
-dictionary of features. For example take the word "cat". A ``features``
-dictionary for this word might look something like this:
+Stimuli can also be passed as a dictionary containing the stimulus and
+features of the stimulus. You can include any stimulus feature you want
+in this dictionary, such as the position of the word on the screen, the
+color, or perhaps the font of the word:
 
-.. code:: ipython2
+.. code:: ipython3
 
     cat_features = {
-        'category' : 'animal',
-        'word_length' : 3,
-        'starting_letter' : 'c',
+        'item': 'cat',
+        'category': 'animal',
+        'word_length': 3,
+        'starting_letter': 'c',
     }
 
-You can include any stimulus feature you want in this dictionary, such
-as the position of the word on the screen, the color, or perhaps the
-font of the word. To create the ``features`` data structure in an
-``egg``, use the format of the ``pres`` structure, but replace the words
-with dictionaries:
+Let’s try creating an egg with additional stimulus features:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    # presented words
-    presented_words=[['cat', 'bat', 'hat', 'goat'],['zoo', 'donkey', 'zebra', 'horse']]
-    
     # presentation features
-    presented_words_features = [
+    presented_words = [
         [
             {
-                'category' : 'animal',
-                'word_length' : 3,
-                'starting_letter' : 'c'
+                'item': 'cat',
+                'category': 'animal',
+                'word_length': 3,
+                'starting_letter': 'c'
             },
             {
-                'category' : 'object',
-                'word_length' : 3,
-                'starting_letter' : 'b'
+                'item': ' bat',
+                'category': 'object',
+                'word_length': 3,
+                'starting_letter': 'b'
             },
             {
-                'category' : 'object',
-                'word_length' : 3,
-                'starting_letter' : 'h'
+                'item': 'hat',
+                'category': 'object',
+                'word_length': 3,
+                'starting_letter': 'h'
             },
             {
-                'category' : 'animal',
-                'word_length' : 4,
-                'starting_letter' : 'g'
+                'item': 'goat',
+                'category': 'animal',
+                'word_length': 4,
+                'starting_letter': 'g'
             },
         ],
         [
             {
-                'category' : 'place',
-                'word_length' : 3,
-                'starting_letter' : 'z'
+                'item': 'zoo', 
+                'category': 'place',
+                'word_length': 3,
+                'starting_letter': 'z'
             },
             {
+                'item': 'donkey',
                 'category' : 'animal',
                 'word_length' : 6,
                 'starting_letter' : 'd'
             },
             {
-                'category' : 'animal',
-                'word_length' : 5,
-                'starting_letter' : 'z'
+                'item': 'zebra',
+                'category': 'animal',
+                'word_length': 5,
+                'starting_letter': 'z'
             },
             {
-                'category' : 'animal',
-                'word_length' : 5,
-                'starting_letter' : 'h'
+                'item': 'horse',
+                'category': 'animal',
+                'word_length': 5,
+                'starting_letter': 'h'
             },
         ],
     ]
     
-    # recalled words
-    recalled_words=[['bat', 'cat', 'goat', 'hat'],['donkey', 'horse', 'zoo']]
-
-Then, simply pass the features to the ``Egg`` class using the
-``features`` key word argument:
-
-.. code:: ipython2
-
+    recalled_words = [
+        [
+            {
+                'item': ' bat',
+                'category': 'object',
+                'word_length': 3,
+                'starting_letter': 'b'
+            },
+            {
+                'item': 'cat',
+                'category': 'animal',
+                'word_length': 3,
+                'starting_letter': 'c'
+            },
+            {
+                'item': 'goat',
+                'category': 'animal',
+                'word_length': 4,
+                'starting_letter': 'g'
+            },
+            {
+                'item': 'hat',
+                'category': 'object',
+                'word_length': 3,
+                'starting_letter': 'h'
+            },
+        ],
+        [
+            {
+                'item': 'donkey',
+                'category' : 'animal',
+                'word_length' : 6,
+                'starting_letter' : 'd'
+            },
+            {
+                'item': 'horse',
+                'category': 'animal',
+                'word_length': 5,
+                'starting_letter': 'h'
+            },
+            {
+                'item': 'zoo', 
+                'category': 'place',
+                'word_length': 3,
+                'starting_letter': 'z'
+            },
+    
+        ],
+    ]
+    
     # create egg object
-    egg = quail.Egg(pres=presented_words, rec=recalled_words, features=presented_words_features)
-    egg.features
+    egg = quail.Egg(pres=presented_words, rec=recalled_words)
+
+Like before, you can use the ``get_pres_items`` method to retrieve the
+presented items:
+
+.. code:: ipython3
+
+    egg.get_pres_items()
 
 
 
@@ -462,6 +577,19 @@ Then, simply pass the features to the ``Egg`` class using the
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -485,17 +613,84 @@ Then, simply pass the features to the ``Egg`` class using the
         <tr>
           <th rowspan="2" valign="top">0</th>
           <th>0</th>
-          <td>{u'category': u'animal', u'starting_letter': u...</td>
-          <td>{u'category': u'object', u'starting_letter': u...</td>
-          <td>{u'category': u'object', u'starting_letter': u...</td>
-          <td>{u'category': u'animal', u'starting_letter': u...</td>
+          <td>cat</td>
+          <td>bat</td>
+          <td>hat</td>
+          <td>goat</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>{u'category': u'place', u'starting_letter': u'...</td>
-          <td>{u'category': u'animal', u'starting_letter': u...</td>
-          <td>{u'category': u'animal', u'starting_letter': u...</td>
-          <td>{u'category': u'animal', u'starting_letter': u...</td>
+          <td>zoo</td>
+          <td>donkey</td>
+          <td>zebra</td>
+          <td>horse</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+The stimulus features can be accessed by calling the
+``get_pres_features`` method:
+
+.. code:: ipython3
+
+    egg.get_pres_features()
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th></th>
+          <th>0</th>
+          <th>1</th>
+          <th>2</th>
+          <th>3</th>
+        </tr>
+        <tr>
+          <th>Subject</th>
+          <th>List</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th rowspan="2" valign="top">0</th>
+          <th>0</th>
+          <td>{'category': 'animal', 'word_length': 3, 'star...</td>
+          <td>{'category': 'object', 'word_length': 3, 'star...</td>
+          <td>{'category': 'object', 'word_length': 3, 'star...</td>
+          <td>{'category': 'animal', 'word_length': 4, 'star...</td>
+        </tr>
+        <tr>
+          <th>1</th>
+          <td>{'category': 'place', 'word_length': 3, 'start...</td>
+          <td>{'category': 'animal', 'word_length': 6, 'star...</td>
+          <td>{'category': 'animal', 'word_length': 5, 'star...</td>
+          <td>{'category': 'animal', 'word_length': 5, 'star...</td>
         </tr>
       </tbody>
     </table>
@@ -511,14 +706,14 @@ structure is used to estimate how subjects cluster their recall
 responses with respect to the features of the encoded stimuli. Briefly,
 these estimates are derived by computing the similarity of neighboring
 recall words along each feature dimension. For example, if you recall
-"dog", and then the next word you recall is "cat", your clustering by
+“dog”, and then the next word you recall is “cat”, your clustering by
 category score would increase because the two recalled words are in the
-same category. Similarly, if after you recall "cat" you recall the word
-"can", your clustering by starting letter score would increase, since
-both words share the first letter "c". This logic can be extended to any
+same category. Similarly, if after you recall “cat” you recall the word
+“can”, your clustering by starting letter score would increase, since
+both words share the first letter “c”. This logic can be extended to any
 number of feature dimensions.
 
-Similarity between the words can be computed in a number of ways. By
+Similarity between stimuli can be computed in a number of ways. By
 default, the distance function for all textual features (like category,
 starting letter) is binary. In other words, if the words are in the same
 category (cat, dog), there similarity would be 1, whereas if they are in
@@ -527,17 +722,17 @@ numerical features (such as word length), by default similarity between
 words is computed using Euclidean distance. However, the point of this
 digression is that you can define your own distance functions by passing
 a ``dist_func`` dictionary to the ``Egg`` class. This could be for all
-feature dimensions, or only a subset. Let's see an example:
+feature dimensions, or only a subset. Let’s see an example:
 
-.. code:: ipython2
+.. code:: ipython3
 
     dist_funcs = {
         'word_length' : lambda x,y: (x-y)**2
     }
     
-    egg = quail.Egg(pres=presented_words, rec=recalled_words, features=presented_words_features, dist_funcs=dist_funcs)
+    egg = quail.Egg(pres=presented_words, rec=recalled_words, dist_funcs=dist_funcs)
 
-In the example code above, similarity between words for the word\_length
+In the example code above, similarity between words for the word_length
 feature dimension will now be computed using this custom distance
 function, while all other feature dimensions will be set to the default.
 
@@ -549,7 +744,7 @@ researchers keep their eggs organized by adding custom meta data to the
 ``egg`` object. The data is added to the ``egg`` by passing the ``meta``
 key word argument when creating the ``egg``:
 
-.. code:: ipython2
+.. code:: ipython3
 
     meta = {
         'Researcher' : 'Andy Heusser',
@@ -565,7 +760,7 @@ key word argument when creating the ``egg``:
     Number of subjects: 1
     Number of lists per subject: 2
     Number of words per list: 4
-    Date created: Mon May 15 14:33:36 2017
+    Date created: Mon Aug  6 14:43:19 2018
     Meta data: {'Researcher': 'Andy Heusser', 'Study': 'Egg Tutorial'}
 
 
@@ -580,7 +775,7 @@ easy data sharing.
 To do this, simply pass one or both of the arguments when creating the
 ``egg``:
 
-.. code:: ipython2
+.. code:: ipython3
 
     # presented words
     sub1_presented=[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
@@ -607,24 +802,23 @@ a filepath:
 
 ::
 
-    multisubject_egg.save('myegg.p')
+   multisubject_egg.save('myegg')
 
-This will save you ``egg`` using the package ``pickle``. The result? A
-pickled egg! To load this egg later, simply call the ``load_egg``
-function with the path of the egg:
+To load this egg later, simply call the ``load_egg`` function with the
+path of the egg:
 
 ::
 
-    egg = quail.load('myegg.p')
+   egg = quail.load('myegg')
 
 Stacking ``eggs``
 -----------------
 
-We now have two separate eggs, each with a single subject's data. Let's
+We now have two separate eggs, each with a single subject’s data. Let’s
 combine them by passing a ``list`` of ``eggs`` to the ``stack_eggs``
 function:
 
-.. code:: ipython2
+.. code:: ipython3
 
     # subject 1 data
     sub1_presented=[['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
@@ -640,10 +834,10 @@ function:
     # create subject 2 egg
     subject2_egg = quail.Egg(pres=sub2_presented, rec=sub2_recalled)
 
-.. code:: ipython2
+.. code:: ipython3
 
     stacked_eggs = quail.stack_eggs([subject1_egg, subject2_egg])
-    stacked_eggs.pres
+    stacked_eggs.get_pres_items()
 
 
 
@@ -651,6 +845,19 @@ function:
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -713,10 +920,10 @@ Cracking ``eggs``
 You can use the ``crack_egg`` function to slice out a subset of subjects
 or lists:
 
-.. code:: ipython2
+.. code:: ipython3
 
     cracked_egg = quail.crack_egg(stacked_eggs, subjects=[1], lists=[0])
-    cracked_egg.pres
+    cracked_egg.get_pres_items()
 
 
 
@@ -724,6 +931,19 @@ or lists:
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -761,9 +981,9 @@ or lists:
 Alternatively, you can use the ``crack`` method, which does the same
 thing:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    stacked_eggs.crack(subjects=[0,1], lists=[1]).pres
+    stacked_eggs.crack(subjects=[0,1], lists=[1]).get_pres_items()
 
 
 
@@ -771,6 +991,19 @@ thing:
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">

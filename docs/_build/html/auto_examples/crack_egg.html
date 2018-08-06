@@ -113,7 +113,11 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="crack-egg">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-crack-egg-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="crack-egg">
 <span id="sphx-glr-auto-examples-crack-egg-py"></span><h1>Crack Egg<a class="headerlink" href="#crack-egg" title="Permalink to this headline">¶</a></h1>
 <p>This an example of how to crack an egg (take a slice of subjects/lists from it)</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Code source: Andrew Heusser</span>
@@ -123,22 +127,37 @@
 <span class="kn">import</span> <span class="nn">quail</span>
 
 <span class="c1">#load data</span>
-<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load_example_data</span><span class="p">()</span>
+<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
 
 <span class="c1">#crack egg</span>
-<span class="n">cracked_egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">crack_egg</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">lists</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">cracked_egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">crack_egg</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lists</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="n">cracked_egg</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+
+<span class="n">pres</span> <span class="o">=</span> <span class="n">cracked_egg</span><span class="o">.</span><span class="n">get_pres_items</span><span class="p">()</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">rec</span> <span class="o">=</span> <span class="n">cracked_egg</span><span class="o">.</span><span class="n">get_rec_items</span><span class="p">()</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">distmat</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">distdict</span><span class="p">):</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">[</span><span class="n">xi</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">egg</span><span class="o">.</span><span class="n">get_pres_features</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">cdist</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">distdict</span><span class="p">[</span><span class="n">feature</span><span class="p">])</span>
+
+
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">ind1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pres</span><span class="o">==</span><span class="n">rec</span><span class="p">[</span><span class="n">idx</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ind2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pres</span><span class="o">==</span><span class="n">rec</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dists</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">ind1</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">cdist</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">ind1</span><span class="p">,</span> <span class="n">ind2</span><span class="p">]</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">dists</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">cdist</span><span class="p">))</span>
 </pre></div>
 </div>
 <p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-crack-egg-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/crack_egg.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">crack_egg.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/crack_egg.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">crack_egg.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -161,7 +180,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

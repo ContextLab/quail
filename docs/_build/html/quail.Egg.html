@@ -117,7 +117,7 @@
 <h1>quail.Egg<a class="headerlink" href="#quail-egg" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="quail.Egg">
-<em class="property">class </em><code class="descclassname">quail.</code><code class="descname">Egg</code><span class="sig-paren">(</span><em>pres=[[[]]], rec=[[[]]], features=None, dist_funcs={}, meta={}, subjgroup=None, subjname='Subject', listgroup=None, listname='List'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">quail.</code><code class="descname">Egg</code><span class="sig-paren">(</span><em>pres=None</em>, <em>rec=None</em>, <em>features=None</em>, <em>dist_funcs=None</em>, <em>meta=None</em>, <em>subjgroup=None</em>, <em>subjname='Subject'</em>, <em>listgroup=None</em>, <em>listname='List'</em>, <em>date_created=None</em>, <em>recmat=None</em>, <em>list_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data object for the quail package</p>
 <p>An Egg data object contains the data you need to analyze free recall experiments.
 This can be a single subject&#8217;s data, or a group of subjects.  An Egg is comprised of
@@ -133,84 +133,109 @@ identifying the egg object</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>pres</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
-<blockquote>
-<div><p>This is a nested list containing the presented words.  Internally, it will
-be converted into a multi-index Pandas DataFrame. Each row represents
-the presented words for a given list and each column represents a list.
-The cells should be lowercase words. The index will be a multi-index,
-where the first level reprensents the subject number and the second level
-represents the list number.</p>
-</div></blockquote>
-<p><strong>rec</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
-<blockquote>
-<div><p>This is a nested list containing the presented words.  Internally, it will
-be converted into a multi-index Pandas DataFrame. Each row represents
-the recalled words for a given list and each column represents a list.
-Each row represents the recalled words for a given list and each column
-represents a list. The cells should be lowercase words. The index will
-be a multi-index, where the first level reprensents the subject number
-and the second level represents the list number</p>
-</div></blockquote>
-<p><strong>features</strong> : list (subjects) of lists (study lists) of lists (words) of strings</p>
-<blockquote>
-<div><p>This is a nested list containing the presented words.  Internally, it will
-be converted into a multi-index Pandas DataFrame. Each row represents the
-presented words for a given list and each column represents a list. The
-cells should be a dictionary of features, where the keys are the name of
-the features, and the values are the feature values. The index will be a
-multi-index, where the first level represents the subject number and the
-second level represents the list number.</p>
-</div></blockquote>
-<p><strong>dist_funcs</strong> : dict (optional)</p>
-<blockquote>
-<div><p>A dictionary of custom distance functions for stimulus features.  Each key should be the name of a feature
-and each value should be an inline distance function (e.g. <cite>dist_funcs[&#8216;feature_n&#8217;] = lambda a, b: abs(a-b)</cite>)</p>
-</div></blockquote>
-<p><strong>meta</strong> : dict (optional)</p>
-<blockquote>
-<div><p>Meta data about the study (i.e. version, description, date, etc.) can be saved here.</p>
-</div></blockquote>
-<p><strong>subjgroup</strong> : list of strings or ints (optional)</p>
-<blockquote>
-<div><p>String/int variables indicating how to group over subjects.  Must be
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pres</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.</span></dt>
+<dd><p class="first last">This is a nested list containing the presented stimuli/stimulus features.
+The outer list groups the data into subjects, the middle list groups the
+data into experiments and the inner list groups the data into stimuli
+presented together in one block (or list). Each item within the list can
+be a string representing the stimulus or a dictionary representing the
+stimuli and its features. If dictionaries are passed, identify the stimulus
+name using the &#8216;stimulus&#8217; key and a string label. To represent additional
+stimulus features, use any text (str) label as the key and a value of the
+following types: string, int, float, list, array.</p>
+</dd>
+<dt><strong>rec</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.</span></dt>
+<dd><p class="first last">This is a nested list containing the recalled stimuli/stimulus features.
+The outer list groups the data into subjects, the middle list groups the
+data into experiments and the inner list groups the data into stimuli
+presented together in one block (or list). Each item within the list can
+be a string representing the stimulus or a dictionary representing the
+stimuli and its features. If dictionaries are passed, identify the stimulus
+name using the &#8216;stimulus&#8217; key and a string label. To represent additional
+stimulus features, use any text (str) label as the key and a value of the
+following types: string, int, float, list, array.</p>
+</dd>
+<dt><strong>features</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.</span></dt>
+<dd><p class="first last">This is DEPRECATED, but left in for legacy support. This is a nested list
+containing the stimuli/stimulus features. The outer list groups the data
+into subjects, the middle list groups the data into experiments and the
+inner list groups the data into stimuli presented together in one block
+(or list). Each item within the list should be a dictionary representing
+stimulus features. Each dictionary should contain a text (str) label as
+the key and a value of the following types: string, int, float, list, array.</p>
+</dd>
+<dt><strong>dist_funcs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict (optional)</span></dt>
+<dd><p class="first last">A dictionary of custom distance functions for stimulus features. Each
+key should be the name of a feature and each value should be a string
+representation of an inline distance function
+(e.g. <cite>dist_funcs[&#8216;feature_n&#8217;] = &#8216;lambda a, b: abs(a-b)&#8217;&#8216;</cite>)</p>
+</dd>
+<dt><strong>meta</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict (optional)</span></dt>
+<dd><p class="first last">Meta data about the study (i.e. version, description, date, etc.) can be saved here.</p>
+</dd>
+<dt><strong>subjgroup</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of strings or ints (optional)</span></dt>
+<dd><p class="first last">String/int variables indicating how to group over subjects.  Must be
 the length of the number of subjects</p>
-</div></blockquote>
-<p><strong>subjname</strong> : string (optional)</p>
-<blockquote>
-<div><p>Name of the subject grouping variable. Default is &#8216;Subject&#8217;.</p>
-</div></blockquote>
-<p><strong>listgroup</strong> : list of strings or ints (optional)</p>
-<blockquote>
-<div><p>String/int variables indicating how to group over list.  Must be
+</dd>
+<dt><strong>subjname</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string (optional)</span></dt>
+<dd><p class="first last">Name of the subject grouping variable. Default is &#8216;Subject&#8217;.</p>
+</dd>
+<dt><strong>listgroup</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of strings or ints (optional)</span></dt>
+<dd><p class="first last">String/int variables indicating how to group over list.  Must be
 the length of the number of lists</p>
-</div></blockquote>
-<p><strong>listname</strong> : string (optional)</p>
-<blockquote class="last">
-<div><p>Name of the list grouping variable. Default is &#8216;List&#8217;.</p>
-</div></blockquote>
+</dd>
+<dt><strong>listname</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string (optional)</span></dt>
+<dd><p class="first last">Name of the list grouping variable. Default is &#8216;List&#8217;.</p>
+</dd>
+<dt><strong>recmat</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list (subjects) of lists (experiment) of lists (list/block) of ints.</span></dt>
+<dd><p class="first last">An egg can be optionally created directly from recall matrices. A recall
+matrix specifies sequences by listing out there indices in the order they
+were recalled (e.g. [4, 2, 1, None, None]).</p>
+</dd>
+<dt><strong>list_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The length of the presented lists.  Used to create an egg from a recall
+matrix (optional).  If list_length is not passed, the length of the
+presented lists is assumed to be the length of the first list passed.</p>
+</dd>
+</dl>
 </td>
 </tr>
-</tbody>
-</table>
-<p class="rubric">Attributes</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="22%" />
-<col width="78%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>n_subjects</td>
-<td>(int) Number of subjects in the egg object</td>
-</tr>
-<tr class="row-even"><td>n_lists</td>
-<td>(int) Number of lists per subject</td>
-</tr>
-<tr class="row-odd"><td>list_length</td>
-<td>(int) Number of words in the lists</td>
-</tr>
-<tr class="row-even"><td>date_created</td>
-<td>(time) A timestamp when the egg was created</td>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>pres</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Pandas.DataFrame</span></dt>
+<dd><p class="first last">A multi-index Pandas DataFrame representing the stimuli presented. The
+rows of the dataframe created represent distinct presentation blocks and
+the columns represent stimuli presented within a block. Each cell of the
+dataframe is a dictionary where the &#8216;stimulus&#8217; key is a text label of
+the stimulus and any other text keys are features of the presented
+stimulus. The dataframe index will be a multi-index, where the first
+level represents the subject number and the second level represents the
+list (or presentation block) number.</p>
+</dd>
+<dt><strong>rec</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Pandas.DataFrame</span></dt>
+<dd><p class="first last">A multi-index Pandas DataFrame representing the stimuli recalled. The
+rows of the dataframe created represent distinct presentation blocks and
+the columns represent stimuli presented within a block. Each cell of the
+dataframe is a dictionary where the &#8216;stimulus&#8217; key is a text label of
+the stimulus and any other text keys are features of the presented
+stimulus. The dataframe index will be a multi-index, where the first
+level represents the subject number and the second level represents the
+list (or presentation block) number.</p>
+</dd>
+<dt><strong>n_subjects</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of subjects in the egg object</p>
+</dd>
+<dt><strong>n_lists</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of lists per subject</p>
+</dd>
+<dt><strong>list_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">Number of words in the lists</p>
+</dd>
+<dt><strong>date_created</strong> <span class="classifier-delimiter">:</span> <span class="classifier">time</span></dt>
+<dd><p class="first last">A timestamp when the egg was created</p>
+</dd>
+</dl>
+</td>
 </tr>
 </tbody>
 </table>
@@ -221,17 +246,52 @@ the length of the number of lists</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.crack" title="quail.Egg.crack"><code class="xref py py-obj docutils literal"><span class="pre">crack</span></code></a>([subjects,&nbsp;lists])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.analyze" title="quail.Egg.analyze"><code class="xref py py-obj docutils literal"><span class="pre">analyze</span></code></a>([analysis])</td>
+<td>Calls analyze function</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#quail.Egg.crack" title="quail.Egg.crack"><code class="xref py py-obj docutils literal"><span class="pre">crack</span></code></a>([subjects,&nbsp;lists])</td>
 <td>Wraps crack_egg function to take an egg and returns a subset of the subjects</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#quail.Egg.info" title="quail.Egg.info"><code class="xref py py-obj docutils literal"><span class="pre">info</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.get_pres_features" title="quail.Egg.get_pres_features"><code class="xref py py-obj docutils literal"><span class="pre">get_pres_features</span></code></a>([features])</td>
+<td>Returns a df of features for presented items</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#quail.Egg.get_pres_items" title="quail.Egg.get_pres_items"><code class="xref py py-obj docutils literal"><span class="pre">get_pres_items</span></code></a>()</td>
+<td>Returns a df of presented items</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.get_rec_features" title="quail.Egg.get_rec_features"><code class="xref py py-obj docutils literal"><span class="pre">get_rec_features</span></code></a>([features])</td>
+<td>Returns a df of features for recalled items</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#quail.Egg.get_rec_items" title="quail.Egg.get_rec_items"><code class="xref py py-obj docutils literal"><span class="pre">get_rec_items</span></code></a>()</td>
+<td>Returns a df of recalled items</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.info" title="quail.Egg.info"><code class="xref py py-obj docutils literal"><span class="pre">info</span></code></a>()</td>
 <td>Print info about the data egg</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#quail.Egg.save" title="quail.Egg.save"><code class="xref py py-obj docutils literal"><span class="pre">save</span></code></a>(filepath)</td>
-<td>Save a pickled egg</td>
+<tr class="row-even"><td><a class="reference internal" href="#quail.Egg.save" title="quail.Egg.save"><code class="xref py py-obj docutils literal"><span class="pre">save</span></code></a>(fname[,&nbsp;compression])</td>
+<td>Save method for the Egg object</td>
 </tr>
 </tbody>
 </table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>to_dict</strong></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><strong>to_json</strong></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="quail.Egg.analyze">
+<code class="descname">analyze</code><span class="sig-paren">(</span><em>analysis=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.analyze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls analyze function</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="quail.Egg.crack">
 <code class="descname">crack</code><span class="sig-paren">(</span><em>subjects=None</em>, <em>lists=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.crack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.crack" title="Permalink to this definition">¶</a></dt>
@@ -240,24 +300,49 @@ the length of the number of lists</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>subjects</strong> : list</p>
-<blockquote>
-<div><p>List of subject idxs</p>
-</div></blockquote>
-<p><strong>lists</strong> : list</p>
-<blockquote>
-<div><p>List of lists idxs</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>subjects</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of subject idxs</p>
+</dd>
+<dt><strong>lists</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of lists idxs</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>new_egg</strong> : Egg data object</p>
-<blockquote class="last">
-<div><p>A mega egg comprised of the input eggs stacked together</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>new_egg</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Egg data object</span></dt>
+<dd><p class="first last">A mega egg comprised of the input eggs stacked together</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quail.Egg.get_pres_features">
+<code class="descname">get_pres_features</code><span class="sig-paren">(</span><em>features=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.get_pres_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.get_pres_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a df of features for presented items</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quail.Egg.get_pres_items">
+<code class="descname">get_pres_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.get_pres_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.get_pres_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a df of presented items</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quail.Egg.get_rec_features">
+<code class="descname">get_rec_features</code><span class="sig-paren">(</span><em>features=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.get_rec_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.get_rec_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a df of features for recalled items</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="quail.Egg.get_rec_items">
+<code class="descname">get_rec_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.get_rec_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.get_rec_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a df of recalled items</p>
 </dd></dl>
 
 <dl class="method">
@@ -268,8 +353,29 @@ the length of the number of lists</p>
 
 <dl class="method">
 <dt id="quail.Egg.save">
-<code class="descname">save</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save a pickled egg</p>
+<code class="descname">save</code><span class="sig-paren">(</span><em>fname</em>, <em>compression='blosc'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/egg.html#Egg.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.Egg.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save method for the Egg object</p>
+<p>The data will be saved as a &#8216;egg&#8217; file, which is a dictionary containing
+the elements of a Egg saved in the hd5 format using
+<cite>deepdish</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>fname</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">A name for the file.  If the file extension (.egg) is not specified,
+it will be appended.</p>
+</dd>
+<dt><strong>compression</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">The kind of compression to use.  See the deepdish documentation for
+options: <a class="reference external" href="http://deepdish.readthedocs.io/en/latest/api_io.html#deepdish.io.save">http://deepdish.readthedocs.io/en/latest/api_io.html#deepdish.io.save</a></p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -296,7 +402,7 @@ the length of the number of lists</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

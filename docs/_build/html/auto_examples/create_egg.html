@@ -113,7 +113,11 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="create-an-egg">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-create-egg-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="create-an-egg">
 <span id="sphx-glr-auto-examples-create-egg-py"></span><h1>Create an egg<a class="headerlink" href="#create-an-egg" title="Permalink to this headline">¶</a></h1>
 <p>An egg is made up of two primary pieces of data: <cite>pres</cite>, which are the
 words/stimuli that were presented to a subject and <cite>rec</cite>, which are the
@@ -123,24 +127,55 @@ words/stimuli that were recalled by the subject.</p>
 
 <span class="kn">import</span> <span class="nn">quail</span>
 
-<span class="c1"># presented words</span>
-<span class="n">presented_words</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">],[</span><span class="s1">&#39;zoo&#39;</span><span class="p">,</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;zebra&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">]]</span>
 
-<span class="c1"># recalled words</span>
-<span class="n">recalled_words</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;bat&#39;</span><span class="p">,</span> <span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="s1">&#39;goat&#39;</span><span class="p">,</span> <span class="s1">&#39;hat&#39;</span><span class="p">],[</span><span class="s1">&#39;animal&#39;</span><span class="p">,</span> <span class="s1">&#39;horse&#39;</span><span class="p">,</span> <span class="s1">&#39;zoo&#39;</span><span class="p">]]</span>
+<span class="c1"># generate some fake data</span>
+<span class="n">next_presented</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CAT&#39;</span><span class="p">,</span> <span class="s1">&#39;DOG&#39;</span><span class="p">,</span> <span class="s1">&#39;SHOE&#39;</span><span class="p">,</span> <span class="s1">&#39;HORSE&#39;</span><span class="p">]</span>
+<span class="n">next_recalled</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;HORSE&#39;</span><span class="p">,</span> <span class="s1">&#39;DOG&#39;</span><span class="p">,</span> <span class="s1">&#39;CAT&#39;</span><span class="p">]</span>
 
-<span class="c1"># create egg</span>
-<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">presented_words</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">recalled_words</span><span class="p">)</span>
+<span class="n">next_features</span> <span class="o">=</span> <span class="p">[{</span>
+                    <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;size&#39;</span> <span class="p">:</span> <span class="s1">&#39;bigger&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;starting letter&#39;</span> <span class="p">:</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;length&#39;</span> <span class="p">:</span> <span class="mi">3</span>
+                 <span class="p">},</span>
+                 <span class="p">{</span>
+                    <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;size&#39;</span> <span class="p">:</span> <span class="s1">&#39;bigger&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;starting letter&#39;</span> <span class="p">:</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;length&#39;</span> <span class="p">:</span> <span class="mi">3</span>
+                 <span class="p">},</span>
+                 <span class="p">{</span>
+                    <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;size&#39;</span> <span class="p">:</span> <span class="s1">&#39;smaller&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;starting letter&#39;</span> <span class="p">:</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;length&#39;</span> <span class="p">:</span> <span class="mi">4</span>
+                 <span class="p">},</span>
+                 <span class="p">{</span>
+                    <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="s1">&#39;animal&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;size&#39;</span> <span class="p">:</span> <span class="s1">&#39;bigger&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;starting letter&#39;</span> <span class="p">:</span> <span class="s1">&#39;H&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;length&#39;</span> <span class="p">:</span> <span class="mi">5</span>
+                 <span class="p">}</span>
+<span class="p">]</span>
+<span class="n">dist_funcs</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="s1">&#39;lambda a, b: int(a!=b)&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;size&#39;</span> <span class="p">:</span> <span class="s1">&#39;lambda a, b: int(a!=b)&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;starting letter&#39;</span> <span class="p">:</span> <span class="s1">&#39;lambda a, b: int(a!=b)&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;length&#39;</span> <span class="p">:</span> <span class="s1">&#39;lambda a, b: np.linalg.norm(np.subtract(a,b))&#39;</span>
+<span class="p">}</span>
+<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="p">[</span><span class="n">next_presented</span><span class="p">],</span> <span class="n">rec</span><span class="o">=</span><span class="p">[</span><span class="n">next_recalled</span><span class="p">],</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="n">next_features</span><span class="p">],</span> <span class="n">dist_funcs</span><span class="o">=</span><span class="n">dist_funcs</span><span class="p">)</span>
+
+<span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-create-egg-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/create_egg.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">create_egg.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/create_egg.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">create_egg.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -163,7 +198,7 @@ words/stimuli that were recalled by the subject.</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

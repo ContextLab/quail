@@ -113,7 +113,11 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="plot-memory-fingerprint">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-fingerprint-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="plot-memory-fingerprint">
 <span id="sphx-glr-auto-examples-plot-fingerprint-py"></span><h1>Plot memory fingerprint<a class="headerlink" href="#plot-memory-fingerprint" title="Permalink to this headline">¶</a></h1>
 <p>This example plots a fingerprint.  Briefly, a fingerprint
 can be described as a summary of how a subject organizes information with
@@ -121,7 +125,7 @@ respect to the multiple features of the stimuli.  In addition to presentation
 and recall data, a features object is passed to the Egg class.  It is comprised
 of a dictionary for each presented stimulus that contains feature dimensions and
 values for each stimulus.</p>
-<img alt="../_images/sphx_glr_plot_fingerprint_001.png" class="align-center" src="../_images/sphx_glr_plot_fingerprint_001.png" />
+<img alt="../_images/sphx_glr_plot_fingerprint_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_fingerprint_001.png" />
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Code source: Andrew Heusser</span>
 <span class="c1"># License: MIT</span>
 
@@ -129,23 +133,20 @@ values for each stimulus.</p>
 <span class="kn">import</span> <span class="nn">quail</span>
 
 <span class="c1">#load data</span>
-<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load_example_data</span><span class="p">()</span>
+<span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
 
-<span class="c1"># analysis</span>
-<span class="n">analyzed_data</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
-
-<span class="c1"># plot</span>
-<span class="n">quail</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">analyzed_data</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Memory Fingerprint&#39;</span><span class="p">)</span>
+<span class="c1"># analyze and plot</span>
+<span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;temporal&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Memory Fingerprint&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.340 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  24.495 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-fingerprint-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_fingerprint.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_fingerprint.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_fingerprint.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_fingerprint.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -168,7 +169,7 @@ values for each stimulus.</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>
