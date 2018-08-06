@@ -19,8 +19,7 @@ install:
 - conda create -q -n testenv python=$TRAVIS_PYTHON_VERSION pip pytest numpy pandas
   scipy matplotlib seaborn scikit-learn
 - source activate testenv
-- pip install -r requirements.txt
-- pip install -e . [speech-decoding, efficient-learning]
+- pip install . [speech-decoding,efficient-learning]
 script: py.test
 notifications:
   slack:
