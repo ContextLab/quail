@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quail.load &#8212; quail 0.1.0 documentation</title>
+    <title>quail.load &#8212; quail 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1.0',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           quail</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -112,21 +112,126 @@
       
   <h1>Source code for quail.load</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">zip</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">str</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">csv</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">izip_longest</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">.egg</span> <span class="k">import</span> <span class="n">Egg</span>
-<span class="kn">import</span> <span class="nn">dill</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">deepdish</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="kn">from</span> <span class="nn">.egg</span> <span class="k">import</span> <span class="n">Egg</span><span class="p">,</span> <span class="n">FriedEgg</span>
+<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">parse_egg</span><span class="p">,</span> <span class="n">stack_eggs</span>
 
-<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">dbpath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">recpath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_subs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wordpool</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="k">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">Table</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads eggs, fried eggs ands example data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        Location of file</span>
+
+<span class="sd">    update : bool</span>
+<span class="sd">        If true, updates egg to latest format</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : quail.Egg or quail.FriedEgg</span>
+<span class="sd">        Data loaded from disk</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">filepath</span> <span class="o">==</span> <span class="s1">&#39;automatic&#39;</span> <span class="ow">or</span> <span class="n">filepath</span> <span class="o">==</span> <span class="s1">&#39;example&#39;</span><span class="p">:</span>
+        <span class="n">fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/automatic.egg&#39;</span>
+        <span class="k">return</span> <span class="n">load_egg</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">filepath</span> <span class="o">==</span> <span class="s1">&#39;manual&#39;</span><span class="p">:</span>
+        <span class="n">fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/manual.egg&#39;</span>
+        <span class="k">return</span> <span class="n">load_egg</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">filepath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;egg&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">load_egg</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="n">update</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">filepath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;fegg&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">load_fegg</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Could not load file.&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">load_fegg</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads pickled egg</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        Location of pickled egg</span>
+
+<span class="sd">    update : bool</span>
+<span class="sd">        If true, updates egg to latest format</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    egg : Egg data object</span>
+<span class="sd">        A loaded unpickled egg</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">egg</span> <span class="o">=</span> <span class="n">FriedEgg</span><span class="p">(</span><span class="o">**</span><span class="n">dd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="c1"># if error, try loading old format</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">egg</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">egg</span><span class="o">.</span><span class="n">crack</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">egg</span>
+
+<div class="viewcode-block" id="load_egg"><a class="viewcode-back" href="../../quail.load_egg.html#quail.load_egg">[docs]</a><span class="k">def</span> <span class="nf">load_egg</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads pickled egg</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        Location of pickled egg</span>
+
+<span class="sd">    update : bool</span>
+<span class="sd">        If true, updates egg to latest format</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ----------</span>
+<span class="sd">    egg : Egg data object</span>
+<span class="sd">        A loaded unpickled egg</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">egg</span> <span class="o">=</span> <span class="n">Egg</span><span class="p">(</span><span class="o">**</span><span class="n">dd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># if error, try loading old format</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">egg</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">egg</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">old_meta</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">meta</span>
+            <span class="n">egg</span><span class="o">.</span><span class="n">crack</span><span class="p">()</span>
+            <span class="n">egg</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">old_meta</span>
+            <span class="k">return</span> <span class="n">egg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">egg</span><span class="o">.</span><span class="n">crack</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">egg</span></div>
+
+<span class="k">def</span> <span class="nf">loadEL</span><span class="p">(</span><span class="n">dbpath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">recpath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_subs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wordpool</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groupby</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">experiments</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Function that loads sql files generated by autoFR Experiment</span>
@@ -191,7 +296,7 @@
         <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;trialdata&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">part</span><span class="p">]</span>
 
         <span class="c1"># filter out fields that we dont want using isNotNumber function</span>
-        <span class="n">filtered_data</span> <span class="o">=</span> <span class="p">[{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">part</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">isNotNumber</span><span class="p">(</span><span class="n">k</span><span class="p">)}</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="n">filtered_data</span> <span class="o">=</span> <span class="p">[{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="k">if</span> <span class="n">isNotNumber</span><span class="p">(</span><span class="n">k</span><span class="p">)}</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 
         <span class="c1"># Put all subjects&#39; trial data into a dataframe object from the</span>
         <span class="c1"># &#39;pandas&#39; python library: one option among many for analysis</span>
@@ -231,7 +336,8 @@
         <span class="n">indexes</span><span class="o">=</span><span class="p">[]</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;responses&#39;</span><span class="p">])[</span><span class="s1">&#39;Q1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;kirsten&#39;</span><span class="p">,</span><span class="s1">&#39;allison&#39;</span><span class="p">,</span><span class="s1">&#39;marisol&#39;</span><span class="p">,</span><span class="s1">&#39;maddy&#39;</span><span class="p">,</span><span class="s1">&#39;campbell&#39;</span><span class="p">,</span> <span class="s1">&#39;campbell field&#39;</span><span class="p">,</span> <span class="s1">&#39;kirsten</span><span class="se">\\</span><span class="s1">nkirsten&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;responses&#39;</span><span class="p">])[</span><span class="s1">&#39;Q1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;kirsten&#39;</span><span class="p">,</span><span class="s1">&#39;allison&#39;</span><span class="p">,</span><span class="s1">&#39;allison</span><span class="se">\n</span><span class="s1">allison&#39;</span><span class="p">,</span><span class="s1">&#39;marisol&#39;</span><span class="p">,</span> <span class="s1">&#39;marisol &#39;</span><span class="p">,</span><span class="s1">&#39;marisiol&#39;</span><span class="p">,</span> <span class="s1">&#39;maddy&#39;</span><span class="p">,</span><span class="s1">&#39;campbell&#39;</span><span class="p">,</span> <span class="s1">&#39;campbell field&#39;</span><span class="p">,</span> <span class="s1">&#39;kirsten</span><span class="se">\n</span><span class="s1">kirsten&#39;</span><span class="p">,</span> <span class="s1">&#39;emily&#39;</span><span class="p">,</span> <span class="s1">&#39;bryan&#39;</span><span class="p">,</span> <span class="s1">&#39;armando&#39;</span><span class="p">,</span> <span class="s1">&#39;armando ortiz&#39;</span><span class="p">,</span>
+                                                                      <span class="s1">&#39;maddy/lucy&#39;</span><span class="p">,</span><span class="s1">&#39;paxton&#39;</span><span class="p">,</span> <span class="s1">&#39;lucy&#39;</span><span class="p">,</span><span class="s1">&#39;campbell</span><span class="se">\n</span><span class="s1">campbell&#39;</span><span class="p">,</span><span class="s1">&#39;madison&#39;</span><span class="p">,</span><span class="s1">&#39;darya&#39;</span><span class="p">,</span><span class="s1">&#39;rachael&#39;</span><span class="p">]:</span>
                     <span class="n">delete</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">delete</span> <span class="o">=</span> <span class="kc">True</span>
@@ -327,16 +433,31 @@
         <span class="n">recalledWords</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">16</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">recpath</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.wav.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
-                <span class="n">spamreader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">recpath</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.wav.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+                <span class="n">spamreader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">recpath</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.wav.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
-                    <span class="n">spamreader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
+                    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">recpath</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.wav.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+                    <span class="n">spamreader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
                 <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">spamreader</span><span class="p">:</span>
-                <span class="n">recalledWords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">words</span><span class="o">=</span><span class="p">[]</span>
+                <span class="n">altformat</span><span class="o">=</span><span class="kc">True</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">spamreader</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
+                        <span class="n">recalledWords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+                        <span class="n">altformat</span><span class="o">=</span><span class="kc">False</span>
+                        <span class="k">break</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="k">pass</span>
+                <span class="k">if</span> <span class="n">altformat</span><span class="p">:</span>
+                    <span class="n">recalledWords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;couldnt process &#39;</span><span class="o">+</span> <span class="n">recpath</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">subid</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.wav.txt&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">recalledWords</span>
 
     <span class="c1"># this function computes accuracy for a series of lists</span>
@@ -377,7 +498,7 @@
 
     <span class="c1"># add custom filters</span>
     <span class="k">if</span> <span class="n">filters</span><span class="p">:</span>
-        <span class="n">filter_func</span> <span class="o">=</span> <span class="p">[</span><span class="n">adaptive_filter</span><span class="p">,</span> <span class="n">experimenter_filter</span><span class="p">,</span> <span class="n">experiments_filter</span><span class="p">]</span> <span class="o">+</span> <span class="n">filters</span>
+        <span class="n">filter_func</span> <span class="o">=</span> <span class="p">[</span><span class="n">adaptive_filter</span><span class="p">,</span> <span class="n">experimeter_filter</span><span class="p">,</span> <span class="n">experiments_filter</span><span class="p">]</span> <span class="o">+</span> <span class="n">filters</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">filter_func</span> <span class="o">=</span> <span class="p">[</span><span class="n">adaptive_filter</span><span class="p">,</span> <span class="n">experimenter_filter</span><span class="p">,</span> <span class="n">experiments_filter</span><span class="p">]</span>
 
@@ -453,6 +574,51 @@
 
     <span class="n">eggs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">ipres</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="n">irec</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">ifeatures</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ids&#39;</span> <span class="p">:</span> <span class="n">isub</span><span class="p">})</span> <span class="k">for</span> <span class="n">ipres</span><span class="p">,</span><span class="n">irec</span><span class="p">,</span><span class="n">ifeatures</span><span class="p">,</span><span class="n">isub</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres</span><span class="p">,</span> <span class="n">rec</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">subs</span><span class="p">)]</span>
 
+    <span class="c1"># map feature dictionaries in pres df to rec df</span>
+    <span class="k">def</span> <span class="nf">checkword</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">stim_dict</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">x</span>
+
+    <span class="c1"># convert utf-8 bytes type to string</span>
+    <span class="k">def</span> <span class="nf">update_types</span><span class="p">(</span><span class="n">egg</span><span class="p">):</span>
+        <span class="n">featlist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">def</span> <span class="nf">update1df</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">n_subjects</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">liszt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">n_lists</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">liszt</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())):</span>
+                        <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">featlist</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">liszt</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">item</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">liszt</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">item</span><span class="p">][</span><span class="n">feat</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">bytes_</span><span class="p">):</span>
+                                    <span class="k">try</span><span class="p">:</span>
+                                        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">liszt</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">item</span><span class="p">][</span><span class="n">feat</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">liszt</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">item</span><span class="p">][</span><span class="n">feat</span><span class="p">],</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+                                    <span class="k">except</span><span class="p">:</span>
+                                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Subject &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, list &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">liszt</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, item &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, feature &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">feat</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: Could not convert type &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">liszt</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="n">item</span><span class="p">][</span><span class="n">feat</span><span class="p">]))</span> <span class="o">+</span> <span class="s2">&quot; to string.&quot;</span><span class="p">)</span>
+        <span class="n">update1df</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">pres</span><span class="p">)</span>
+        <span class="n">update1df</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">rec</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">egg</span> <span class="ow">in</span> <span class="n">eggs</span><span class="p">:</span>
+        <span class="n">update_types</span><span class="p">(</span><span class="n">egg</span><span class="p">)</span>
+        <span class="n">old_meta</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">meta</span>
+        <span class="n">temp_eggs</span> <span class="o">=</span> <span class="p">[</span><span class="n">egg</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">n_subjects</span><span class="p">):</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">crack</span><span class="p">(</span><span class="n">subjects</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">stim</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+            <span class="n">stim_dict</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">])</span> <span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stim</span><span class="p">}</span>
+
+            <span class="n">e</span><span class="o">.</span><span class="n">rec</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">checkword</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+            <span class="n">temp_eggs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="n">edited_egg</span> <span class="o">=</span> <span class="n">stack_eggs</span><span class="p">(</span><span class="n">temp_eggs</span><span class="p">)</span>
+        <span class="n">mapped_egg</span> <span class="o">=</span> <span class="n">edited_egg</span><span class="o">.</span><span class="n">crack</span><span class="p">(</span><span class="n">subjects</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">n_subjects</span><span class="p">,</span><span class="n">egg</span><span class="o">.</span><span class="n">n_subjects</span><span class="o">*</span><span class="mi">2</span><span class="p">)])</span>
+        <span class="n">mapped_egg</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">old_meta</span>
+        <span class="n">eggs</span><span class="p">[</span><span class="n">eggs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">egg</span><span class="p">)]</span> <span class="o">=</span> <span class="n">mapped_egg</span>
+
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">eggs</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">eggs</span>
     <span class="k">else</span><span class="p">:</span>
@@ -483,10 +649,16 @@
     <span class="k">assert</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;automatic&#39;</span><span class="p">,</span> <span class="s1">&#39;manual&#39;</span><span class="p">],</span> <span class="s2">&quot;Dataset can only be automatic or manual&quot;</span>
 
     <span class="c1"># open pickled egg</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/&#39;</span> <span class="o">+</span> <span class="n">dataset</span> <span class="o">+</span> <span class="s1">&#39;.egg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-        <span class="n">egg</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">egg</span></div>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/&#39;</span> <span class="o">+</span> <span class="n">dataset</span> <span class="o">+</span> <span class="s1">&#39;.egg&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="n">egg</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/&#39;</span> <span class="o">+</span> <span class="n">dataset</span> <span class="o">+</span> <span class="s1">&#39;.egg&#39;</span><span class="p">)</span>
+        <span class="n">egg</span> <span class="o">=</span> <span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;pres&#39;</span><span class="p">],</span> <span class="n">rec</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;rec&#39;</span><span class="p">],</span> <span class="n">dist_funcs</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;dist_funcs&#39;</span><span class="p">],</span>
+                  <span class="n">subjgroup</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;subjgroup&#39;</span><span class="p">],</span> <span class="n">subjname</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;subjname&#39;</span><span class="p">],</span>
+                  <span class="n">listgroup</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;listgroup&#39;</span><span class="p">],</span> <span class="n">listname</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;listname&#39;</span><span class="p">],</span>
+                  <span class="n">date_created</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;date_created&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">egg</span><span class="o">.</span><span class="n">crack</span><span class="p">()</span></div>
 </pre></div>
 
     </div>
@@ -504,7 +676,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

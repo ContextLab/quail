@@ -617,26 +617,26 @@ first and second half of the experiment:
       <tbody>
         <tr>
           <th rowspan="2" valign="top">0</th>
-          <th>Second Half</th>
-          <td>0.296875</td>
-        </tr>
-        <tr>
           <th>First Half</th>
           <td>0.437500</td>
         </tr>
         <tr>
-          <th rowspan="2" valign="top">1</th>
           <th>Second Half</th>
-          <td>0.656250</td>
+          <td>0.296875</td>
         </tr>
         <tr>
+          <th rowspan="2" valign="top">1</th>
           <th>First Half</th>
           <td>0.546875</td>
         </tr>
         <tr>
-          <th>2</th>
           <th>Second Half</th>
-          <td>0.750000</td>
+          <td>0.656250</td>
+        </tr>
+        <tr>
+          <th>2</th>
+          <th>First Half</th>
+          <td>0.734375</td>
         </tr>
       </tbody>
     </table>
@@ -656,7 +656,7 @@ like so:
 
 .. parsed-literal::
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x11a40f710>
+    <matplotlib.axes._subplots.AxesSubplot at 0x115714710>
 
 
 
@@ -861,7 +861,7 @@ analysis function to the plot function:
 
 .. parsed-literal::
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x11a44f2e8>
+    <matplotlib.axes._subplots.AxesSubplot at 0x115758240>
 
 
 
@@ -1063,7 +1063,7 @@ This df is set up just like the serial position curve. To plot:
 
 .. parsed-literal::
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x11a4c9ef0>
+    <matplotlib.axes._subplots.AxesSubplot at 0x1158b5160>
 
 
 
@@ -1088,7 +1088,7 @@ it: call the ``analyze`` method with the ``analysis`` kwarg set to
 
 .. parsed-literal::
 
-    /Users/andrewheusser/Documents/github/quail/quail/analysis/lagcrp.py:129: RuntimeWarning: Mean of empty slice
+    /Users/andrewheusser/Documents/github/quail_contextlab/quail/analysis/lagcrp.py:129: RuntimeWarning: Mean of empty slice
       return np.nanmean(lagcrp, axis=0)
 
 
@@ -1309,7 +1309,7 @@ view the results:
 
 .. parsed-literal::
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x11a5f6da0>
+    <matplotlib.axes._subplots.AxesSubplot at 0x115924630>
 
 
 
@@ -1336,7 +1336,7 @@ according to temporal proximity during encoding.
 
 .. parsed-literal::
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x11a6a7550>
+    <matplotlib.axes._subplots.AxesSubplot at 0x115a86da0>
 
 
 
@@ -1515,7 +1515,7 @@ plot, simply pass the result to the plot function:
 
 .. parsed-literal::
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x11a77e278>
+    <matplotlib.axes._subplots.AxesSubplot at 0x115aae438>
 
 
 

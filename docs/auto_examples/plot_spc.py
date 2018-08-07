@@ -18,8 +18,5 @@ import quail
 #load data
 egg = quail.load_example_data()
 
-#analysis
-analyzed_data = quail.analyze(egg, analysis='spc', listgroup=['average']*8)
-
-#plot
-quail.plot(analyzed_data, title='Serial Position Curve')
+# analyze and plot
+egg.analyze('spc', listgroup=['average']*8).plot(title='Serial Position Curve')

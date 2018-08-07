@@ -4,22 +4,30 @@ Advanced plotting
 
 This tutorial will go over more advanced plotting functionality. Before
 reading this, you should take a look at the basic analysis and plotting
-tutorial. First, we'll load in some example data. This dataset is an
+tutorial. First, we’ll load in some example data. This dataset is an
 ``egg`` comprised of 30 subjects, who each performed 8 study/test blocks
 of 16 words each.
 
-.. code:: ipython2
+.. code:: ipython3
 
     import quail
+    %matplotlib inline
     egg = quail.load_example_data()
+
+
+.. parsed-literal::
+
+    /usr/local/lib/python3.6/site-packages/pydub/utils.py:165: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+
 
 Accuracy
 --------
 
-.. code:: ipython2
+.. code:: ipython3
 
-    accuracy = quail.analyze(egg, analysis='accuracy')
-    accuracy.head()
+    accuracy = egg.analyze('accuracy')
+    accuracy.get_data().head()
 
 
 
@@ -27,6 +35,19 @@ Accuracy
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -44,23 +65,23 @@ Accuracy
         <tr>
           <th rowspan="5" valign="top">0</th>
           <th>0</th>
-          <td>0.500</td>
+          <td>0.5000</td>
         </tr>
         <tr>
           <th>1</th>
-          <td>0.500</td>
+          <td>0.5625</td>
         </tr>
         <tr>
           <th>2</th>
-          <td>0.250</td>
+          <td>0.1250</td>
         </tr>
         <tr>
           <th>3</th>
-          <td>0.375</td>
+          <td>0.5625</td>
         </tr>
         <tr>
           <th>4</th>
-          <td>0.625</td>
+          <td>0.3125</td>
         </tr>
       </tbody>
     </table>
@@ -72,9 +93,9 @@ By default, the ``analyze`` function will perform an analysis on each
 list separately, so when you plot the result, it will plot a separate
 bar for each list, averaged over all subjects:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    ax = quail.plot(accuracy)
+    ax = accuracy.plot()
 
 
 
@@ -85,9 +106,9 @@ We can plot the accuracy for each subject by setting
 ``plot_type='subject'``, and we can change the name of the subject
 grouping variable by setting the ``subjname`` kwarg:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    ax = quail.plot(accuracy, plot_type='subject', subjname='Subject Number')
+    ax = accuracy.plot(plot_type='subject', subjname='Subject Number')
 
 
 
@@ -97,9 +118,9 @@ grouping variable by setting the ``subjname`` kwarg:
 Furthermore, we can add a title using the ``title`` kwarg, and change
 the y axis limits using ``ylim``:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    ax = quail.plot(accuracy, plot_type='subject', subjname='Subject Number',
+    ax = accuracy.plot(plot_type='subject', subjname='Subject Number',
                     title='Accuracy by Subject', ylim=[0,1])
 
 
@@ -110,11 +131,11 @@ the y axis limits using ``ylim``:
 In addition to bar plots, accuracy can be plotted as a violin or swarm
 plot by using the ``plot_style`` kwarg:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    ax = quail.plot(accuracy, plot_type='subject', subjname='Subject Number',
+    ax = accuracy.plot(plot_type='subject', subjname='Subject Number',
                     title='Accuracy by Subject', ylim=[0,1], plot_style='violin')
-    ax = quail.plot(accuracy, plot_type='subject', subjname='Subject Number',
+    ax = accuracy.plot(plot_type='subject', subjname='Subject Number',
                     title='Accuracy by Subject', ylim=[0,1], plot_style='swarm')
 
 
@@ -122,19 +143,15 @@ plot by using the ``plot_style`` kwarg:
 .. image:: advanced_plotting_files/advanced_plotting_11_0.png
 
 
-
-.. image:: advanced_plotting_files/advanced_plotting_11_1.png
-
-
 We can also group the subjects. This is useful in cases where you might
 want to compare analysis results across multiple experiments. To do this
 we will reanalyze the data, averaging over lists within a subject, and
 then use the ``subjgroup`` kwarg to group the subjects into two sets:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    accuracy = quail.analyze(egg, analysis='accuracy', listgroup=['average']*8)
-    accuracy.head()
+    accuracy = egg.analyze('accuracy', listgroup=['average']*8)
+    accuracy.get_data().head()
 
 
 
@@ -142,6 +159,19 @@ then use the ``subjgroup`` kwarg to group the subjects into two sets:
 .. raw:: html
 
     <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
     <table border="1" class="dataframe">
       <thead>
         <tr style="text-align: right;">
@@ -159,27 +189,27 @@ then use the ``subjgroup`` kwarg to group the subjects into two sets:
         <tr>
           <th>0</th>
           <th>average</th>
-          <td>0.476562</td>
+          <td>0.367188</td>
         </tr>
         <tr>
           <th>1</th>
           <th>average</th>
-          <td>0.960938</td>
+          <td>0.601562</td>
         </tr>
         <tr>
           <th>2</th>
           <th>average</th>
-          <td>0.546875</td>
+          <td>0.742188</td>
         </tr>
         <tr>
           <th>3</th>
           <th>average</th>
-          <td>0.757812</td>
+          <td>0.546875</td>
         </tr>
         <tr>
           <th>4</th>
           <th>average</th>
-          <td>0.406250</td>
+          <td>0.867188</td>
         </tr>
       </tbody>
     </table>
@@ -187,9 +217,9 @@ then use the ``subjgroup`` kwarg to group the subjects into two sets:
 
 
 
-.. code:: ipython2
+.. code:: ipython3
 
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15)
+    ax = accuracy.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15)
 
 
 
@@ -201,9 +231,9 @@ the List column of the df to group the data. To group according to
 subject group, we must tell the plot function to plot by ``subjgroup``.
 This can be achieved by setting ``plot_type='subject'``:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='subject')
+    ax = accuracy.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='subject')
 
 
 
@@ -215,10 +245,10 @@ lists), you can plot the interaction by setting ``plot_type='split'``.
 This will create a plot with respect to both the ``subjgroup`` and
 ``listgroup``:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    accuracy = quail.analyze(egg, analysis='accuracy', listgroup=['First 4 Lists']*4+['Second 4 Lists']*4)
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split')
+    accuracy = egg.analyze('accuracy', listgroup=['First 4 Lists']*4+['Second 4 Lists']*4)
+    ax = accuracy.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split')
 
 
 
@@ -227,18 +257,14 @@ This will create a plot with respect to both the ``subjgroup`` and
 
 Like above, these plots can also be violin or swarm plots:
 
-.. code:: ipython2
+.. code:: ipython3
 
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split', plot_style='violin')
-    ax = quail.plot(accuracy, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split', plot_style='swarm')
+    ax = accuracy.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split', plot_style='violin')
+    ax = accuracy.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split', plot_style='swarm')
 
 
 
 .. image:: advanced_plotting_files/advanced_plotting_20_0.png
-
-
-
-.. image:: advanced_plotting_files/advanced_plotting_20_1.png
 
 
 Memory fingerprints
@@ -249,19 +275,15 @@ accuracy plots, with the except that ``plot_type='split'`` only works
 for the accuracy plots, and the default ``plot_style`` is a violinplot,
 instead of a barplot.
 
-.. code:: ipython2
+.. code:: ipython3
 
-    fingerprint = quail.analyze(egg, analysis='fingerprint', listgroup=['First 4 Lists']*4+['Second 4 Lists']*4)
-    ax = quail.plot(fingerprint, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='subject')
-    ax = quail.plot(fingerprint, subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='list')
+    fingerprint = egg.analyze('fingerprint', listgroup=['First 4 Lists']*4+['Second 4 Lists']*4)
+    ax = fingerprint.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='subject')
+    ax = fingerprint.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='list')
 
 
 
 .. image:: advanced_plotting_files/advanced_plotting_23_0.png
-
-
-
-.. image:: advanced_plotting_files/advanced_plotting_23_1.png
 
 
 Other analyses
@@ -274,60 +296,56 @@ kwarg.
 Plot by list grouping
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: ipython2
+.. code:: ipython3
 
     listgroup = ['First 4 Lists']*4+['Second 4 Lists']*4
     plot_type = 'list'
     
-    spc = quail.analyze(egg, analysis='spc', listgroup=listgroup)
-    ax = quail.plot(spc, plot_type=plot_type)
+    spc = egg.analyze('spc', listgroup=listgroup)
+    ax = spc.plot(plot_type=plot_type, ylim=[0, 1])
     
-    pfr = quail.analyze(egg, analysis='pfr', listgroup=listgroup)
-    ax = quail.plot(pfr, plot_type=plot_type)
+    pfr = egg.analyze('pfr', listgroup=listgroup)
+    ax = pfr.plot(plot_type=plot_type)
     
-    lagcrp = quail.analyze(egg, analysis='lagcrp', listgroup=listgroup)
-    ax = quail.plot(lagcrp, plot_type=plot_type)
+    lagcrp = egg.analyze('lagcrp', listgroup=listgroup)
+    ax = lagcrp.plot(plot_type=plot_type)
 
 
+.. parsed-literal::
 
-.. image:: advanced_plotting_files/advanced_plotting_26_0.png
+    /Users/andrewheusser/Documents/github/quail_contextlab/quail/analysis/lagcrp.py:129: RuntimeWarning: Mean of empty slice
+      return np.nanmean(lagcrp, axis=0)
 
 
 
 .. image:: advanced_plotting_files/advanced_plotting_26_1.png
 
 
-
-.. image:: advanced_plotting_files/advanced_plotting_26_2.png
-
-
 Plot by subject grouping
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: ipython2
+.. code:: ipython3
 
     listgroup=['average']*8
     subjgroup = ['Experiment 1']*15+['Experiment 2']*15
     plot_type = 'subject'
     
-    spc = quail.analyze(egg, analysis='spc', listgroup=listgroup)
-    ax = quail.plot(spc, subjgroup=subjgroup, plot_type=plot_type)
+    spc = egg.analyze('spc', listgroup=listgroup)
+    ax = spc.plot(subjgroup=subjgroup, plot_type=plot_type, ylim=[0,1])
     
-    pfr = quail.analyze(egg, analysis='pfr', listgroup=listgroup)
-    ax = quail.plot(pfr, subjgroup=subjgroup, plot_type=plot_type)
+    pfr = egg.analyze('pfr', listgroup=listgroup)
+    ax = pfr.plot(subjgroup=subjgroup, plot_type=plot_type)
     
-    lagcrp = quail.analyze(egg, analysis='lagcrp', listgroup=listgroup)
-    ax = quail.plot(lagcrp, subjgroup=subjgroup, plot_type=plot_type)
+    lagcrp = egg.analyze('lagcrp', listgroup=listgroup)
+    ax = lagcrp.plot(subjgroup=subjgroup, plot_type=plot_type)
 
 
+.. parsed-literal::
 
-.. image:: advanced_plotting_files/advanced_plotting_28_0.png
+    /Users/andrewheusser/Documents/github/quail_contextlab/quail/analysis/lagcrp.py:129: RuntimeWarning: Mean of empty slice
+      return np.nanmean(lagcrp, axis=0)
 
 
 
 .. image:: advanced_plotting_files/advanced_plotting_28_1.png
-
-
-
-.. image:: advanced_plotting_files/advanced_plotting_28_2.png
 

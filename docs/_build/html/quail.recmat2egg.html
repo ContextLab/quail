@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quail.recmat2egg &#8212; quail 0.1.0 documentation</title>
+    <title>quail.recmat2egg &#8212; quail 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.0',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           quail</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -123,20 +123,21 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>recmat</strong> : list of lists (subs) of lists (encoding lists) of ints or 2D numpy array</p>
-<blockquote>
-<div><p>recall matrix representing serial positions of freely recalled words             e.g. [[[16, 15, 0, 2, 3, None, None...], [16, 4, 5, 6, 1, None, None...]]]</p>
-</div></blockquote>
-<p><strong>list_length</strong> : int</p>
-<blockquote>
-<div><p>The length of each list (e.g. 16)</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>recmat</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of lists (subs) of lists (encoding lists) of ints or 2D numpy array</span></dt>
+<dd><p class="first last">recall matrix representing serial positions of freely recalled words             e.g. [[[16, 15, 0, 2, 3, None, None...], [16, 4, 5, 6, 1, None, None...]]]</p>
+</dd>
+<dt><strong>list_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The length of each list (e.g. 16)</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>egg</strong> : Egg data object</p>
-<blockquote class="last">
-<div><p>egg data object computed from the recall matrix</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>egg</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Egg data object</span></dt>
+<dd><p class="first last">egg data object computed from the recall matrix</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -165,7 +166,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

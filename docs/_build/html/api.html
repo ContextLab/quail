@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API reference &#8212; quail 0.1.0 documentation</title>
+    <title>API reference &#8212; quail 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.0',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           quail</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -84,7 +84,10 @@
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
 <li><a class="reference internal" href="#">API reference</a><ul>
-<li><a class="reference internal" href="#egg-data-object">Egg data object</a></li>
+<li><a class="reference internal" href="#egg-class">Egg class</a></li>
+<li><a class="reference internal" href="#friedegg-class">FriedEgg class</a></li>
+<li><a class="reference internal" href="#fingerprint-class">Fingerprint class</a></li>
+<li><a class="reference internal" href="#optimal-presenter-class">Optimal Presenter class</a></li>
 <li><a class="reference internal" href="#load-example-data">Load example data</a></li>
 <li><a class="reference internal" href="#load-egg">Load egg</a></li>
 <li><a class="reference internal" href="#analyze">Analyze</a></li>
@@ -126,8 +129,8 @@
       
   <div class="section" id="api-reference">
 <span id="api-ref"></span><h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="egg-data-object">
-<span id="plot-api"></span><h2>Egg data object<a class="headerlink" href="#egg-data-object" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="egg-class">
+<span id="plot-api"></span><h2>Egg class<a class="headerlink" href="#egg-class" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
@@ -136,6 +139,48 @@
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="quail.Egg.html#quail.Egg" title="quail.Egg"><code class="xref py py-obj docutils literal"><span class="pre">quail.Egg</span></code></a>([pres,&nbsp;rec,&nbsp;features,&nbsp;dist_funcs,&nbsp;...])</td>
 <td>Data object for the quail package</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="friedegg-class">
+<h2>FriedEgg class<a class="headerlink" href="#friedegg-class" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="quail.FriedEgg.html#quail.FriedEgg" title="quail.FriedEgg"><code class="xref py py-obj docutils literal"><span class="pre">quail.FriedEgg</span></code></a>([data,&nbsp;analysis,&nbsp;...])</td>
+<td>Object containing results of a quail analyses</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="fingerprint-class">
+<h2>Fingerprint class<a class="headerlink" href="#fingerprint-class" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="quail.Fingerprint.html#quail.Fingerprint" title="quail.Fingerprint"><code class="xref py py-obj docutils literal"><span class="pre">quail.Fingerprint</span></code></a>([init,&nbsp;features,&nbsp;state,&nbsp;...])</td>
+<td>Class for the memory fingerprint</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="optimal-presenter-class">
+<h2>Optimal Presenter class<a class="headerlink" href="#optimal-presenter-class" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="quail.OptimalPresenter.html#quail.OptimalPresenter" title="quail.OptimalPresenter"><code class="xref py py-obj docutils literal"><span class="pre">quail.OptimalPresenter</span></code></a>([strategy,&nbsp;features,&nbsp;...])</td>
+<td>A class that reorders stimuli to optimize memory performance</td>
 </tr>
 </tbody>
 </table>
@@ -162,7 +207,7 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.load_egg.html#quail.load_egg" title="quail.load_egg"><code class="xref py py-obj docutils literal"><span class="pre">quail.load_egg</span></code></a>(filepath)</td>
+<tr class="row-odd"><td><a class="reference internal" href="quail.load_egg.html#quail.load_egg" title="quail.load_egg"><code class="xref py py-obj docutils literal"><span class="pre">quail.load_egg</span></code></a>(filepath[,&nbsp;update])</td>
 <td>Loads pickled egg</td>
 </tr>
 </tbody>
@@ -176,7 +221,7 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.analyze.html#quail.analyze" title="quail.analyze"><code class="xref py py-obj docutils literal"><span class="pre">quail.analyze</span></code></a>(data[,&nbsp;subjgroup,&nbsp;listgroup,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="quail.analyze.html#quail.analyze" title="quail.analyze"><code class="xref py py-obj docutils literal"><span class="pre">quail.analyze</span></code></a>(egg[,&nbsp;subjgroup,&nbsp;listgroup,&nbsp;...])</td>
 <td>General analysis function that groups data by subject/list number and performs analysis.</td>
 </tr>
 </tbody>
@@ -190,7 +235,7 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.plot.html#quail.plot" title="quail.plot"><code class="xref py py-obj docutils literal"><span class="pre">quail.plot</span></code></a>(data[,&nbsp;subjgroup,&nbsp;subjname,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="quail.plot.html#quail.plot" title="quail.plot"><code class="xref py py-obj docutils literal"><span class="pre">quail.plot</span></code></a>(results[,&nbsp;subjgroup,&nbsp;subjname,&nbsp;...])</td>
 <td>General plot function that groups data by subject/list number and performs analysis.</td>
 </tr>
 </tbody>
@@ -274,7 +319,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

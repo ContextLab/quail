@@ -15,7 +15,7 @@
 in Python. It is built on top of matplotlib and seaborn.  For sample Jupyter
 notebooks, click `here <https://github.com/ContextLab/quail-example-notebooks>`_
 and to read the paper, click
-`here <https://github.com/ContextLab/>`_.
+`here <http://joss.theoj.org/papers/3fb5123eb2538e06f6a25ded0a088b73>`_.
 
  Some key features of Quail are:
 

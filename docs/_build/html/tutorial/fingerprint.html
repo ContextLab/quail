@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Computing a memory fingerprint &#8212; quail 0.1.0 documentation</title>
+    <title>Computing a memory fingerprint &#8212; quail 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1.0',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           quail</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -115,31 +115,31 @@
       
   <div class="section" id="computing-a-memory-fingerprint">
 <h1>Computing a memory fingerprint<a class="headerlink" href="#computing-a-memory-fingerprint" title="Permalink to this headline">¶</a></h1>
-<p>A memory fingerprint can be defined as a subject&#8217;s tendency to cluster
+<p>A memory fingerprint can be defined as a subject’s tendency to cluster
 their recall responses with respect to more than one stimulus feature
-dimensions. What is a &#8220;stimulus feature dimension&#8221; you ask? It is simply
+dimensions. What is a “stimulus feature dimension” you ask? It is simply
 an attribute of the stimulus, such as its color, category, spatial
-location etc. Let&#8217;s walkthrough an example to gain a better intuition.</p>
-<p>Let&#8217;s imagine you were running a free recall experiment where subjects
+location etc. Let’s walkthrough an example to gain a better intuition.</p>
+<p>Let’s imagine you were running a free recall experiment where subjects
 were presented with lists of words that varied randomly over a number of
 distinct dimensions:</p>
 <p>In the figure above, the first word (dog) is: green in color, an animal,
-starts with the letter &#8216;d&#8217;, is large (bigger than a shoebox) and is
+starts with the letter ‘d’, is large (bigger than a shoebox) and is
 positioned left-center on the screen. The next word (cat) is similar
 along some dimensions, but different along others. For instance, cat and
 dog are both animals, but the words are presented in different colors,
 occupy different parts of the computer screen, etc. More generally, each
 word on this list is similar to others words along some dimensions, but
-different along other dimensions. Let&#8217;s imagine a subject started
+different along other dimensions. Let’s imagine a subject started
 recalling the list as follows:</p>
-<p>In this recall sequence, &#8220;dog&#8221; was recalled, followed by &#8220;cat&#8221;. For each
+<p>In this recall sequence, “dog” was recalled, followed by “cat”. For each
 recall transition, we can compute the similarity between the two stimuli
 along each feature dimension. For example, both words are in the animal
 category, so their similarity along that feature dimension would be
 high. In the color dimension, green (dog) and blue (cat) are somewhat
 similar colors, so these words are somewhat similar along this
-dimension. The figure below illustrates how we compute a &#8220;clustering
-score&#8221; for a given recall transition and feature dimension:</p>
+dimension. The figure below illustrates how we compute a “clustering
+score” for a given recall transition and feature dimension:</p>
 <p>For each recall transition and feature dimension (color in this
 example), we:</p>
 <ol class="arabic simple">
@@ -149,11 +149,11 @@ transitioned to</li>
 <li>Sort these similarity scores from lowest to highest</li>
 <li>Find the position of the second word of the recall transition pair</li>
 <li>Divide this by the number of possible transitions to derive a
-&#8220;percentile rank&#8221;</li>
+“percentile rank”</li>
 </ol>
 <p>This analysis is performed to each recall transition and feature
 dimension for a given list, and then the percentile ranks are averaged
-within feature to get a &#8220;memory fingerprint&#8221; for each list:</p>
+within feature to get a “memory fingerprint” for each list:</p>
 </div>
 
 
@@ -176,7 +176,7 @@ within feature to get a &#8220;memory fingerprint&#8221; for each list:</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>
