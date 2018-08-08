@@ -20,10 +20,7 @@ values for each stimulus.
 import quail
 
 #load data
-egg = quail.load_example_data()
+egg = quail.load('example')
 
-# analysis
-analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*8)
-
-# plot
-quail.plot(analyzed_data, title='Memory Fingerprint')
+# analyze and plot
+egg.analyze('fingerprint', listgroup=['average']*8, features=['temporal']).plot(title='Memory Fingerprint')

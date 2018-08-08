@@ -24,7 +24,7 @@ allow us to send the files to Google Speech. To set up:
 On a mac:
 ~~~~~~~~~
 
--  Make sure you have brew installed. If you don't, paste this into your
+-  Make sure you have brew installed. If you don’t, paste this into your
    terminal window:
 
 ``/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"``
@@ -50,25 +50,26 @@ comes out to ~$0.38 per subject. To set it up, follow these steps:
 
 2. Create a project.
 
--  Click "Select a project", and create a new one. You can have a single
-   project for all recall studies, or a separate project for each study.
-   Then, navigate to your new project.
+   -  Click “Select a project”, and create a new one. You can have a
+      single project for all recall studies, or a separate project for
+      each study. Then, navigate to your new project.
 
-4. Enable to Speech API.
+3. Enable to Speech API.
 
--  Click the "Dashboard" icon.
--  Click "Enable API"
--  Click "Speech API" which will be listed under "Google Cloud Machine
-   Learning".
--  Click "Enable".
+   -  Click the “Dashboard” icon.
+   -  Click “Enable API”
+   -  Click “Speech API” which will be listed under “Google Cloud
+      Machine Learning”.
+   -  Click “Enable”.
 
-5. Set up a service account.
+4. Set up a service account.
 
--  Click "Credentials".
--  Click "Create credentials" and select "Service account key".
--  Click "Service account" and select "new service account".
--  Name the account ("owner") and then select the role "Project->Owner".
--  Click "Create".
+   -  Click “Credentials”.
+   -  Click “Create credentials” and select “Service account key”.
+   -  Click “Service account” and select “new service account”.
+   -  Name the account (“owner”) and then select the role
+      “Project->Owner”.
+   -  Click “Create”.
 
 If you followed these steps, a JSON formatted API keyfile will be
 downloaded to your local computer. This file is your ticket to speech
@@ -77,29 +78,29 @@ basic example of how to use it:
 
 ::
 
-    #import
-    import quail
+   #import
+   import quail
 
-    # decode speech
-    recall_data = quail.decode_speech('../data/sample.wav', keypath='path/to/keyfile.JSON')
+   # decode speech
+   recall_data = quail.decode_speech('../data/sample.wav', keypath='path/to/keyfile.JSON')
 
-    # print results
-    print(recall_data)
+   # print results
+   print(recall_data)
 
 Super-user tip:
 ~~~~~~~~~~~~~~~
 
 The credentials can also be set up as an environmental variable. To do
-this, edit your .bash\_profile, adding the line:
+this, edit your .bash_profile, adding the line:
 
 ::
 
-    export GOOGLE_APPLICATION_CREDENTIALS='/path/to/keyfile.JSON'
+   export GOOGLE_APPLICATION_CREDENTIALS='/path/to/keyfile.JSON'
 
-You'll need to launch a fresh terminal instance and then the
+You’ll need to launch a fresh terminal instance and then the
 ``decode_speech`` function should work without the explicit keypath:
 
 ::
 
-    # decode speech
-    recall_data = quail.decode_speech('../data/sample.wav')
+   # decode speech
+   recall_data = quail.decode_speech('../data/sample.wav')

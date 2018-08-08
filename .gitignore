@@ -10,3 +10,4 @@ dist/*
 */__pycache__
 .pytest_cache/*
 venv/
+docs/_build

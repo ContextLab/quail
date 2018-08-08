@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quail.load_egg &#8212; quail 0.1.0 documentation</title>
+    <title>quail.load_egg &#8212; quail 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.0',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           quail</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -117,22 +117,27 @@
 <h1>quail.load_egg<a class="headerlink" href="#quail-load-egg" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="quail.load_egg">
-<code class="descclassname">quail.</code><code class="descname">load_egg</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/helpers.html#load_egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.load_egg" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">quail.</code><code class="descname">load_egg</code><span class="sig-paren">(</span><em>filepath</em>, <em>update=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/load.html#load_egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.load_egg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads pickled egg</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filepath</strong> : str</p>
-<blockquote>
-<div><p>Location of pickled egg</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filepath</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd><p class="first last">Location of pickled egg</p>
+</dd>
+<dt><strong>update</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">If true, updates egg to latest format</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>egg</strong> : Egg data object</p>
-<blockquote class="last">
-<div><p>A loaded unpickled egg</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>egg</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Egg data object</span></dt>
+<dd><p class="first last">A loaded unpickled egg</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -161,7 +166,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

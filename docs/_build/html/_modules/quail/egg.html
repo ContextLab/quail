@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>quail.egg &#8212; quail 0.1.0 documentation</title>
+    <title>quail.egg &#8212; quail 0.2.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1.0',
+        VERSION:     '0.2.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,7 +51,7 @@
         </button>
         <a class="navbar-brand" href="../../index.html">
           quail</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -112,15 +112,20 @@
       
   <h1>Source code for quail.egg</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">.analysis</span> <span class="k">import</span> <span class="n">recall_matrix</span>
-<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">list2pd</span>
-<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">default_dist_funcs</span>
-<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">crack_egg</span>
-<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">fill_missing</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">str</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">object</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">deepdish</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.analysis.recmat</span> <span class="k">import</span> <span class="n">recall_matrix</span>
+<span class="kn">from</span> <span class="nn">.analysis.analysis</span> <span class="k">import</span> <span class="n">analyze</span>
+<span class="kn">from</span> <span class="nn">.plot</span> <span class="k">import</span> <span class="n">plot</span>
+<span class="kn">from</span> <span class="nn">.helpers</span> <span class="k">import</span> <span class="n">list2pd</span><span class="p">,</span> <span class="n">default_dist_funcs</span><span class="p">,</span> <span class="n">crack_egg</span><span class="p">,</span> <span class="n">fill_missing</span><span class="p">,</span> <span class="n">merge_pres_feats</span><span class="p">,</span> <span class="n">df2list</span>
 
 <div class="viewcode-block" id="Egg"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg">[docs]</a><span class="k">class</span> <span class="nc">Egg</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -140,35 +145,42 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 
-<span class="sd">    pres : list (subjects) of lists (study lists) of lists (words) of strings</span>
-<span class="sd">        This is a nested list containing the presented words.  Internally, it will</span>
-<span class="sd">        be converted into a multi-index Pandas DataFrame. Each row represents</span>
-<span class="sd">        the presented words for a given list and each column represents a list.</span>
-<span class="sd">        The cells should be lowercase words. The index will be a multi-index,</span>
-<span class="sd">        where the first level reprensents the subject number and the second level</span>
-<span class="sd">        represents the list number.</span>
+<span class="sd">    pres : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.</span>
+<span class="sd">        This is a nested list containing the presented stimuli/stimulus features.</span>
+<span class="sd">        The outer list groups the data into subjects, the middle list groups the</span>
+<span class="sd">        data into experiments and the inner list groups the data into stimuli</span>
+<span class="sd">        presented together in one block (or list). Each item within the list can</span>
+<span class="sd">        be a string representing the stimulus or a dictionary representing the</span>
+<span class="sd">        stimuli and its features. If dictionaries are passed, identify the stimulus</span>
+<span class="sd">        name using the &#39;stimulus&#39; key and a string label. To represent additional</span>
+<span class="sd">        stimulus features, use any text (str) label as the key and a value of the</span>
+<span class="sd">        following types: string, int, float, list, array.</span>
 
-<span class="sd">    rec : list (subjects) of lists (study lists) of lists (words) of strings</span>
-<span class="sd">        This is a nested list containing the presented words.  Internally, it will</span>
-<span class="sd">        be converted into a multi-index Pandas DataFrame. Each row represents</span>
-<span class="sd">        the recalled words for a given list and each column represents a list.</span>
-<span class="sd">        Each row represents the recalled words for a given list and each column</span>
-<span class="sd">        represents a list. The cells should be lowercase words. The index will</span>
-<span class="sd">        be a multi-index, where the first level reprensents the subject number</span>
-<span class="sd">        and the second level represents the list number</span>
+<span class="sd">    rec : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.</span>
+<span class="sd">        This is a nested list containing the recalled stimuli/stimulus features.</span>
+<span class="sd">        The outer list groups the data into subjects, the middle list groups the</span>
+<span class="sd">        data into experiments and the inner list groups the data into stimuli</span>
+<span class="sd">        presented together in one block (or list). Each item within the list can</span>
+<span class="sd">        be a string representing the stimulus or a dictionary representing the</span>
+<span class="sd">        stimuli and its features. If dictionaries are passed, identify the stimulus</span>
+<span class="sd">        name using the &#39;stimulus&#39; key and a string label. To represent additional</span>
+<span class="sd">        stimulus features, use any text (str) label as the key and a value of the</span>
+<span class="sd">        following types: string, int, float, list, array.</span>
 
-<span class="sd">    features : list (subjects) of lists (study lists) of lists (words) of strings</span>
-<span class="sd">        This is a nested list containing the presented words.  Internally, it will</span>
-<span class="sd">        be converted into a multi-index Pandas DataFrame. Each row represents the</span>
-<span class="sd">        presented words for a given list and each column represents a list. The</span>
-<span class="sd">        cells should be a dictionary of features, where the keys are the name of</span>
-<span class="sd">        the features, and the values are the feature values. The index will be a</span>
-<span class="sd">        multi-index, where the first level represents the subject number and the</span>
-<span class="sd">        second level represents the list number.</span>
+<span class="sd">    features : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.</span>
+<span class="sd">        This is DEPRECATED, but left in for legacy support. This is a nested list</span>
+<span class="sd">        containing the stimuli/stimulus features. The outer list groups the data</span>
+<span class="sd">        into subjects, the middle list groups the data into experiments and the</span>
+<span class="sd">        inner list groups the data into stimuli presented together in one block</span>
+<span class="sd">        (or list). Each item within the list should be a dictionary representing</span>
+<span class="sd">        stimulus features. Each dictionary should contain a text (str) label as</span>
+<span class="sd">        the key and a value of the following types: string, int, float, list, array.</span>
 
 <span class="sd">    dist_funcs : dict (optional)</span>
-<span class="sd">        A dictionary of custom distance functions for stimulus features.  Each key should be the name of a feature</span>
-<span class="sd">        and each value should be an inline distance function (e.g. `dist_funcs[&#39;feature_n&#39;] = lambda a, b: abs(a-b)`)</span>
+<span class="sd">        A dictionary of custom distance functions for stimulus features. Each</span>
+<span class="sd">        key should be the name of a feature and each value should be a string</span>
+<span class="sd">        representation of an inline distance function</span>
+<span class="sd">        (e.g. `dist_funcs[&#39;feature_n&#39;] = &#39;lambda a, b: abs(a-b)&#39;&#39;`)</span>
 
 <span class="sd">    meta : dict (optional)</span>
 <span class="sd">        Meta data about the study (i.e. version, description, date, etc.) can be saved here.</span>
@@ -187,8 +199,38 @@
 <span class="sd">    listname : string (optional)</span>
 <span class="sd">        Name of the list grouping variable. Default is &#39;List&#39;.</span>
 
+<span class="sd">    recmat : list (subjects) of lists (experiment) of lists (list/block) of ints.</span>
+<span class="sd">        An egg can be optionally created directly from recall matrices. A recall</span>
+<span class="sd">        matrix specifies sequences by listing out there indices in the order they</span>
+<span class="sd">        were recalled (e.g. [4, 2, 1, None, None]).</span>
+
+<span class="sd">    list_length : int</span>
+<span class="sd">        The length of the presented lists.  Used to create an egg from a recall</span>
+<span class="sd">        matrix (optional).  If list_length is not passed, the length of the</span>
+<span class="sd">        presented lists is assumed to be the length of the first list passed.</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
+
+<span class="sd">    pres : Pandas.DataFrame</span>
+<span class="sd">        A multi-index Pandas DataFrame representing the stimuli presented. The</span>
+<span class="sd">        rows of the dataframe created represent distinct presentation blocks and</span>
+<span class="sd">        the columns represent stimuli presented within a block. Each cell of the</span>
+<span class="sd">        dataframe is a dictionary where the &#39;stimulus&#39; key is a text label of</span>
+<span class="sd">        the stimulus and any other text keys are features of the presented</span>
+<span class="sd">        stimulus. The dataframe index will be a multi-index, where the first</span>
+<span class="sd">        level represents the subject number and the second level represents the</span>
+<span class="sd">        list (or presentation block) number.</span>
+
+<span class="sd">    rec : Pandas.DataFrame</span>
+<span class="sd">        A multi-index Pandas DataFrame representing the stimuli recalled. The</span>
+<span class="sd">        rows of the dataframe created represent distinct presentation blocks and</span>
+<span class="sd">        the columns represent stimuli presented within a block. Each cell of the</span>
+<span class="sd">        dataframe is a dictionary where the &#39;stimulus&#39; key is a text label of</span>
+<span class="sd">        the stimulus and any other text keys are features of the presented</span>
+<span class="sd">        stimulus. The dataframe index will be a multi-index, where the first</span>
+<span class="sd">        level represents the subject number and the second level represents the</span>
+<span class="sd">        list (or presentation block) number.</span>
 
 <span class="sd">    n_subjects : int</span>
 <span class="sd">        Number of subjects in the egg object</span>
@@ -204,52 +246,116 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pres</span><span class="o">=</span><span class="p">[[[]]],</span> <span class="n">rec</span><span class="o">=</span><span class="p">[[[]]],</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span>
-                 <span class="n">meta</span><span class="o">=</span><span class="p">{},</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pres</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dist_funcs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">,</span> <span class="n">date_created</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">recmat</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">list_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">pres</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">):</span>
-            <span class="n">pres</span> <span class="o">=</span> <span class="p">[</span><span class="n">pres</span><span class="p">]</span>
+        <span class="c1"># handle if recmat is passed</span>
+        <span class="k">if</span> <span class="n">recmat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">list_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Recall matrix passed, but list_length was not &#39;</span>
+                              <span class="s1">&#39;defined. Inferring from length of first list&#39;</span><span class="p">)</span>
+                <span class="n">list_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">recmat</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">pres</span> <span class="o">=</span> <span class="p">[[[</span><span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">list_length</span><span class="p">))]</span> <span class="k">for</span> <span class="n">reclist</span> <span class="ow">in</span> <span class="n">recsub</span><span class="p">]</span> <span class="k">for</span> <span class="n">recsub</span> <span class="ow">in</span> <span class="n">recmat</span><span class="p">]</span>
+            <span class="n">rec</span> <span class="o">=</span> <span class="p">[[[</span><span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">reclist</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span> <span class="k">for</span> <span class="n">reclist</span> <span class="ow">in</span> <span class="n">recsub</span><span class="p">]</span> <span class="k">for</span> <span class="n">recsub</span> <span class="ow">in</span> <span class="n">recmat</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># check to see if pres is a list(list(list))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">pres</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">):</span>
+                <span class="n">pres</span> <span class="o">=</span> <span class="p">[</span><span class="n">pres</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">rec</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">):</span>
-            <span class="n">rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">rec</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">features</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">):</span>
-                <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">]</span>
+            <span class="c1"># check to see if rec is a list(list(list))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">rec</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">):</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="p">[</span><span class="n">rec</span><span class="p">]</span>
 
         <span class="c1"># make sure each subject has same number of lists</span>
         <span class="n">pres</span> <span class="o">=</span> <span class="n">fill_missing</span><span class="p">(</span><span class="n">pres</span><span class="p">)</span>
         <span class="n">rec</span> <span class="o">=</span> <span class="n">fill_missing</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">pres</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rec</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
+        <span class="c1"># if pres is strings, reformat</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pres</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="n">pres</span> <span class="o">=</span> <span class="p">[[[{</span><span class="s1">&#39;item&#39;</span> <span class="p">:</span> <span class="n">x</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">z</span><span class="p">]</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">pres</span><span class="p">]</span>
+
+        <span class="c1"># if pres is strings, reformat</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="n">rec</span> <span class="o">=</span> <span class="p">[[[{</span><span class="s1">&#39;item&#39;</span> <span class="p">:</span> <span class="n">x</span><span class="p">}</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">z</span><span class="p">]</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">]</span>
+
+        <span class="c1"># if item is missing from pres, add it</span>
+        <span class="k">if</span> <span class="s1">&#39;item&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pres</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="p">[[[</span><span class="n">x</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;item&#39;</span> <span class="p">:</span> <span class="n">i</span><span class="p">})</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">z</span><span class="p">]</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">pres</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;temporal&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pres</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="p">[[[</span><span class="n">x</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;temporal&#39;</span> <span class="p">:</span> <span class="n">i</span><span class="p">})</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">z</span><span class="p">]</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">pres</span><span class="p">]</span>
+
+        <span class="c1"># if item is missing from rec, add it</span>
+        <span class="k">if</span> <span class="s1">&#39;item&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="p">[[[</span><span class="n">x</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;item&#39;</span> <span class="p">:</span> <span class="n">i</span><span class="p">})</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">z</span><span class="p">]</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;temporal&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="p">[[[</span><span class="n">x</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;temporal&#39;</span> <span class="p">:</span> <span class="n">i</span><span class="p">})</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">z</span><span class="p">]</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">]</span>
 
         <span class="c1"># attach features and dist funcs if they are passed</span>
-        <span class="k">if</span> <span class="n">features</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">features</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">sub</span><span class="p">):</span>
+                <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">]</span>
             <span class="n">features</span> <span class="o">=</span> <span class="n">fill_missing</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span> <span class="o">=</span> <span class="n">default_dist_funcs</span><span class="p">(</span><span class="n">dist_funcs</span><span class="p">,</span> <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">pres</span> <span class="o">=</span> <span class="n">merge_pres_feats</span><span class="p">(</span><span class="n">pres</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
 
-        <span class="c1"># attach listgroup and subjgroup</span>
+        <span class="c1"># add default dist funcs if some or all are not provided</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span> <span class="o">=</span> <span class="n">default_dist_funcs</span><span class="p">(</span><span class="n">dist_funcs</span><span class="p">,</span> <span class="n">pres</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># attach the rest of the variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pres</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">pres</span><span class="p">)</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;item&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">}</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_pres_features</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rec</span> <span class="o">=</span> <span class="n">list2pd</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;item&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">}</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subjgroup</span><span class="o">=</span><span class="n">subjgroup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subjname</span><span class="o">=</span><span class="n">subjname</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">listgroup</span><span class="o">=</span><span class="n">listgroup</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">listname</span><span class="o">=</span><span class="n">listname</span>
-
-        <span class="c1"># attach attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_subjects</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_lists</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">date_created</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%c</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># attach methods</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">crack</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">crack</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
+        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
+
+        <span class="k">if</span> <span class="n">date_created</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">date_created</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%c</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">date_created</span> <span class="o">=</span> <span class="n">date_created</span>
+
+<div class="viewcode-block" id="Egg.get_pres_items"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.get_pres_items">[docs]</a>    <span class="k">def</span> <span class="nf">get_pres_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a df of presented items</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Egg.get_pres_features"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.get_pres_features">[docs]</a>    <span class="k">def</span> <span class="nf">get_pres_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a df of features for presented items</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">features</span><span class="p">}</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Egg.get_rec_items"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.get_rec_items">[docs]</a>    <span class="k">def</span> <span class="nf">get_rec_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a df of recalled items</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Egg.get_rec_features"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.get_rec_features">[docs]</a>    <span class="k">def</span> <span class="nf">get_rec_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a df of features for recalled items</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">x</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;item&#39;</span><span class="p">}</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="Egg.info"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -261,14 +367,48 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Date created: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_created</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Meta data: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Egg.save"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
+<div class="viewcode-block" id="Egg.save"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;blosc&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Save a pickled egg</span>
+<span class="sd">        Save method for the Egg object</span>
+
+<span class="sd">        The data will be saved as a &#39;egg&#39; file, which is a dictionary containing</span>
+<span class="sd">        the elements of a Egg saved in the hd5 format using</span>
+<span class="sd">        `deepdish`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        fname : str</span>
+<span class="sd">            A name for the file.  If the file extension (.egg) is not specified,</span>
+<span class="sd">            it will be appended.</span>
+
+<span class="sd">        compression : str</span>
+<span class="sd">            The kind of compression to use.  See the deepdish documentation for</span>
+<span class="sd">            options: http://deepdish.readthedocs.io/en/latest/api_io.html#deepdish.io.save</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span> <span class="o">+</span> <span class="s1">&#39;.egg&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;pickle saved.&#39;</span><span class="p">)</span></div>
+        <span class="c1"># put egg vars into a dict</span>
+        <span class="n">egg</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;pres&#39;</span> <span class="p">:</span> <span class="n">df2list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="p">),</span>
+            <span class="s1">&#39;rec&#39;</span> <span class="p">:</span> <span class="n">df2list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="p">),</span>
+            <span class="s1">&#39;dist_funcs&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_funcs</span><span class="p">,</span>
+            <span class="s1">&#39;subjgroup&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">subjgroup</span><span class="p">,</span>
+            <span class="s1">&#39;subjname&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">subjname</span><span class="p">,</span>
+            <span class="s1">&#39;listgroup&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">listgroup</span><span class="p">,</span>
+            <span class="s1">&#39;listname&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">listname</span><span class="p">,</span>
+            <span class="s1">&#39;date_created&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_created</span><span class="p">,</span>
+            <span class="s1">&#39;meta&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span>
+        <span class="p">}</span>
+
+        <span class="c1"># if extension wasn&#39;t included, add it</span>
+        <span class="k">if</span> <span class="n">fname</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span><span class="o">!=</span><span class="s1">&#39;.egg&#39;</span><span class="p">:</span>
+            <span class="n">fname</span><span class="o">+=</span><span class="s1">&#39;.egg&#39;</span>
+
+        <span class="c1"># save</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">egg</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Egg.crack"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.crack">[docs]</a>    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lists</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -287,7 +427,108 @@
 <span class="sd">        new_egg : Egg data object</span>
 <span class="sd">            A mega egg comprised of the input eggs stacked together</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">crack_egg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="p">,</span> <span class="n">lists</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">crack_egg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subjects</span><span class="p">,</span> <span class="n">lists</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">egg_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;pres&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;rec&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">egg_dict</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">egg_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;pres&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;rec&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rec</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">egg_dict</span>
+
+<div class="viewcode-block" id="Egg.analyze"><a class="viewcode-back" href="../../quail.Egg.html#quail.Egg.analyze">[docs]</a>    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calls analyze function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="n">analysis</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="FriedEgg"><a class="viewcode-back" href="../../quail.FriedEgg.html#quail.FriedEgg">[docs]</a><span class="k">class</span> <span class="nc">FriedEgg</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object containing results of a quail analyses</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    data : List of Pandas.DataFrame</span>
+<span class="sd">        List of Dataframes containing result of an analysis</span>
+
+<span class="sd">    type : str</span>
+<span class="sd">        The type of analysis (e.g. lag-crp)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FriedEgg.__init__"><a class="viewcode-back" href="../../quail.FriedEgg.html#quail.FriedEgg.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">list_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_lists</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">n_subjects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">date_created</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span> <span class="o">=</span> <span class="n">analysis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_length</span> <span class="o">=</span> <span class="n">list_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_lists</span> <span class="o">=</span> <span class="n">n_lists</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_subjects</span> <span class="o">=</span> <span class="n">n_subjects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span>
+
+        <span class="k">if</span> <span class="n">date_created</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">date_created</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%c</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">date_created</span> <span class="o">=</span> <span class="n">date_created</span></div>
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a copy of the data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fname</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;blosc&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save method for the FriedEgg object</span>
+
+<span class="sd">        The data will be saved as a &#39;fegg&#39; file, which is a dictionary containing</span>
+<span class="sd">        the elements of a FriedEgg saved in the hd5 format using</span>
+<span class="sd">        `deepdish`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        fname : str</span>
+<span class="sd">            A name for the file.  If the file extension (.fegg) is not specified,</span>
+<span class="sd">            it will be appended.</span>
+
+<span class="sd">        compression : str</span>
+<span class="sd">            The kind of compression to use.  See the deepdish documentation for</span>
+<span class="sd">            options: http://deepdish.readthedocs.io/en/latest/api_io.html#deepdish.io.save</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">egg</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;data&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+            <span class="s1">&#39;analysis&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis</span><span class="p">,</span>
+            <span class="s1">&#39;list_length&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_length</span><span class="p">,</span>
+            <span class="s1">&#39;n_lists&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_lists</span><span class="p">,</span>
+            <span class="s1">&#39;n_subjects&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_subjects</span><span class="p">,</span>
+            <span class="s1">&#39;position&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+            <span class="s1">&#39;date_created&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_created</span><span class="p">,</span>
+            <span class="s1">&#39;meta&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">fname</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span><span class="o">!=</span><span class="s1">&#39;.fegg&#39;</span><span class="p">:</span>
+            <span class="n">fname</span><span class="o">+=</span><span class="s1">&#39;.fegg&#39;</span>
+
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+            <span class="n">dd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">egg</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span></div>
 </pre></div>
 
     </div>
@@ -305,7 +546,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
     </p>
   </div>
 </footer>

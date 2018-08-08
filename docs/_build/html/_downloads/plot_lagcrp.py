@@ -13,14 +13,11 @@ recalling stimuli in neighboring stimulus positions (n+/-5).
 # Code source: Andrew Heusser
 # License: MIT
 
-#import
+# import
 import quail
 
-#load data
-egg = quail.load_example_data()
+# load data
+egg = quail.load('example')
 
-#analysis
-analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*8)
-
-#plot
-quail.plot(analyzed_data, title='Lag-CRP')
+# analyze and plot
+egg.analyze('lagcrp', listgroup=['average']*8).plot(title='Lag-CRP')

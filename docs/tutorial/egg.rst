@@ -87,7 +87,7 @@ snapshot of the ``egg``:
     Number of subjects: 1
     Number of lists per subject: 2
     Number of words per list: 4
-    Date created: Tue Jul 31 10:27:36 2018
+    Date created: Mon Aug  6 14:43:19 2018
     Meta data: {}
 
 
@@ -261,7 +261,7 @@ Multisubject ``eggs``
     Number of subjects: 2
     Number of lists per subject: 2
     Number of words per list: 4
-    Date created: Tue Jul 31 10:27:36 2018
+    Date created: Mon Aug  6 14:43:19 2018
     Meta data: {}
 
 
@@ -760,7 +760,7 @@ key word argument when creating the ``egg``:
     Number of subjects: 1
     Number of lists per subject: 2
     Number of words per list: 4
-    Date created: Tue Jul 31 10:27:36 2018
+    Date created: Mon Aug  6 14:43:19 2018
     Meta data: {'Researcher': 'Andy Heusser', 'Study': 'Egg Tutorial'}
 
 

@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &#8212; quail 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          quail</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.2</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../api.html">API</a></li>
+                <li><a href="../../auto_examples/index.html">Gallery</a></li>
+                <li><a href="../../tutorial.html">Tutorials</a></li>
+                <li><a href="http://www.github.com/ContextLab/quail">Download</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 9ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">quail</span>
+<span class="kn">from</span> <span class="nn">quail</span> <span class="kn">import</span> <span class="n">Fingerprint</span><span class="p">,</span> <span class="n">OptimalPresenter</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">cdist</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># nperms=100</span>
+<span class="c1"># dist_stick = []</span>
+<span class="c1"># dist_beststick = []</span>
+<span class="c1"># dist_perm = []</span>
+<span class="c1"># dist_permde = []</span>
+<span class="c1"># dist_rand = []</span>
+<span class="c1"># dist_bestchoice = []</span>
+
+<span class="c1"># for iperm in range(nperms):</span>
+
+<span class="c1">#     presenter.strategy = &#39;stabilize&#39;</span>
+
+<span class="c1"># #     # random</span>
+<span class="c1">#     shuffled_egg = presenter.order(egg, strategy=&#39;random&#39;)</span>
+<span class="c1">#     weights_rand = quail.analyze(shuffled_egg, analysis=&#39;fingerprint&#39;)</span>
+<span class="c1">#     dist_rand.append(cdist(weights_rand, weights)[0])</span>
+
+<span class="c1">#     # reorder next list using stick breaking</span>
+<span class="c1">#     resorted_egg = presenter.order(shuffled_egg, method=&#39;stick&#39;)</span>
+<span class="c1">#     weights_stick = quail.analyze(resorted_egg, analysis=&#39;fingerprint&#39;)</span>
+<span class="c1">#     dist_stick.append(cdist(weights_stick, weights)[0])</span>
+
+<span class="c1">#     # reorder next list using stick breaking</span>
+<span class="c1">#     resorted_egg = presenter.order(shuffled_egg, method=&#39;best_stick&#39;, nperms=10000)</span>
+<span class="c1">#     weights_stick = quail.analyze(resorted_egg, analysis=&#39;fingerprint&#39;)</span>
+<span class="c1">#     dist_beststick.append(cdist(weights_stick, weights)[0])</span>
+
+<span class="c1">#     # reorder next list using permutation</span>
+<span class="c1">#     resorted_egg = presenter.order(shuffled_egg, method=&#39;permute&#39;, nperms=10000)</span>
+<span class="c1">#     weights_perm = quail.analyze(resorted_egg, analysis=&#39;fingerprint&#39;)</span>
+<span class="c1">#     dist_perm.append(cdist(weights_perm, weights))</span>
+
+<span class="c1">#     presenter.strategy = &#39;destabilize&#39;</span>
+
+<span class="c1">#     # reorder next list using permutation</span>
+<span class="c1">#     resorted_egg = presenter.order(shuffled_egg, method=&#39;permute&#39;, nperms=10000)</span>
+<span class="c1">#     weights_permde = quail.analyze(resorted_egg, analysis=&#39;fingerprint&#39;)</span>
+<span class="c1">#     dist_permde.append(cdist(weights_permde, weights))</span>
+
+<span class="c1">#     # reorder next list using permutation</span>
+<span class="c1"># #     resorted_egg = presenter.order(shuffled_egg, method=&#39;best_choice&#39;, nperms=100)</span>
+<span class="c1"># #     weights_choice = quail.analyze(resorted_egg, analysis=&#39;fingerprint&#39;)</span>
+<span class="c1"># #     dist_bestchoice.append(cdist(weights_choice, weights)[0])</span>
+
+<span class="c1">#     if iperm % 10 == 0:</span>
+<span class="c1">#         print(iperm)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0
+10
+20
+30
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-5-2643ae6e0efa&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     27</span>
+<span class="ansi-green-intense-fg ansi-bold">     28</span>     <span class="ansi-red-fg"># reorder next list using permutation</span>
+<span class="ansi-green-fg">---&gt; 29</span><span class="ansi-red-fg">     </span>resorted_egg <span class="ansi-blue-fg">=</span> presenter<span class="ansi-blue-fg">.</span>order<span class="ansi-blue-fg">(</span>shuffled_egg<span class="ansi-blue-fg">,</span> method<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;permute&#39;</span><span class="ansi-blue-fg">,</span> nperms<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">10000</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     30</span>     weights_perm <span class="ansi-blue-fg">=</span> quail<span class="ansi-blue-fg">.</span>analyze<span class="ansi-blue-fg">(</span>resorted_egg<span class="ansi-blue-fg">,</span> analysis<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;fingerprint&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     31</span>     dist_perm<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>cdist<span class="ansi-blue-fg">(</span>weights_perm<span class="ansi-blue-fg">,</span> weights<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Users/andyheusser/Documents/github/quail/quail/fingerprint.py</span> in <span class="ansi-cyan-fg">order</span><span class="ansi-blue-fg">(self, egg, method, nperms, strategy)</span>
+<span class="ansi-green-intense-fg ansi-bold">    301</span>             <span class="ansi-green-fg">return</span> shuffle_egg<span class="ansi-blue-fg">(</span>egg<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    302</span>         <span class="ansi-green-fg">elif</span> method <span class="ansi-green-fg">is</span> <span class="ansi-blue-fg">&#39;permute&#39;</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 303</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> order_perm<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> egg<span class="ansi-blue-fg">,</span> dist_dict<span class="ansi-blue-fg">,</span> strategy<span class="ansi-blue-fg">,</span> nperms<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    304</span>         <span class="ansi-green-fg">elif</span> method <span class="ansi-green-fg">is</span> <span class="ansi-blue-fg">&#39;stick&#39;</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    305</span>             <span class="ansi-green-fg">return</span> order_stick<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> egg<span class="ansi-blue-fg">,</span> dist_dict<span class="ansi-blue-fg">,</span> strategy<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Users/andyheusser/Documents/github/quail/quail/fingerprint.py</span> in <span class="ansi-cyan-fg">order_perm</span><span class="ansi-blue-fg">(self, egg, dist_dict, strategy, nperms)</span>
+<span class="ansi-green-intense-fg ansi-bold">    226</span>
+<span class="ansi-green-intense-fg ansi-bold">    227</span>             results = Parallel(n_jobs=multiprocessing.cpu_count())(
+<span class="ansi-green-fg">--&gt; 228</span><span class="ansi-red-fg">             delayed(rand_perm)(pres, features, dist_dict, dist_funcs) for i in range(nperms))
+</span><span class="ansi-green-intense-fg ansi-bold">    229</span>
+<span class="ansi-green-intense-fg ansi-bold">    230</span>             weights <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>array<span class="ansi-blue-fg">(</span>map<span class="ansi-blue-fg">(</span><span class="ansi-green-fg">lambda</span> x<span class="ansi-blue-fg">:</span> x<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> results<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/joblib/parallel.pyc</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, iterable)</span>
+<span class="ansi-green-intense-fg ansi-bold">    787</span>                 <span class="ansi-red-fg"># consumption.</span>
+<span class="ansi-green-intense-fg ansi-bold">    788</span>                 self<span class="ansi-blue-fg">.</span>_iterating <span class="ansi-blue-fg">=</span> False
+<span class="ansi-green-fg">--&gt; 789</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>retrieve<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    790</span>             <span class="ansi-red-fg"># Make sure that we get a last message telling us we are done</span>
+<span class="ansi-green-intense-fg ansi-bold">    791</span>             elapsed_time <span class="ansi-blue-fg">=</span> time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> self<span class="ansi-blue-fg">.</span>_start_time
+
+<span class="ansi-green-fg">/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/joblib/parallel.pyc</span> in <span class="ansi-cyan-fg">retrieve</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    697</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    698</span>                 <span class="ansi-green-fg">if</span> getattr<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>_backend<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;supports_timeout&#39;</span><span class="ansi-blue-fg">,</span> False<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 699</span><span class="ansi-red-fg">                     </span>self<span class="ansi-blue-fg">.</span>_output<span class="ansi-blue-fg">.</span>extend<span class="ansi-blue-fg">(</span>job<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span>timeout<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>timeout<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    700</span>                 <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    701</span>                     self<span class="ansi-blue-fg">.</span>_output<span class="ansi-blue-fg">.</span>extend<span class="ansi-blue-fg">(</span>job<span class="ansi-blue-fg">.</span>get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Applications/Canopy.app/appdata/canopy-1.7.4.3348.macosx-x86_64/Canopy.app/Contents/lib/python2.7/multiprocessing/pool.pyc</span> in <span class="ansi-cyan-fg">get</span><span class="ansi-blue-fg">(self, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    559</span>
+<span class="ansi-green-intense-fg ansi-bold">    560</span>     <span class="ansi-green-fg">def</span> get<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> timeout<span class="ansi-blue-fg">=</span>None<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 561</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>wait<span class="ansi-blue-fg">(</span>timeout<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    562</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_ready<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    563</span>             <span class="ansi-green-fg">raise</span> TimeoutError
+
+<span class="ansi-green-fg">/Applications/Canopy.app/appdata/canopy-1.7.4.3348.macosx-x86_64/Canopy.app/Contents/lib/python2.7/multiprocessing/pool.pyc</span> in <span class="ansi-cyan-fg">wait</span><span class="ansi-blue-fg">(self, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    554</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    555</span>             <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_ready<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 556</span><span class="ansi-red-fg">                 </span>self<span class="ansi-blue-fg">.</span>_cond<span class="ansi-blue-fg">.</span>wait<span class="ansi-blue-fg">(</span>timeout<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    557</span>         <span class="ansi-green-fg">finally</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    558</span>             self<span class="ansi-blue-fg">.</span>_cond<span class="ansi-blue-fg">.</span>release<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Applications/Canopy.app/appdata/canopy-1.7.4.3348.macosx-x86_64/Canopy.app/Contents/lib/python2.7/threading.pyc</span> in <span class="ansi-cyan-fg">wait</span><span class="ansi-blue-fg">(self, timeout)</span>
+<span class="ansi-green-intense-fg ansi-bold">    338</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>    <span class="ansi-red-fg"># restore state no matter what (e.g., KeyboardInterrupt)</span>
+<span class="ansi-green-intense-fg ansi-bold">    339</span>             <span class="ansi-green-fg">if</span> timeout <span class="ansi-green-fg">is</span> None<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 340</span><span class="ansi-red-fg">                 </span>waiter<span class="ansi-blue-fg">.</span>acquire<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    341</span>                 <span class="ansi-green-fg">if</span> __debug__<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    342</span>                     self<span class="ansi-blue-fg">.</span>_note<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;%s.wait(): got it&#34;</span><span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>:
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># sns.distplot(dist_stick, label=&#39;stick&#39;)</span>
+<span class="c1"># sns.distplot(dist_beststick, label=&#39;best stick&#39;)</span>
+<span class="c1"># # sns.distplot(dist_bestchoice, label=&#39;best choice&#39;)</span>
+<span class="c1"># sns.distplot(dist_perm, label=&#39;permute:stabilize&#39;)</span>
+<span class="c1"># sns.distplot(dist_permde, label=&#39;permute:destabilize&#39;)</span>
+<span class="c1"># sns.distplot(dist_rand, label=&#39;random&#39;)</span>
+<span class="c1"># sns.plt.legend()</span>
+<span class="c1"># sns.plt.show()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorial_.ipynb_checkpoints_optimal_presenter-checkpoint_2_0.png" src="../../_images/tutorial_.ipynb_checkpoints_optimal_presenter-checkpoint_2_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">timeit</span>
+<span class="n">shuffled_egg</span> <span class="o">=</span> <span class="n">presenter</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
+<span class="n">resorted_egg</span> <span class="o">=</span> <span class="n">presenter</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">shuffled_egg</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;permute&#39;</span><span class="p">,</span> <span class="n">nperms</span><span class="o">=</span><span class="mi">2500</span><span class="p">)</span>
+<span class="n">weights_perm</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">resorted_egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-42-995050186210&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> get_ipython<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>magic<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">u&#39;timeit&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>shuffled_egg <span class="ansi-blue-fg">=</span> presenter<span class="ansi-blue-fg">.</span>order<span class="ansi-blue-fg">(</span>egg<span class="ansi-blue-fg">,</span> strategy<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;random&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span> resorted_egg <span class="ansi-blue-fg">=</span> presenter<span class="ansi-blue-fg">.</span>order<span class="ansi-blue-fg">(</span>shuffled_egg<span class="ansi-blue-fg">,</span> method<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;permute&#39;</span><span class="ansi-blue-fg">,</span> nperms<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">2500</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> weights_perm <span class="ansi-blue-fg">=</span> quail<span class="ansi-blue-fg">.</span>analyze<span class="ansi-blue-fg">(</span>resorted_egg<span class="ansi-blue-fg">,</span> analysis<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;fingerprint&#39;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Users/andyheusser/Documents/github/quail/quail/fingerprint.py</span> in <span class="ansi-cyan-fg">order</span><span class="ansi-blue-fg">(self, egg, method, nperms, strategy, distfun)</span>
+<span class="ansi-green-intense-fg ansi-bold">    322</span>             strategy <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>strategy
+<span class="ansi-green-intense-fg ansi-bold">    323</span>
+<span class="ansi-green-fg">--&gt; 324</span><span class="ansi-red-fg">         </span>dist_dict <span class="ansi-blue-fg">=</span> compute_distances_dict<span class="ansi-blue-fg">(</span>egg<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    325</span>
+<span class="ansi-green-intense-fg ansi-bold">    326</span>         <span class="ansi-green-fg">if</span> <span class="ansi-blue-fg">(</span>strategy<span class="ansi-blue-fg">==</span><span class="ansi-blue-fg">&#39;random&#39;</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">or</span> <span class="ansi-blue-fg">(</span>method<span class="ansi-blue-fg">==</span><span class="ansi-blue-fg">&#39;random&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/Users/andyheusser/Documents/github/quail/quail/fingerprint.py</span> in <span class="ansi-cyan-fg">compute_distances_dict</span><span class="ansi-blue-fg">(egg)</span>
+<span class="ansi-green-intense-fg ansi-bold">    651</span>             <span class="ansi-green-fg">for</span> feature <span class="ansi-green-fg">in</span> dist_funcs<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    652</span>
+<span class="ansi-green-fg">--&gt; 653</span><span class="ansi-red-fg">                 </span>distances<span class="ansi-blue-fg">[</span>item1<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span>item2<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span>feature<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> dist_funcs<span class="ansi-blue-fg">[</span>feature<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">(</span>features_list<span class="ansi-blue-fg">[</span>idx1<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span>feature<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>features_list<span class="ansi-blue-fg">[</span>idx2<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">[</span>feature<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    654</span>
+<span class="ansi-green-intense-fg ansi-bold">    655</span>     <span class="ansi-green-fg">return</span> distances
+
+<span class="ansi-red-fg">KeyError</span>: &#39;CATEGORY&#39;
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">ncats</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="c1"># load wordpool</span>
+<span class="n">wp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/Users/andyheusser/Documents/github/quail/quail/data/cut_wordpool.csv&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">generate_lst</span><span class="p">(</span><span class="n">wordpool</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+
+    <span class="n">a</span><span class="o">=</span><span class="bp">True</span>
+
+    <span class="k">while</span> <span class="n">a</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">wp</span> <span class="o">=</span> <span class="n">wordpool</span><span class="p">[</span><span class="n">wordpool</span><span class="p">[</span><span class="s1">&#39;GROUP&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">),</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">a</span><span class="o">=</span><span class="bp">False</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="c1"># first letter</span>
+    <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;FIRST LETTER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># word length</span>
+    <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD LENGTH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># color</span>
+    <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;COLOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">wp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+    <span class="c1"># location</span>
+    <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;LOCATION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mi">85</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">100</span> <span class="o">-</span> <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD LENGTH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">wp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+    <span class="k">return</span> <span class="n">wp</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">simulate_egg</span><span class="p">(</span><span class="n">wp</span><span class="p">,</span> <span class="n">n_recs</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+
+    <span class="c1"># pres</span>
+    <span class="n">pres</span> <span class="o">=</span> <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1"># features</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">wp</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;SIZE&#39;</span><span class="p">:]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;record&#39;</span><span class="p">)</span>
+
+    <span class="c1"># rec</span>
+    <span class="n">rec</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pres</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pres</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="p">[</span><span class="n">pres</span><span class="p">],</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="n">features</span><span class="p">],</span> <span class="n">rec</span><span class="o">=</span><span class="p">[</span><span class="n">rec</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">nperms</span><span class="o">=</span><span class="mi">100</span>
+<span class="n">dist_stick</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dist_beststick</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dist_perm</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dist_permde</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dist_rand</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dist_bestchoice</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">iperm</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nperms</span><span class="p">):</span>
+
+    <span class="c1"># generate a list from the word pool</span>
+    <span class="n">lst1</span> <span class="o">=</span> <span class="n">generate_lst</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span>
+
+    <span class="c1"># simulate an egg</span>
+    <span class="n">egg1</span> <span class="o">=</span> <span class="n">simulate_egg</span><span class="p">(</span><span class="n">lst1</span><span class="p">)</span>
+
+    <span class="c1"># initialize fingerprint</span>
+    <span class="n">fingerprint</span> <span class="o">=</span> <span class="n">Fingerprint</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="n">egg1</span><span class="p">)</span>
+
+    <span class="c1"># initialize presenter</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;fingerprint&#39;</span> <span class="p">:</span> <span class="n">fingerprint</span>
+    <span class="p">}</span>
+    <span class="n">presenter</span> <span class="o">=</span> <span class="n">OptimalPresenter</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;stabilize&#39;</span><span class="p">)</span>
+
+    <span class="c1"># update the fingerprint</span>
+    <span class="n">fingerprint</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">egg1</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="c1"># reshape weights</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">fingerprint</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+
+    <span class="c1"># generate another list from the word pool</span>
+    <span class="n">lst2</span> <span class="o">=</span> <span class="n">generate_lst</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span>
+
+    <span class="c1"># simulate egg 2</span>
+    <span class="n">egg2</span> <span class="o">=</span> <span class="n">simulate_egg</span><span class="p">(</span><span class="n">lst2</span><span class="p">)</span>
+
+    <span class="n">weights_rand</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">egg2</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">dist_rand</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdist</span><span class="p">(</span><span class="n">weights_rand</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="s1">&#39;correlation&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># reorder next list using stick breaking</span>
+    <span class="n">resorted_egg</span> <span class="o">=</span> <span class="n">presenter</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">egg2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;stick&#39;</span><span class="p">)</span>
+    <span class="n">weights_stick</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">resorted_egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">dist_stick</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdist</span><span class="p">(</span><span class="n">weights_stick</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="s1">&#39;correlation&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># reorder next list using stick breaking</span>
+    <span class="n">resorted_egg</span> <span class="o">=</span> <span class="n">presenter</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">egg2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;best_stick&#39;</span><span class="p">,</span> <span class="n">nperms</span><span class="o">=</span><span class="n">nperms</span><span class="p">)</span>
+    <span class="n">weights_stick</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">resorted_egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">dist_beststick</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdist</span><span class="p">(</span><span class="n">weights_stick</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="s1">&#39;correlation&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># reorder next list using permutation</span>
+    <span class="n">resorted_egg</span> <span class="o">=</span> <span class="n">presenter</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">egg2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;permute&#39;</span><span class="p">,</span> <span class="n">nperms</span><span class="o">=</span><span class="n">nperms</span><span class="p">)</span>
+    <span class="n">weights_perm</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">resorted_egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">dist_perm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdist</span><span class="p">(</span><span class="n">weights_perm</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="s1">&#39;correlation&#39;</span><span class="p">))</span>
+
+    <span class="n">presenter</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="s1">&#39;destabilize&#39;</span>
+
+    <span class="c1"># reorder next list using permutation</span>
+    <span class="n">resorted_egg</span> <span class="o">=</span> <span class="n">presenter</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">egg2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;permute&#39;</span><span class="p">,</span> <span class="n">nperms</span><span class="o">=</span><span class="n">nperms</span><span class="p">)</span>
+    <span class="n">weights_permde</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">resorted_egg</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">dist_permde</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdist</span><span class="p">(</span><span class="n">weights_permde</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="s1">&#39;correlation&#39;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">iperm</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">iperm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+/Users/andyheusser/Documents/github/quail/quail/analysis.py:105: UserWarning: Pandas doesn&#39;t allow columns to be created via a new attribute name - see https://pandas.pydata.org/pandas-docs/stable/indexing.html#attribute-access
+  &#39;list_length&#39; : data.list_length
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0
+10
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+Process PoolWorker-4:
+Process PoolWorker-2:
+Process PoolWorker-3:
+Process PoolWorker-1:
+Traceback (most recent call last):
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/pool.py&#34;, line 102, in worker
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 258, in _bootstrap
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 258, in _bootstrap
+    self.run()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 258, in _bootstrap
+    self.run()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 258, in _bootstrap
+    self.run()
+    self.run()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 114, in run
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 114, in run
+    self._target(*self._args, **self._kwargs)
+    self._target(*self._args, **self._kwargs)
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 114, in run
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 114, in run
+    self._target(*self._args, **self._kwargs)
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/pool.py&#34;, line 102, in worker
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/pool.py&#34;, line 102, in worker
+    self._target(*self._args, **self._kwargs)
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/pool.py&#34;, line 102, in worker
+    task = get()
+    task = get()
+    task = get()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/queues.py&#34;, line 379, in get
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/queues.py&#34;, line 379, in get
+    task = get()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/queues.py&#34;, line 379, in get
+    racquire()
+    racquire()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/queues.py&#34;, line 381, in get
+KeyboardInterrupt
+    racquire()
+    return recv()
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-4-d02dbef354d6&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     57</span>
+<span class="ansi-green-intense-fg ansi-bold">     58</span>     <span class="ansi-red-fg"># reorder next list using permutation</span>
+<span class="ansi-green-fg">---&gt; 59</span><span class="ansi-red-fg">     </span>resorted_egg <span class="ansi-blue-fg">=</span> presenter<span class="ansi-blue-fg">.</span>order<span class="ansi-blue-fg">(</span>egg2<span class="ansi-blue-fg">,</span> method<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;permute&#39;</span><span class="ansi-blue-fg">,</span> nperms<span class="ansi-blue-fg">=</span>nperms<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     60</span>     weights_permde <span class="ansi-blue-fg">=</span> quail<span class="ansi-blue-fg">.</span>analyze<span class="ansi-blue-fg">(</span>resorted_egg<span class="ansi-blue-fg">,</span> analysis<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;fingerprint&#39;</span><span class="ansi-blue-fg">,</span> permute<span class="ansi-blue-fg">=</span>True<span class="ansi-blue-fg">,</span> parallel<span class="ansi-blue-fg">=</span>True<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     61</span>     dist_permde<span class="ansi-blue-fg">.</span>append<span class="ansi-blue-fg">(</span>cdist<span class="ansi-blue-fg">(</span>weights_permde<span class="ansi-blue-fg">,</span> weights<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;correlation&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Users/andyheusser/Documents/github/quail/quail/fingerprint.py</span> in <span class="ansi-cyan-fg">order</span><span class="ansi-blue-fg">(self, egg, method, nperms, strategy, distfun)</span>
+<span class="ansi-green-intense-fg ansi-bold">    318</span>             <span class="ansi-green-fg">return</span> shuffle_egg<span class="ansi-blue-fg">(</span>egg<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    319</span>         <span class="ansi-green-fg">elif</span> method<span class="ansi-blue-fg">==</span><span class="ansi-blue-fg">&#39;permute&#39;</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 320</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> order_perm<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> egg<span class="ansi-blue-fg">,</span> dist_dict<span class="ansi-blue-fg">,</span> strategy<span class="ansi-blue-fg">,</span> nperms<span class="ansi-blue-fg">,</span> distfun<span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#</span>
+<span class="ansi-green-intense-fg ansi-bold">    321</span>         <span class="ansi-green-fg">elif</span> method<span class="ansi-blue-fg">==</span><span class="ansi-blue-fg">&#39;stick&#39;</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    322</span>             <span class="ansi-green-fg">return</span> order_stick<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> egg<span class="ansi-blue-fg">,</span> dist_dict<span class="ansi-blue-fg">,</span> strategy<span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#</span>
+
+<span class="ansi-green-fg">/Users/andyheusser/Documents/github/quail/quail/fingerprint.py</span> in <span class="ansi-cyan-fg">order_perm</span><span class="ansi-blue-fg">(self, egg, dist_dict, strategy, nperm, distperm)</span>
+<span class="ansi-green-intense-fg ansi-bold">    242</span>             pres_len <span class="ansi-blue-fg">=</span> len<span class="ansi-blue-fg">(</span>pres<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    243</span>
+<span class="ansi-green-fg">--&gt; 244</span><span class="ansi-red-fg">             results = Parallel(n_jobs=multiprocessing.cpu_count())(
+</span><span class="ansi-green-intense-fg ansi-bold">    245</span>             delayed(rand_perm)(pres, features, dist_dict, dist_funcs) for i in range(nperms))
+<span class="ansi-green-intense-fg ansi-bold">    246</span>
+
+<span class="ansi-green-fg">/Applications/Canopy.app/appdata/canopy-1.7.4.3348.macosx-x86_64/Canopy.app/Contents/lib/python2.7/multiprocessing/__init__.pyc</span> in <span class="ansi-cyan-fg">cpu_count</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">    122</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    123</span>             <span class="ansi-green-fg">with</span> os<span class="ansi-blue-fg">.</span>popen<span class="ansi-blue-fg">(</span>comm<span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">as</span> p<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 124</span><span class="ansi-red-fg">                 </span>num <span class="ansi-blue-fg">=</span> int<span class="ansi-blue-fg">(</span>p<span class="ansi-blue-fg">.</span>read<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    125</span>         <span class="ansi-green-fg">except</span> ValueError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    126</span>             num <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+Process PoolWorker-7:
+Process PoolWorker-5:
+Process PoolWorker-8:
+Process PoolWorker-6:
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 258, in _bootstrap
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 258, in _bootstrap
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 258, in _bootstrap
+    self.run()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 258, in _bootstrap
+    self.run()
+    self.run()
+    self.run()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 114, in run
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 114, in run
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 114, in run
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/process.py&#34;, line 114, in run
+    self._target(*self._args, **self._kwargs)
+    self._target(*self._args, **self._kwargs)
+    self._target(*self._args, **self._kwargs)
+    self._target(*self._args, **self._kwargs)
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/pool.py&#34;, line 102, in worker
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/pool.py&#34;, line 102, in worker
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/pool.py&#34;, line 102, in worker
+    task = get()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/pool.py&#34;, line 102, in worker
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/queues.py&#34;, line 381, in get
+    return recv()
+    task = get()
+    task = get()
+KeyboardInterrupt
+    task = get()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/queues.py&#34;, line 379, in get
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/queues.py&#34;, line 379, in get
+    racquire()
+  File &#34;/Users/andyheusser/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/multiprocess/queues.py&#34;, line 379, in get
+KeyboardInterrupt
+    racquire()
+    racquire()
+KeyboardInterrupt
+KeyboardInterrupt
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dist_stick</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;stick&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dist_beststick</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;best stick&#39;</span><span class="p">)</span>
+<span class="c1"># sns.distplot(dist_bestchoice, label=&#39;best choice&#39;)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dist_perm</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;permute:stabilize&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dist_permde</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;permute:destabilize&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dist_rand</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[6]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>&lt;matplotlib.legend.Legend at 0x10af4ba10&gt;
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorial_.ipynb_checkpoints_optimal_presenter-checkpoint_6_1.png" src="../../_images/tutorial_.ipynb_checkpoints_optimal_presenter-checkpoint_6_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">shuffle_stim</span><span class="p">(</span><span class="n">wordpool</span><span class="p">,</span> <span class="n">nlists</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">nwords</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">wp</span><span class="p">[</span><span class="n">wp</span><span class="p">[</span><span class="s1">&#39;GROUP&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">choice</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">nwords</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">wp</span><span class="p">[</span><span class="s1">&#39;GROUP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">nlists</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="bp">False</span><span class="p">)])</span>
+
+<span class="k">def</span> <span class="nf">add_features</span><span class="p">(</span><span class="n">wp</span><span class="p">):</span>
+
+    <span class="c1"># first letter</span>
+    <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;FIRST LETTER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># word length</span>
+    <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD LENGTH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="c1"># color</span>
+    <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;COLOR&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">wp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+    <span class="c1"># location</span>
+    <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;LOCATION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="mi">85</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="mi">100</span> <span class="o">-</span> <span class="n">wp</span><span class="p">[</span><span class="s1">&#39;WORD LENGTH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">wp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+    <span class="k">return</span> <span class="n">wp</span>
+
+<span class="k">def</span> <span class="nf">df2egg</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;GROUP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">pres</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GROUP&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;WORD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
+    <span class="n">rec</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">None</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">format_features</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;GROUP&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">quail</span><span class="o">.</span><span class="n">Egg</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="p">[</span><span class="n">pres</span><span class="p">],</span> <span class="n">rec</span><span class="o">=</span><span class="p">[</span><span class="n">rec</span><span class="p">],</span> <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="n">features</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">format_features</span><span class="p">(</span><span class="n">wp</span><span class="p">):</span>
+    <span class="n">trials</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">wp</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">trial</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;length&#39;</span> <span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;WORD LENGTH&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;size&#39;</span> <span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;SIZE&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;category&#39;</span> <span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;CATEGORY&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;pos&#39;</span> <span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;LOCATION&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;COLOR&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;first letter&#39;</span> <span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;WORD&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">trials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trial</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">trials</span>
+
+<span class="c1"># load wordpool</span>
+<span class="n">wp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/Users/andyheusser/Documents/github/quail/quail/data/cut_wordpool.csv&#39;</span><span class="p">)</span>
+
+<span class="c1"># shuffle the lists and stim</span>
+<span class="n">shuffled_stim</span> <span class="o">=</span> <span class="n">shuffle_stim</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span>
+
+<span class="c1"># add features</span>
+<span class="n">stim_features</span> <span class="o">=</span> <span class="n">add_features</span><span class="p">(</span><span class="n">shuffled_stim</span><span class="p">)</span>
+
+<span class="n">egg</span> <span class="o">=</span> <span class="n">df2egg</span><span class="p">(</span><span class="n">stim_features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="n">egg</span><span class="o">.</span><span class="n">dist_funcs</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>Out[26]:
+</pre></div>
+</div>
+<div class="output_area highlight-none"><div class="highlight"><pre>
+<span></span>{&#39;CATEGORY&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;COLOR&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;FIRST LETTER&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;GROUP&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;LOCATION&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;SIZE&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;WORD LENGTH&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;category&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;color&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;first letter&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;length&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;pos&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;,
+ &#39;size&#39;: &lt;function quail.helpers.&lt;lambda&gt;&gt;}
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># generate a list from the word pool</span>
+<span class="n">lst1</span> <span class="o">=</span> <span class="n">generate_lst</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span>
+
+<span class="c1"># simulate an egg</span>
+<span class="n">egg</span> <span class="o">=</span> <span class="n">simulate_egg</span><span class="p">(</span><span class="n">lst1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython2"><div class="highlight"><pre>
+<span></span><span class="c1"># def format_stim(wp):</span>
+<span class="c1">#     trials=[]</span>
+<span class="c1">#     for idx, row in wp.iterrows():</span>
+<span class="c1">#         trial = {</span>
+<span class="c1">#             &#39;type&#39; : &#39;p&#39;,</span>
+<span class="c1">#             &#39;text&#39; : row[&#39;WORD&#39;],</span>
+<span class="c1">#             &#39;length&#39; : row[&#39;WORD LENGTH&#39;],</span>
+<span class="c1">#             &#39;size&#39; : row[&#39;SIZE&#39;],</span>
+<span class="c1">#             &#39;category&#39; : row[&#39;CATEGORY&#39;],</span>
+<span class="c1">#             &#39;listid&#39; : row[&#39;GROUP&#39;],</span>
+<span class="c1">#             &#39;pos&#39; : row[&#39;LOCATION&#39;],</span>
+<span class="c1">#             &#39;rgb&#39; : row[&#39;COLOR&#39;],</span>
+<span class="c1">#         }</span>
+<span class="c1">#         trials.append(trial)</span>
+<span class="c1">#     return trials</span>
+</pre></div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/tutorial/.ipynb_checkpoints/optimal presenter-checkpoint.ipynb.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

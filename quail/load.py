@@ -3,18 +3,21 @@ from __future__ import print_function
 from builtins import zip
 from builtins import str
 from builtins import range
-from sqlalchemy import create_engine, MetaData, Table
 import json
 import re
 import csv
-import pandas as pd
-import numpy as np
-from .egg import Egg, FriedEgg
-import dill
 import pickle
 import os
+import pandas as pd
+import numpy as np
 import deepdish as dd
+from .egg import Egg, FriedEgg
 from .helpers import parse_egg, stack_eggs
+
+try:
+    from sqlalchemy import create_engine, MetaData, Table
+except:
+    pass
 
 def load(filepath, update=True):
     """

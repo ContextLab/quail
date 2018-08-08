@@ -9,13 +9,37 @@ API reference
 
 .. _plot_api:
 
-Egg data object
+Egg class
 ------------------
 
 .. autosummary::
   :toctree:
 
   quail.Egg
+
+FriedEgg class
+------------------
+
+.. autosummary::
+  :toctree:
+
+  quail.FriedEgg
+
+Fingerprint class
+------------------
+
+.. autosummary::
+  :toctree:
+
+  quail.Fingerprint
+
+Optimal Presenter class
+------------------
+
+.. autosummary::
+  :toctree:
+
+  quail.OptimalPresenter
 
 Load example data
 ------------------

@@ -15,11 +15,42 @@ words/stimuli that were recalled by the subject.
 
 import quail
 
-# presented words
-presented_words = [['cat', 'bat', 'hat', 'goat'],['zoo', 'animal', 'zebra', 'horse']]
 
-# recalled words
-recalled_words = [['bat', 'cat', 'goat', 'hat'],['animal', 'horse', 'zoo']]
+# generate some fake data
+next_presented = ['CAT', 'DOG', 'SHOE', 'HORSE']
+next_recalled = ['HORSE', 'DOG', 'CAT']
 
-# create egg
-egg = quail.Egg(pres=presented_words, rec=recalled_words)
+next_features = [{
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'C',
+                    'length' : 3
+                 },
+                 {
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'D',
+                    'length' : 3
+                 },
+                 {
+                    'category' : 'object',
+                    'size' : 'smaller',
+                    'starting letter' : 'S',
+                    'length' : 4
+                 },
+                 {
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'H',
+                    'length' : 5
+                 }
+]
+dist_funcs = {
+                'category' : 'lambda a, b: int(a!=b)',
+                'size' : 'lambda a, b: int(a!=b)',
+                'starting letter' : 'lambda a, b: int(a!=b)',
+                'length' : 'lambda a, b: np.linalg.norm(np.subtract(a,b))'
+}
+egg = quail.Egg(pres=[next_presented], rec=[next_recalled], features=[next_features], dist_funcs=dist_funcs)
+
+egg.analyze('lagcrp').plot()
