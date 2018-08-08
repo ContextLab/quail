@@ -48,10 +48,7 @@ def recall_matrix(egg, match='exact', distance='euclidean', features=None):
         features=['item']
         return _recmat_exact(egg.pres, egg.rec, features)
     else:
-        recall_matrix.simmtx = _recmat_smooth(egg.pres, egg.rec, features, distance, match)[1]
-
-        return _recmat_smooth(egg.pres, egg.rec, features, distance, match)[0]
-
+        return _recmat_smooth(egg.pres, egg.rec, features, distance, match)
 
 def _recmat_exact(presented, recalled, features):
     lists = presented.index.get_values()
@@ -74,19 +71,20 @@ def _recmat_smooth(presented, recalled, features, distance, match):
     if match == 'best':
         func = np.argmax
     elif match == 'smooth':
-        func = np.mean
+        func = np.nanmean
 
     simmtx = _similarity_smooth(presented, recalled, features, distance)
-    recmat = np.atleast_3d([func(s, 1) for s in simmtx]).astype(np.float64)
+
 
     if match == 'best':
+        recmat = np.atleast_3d([func(s, 1) for s in simmtx]).astype(np.float64)
         recmat+=1
+        recmat[np.isnan(simmtx).any(2)]=np.nan
+    elif match == 'smooth':
+        recmat = np.atleast_3d([func(s, 0) for s in simmtx]).astype(np.float64)
 
-    recmat[np.isnan(simmtx).any(2)]=np.nan
 
-    #_recmat_smooth.simmtx = simmtx
-
-    return recmat, simmtx
+    return recmat
 
 def _similarity_smooth(presented, recalled, features, distance):
     lists = presented.index.get_values()
