@@ -48,7 +48,9 @@ def recall_matrix(egg, match='exact', distance='euclidean', features=None):
         features=['item']
         return _recmat_exact(egg.pres, egg.rec, features)
     else:
-        return _recmat_smooth(egg.pres, egg.rec, features, distance, match)
+        recall_matrix.simmtx = _recmat_smooth(egg.pres, egg.rec, features, distance, match)[1]
+
+        return _recmat_smooth(egg.pres, egg.rec, features, distance, match)[0]
 
 
 def _recmat_exact(presented, recalled, features):
@@ -81,7 +83,10 @@ def _recmat_smooth(presented, recalled, features, distance, match):
         recmat+=1
 
     recmat[np.isnan(simmtx).any(2)]=np.nan
-    return recmat
+
+    #_recmat_smooth.simmtx = simmtx
+
+    return recmat, simmtx
 
 def _similarity_smooth(presented, recalled, features, distance):
     lists = presented.index.get_values()
@@ -96,4 +101,7 @@ def _similarity_smooth(presented, recalled, features, distance):
             r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
             tmp = 1 - cdist(r, p, distance)
             res[li, i, :tmp.shape[0], :] =  tmp
-    return np.mean(res, 1)
+    if distance == 'correlation':
+        return np.nanmean(res, 1)
+    else:
+        return np.mean(res, 1)
