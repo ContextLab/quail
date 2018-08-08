@@ -59,7 +59,7 @@ def _recmat_exact(presented, recalled, features):
         p_list = presented.loc[l]
         r_list = recalled.loc[l]
         for i, feature in enumerate(features):
-            get_feature = lambda x: np.array(x[feature]) if x['item'] is not np.nan else np.nan
+            get_feature = lambda x: np.array(x[feature]) if not np.array(pd.isnull(x['item'])).any() else np.nan
             p = np.vstack(p_list.apply(get_feature).get_values())
             r = r_list.dropna().apply(get_feature).get_values()
             r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
@@ -90,7 +90,7 @@ def _similarity_smooth(presented, recalled, features, distance):
         p_list = presented.loc[l]
         r_list = recalled.loc[l]
         for i, feature in enumerate(features):
-            get_feature = lambda x: np.array(x[feature]) if x['item'] is not np.nan else np.nan
+            get_feature = lambda x: np.array(x[feature]) if np.array(pd.notna(x['item'])).any() else np.nan
             p = np.vstack(p_list.apply(get_feature).get_values())
             r = r_list.dropna().apply(get_feature).get_values()
             r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
