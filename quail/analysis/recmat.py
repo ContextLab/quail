@@ -50,7 +50,6 @@ def recall_matrix(egg, match='exact', distance='euclidean', features=None):
     else:
         return _recmat_smooth(egg.pres, egg.rec, features, distance, match)
 
-
 def _recmat_exact(presented, recalled, features):
     lists = presented.index.get_values()
     cols = max(presented.shape[1], recalled.shape[1])
@@ -59,7 +58,7 @@ def _recmat_exact(presented, recalled, features):
         p_list = presented.loc[l]
         r_list = recalled.loc[l]
         for i, feature in enumerate(features):
-            get_feature = lambda x: np.array(x[feature]) if x['item'] is not np.nan else np.nan
+            get_feature = lambda x: np.array(x[feature]) if not np.array(pd.isnull(x['item'])).any() else np.nan
             p = np.vstack(p_list.apply(get_feature).get_values())
             r = r_list.dropna().apply(get_feature).get_values()
             r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
@@ -72,28 +71,35 @@ def _recmat_smooth(presented, recalled, features, distance, match):
     if match == 'best':
         func = np.argmax
     elif match == 'smooth':
-        func = np.mean
+        func = np.nanmean
 
     simmtx = _similarity_smooth(presented, recalled, features, distance)
-    recmat = np.atleast_3d([func(s, 1) for s in simmtx]).astype(np.float64)
+
 
     if match == 'best':
+        recmat = np.atleast_3d([func(s, 1) for s in simmtx]).astype(np.float64)
         recmat+=1
+        recmat[np.isnan(simmtx).any(2)]=np.nan
+    elif match == 'smooth':
+        recmat = np.atleast_3d([func(s, 0) for s in simmtx]).astype(np.float64)
 
-    recmat[np.isnan(simmtx).any(2)]=np.nan
+
     return recmat
 
 def _similarity_smooth(presented, recalled, features, distance):
     lists = presented.index.get_values()
-    res = np.empty((len(lists), len(features), presented.iloc[0].shape[0], recalled.iloc[0].shape[0]))*np.nan
+    res = np.empty((len(lists), len(features), recalled.iloc[0].shape[0], presented.iloc[0].shape[0]))*np.nan
     for li, l in enumerate(lists):
         p_list = presented.loc[l]
         r_list = recalled.loc[l]
         for i, feature in enumerate(features):
-            get_feature = lambda x: np.array(x[feature]) if x['item'] is not np.nan else np.nan
+            get_feature = lambda x: np.array(x[feature]) if np.array(pd.notna(x['item'])).any() else np.nan
             p = np.vstack(p_list.apply(get_feature).get_values())
             r = r_list.dropna().apply(get_feature).get_values()
             r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
             tmp = 1 - cdist(r, p, distance)
             res[li, i, :tmp.shape[0], :] =  tmp
-    return np.mean(res, 1)
+    if distance == 'correlation':
+        return np.nanmean(res, 1)
+    else:
+        return np.mean(res, 1)

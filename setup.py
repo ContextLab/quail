@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='quail',
-    version='0.1.4',
+    version='0.2.0',
     description='A python toolbox for analyzing and plotting free recall data',
     long_description=' ',
     author='Contextual Dynamics Lab',
@@ -24,8 +24,8 @@ setup(
         "dill",
         "requests",
         "pydub",
-        "google-cloud-speech",
-        "google-cloud",
+        "google-cloud-speech<0.31dev,>=0.30.0",
+        "google-cloud>=0.32.0,<0.34.0",
         "pathos",
         "future",
         "six",

@@ -13,7 +13,7 @@ sqlalchemy
 dill
 requests
 pydub
-google-cloud
+google-cloud>=0.32.0,<0.34.0
 multiprocessing
 pathos
 jupyter_client

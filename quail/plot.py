@@ -202,9 +202,13 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
         if plot_type is 'subject':
             ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=subjname, **kwargs)
+            if 'ax' in kwargs:
+                del kwargs['ax']
             sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=subjname, ax=ax, legend=False, **kwargs)
         elif plot_type is 'list':
             ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=listname, **kwargs)
+            if 'ax' in kwargs:
+                del kwargs['ax']
             sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=listname, ax=ax, legend=False, **kwargs)
         ax.set_xlim(-5,5)
 
