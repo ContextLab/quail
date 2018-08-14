@@ -16,11 +16,10 @@ list position.
 import quail
 
 #load data
-egg = quail.load_example_data()
+egg = quail.load('example')
 
-# analysis
-analyzed_data = quail.analyze(egg, analysis='pnr', listgroup=['average']*8,
+# analyze and plot
+fegg = egg.analyze('pnr', listgroup=['average']*8,
                               position=5)
 
-# plot
-quail.plot(analyzed_data, title='Probability of Recall')
+fegg.plot(title='Probability of Recall')
