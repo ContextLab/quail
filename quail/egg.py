@@ -39,7 +39,7 @@ class Egg(object):
         presented together in one block (or list). Each item within the list can
         be a string representing the stimulus or a dictionary representing the
         stimuli and its features. If dictionaries are passed, identify the stimulus
-        name using the 'stimulus' key and a string label. To represent additional
+        name using the 'item' key and a string label. To represent additional
         stimulus features, use any text (str) label as the key and a value of the
         following types: string, int, float, list, array.
 
@@ -50,7 +50,7 @@ class Egg(object):
         presented together in one block (or list). Each item within the list can
         be a string representing the stimulus or a dictionary representing the
         stimuli and its features. If dictionaries are passed, identify the stimulus
-        name using the 'stimulus' key and a string label. To represent additional
+        name using the 'item' key and a string label. To represent additional
         stimulus features, use any text (str) label as the key and a value of the
         following types: string, int, float, list, array.
 
