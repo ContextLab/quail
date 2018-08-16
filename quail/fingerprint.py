@@ -103,7 +103,7 @@ class Fingerprint(object):
                           pass_features=True,
                           permute=permute,
                           n_perms=nperms,
-                          parallel=parallel).as_matrix(), 0)
+                          parallel=parallel).values, 0)
 
         if self.state is not None:
 

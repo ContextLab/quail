@@ -16,35 +16,66 @@ import quail
 from quail import Fingerprint, OptimalPresenter
 
 # generate some fake data
-next_presented = ['CAT', 'DOG', 'SHOE', 'BAT']
-next_recalled = ['DOG', 'CAT', 'BAT', 'SHOE']
-
-next_features = [{
+next_presented = [{
+                    'item' : 'CAT',
                     'category' : 'animal',
                     'size' : 'bigger',
                     'starting letter' : 'C',
                     'length' : 3
                  },
                  {
+                    'item' : 'DOG',
                     'category' : 'animal',
                     'size' : 'bigger',
                     'starting letter' : 'D',
                     'length' : 3
                  },
                  {
+                    'item' : 'SHOE',
                     'category' : 'object',
                     'size' : 'smaller',
                     'starting letter' : 'S',
                     'length' : 4
                  },
                  {
+                    'item' : 'BAT',
                     'category' : 'animal',
                     'size' : 'bigger',
                     'starting letter' : 'B',
                     'length' : 3
                  }]
 
-egg = quail.Egg(pres=[next_presented], rec=[next_recalled], features=[next_features])
+next_recalled = [{
+                    'item' : 'DOG',
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'D',
+                    'length' : 3
+                 },
+                 {
+                    'item' : 'CAT',
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'C',
+                    'length' : 3
+                 },
+                 {
+                    'item' : 'BAT',
+                    'category' : 'animal',
+                    'size' : 'bigger',
+                    'starting letter' : 'B',
+                    'length' : 3
+                 },
+                 {
+                    'item' : 'SHOE',
+                    'category' : 'object',
+                    'size' : 'smaller',
+                    'starting letter' : 'S',
+                    'length' : 4
+                 }
+]
+
+egg = quail.Egg(pres=[next_presented], rec=[next_recalled])
 
 # initialize fingerprint
 fingerprint = Fingerprint(init=egg)

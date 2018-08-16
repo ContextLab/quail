@@ -17,7 +17,7 @@ import quail
 # decode speech
 recall_data = quail.decode_speech('../data/sample.wav', save=True,
                                   speech_context=['DONKEY', 'PETUNIA'],
-                                  keypath='/Users/andyheusser/Documents/cdl/credentials/efficient-learning-553bf474f805.json')
+                                  keypath='path/to/key.json')
 
 # print results
 print(recall_data)
