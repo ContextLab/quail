@@ -62,7 +62,10 @@ def _recmat_exact(presented, recalled, features):
             p = np.vstack(p_list.apply(get_feature).get_values())
             r = r_list.dropna().apply(get_feature).get_values()
             r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
-            m = [np.where((p==x).all(axis=1))[0] for x in r]
+            try:
+                m = [np.where((p==x).all(axis=1))[0] for x in r]
+            except AttributeError:
+                m = []
             result[li, :len(m)] = [x[0]+1 if len(x)>0 else np.nan for x in m]
     return result
 
