@@ -150,21 +150,22 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
 
         words = []
 
-        for result in results[0].results:
-                alternative = result.alternatives[0]
-                print('Transcript: {}'.format(alternative.transcript))
-                print('Confidence: {}'.format(alternative.confidence))
+        for chunk in results:
+            for result in chunk.results:
+                    alternative = result.alternatives[0]
+                    print('Transcript: {}'.format(alternative.transcript))
+                    print('Confidence: {}'.format(alternative.confidence))
 
-                for word_info in alternative.words:
-                    word = word_info.word
-                    start_time = word_info.start_time
-                    end_time = word_info.end_time
-                    print('Word: {}, start_time: {}, end_time: {}'.format(
-                        word,
-                        start_time.seconds + start_time.nanos * 1e-9,
-                        end_time.seconds + end_time.nanos * 1e-9))
-                    words.append((str(word).upper(), start_time.seconds + start_time.nanos * 1e-9,
-                                    end_time.seconds + end_time.nanos * 1e-9))
+                    for word_info in alternative.words:
+                        word = word_info.word
+                        start_time = word_info.start_time
+                        end_time = word_info.end_time
+                        print('Word: {}, start_time: {}, end_time: {}'.format(
+                            word,
+                            start_time.seconds + start_time.nanos * 1e-9,
+                            end_time.seconds + end_time.nanos * 1e-9))
+                        words.append((str(word).upper(), start_time.seconds + start_time.nanos * 1e-9,
+                                        end_time.seconds + end_time.nanos * 1e-9))
         return words
 
     # def parse_response(results):
