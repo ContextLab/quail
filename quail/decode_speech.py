@@ -21,7 +21,7 @@ except:
     pass
 
 
-def decode_speech(path, keypath=None, save=False, speech_context=None,
+def decode_speech(path, keypath=None, save=False, save_dir=None, speech_context=None,
                   sample_rate=44100, max_alternatives=1, language_code='en-US',
                   enable_word_time_offsets=True, return_raw=False):
     """
@@ -48,6 +48,10 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
     save : boolean
         False by default, but if set to true, will save a pickle with the results
         object from google speech, and a text file with the decoded words.
+
+    save_dir : str
+        Path to desired output folder for pickled results object and text
+        file. Default is the folder containing the decoded wav file(s).
 
     speech_context : list of str
         This allows you to give some context to the speech decoding algorithm.
@@ -196,12 +200,16 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
     else:
         client = speech.SpeechClient()
 
-    # make a list of files
+    # make a list of files and set save_dir if not passed
     files = []
     if path.endswith(".wav"):
         files = [path]
+        if save_dir is None:
+            save_dir = os.path.split(path)[0]
     else:
         listdirectory = os.listdir(path)
+        if save_dir is None:
+            save_dir = path
         for filename in listdirectory:
             if filename.endswith(".wav"):
                 files.append(path + filename)
@@ -236,15 +244,16 @@ def decode_speech(path, keypath=None, save=False, speech_context=None,
 
             if save:
                 # save the raw response in a pickle
-                pickle.dump(results, open(f + ".p", "wb" ) )
+                pickle.dump(words, open(os.path.abspath(os.path.join(
+                save_dir,f)) + ".p", "wb" ))
 
                 # save a text file with just the words
-                pd.DataFrame(parsed_results).to_csv(f + '.txt', header=False,
-                                                    index=False)
+                pd.DataFrame(parsed_results).to_csv(os.path.abspath(
+                os.path.join(save_dir,f)) + '.txt', header=False, index=False)
 
             # print when finished
-            print('Finished file ' + str(i+1) + ' of ' + str(len(files)) + ' in ' +
-                  str(round(time.time()-start,2)) + ' seconds.')
+            print('Finished file ' + str(i+1) + ' of ' + str(len(files)) + ' in '
+            + str(round(time.time()-start,2)) + ' seconds.')
 
         # handle when something goes wrong
         except ValueError as e:
