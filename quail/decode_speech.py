@@ -243,13 +243,15 @@ def decode_speech(path, keypath=None, save=False, save_dir=None, speech_context=
             raw.append(results)
 
             if save:
+
+                f_name = os.path.split(f)[1]
+                save_path = os.path.abspath(os.path.join(save_dir,f_name))
+
                 # save the raw response in a pickle
-                pickle.dump(words, open(os.path.abspath(os.path.join(
-                save_dir,f)) + ".p", "wb" ))
+                pickle.dump(words, open(save_path + ".p", "wb" ))
 
                 # save a text file with just the words
-                pd.DataFrame(parsed_results).to_csv(os.path.abspath(
-                os.path.join(save_dir,f)) + '.txt', header=False, index=False)
+                pd.DataFrame(parsed_results).to_csv(save_path + '.txt', header=False, index=False)
 
             # print when finished
             print('Finished file ' + str(i+1) + ' of ' + str(len(files)) + ' in '
