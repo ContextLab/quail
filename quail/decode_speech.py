@@ -99,7 +99,8 @@ def decode_speech(path, keypath=None, save=False, save_dir=None, speech_context=
             Subfunction that loops over audio segments to recognize speech
             """
             # export as flac
-            chunk.export(file_path + ".flac", format = "flac", bitrate="44.1k")
+            if not os.path.isfile(file_path + ".flac"):
+                chunk.export(file_path + ".flac", format = "flac", bitrate="44.1k")
 
             # open flac file
             with open(file_path + ".flac", 'rb') as sc:
