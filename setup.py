@@ -21,7 +21,7 @@ with open('requirements.txt') as f:
     REQUIREMENTS = f.read().splitlines()
 
 EXTRAS_REQUIRE={
-    'speech-decoding': ["pydub", "google-cloud-speech<0.31dev,>=0.30.0", "google-cloud>=0.32.0,<0.34.0"],
+    'speech-decoding': ["pydub", "google-cloud-speech<0.31dev,>=0.30.0", "google-auth"],
     'efficient-learning': ["sqlalchemy"],
 }
 
