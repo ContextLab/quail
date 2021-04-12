@@ -10,5 +10,5 @@ from .fingerprint import Fingerprint, OptimalPresenter
 from .distance import *
 
 
-__version__ = get_distribution('quail')
+__version__ = get_distribution('quail').version
 
