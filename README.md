@@ -58,7 +58,7 @@ This will work on clean systems, but if you encounter issues you may need to run
 
 <h2>Requirements</h2>
 
-+ python 2.7, 3.4+
++ python>=3.6
 + pandas>=0.18.0
 + seaborn>=0.7.1
 + matplotlib>=1.5.1
