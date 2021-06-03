@@ -4,8 +4,9 @@ services:
 - xvfb
 python:
 - '2.7'
-- '3.5'
 - '3.6'
+- '3.7'
+- '3.8'
 before_script:
 - export DISPLAY=:99.0
 - sleep 3
