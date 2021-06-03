@@ -51,7 +51,7 @@ def recall_matrix(egg, match='exact', distance='euclidean', features=None):
         return _recmat_smooth(egg.pres, egg.rec, features, distance, match)
 
 def _recmat_exact(presented, recalled, features):
-    lists = presented.index.get_values()
+    lists = presented.index.to_numpy()()
     cols = max(presented.shape[1], recalled.shape[1])
     result = np.empty((presented.shape[0], cols))*np.nan
     for li, l in enumerate(lists):
@@ -59,8 +59,8 @@ def _recmat_exact(presented, recalled, features):
         r_list = recalled.loc[l]
         for i, feature in enumerate(features):
             get_feature = lambda x: np.array(x[feature]) if not np.array(pd.isnull(x['item'])).any() else np.nan
-            p = np.vstack(p_list.apply(get_feature).get_values())
-            r = r_list.dropna().apply(get_feature).get_values()
+            p = np.vstack(p_list.apply(get_feature).to_numpy()())
+            r = r_list.dropna().apply(get_feature).to_numpy()()
             r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
             try:
                 m = [np.where((p==x).all(axis=1))[0] for x in r]
@@ -90,15 +90,15 @@ def _recmat_smooth(presented, recalled, features, distance, match):
     return recmat
 
 def _similarity_smooth(presented, recalled, features, distance):
-    lists = presented.index.get_values()
+    lists = presented.index.to_numpy()()
     res = np.empty((len(lists), len(features), recalled.iloc[0].shape[0], presented.iloc[0].shape[0]))*np.nan
     for li, l in enumerate(lists):
         p_list = presented.loc[l]
         r_list = recalled.loc[l]
         for i, feature in enumerate(features):
             get_feature = lambda x: np.array(x[feature]) if np.array(pd.notna(x['item'])).any() else np.nan
-            p = np.vstack(p_list.apply(get_feature).get_values())
-            r = r_list.dropna().apply(get_feature).get_values()
+            p = np.vstack(p_list.apply(get_feature).to_numpy()())
+            r = r_list.dropna().apply(get_feature).to_numpy()()
             r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
             tmp = 1 - cdist(r, p, distance)
             res[li, i, :tmp.shape[0], :] =  tmp

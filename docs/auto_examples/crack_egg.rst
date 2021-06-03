@@ -33,8 +33,8 @@ This an example of how to crack an egg (take a slice of subjects/lists from it)
 
     cracked_egg.info()
 
-    pres = cracked_egg.get_pres_items().as_matrix()[0]
-    rec = cracked_egg.get_rec_items().as_matrix()[0]
+    pres = cracked_egg.get_pres_items().to_numpy()[0]
+    rec = cracked_egg.get_rec_items().to_numpy()[0]
 
     def distmat(egg, feature, distdict):
         f = [xi[feature] for xi in egg.get_pres_features()]

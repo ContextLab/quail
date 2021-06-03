@@ -22,8 +22,8 @@ cracked_egg = quail.crack_egg(egg, subjects=[0], lists=[0])
 
 cracked_egg.info()
 
-pres = cracked_egg.get_pres_items().as_matrix()[0]
-rec = cracked_egg.get_rec_items().as_matrix()[0]
+pres = cracked_egg.get_pres_items().to_numpy()[0]
+rec = cracked_egg.get_rec_items().to_numpy()[0]
 
 def distmat(egg, feature, distdict):
     f = [xi[feature] for xi in egg.get_pres_features()]
