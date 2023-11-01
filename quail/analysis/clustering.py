@@ -220,5 +220,10 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
 def _permute(egg, feature, distdict, func, n_perms=100):
     perms = [func(shuffle_egg(egg), feature, distdict, False, None) for i in range(n_perms)]
     real = func(egg, feature, distdict, False, None)
-    bools = [perm < real for perm in perms]
+
+    # permuted values that are *less* than the
+    # observed value contribute a score of 1; permuted
+    # values that are *equal* to the observed value contribute 0.5;
+    # all others (strictly greater than) contribute 0.
+    bools = [1 if perm < real else 0.5 if perm == real else 0 for perm in perms]
     return np.sum(np.array(bools), axis=0) / n_perms
