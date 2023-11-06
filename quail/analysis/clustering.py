@@ -73,7 +73,7 @@ def _get_weight_exact(egg, feature, distdict, permute, n_perms):
             di = dists[pres.index(n)]
             dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
 
-            if len(np.unique(dists_filt)) == 1:
+            if len(np.unique(dists_filt)) == 1 and dists_filt[0] == 0:
                 ranks.append(0.5)
             else:
                 ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0]+1) / len(dists_filt))
@@ -101,7 +101,7 @@ def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
         dists = distmat[cdx, :]
         di = dists[ndx]
         dists_filt = np.array([dist for idx, dist in enumerate(dists)])
-        if len(np.unique(dists_filt)) == 1:
+        if len(np.unique(dists_filt)) == 1 and dists_filt[0] == 0:
             ranks.append(0.5)
         else:
             ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0] + 1) / len(dists_filt))
@@ -127,7 +127,7 @@ def _get_weight_smooth(egg, feature, distdict, permute, n_perms, distance):
         dists = distmat[cdx, :]
         di = dists[ndx]
         dists_filt = np.array([dist for idx, dist in enumerate(dists)])
-        if len(np.unique(dists_filt)) == 1:
+        if len(np.unique(dists_filt)) == 1 and dists_filt[0] == 0:
             ranks.append(0.5)
         else:
             ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0] + 1) / len(dists_filt))
