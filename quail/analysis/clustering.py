@@ -6,6 +6,7 @@ from scipy.spatial.distance import cdist
 from ..distance import dist_funcs as distdict
 from ..helpers import shuffle_egg
 
+
 def fingerprint_helper(egg, permute=False, n_perms=1000,
                        match='exact', distance='euclidean', features=None):
     """
@@ -36,17 +37,23 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
                             distance)
     return np.nanmean(weights, axis=0)
 
+
+def _get_corrected_rank(x, dists):
+    return (np.sum(dists > x) + np.sum(dists == x) / 2) / len(dists)
+
+
 def _get_weights(slices, features, distdict, permute, n_perms, match, distance):
     weights = np.zeros((len(slices), len(features)))
     for sdx, s in enumerate(slices):
         for fdx, f in enumerate(features):
-            if match is 'exact':
+            if match == 'exact':
                 weights[sdx, fdx] = _get_weight_exact(s, f, distdict, permute,
                                                       n_perms)
-            elif match is 'best':
+            elif match == 'best':
                 weights[sdx, fdx] = _get_weight_best(s, f, distdict, permute,
                                                       n_perms, distance)
     return weights
+
 
 def _get_weight_exact(egg, feature, distdict, permute, n_perms):
 
@@ -72,14 +79,11 @@ def _get_weight_exact(egg, feature, distdict, permute, n_perms):
             dists = distmat[pres.index(c),:]
             di = dists[pres.index(n)]
             dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
-
-            if len(np.unique(dists_filt)) == 1 and dists_filt[0] == 0:
-                ranks.append(0.5)
-            else:
-                ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0]+1) / len(dists_filt))
+            ranks.append(_get_corrected_rank(di, dists_filt))
             past_idxs.append(pres.index(c))
             past_words.append(c)
     return np.nanmean(ranks)
+
 
 def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
 
@@ -101,10 +105,7 @@ def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
         dists = distmat[cdx, :]
         di = dists[ndx]
         dists_filt = np.array([dist for idx, dist in enumerate(dists)])
-        if len(np.unique(dists_filt)) == 1 and dists_filt[0] == 0:
-            ranks.append(0.5)
-        else:
-            ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0] + 1) / len(dists_filt))
+        ranks.append(_get_corrected_rank(di, dists_filt))
     return np.nanmean(ranks)
 
 def _get_weight_smooth(egg, feature, distdict, permute, n_perms, distance):
@@ -127,11 +128,9 @@ def _get_weight_smooth(egg, feature, distdict, permute, n_perms, distance):
         dists = distmat[cdx, :]
         di = dists[ndx]
         dists_filt = np.array([dist for idx, dist in enumerate(dists)])
-        if len(np.unique(dists_filt)) == 1 and dists_filt[0] == 0:
-            ranks.append(0.5)
-        else:
-            ranks.append(np.mean(np.where(np.sort(dists_filt)[::-1] == di)[0] + 1) / len(dists_filt))
+        ranks.append(_get_corrected_rank(di, dists_filt))
     return np.nanmean(ranks)
+
 
 def get_distmat(egg, feature, distdict):
     f = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().values[0]])
@@ -139,10 +138,12 @@ def get_distmat(egg, feature, distdict):
         f = f.T
     return cdist(f, f, distdict[egg.dist_funcs[feature]])
 
+
 def get_match(egg, feature, distdict):
     p = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().values[0]]).T
     r = np.atleast_2d([xi[feature] for xi in egg.get_rec_features().values[0]]).T
     return cdist(p, r, distdict[egg.dist_funcs[feature]])
+
 
 def compute_feature_weights(pres_list, rec_list, feature_list, distances):
     """
@@ -226,6 +227,7 @@ def compute_feature_weights(pres_list, rec_list, feature_list, distances):
             weights[feature] = np.nanmean(weights[feature])
 
     return [weights[key] for key in weights]
+
 
 def _permute(egg, feature, distdict, func, n_perms=100):
     perms = [func(shuffle_egg(egg), feature, distdict, False, None) for i in range(n_perms)]
