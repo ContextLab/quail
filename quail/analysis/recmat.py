@@ -61,7 +61,7 @@ def _recmat_exact(presented, recalled, features):
             get_feature = lambda x: np.array(x[feature]) if not np.array(pd.isnull(x['item'])).any() else np.nan
             p = np.vstack(p_list.apply(get_feature).to_numpy())
             r = r_list.dropna().apply(get_feature).to_numpy()
-            r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
+            r = np.vstack(list(filter(lambda x: (x is not np.nan) and (np.size(x) > 0), r)))
             try:
                 m = [np.where((p==x).all(axis=1))[0] for x in r]
             except AttributeError:
@@ -99,7 +99,7 @@ def _similarity_smooth(presented, recalled, features, distance):
             get_feature = lambda x: np.array(x[feature]) if np.array(pd.notna(x['item'])).any() else np.nan
             p = np.vstack(p_list.apply(get_feature).to_numpy())
             r = r_list.dropna().apply(get_feature).to_numpy()
-            r = np.vstack(list(filter(lambda x: x is not np.nan, r)))
+            r = np.vstack(list(filter(lambda x: (x is not np.nan) and (np.size(x) > 0), r)))
             tmp = 1 - cdist(r, p, distance)
             res[li, i, :tmp.shape[0], :] =  tmp
     if distance == 'correlation':

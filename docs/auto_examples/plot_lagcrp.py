@@ -20,4 +20,6 @@ import quail
 egg = quail.load('example')
 
 # analyze and plot
-egg.analyze('lagcrp', listgroup=['average']*8).plot(title='Lag-CRP')
+fegg = egg.analyze('lagcrp', listgroup=['average']*8)
+
+fegg.plot(title='Lag-CRP')

@@ -4,7 +4,7 @@ from builtins import str
 from builtins import object
 import pickle
 import time
-import deepdish as dd
+import joblib
 import inspect
 import warnings
 import pandas as pd
@@ -160,23 +160,29 @@ class Egg(object):
         rec = fill_missing(rec)
 
         # if pres is strings, reformat
-        if type(pres[0][0][0]) is not dict:
-            pres = [[[{'item' : x} for x in y] for y in z] for z in pres]
+        if len(pres)>0 and len(pres[0])>0 and len(pres[0][0])>0 and type(pres[0][0][0]) is not dict:
+             pres = [[[{'item' : x} for x in y] for y in z] for z in pres]
 
-        # if pres is strings, reformat
-        if type(rec[0][0][0]) is not dict:
+        # if rec is strings, reformat
+        # Check for empty lists
+        if len(rec)>0 and len(rec[0])>0 and len(rec[0][0])>0 and type(rec[0][0][0]) is not dict:
             rec = [[[{'item' : x} for x in y] for y in z] for z in rec]
+        elif rec and rec[0] and rec[0][0] and (len(rec[0][0]) == 0):
+            # Empty recall list. Need to ensure it's structured correctly?
+            # If input was [[]], it's list(list(list)).
+            # But "fill_missing" might have padded it?
+            pass
 
         # if item is missing from pres, add it
-        if 'item' not in pres[0][0][0]:
+        if len(pres)>0 and len(pres[0])>0 and len(pres[0][0])>0 and 'item' not in pres[0][0][0]:
             [[[x.update({'item' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
-        if 'temporal' not in pres[0][0][0]:
+        if len(pres)>0 and len(pres[0])>0 and len(pres[0][0])>0 and 'temporal' not in pres[0][0][0]:
             [[[x.update({'temporal' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
 
         # if item is missing from rec, add it
-        if 'item' not in rec[0][0][0]:
+        if len(rec)>0 and len(rec[0])>0 and len(rec[0][0])>0 and 'item' not in rec[0][0][0]:
             [[[x.update({'item' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
-        if 'temporal' not in rec[0][0][0]:
+        if len(rec)>0 and len(rec[0])>0 and len(rec[0][0])>0 and 'temporal' not in rec[0][0][0]:
             [[[x.update({'temporal' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
 
         # attach features and dist funcs if they are passed
@@ -190,9 +196,9 @@ class Egg(object):
         self.dist_funcs = default_dist_funcs(dist_funcs, pres[0][0][0])
 
         # attach the rest of the variables
-        self.pres = list2pd(pres).applymap(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
+        self.pres = list2pd(pres).map(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
         self.feature_names = list(self.get_pres_features()[0][0][0])
-        self.rec = list2pd(rec).applymap(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
+        self.rec = list2pd(rec).map(lambda x: {'item' : np.nan} if pd.isnull(x) else x)
         self.subjgroup=subjgroup
         self.subjname=subjname
         self.listgroup=listgroup
@@ -215,7 +221,7 @@ class Egg(object):
         """
         Returns a df of presented items
         """
-        return self.pres.applymap(lambda x: x['item'])
+        return self.pres.map(lambda x: x['item'])
 
     def get_pres_features(self, features=None):
         """
@@ -225,13 +231,13 @@ class Egg(object):
             features = self.dist_funcs.keys()
         elif not isinstance(features, list):
             features = [features]
-        return self.pres.applymap(lambda x: {k:v for k,v in x.items() if k in features} if x is not None else None)
+        return self.pres.map(lambda x: {k:v for k,v in x.items() if k in features} if x is not None else None)
 
     def get_rec_items(self):
         """
         Returns a df of recalled items
         """
-        return self.rec.applymap(lambda x: x['item'] if x is not None else x)
+        return self.rec.map(lambda x: x['item'] if x is not None else x)
 
     def get_rec_features(self, features=None):
         """
@@ -241,7 +247,7 @@ class Egg(object):
             features = self.dist_funcs.keys()
         elif not isinstance(features, list):
             features = [features]
-        return self.rec.applymap(lambda x: {k:v for k,v in x.items() if k != 'item'} if x is not None else None)
+        return self.rec.map(lambda x: {k:v for k,v in x.items() if k != 'item'} if x is not None else None)
 
 
     def info(self):
@@ -254,13 +260,12 @@ class Egg(object):
         print('Date created: ' + str(self.date_created))
         print('Meta data: ' + str(self.meta))
 
-    def save(self, fname, compression='blosc'):
+    def save(self, fname, compression='zlib'):
         """
         Save method for the Egg object
 
         The data will be saved as a 'egg' file, which is a dictionary containing
-        the elements of a Egg saved in the hd5 format using
-        `deepdish`.
+        the elements of a Egg saved using `joblib`.
 
         Parameters
         ----------
@@ -270,8 +275,7 @@ class Egg(object):
             it will be appended.
 
         compression : str
-            The kind of compression to use.  See the deepdish documentation for
-            options: http://deepdish.readthedocs.io/en/latest/api_io.html#deepdish.io.save
+            options: https://joblib.readthedocs.io/en/latest/generated/joblib.dump.html
 
         """
 
@@ -295,7 +299,7 @@ class Egg(object):
         # save
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            dd.io.save(fname, egg, compression=compression)
+            joblib.dump(egg, fname, compress=compression)
 
     def crack(self, subjects=None, lists=None):
         """
@@ -342,29 +346,53 @@ class FriedEgg(object):
 
     Parameters
     ----------
+    data : Pandas.DataFrame
+        Dataframes containing result of an analysis
+
+    analysis : str
+        The type of analysis (e.g. lag-crp)
+
+    list_length : int
+        Length of the lists
+
+    n_lists : int
+        Number of lists
+
+    n_subjects : int
+        Number of subjects
+
+    position : int
+        Position argument (for pnr/pfr)
+
+    date_created : str
+        Date the egg was created
+
+    meta : dict
+        Meta data
 
     Attributes
     ----------
 
-    data : List of Pandas.DataFrame
-        List of Dataframes containing result of an analysis
+    data : Pandas.DataFrame
+        Dataframes containing result of an analysis
 
-    type : str
+    analysis : str
         The type of analysis (e.g. lag-crp)
 
     """
 
     def __init__(self, data=None, analysis=None, list_length=None, n_lists=None,
-                 n_subjects=None, position=0, date_created=None):
+                 n_subjects=None, position=None, date_created=None, meta=None):
 
-        self.data = data
-        self.analysis = analysis
-        self.list_length = list_length
-        self.n_lists = n_lists
-        self.n_subjects = n_subjects
-        self.position = position
-
-        if date_created is None:
+        self.data=data
+        self.analysis=analysis
+        self.list_length=list_length
+        self.n_lists=n_lists
+        self.n_subjects=n_subjects
+        self.position=position
+        self.date_created=date_created
+        self.meta = meta
+        if self.date_created is None:
             self.date_created = time.strftime("%c")
         else:
             self.date_created = date_created
@@ -378,13 +406,12 @@ class FriedEgg(object):
         """
         return self.data.copy()
 
-    def save(self, fname, compression='blosc'):
+    def save(self, fname, compression='zlib'):
         """
         Save method for the FriedEgg object
 
         The data will be saved as a 'fegg' file, which is a dictionary containing
-        the elements of a FriedEgg saved in the hd5 format using
-        `deepdish`.
+        the elements of a FriedEgg saved using `joblib`.
 
         Parameters
         ----------
@@ -394,8 +421,7 @@ class FriedEgg(object):
             it will be appended.
 
         compression : str
-            The kind of compression to use.  See the deepdish documentation for
-            options: http://deepdish.readthedocs.io/en/latest/api_io.html#deepdish.io.save
+        options: https://joblib.readthedocs.io/en/latest/generated/joblib.dump.html
 
         """
 
@@ -407,12 +433,13 @@ class FriedEgg(object):
             'n_subjects' : self.n_subjects,
             'position' : self.position,
             'date_created' : self.date_created,
-            'meta' : self.meta
+            'meta' : getattr(self, 'meta', None)
         }
-
-        if fname[-4:]!='.fegg':
-            fname+='.fegg'
+        
+        # Ensure extension is present
+        if not fname.endswith('.fegg'):
+            fname += '.fegg'
 
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            dd.io.save(fname, egg, compression=compression)
+            joblib.dump(egg, fname, compress=compression)

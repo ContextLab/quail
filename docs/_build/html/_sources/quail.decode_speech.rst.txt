@@ -1,5 +1,5 @@
-quail.decode_speech
-===================
+﻿quail.decode\_speech
+====================
 
 .. currentmodule:: quail
 

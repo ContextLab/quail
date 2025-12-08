@@ -1,5 +1,5 @@
-quail\.FriedEgg
-===============
+﻿quail.FriedEgg
+==============
 
 .. currentmodule:: quail
 

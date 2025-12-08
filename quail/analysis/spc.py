@@ -38,7 +38,7 @@ def spc_helper(egg, match='exact', distance='euclidean',
         return d
 
     opts = dict(match=match, distance=distance, features=features)
-    if match is 'exact':
+    if match == 'exact':
         opts.update({'features' : 'item'})
     recmat = recall_matrix(egg, **opts)
 

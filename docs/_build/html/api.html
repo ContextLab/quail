@@ -1,44 +1,38 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>API reference &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="quail.Egg" href="quail.Egg.html" />
+    <link rel="prev" title="Optimal presenter" href="auto_examples/fingerprint_optimalpresenter.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -71,7 +65,14 @@
      href="index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"></ul>
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">How to use the Quail package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API reference</a></li>
+</ul>
+</ul>
 </li>
               
                 <li class="dropdown">
@@ -125,179 +126,131 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="api-reference">
-<span id="api-ref"></span><h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="egg-class">
-<span id="plot-api"></span><h2>Egg class<a class="headerlink" href="#egg-class" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.Egg.html#quail.Egg" title="quail.Egg"><code class="xref py py-obj docutils literal"><span class="pre">quail.Egg</span></code></a>([pres,&nbsp;rec,&nbsp;features,&nbsp;dist_funcs,&nbsp;...])</td>
-<td>Data object for the quail package</td>
+  <section id="api-reference">
+<span id="api-ref"></span><h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
+<section id="egg-class">
+<span id="plot-api"></span><h2>Egg class<a class="headerlink" href="#egg-class" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.Egg.html#quail.Egg" title="quail.Egg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.Egg</span></code></a>([pres, rec, features, dist_funcs, ...])</p></td>
+<td><p>Data object for the quail package</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="friedegg-class">
-<h2>FriedEgg class<a class="headerlink" href="#friedegg-class" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.FriedEgg.html#quail.FriedEgg" title="quail.FriedEgg"><code class="xref py py-obj docutils literal"><span class="pre">quail.FriedEgg</span></code></a>([data,&nbsp;analysis,&nbsp;...])</td>
-<td>Object containing results of a quail analyses</td>
+</section>
+<section id="friedegg-class">
+<h2>FriedEgg class<a class="headerlink" href="#friedegg-class" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.FriedEgg.html#quail.FriedEgg" title="quail.FriedEgg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.FriedEgg</span></code></a>([data, analysis, ...])</p></td>
+<td><p>Object containing results of a quail analyses</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="fingerprint-class">
-<h2>Fingerprint class<a class="headerlink" href="#fingerprint-class" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.Fingerprint.html#quail.Fingerprint" title="quail.Fingerprint"><code class="xref py py-obj docutils literal"><span class="pre">quail.Fingerprint</span></code></a>([init,&nbsp;features,&nbsp;state,&nbsp;...])</td>
-<td>Class for the memory fingerprint</td>
+</section>
+<section id="fingerprint-class">
+<h2>Fingerprint class<a class="headerlink" href="#fingerprint-class" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.Fingerprint.html#quail.Fingerprint" title="quail.Fingerprint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.Fingerprint</span></code></a>([init, features, state, ...])</p></td>
+<td><p>Class for the memory fingerprint</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="optimal-presenter-class">
-<h2>Optimal Presenter class<a class="headerlink" href="#optimal-presenter-class" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.OptimalPresenter.html#quail.OptimalPresenter" title="quail.OptimalPresenter"><code class="xref py py-obj docutils literal"><span class="pre">quail.OptimalPresenter</span></code></a>([strategy,&nbsp;features,&nbsp;...])</td>
-<td>A class that reorders stimuli to optimize memory performance</td>
+</section>
+<section id="optimal-presenter-class">
+<h2>Optimal Presenter class<a class="headerlink" href="#optimal-presenter-class" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.OptimalPresenter.html#quail.OptimalPresenter" title="quail.OptimalPresenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.OptimalPresenter</span></code></a>([strategy, features, ...])</p></td>
+<td><p>A class that reorders stimuli to optimize memory performance</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="load-example-data">
-<h2>Load example data<a class="headerlink" href="#load-example-data" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.load_example_data.html#quail.load_example_data" title="quail.load_example_data"><code class="xref py py-obj docutils literal"><span class="pre">quail.load_example_data</span></code></a>([dataset])</td>
-<td>Loads example data</td>
+</section>
+<section id="load-example-data">
+<h2>Load example data<a class="headerlink" href="#load-example-data" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.load_example_data.html#quail.load_example_data" title="quail.load_example_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.load_example_data</span></code></a>([dataset])</p></td>
+<td><p>Loads example data</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="load-egg">
-<h2>Load egg<a class="headerlink" href="#load-egg" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.load_egg.html#quail.load_egg" title="quail.load_egg"><code class="xref py py-obj docutils literal"><span class="pre">quail.load_egg</span></code></a>(filepath[,&nbsp;update])</td>
-<td>Loads pickled egg</td>
+</section>
+<section id="load-egg">
+<h2>Load egg<a class="headerlink" href="#load-egg" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.load_egg.html#quail.load_egg" title="quail.load_egg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.load_egg</span></code></a>(filepath[, update])</p></td>
+<td><p>Loads pickled egg</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="analyze">
-<h2>Analyze<a class="headerlink" href="#analyze" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.analyze.html#quail.analyze" title="quail.analyze"><code class="xref py py-obj docutils literal"><span class="pre">quail.analyze</span></code></a>(egg[,&nbsp;subjgroup,&nbsp;listgroup,&nbsp;...])</td>
-<td>General analysis function that groups data by subject/list number and performs analysis.</td>
+</section>
+<section id="analyze">
+<h2>Analyze<a class="headerlink" href="#analyze" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.analyze.html#quail.analyze" title="quail.analyze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.analyze</span></code></a>(egg[, subjgroup, listgroup, ...])</p></td>
+<td><p>General analysis function that groups data by subject/list number and performs analysis.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="plot">
-<h2>Plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.plot.html#quail.plot" title="quail.plot"><code class="xref py py-obj docutils literal"><span class="pre">quail.plot</span></code></a>(results[,&nbsp;subjgroup,&nbsp;subjname,&nbsp;...])</td>
-<td>General plot function that groups data by subject/list number and performs analysis.</td>
+</section>
+<section id="plot">
+<h2>Plot<a class="headerlink" href="#plot" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.plot.html#quail.plot" title="quail.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.plot</span></code></a>(results[, subjgroup, subjname, ...])</p></td>
+<td><p>General plot function that groups data by subject/list number and performs analysis.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="decode-speech">
-<h2>Decode speech<a class="headerlink" href="#decode-speech" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.decode_speech.html#quail.decode_speech" title="quail.decode_speech"><code class="xref py py-obj docutils literal"><span class="pre">quail.decode_speech</span></code></a>(path[,&nbsp;keypath,&nbsp;save,&nbsp;...])</td>
-<td>Decode speech for a file or folder and return results</td>
+</section>
+<section id="decode-speech">
+<h2>Decode speech<a class="headerlink" href="#decode-speech" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.decode_speech.html#quail.decode_speech" title="quail.decode_speech"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.decode_speech</span></code></a>(path[, model_size, ...])</p></td>
+<td><p>Decode speech for a file or folder and return results using OpenAI Whisper.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="stack-eggs">
-<h2>Stack eggs<a class="headerlink" href="#stack-eggs" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.stack_eggs.html#quail.stack_eggs" title="quail.stack_eggs"><code class="xref py py-obj docutils literal"><span class="pre">quail.stack_eggs</span></code></a>(eggs[,&nbsp;meta])</td>
-<td>Takes a list of eggs, stacks them and reindexes the subject number</td>
+</section>
+<section id="stack-eggs">
+<h2>Stack eggs<a class="headerlink" href="#stack-eggs" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.stack_eggs.html#quail.stack_eggs" title="quail.stack_eggs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.stack_eggs</span></code></a>(eggs[, meta])</p></td>
+<td><p>Takes a list of eggs, stacks them and reindexes the subject number</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="crack-egg">
-<h2>Crack egg<a class="headerlink" href="#crack-egg" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.crack_egg.html#quail.crack_egg" title="quail.crack_egg"><code class="xref py py-obj docutils literal"><span class="pre">quail.crack_egg</span></code></a>(egg[,&nbsp;subjects,&nbsp;lists])</td>
-<td>Takes an egg and returns a subset of the subjects or lists</td>
+</section>
+<section id="crack-egg">
+<h2>Crack egg<a class="headerlink" href="#crack-egg" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.crack_egg.html#quail.crack_egg" title="quail.crack_egg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.crack_egg</span></code></a>(egg[, subjects, lists])</p></td>
+<td><p>Takes an egg and returns a subset of the subjects or lists</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="convert-recall-matrix-to-egg">
-<h2>Convert recall matrix to egg<a class="headerlink" href="#convert-recall-matrix-to-egg" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="quail.recmat2egg.html#quail.recmat2egg" title="quail.recmat2egg"><code class="xref py py-obj docutils literal"><span class="pre">quail.recmat2egg</span></code></a>(recmat[,&nbsp;list_length])</td>
-<td>Creates egg data object from zero-indexed recall matrix</td>
+</section>
+<section id="convert-recall-matrix-to-egg">
+<h2>Convert recall matrix to egg<a class="headerlink" href="#convert-recall-matrix-to-egg" title="Permalink to this heading">¶</a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="quail.recmat2egg.html#quail.recmat2egg" title="quail.recmat2egg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quail.recmat2egg</span></code></a>(recmat[, list_length])</p></td>
+<td><p>Creates egg data object from zero-indexed recall matrix</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -319,7 +272,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

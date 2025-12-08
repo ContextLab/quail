@@ -1,44 +1,35 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>quail.decode_speech &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -108,273 +99,133 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <h1>Source code for quail.decode_speech</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">str</span>
-<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">csv</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">str</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">range</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># optional imports for speech decoding</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">speech</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.speech</span> <span class="k">import</span> <span class="n">types</span>
-    <span class="kn">from</span> <span class="nn">google.cloud.speech</span> <span class="k">import</span> <span class="n">enums</span>
-    <span class="kn">from</span> <span class="nn">pydub</span> <span class="k">import</span> <span class="n">AudioSegment</span>
-    <span class="kn">from</span> <span class="nn">google.oauth2</span> <span class="k">import</span> <span class="n">service_account</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="k">pass</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">whisper</span>
+    <span class="n">HAS_WHISPER</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">HAS_WHISPER</span> <span class="o">=</span> <span class="kc">False</span>
 
 
-<div class="viewcode-block" id="decode_speech"><a class="viewcode-back" href="../../quail.decode_speech.html#quail.decode_speech">[docs]</a><span class="k">def</span> <span class="nf">decode_speech</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">keypath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">speech_context</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">sample_rate</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">max_alternatives</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">language_code</span><span class="o">=</span><span class="s1">&#39;en-US&#39;</span><span class="p">,</span>
-                  <span class="n">enable_word_time_offsets</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_raw</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Decode speech for a file or folder and return results</span>
-
-<span class="sd">    This function wraps the Google Speech API and ffmpeg to decode speech for</span>
-<span class="sd">    free recall experiments.  Note: in order for this to work, you must have a</span>
-<span class="sd">    Google Speech account, a google speech credentials file referenced in your</span>
-<span class="sd">    _bash_profile, and ffmpeg installed on your computer.  See our readthedocs</span>
-<span class="sd">    for more information on how to set this up:</span>
-<span class="sd">    http://cdl-quail.readthedocs.io/en/latest/.</span>
+<div class="viewcode-block" id="decode_speech"><a class="viewcode-back" href="../../quail.decode_speech.html#quail.decode_speech">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">decode_speech</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">model_size</span><span class="o">=</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">return_raw</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decode speech for a file or folder and return results using OpenAI Whisper.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    path : str</span>
 <span class="sd">        Path to a wav file, or a folder of wav files.</span>
 
-<span class="sd">    keypath : str</span>
-<span class="sd">        Google Cloud Speech API key filepath. This is a JSON file containing</span>
-<span class="sd">        credentials that was generated when creating a service account key.</span>
-<span class="sd">        If None, assumes you have a local key that is set with an environmental</span>
-<span class="sd">        variable. See the speech decoding tutorial for details.</span>
+<span class="sd">    model_size : str</span>
+<span class="sd">        Whisper model size: &#39;tiny&#39;, &#39;base&#39;, &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;.</span>
+<span class="sd">        Default is &#39;base&#39;.</span>
 
 <span class="sd">    save : boolean</span>
-<span class="sd">        False by default, but if set to true, will save a pickle with the results</span>
-<span class="sd">        object from google speech, and a text file with the decoded words.</span>
-
-<span class="sd">    speech_context : list of str</span>
-<span class="sd">        This allows you to give some context to the speech decoding algorithm.</span>
-<span class="sd">        For example, this could be the words studied on a given list, or all</span>
-<span class="sd">        words in an experiment.</span>
-
-<span class="sd">    sample_rate : float</span>
-<span class="sd">        The sample rate of your audio files (default is 44100).</span>
-
-<span class="sd">    max_alternatives : int</span>
-<span class="sd">        You can specify the speech decoding to return multiple guesses to the</span>
-<span class="sd">        decoding.  This will be saved in the results object (default is 1).</span>
-
-<span class="sd">    language_code : str</span>
-<span class="sd">        Decoding language code.  Default is en-US. See  here for more details:</span>
-<span class="sd">        https://cloud.google.com/speech/docs/languages</span>
-
-<span class="sd">    enable_word_time_offsets : bool</span>
-<span class="sd">        Returns timing information s(onsets/offsets) for each word (default is</span>
-<span class="sd">        True).</span>
+<span class="sd">        False by default. If true, saves results object (pickle) and text transcript.</span>
 
 <span class="sd">    return_raw : boolean</span>
-<span class="sd">        Intead of returning the parsed results objects (i.e. the words), you can</span>
-<span class="sd">        return the raw reponse object.  This has more details about the decoding,</span>
-<span class="sd">        such as confidence.</span>
+<span class="sd">        If True, returns the full Whisper result dictionary. </span>
+<span class="sd">        If False (default), returns a list of (WORD, START, END) tuples.</span>
+<span class="sd">        </span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional arguments passed to whisper.transcribe (e.g. language).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    ----------</span>
 <span class="sd">    words : list of str, or list of lists of str</span>
-<span class="sd">        The results of the speech decoding. This will be a list if only one file</span>
-<span class="sd">        is input, or a list of lists if more than one file is decoded.</span>
-
-<span class="sd">    raw : google speech object, or list of objects</span>
-<span class="sd">        You can optionally return the google speech object instead of the parsed</span>
-<span class="sd">        results by using the return_raw flag.</span>
-
+<span class="sd">        The results of the speech decoding.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">HAS_WHISPER</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;openai-whisper not installed. pip install openai-whisper&quot;</span><span class="p">)</span>
 
-    <span class="c1"># SUBFUNCTIONS</span>
-    <span class="k">def</span> <span class="nf">decode_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">speech_context</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span>
-                    <span class="n">max_alternatives</span><span class="p">,</span> <span class="n">enable_word_time_offsets</span><span class="p">):</span>
-
-        <span class="k">def</span> <span class="nf">recognize</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Subfunction that loops over audio segments to recognize speech</span>
-<span class="sd">            &quot;&quot;&quot;</span>
-            <span class="c1"># export as flac</span>
-            <span class="n">chunk</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">file_path</span> <span class="o">+</span> <span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;flac&quot;</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="s2">&quot;44.1k&quot;</span><span class="p">)</span>
-
-            <span class="c1"># open flac file</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span> <span class="o">+</span> <span class="s2">&quot;.flac&quot;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">sc</span><span class="p">:</span>
-                <span class="n">speech_content</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-            <span class="c1"># initialize speech sample</span>
-            <span class="n">sample</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">RecognitionAudio</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">speech_content</span><span class="p">)</span>
-
-            <span class="c1"># run speech decoding</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">recognize</span><span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
-
-            <span class="k">return</span> <span class="n">result</span>
-
-        <span class="n">opts</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">enums</span><span class="o">.</span><span class="n">RecognitionConfig</span><span class="o">.</span><span class="n">AudioEncoding</span><span class="o">.</span><span class="n">FLAC</span>
-        <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;language_code&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">language_code</span>
-        <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;sample_rate_hertz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sample_rate</span>
-        <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;max_alternatives&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_alternatives</span>
-        <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;enable_word_time_offsets&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">enable_word_time_offsets</span>
-        <span class="k">if</span> <span class="n">speech_context</span><span class="p">:</span>
-            <span class="n">opts</span><span class="p">[</span><span class="s1">&#39;speech_contexts&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="n">types</span><span class="o">.</span><span class="n">SpeechContext</span><span class="p">(</span><span class="n">phrases</span><span class="o">=</span><span class="n">speech_context</span><span class="p">)]</span>
-
-        <span class="c1"># read in wav</span>
-        <span class="n">audio</span> <span class="o">=</span> <span class="n">AudioSegment</span><span class="o">.</span><span class="n">from_wav</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-
-        <span class="c1"># segment into 1 minute chunks</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">60000</span><span class="p">:</span>
-            <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">),</span><span class="mi">60000</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">):</span>
-                <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Audio clip is longer than 1 minute.  Splitting into </span><span class="si">%d</span><span class="s1"> one minute segments...&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-            <span class="n">audio_chunks</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-                <span class="n">audio_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">audio</span><span class="p">[</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">segments</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">audio_chunks</span> <span class="o">=</span> <span class="p">[</span><span class="n">audio</span><span class="p">]</span>
-
-        <span class="c1"># loop over audio segments</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">audio_chunks</span><span class="p">):</span>
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">recognize</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">file_path</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">idx</span><span class="p">)))</span>
-
-        <span class="c1"># return list of results</span>
-        <span class="k">return</span> <span class="n">results</span>
-
-    <span class="k">def</span> <span class="nf">parse_response</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses response from google speech&quot;&quot;&quot;</span>
-
-        <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">results</span><span class="p">:</span>
-                <span class="n">alternative</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Transcript: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">))</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Confidence: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
-
-                <span class="k">for</span> <span class="n">word_info</span> <span class="ow">in</span> <span class="n">alternative</span><span class="o">.</span><span class="n">words</span><span class="p">:</span>
-                    <span class="n">word</span> <span class="o">=</span> <span class="n">word_info</span><span class="o">.</span><span class="n">word</span>
-                    <span class="n">start_time</span> <span class="o">=</span> <span class="n">word_info</span><span class="o">.</span><span class="n">start_time</span>
-                    <span class="n">end_time</span> <span class="o">=</span> <span class="n">word_info</span><span class="o">.</span><span class="n">end_time</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Word: </span><span class="si">{}</span><span class="s1">, start_time: </span><span class="si">{}</span><span class="s1">, end_time: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                        <span class="n">word</span><span class="p">,</span>
-                        <span class="n">start_time</span><span class="o">.</span><span class="n">seconds</span> <span class="o">+</span> <span class="n">start_time</span><span class="o">.</span><span class="n">nanos</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
-                        <span class="n">end_time</span><span class="o">.</span><span class="n">seconds</span> <span class="o">+</span> <span class="n">end_time</span><span class="o">.</span><span class="n">nanos</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">))</span>
-                    <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">start_time</span><span class="o">.</span><span class="n">seconds</span> <span class="o">+</span> <span class="n">start_time</span><span class="o">.</span><span class="n">nanos</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
-                                    <span class="n">end_time</span><span class="o">.</span><span class="n">seconds</span> <span class="o">+</span> <span class="n">end_time</span><span class="o">.</span><span class="n">nanos</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">words</span>
-
-    <span class="c1"># def parse_response(results):</span>
-    <span class="c1">#     &quot;&quot;&quot;Parses response from google speech&quot;&quot;&quot;</span>
-    <span class="c1">#     words = []</span>
-    <span class="c1">#     for idx, result in enumerate(results):</span>
-    <span class="c1">#         if result is None:</span>
-    <span class="c1">#             warnings.warn(&#39;No speech was decoded for segment %d&#39; % (idx+1))</span>
-    <span class="c1">#             words.append(None)</span>
-    <span class="c1">#         else:</span>
-    <span class="c1">#             try:</span>
-    <span class="c1">#                 for segment in result:</span>
-    <span class="c1">#                     for chunk in segment.transcript.split(&#39; &#39;):</span>
-    <span class="c1">#                         if chunk != &#39;&#39;:</span>
-    <span class="c1">#                             words.append(str(chunk).upper())</span>
-    <span class="c1">#             except:</span>
-    <span class="c1">#                 warnings.warn(&#39;Error parsing response for segment %d&#39; % (idx+1))</span>
-    <span class="c1">#</span>
-    <span class="c1">#     return words</span>
-
-    <span class="c1"># MAIN #####################################################################</span>
-
-    <span class="c1"># initialize speech client</span>
-    <span class="k">if</span> <span class="n">keypath</span><span class="p">:</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">service_account</span><span class="o">.</span><span class="n">Credentials</span><span class="o">.</span><span class="n">from_service_account_file</span><span class="p">(</span><span class="n">keypath</span><span class="p">)</span>
-        <span class="n">scoped_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">with_scopes</span><span class="p">([</span><span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">])</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">SpeechClient</span><span class="p">()</span>
+    <span class="c1"># Load model</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading Whisper model: </span><span class="si">{</span><span class="n">model_size</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">whisper</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model_size</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Model loaded.&quot;</span><span class="p">)</span>
 
     <span class="c1"># make a list of files</span>
     <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.wav&quot;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.wav&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.mp3&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.m4a&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.flac&quot;</span><span class="p">):</span>
         <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="n">listdirectory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">listdirectory</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.wav&quot;</span><span class="p">):</span>
-                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s2">&quot;.wav&quot;</span><span class="p">,</span> <span class="s2">&quot;.mp3&quot;</span><span class="p">,</span> <span class="s2">&quot;.m4a&quot;</span><span class="p">,</span> <span class="s2">&quot;.flac&quot;</span><span class="p">)):</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Path must be an audio file or directory of audio files.&quot;</span><span class="p">)</span>
 
-    <span class="c1"># initialize list of words</span>
-    <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">raw</span> <span class="o">=</span> <span class="p">[]</span>
-
+    <span class="c1"># initialize results</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    
     <span class="c1"># loop over files</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
-
-        <span class="c1"># print progress</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Decoding file &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; of &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)))</span>
-
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Decoding file &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; of &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;: </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        
         <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Decode</span>
+            <span class="c1"># Whisper expects path or array. Path is fine.</span>
+            <span class="c1"># word_timestamps=True needed for offsets</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">word_timestamps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">return_raw</span><span class="p">:</span>
+                <span class="n">parsed</span> <span class="o">=</span> <span class="n">result</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Parse into (WORD, START, END) format matching Quail legacy</span>
+                <span class="n">parsed</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;segments&#39;</span><span class="p">]:</span>
+                    <span class="c1"># Ensure words are available</span>
+                    <span class="k">if</span> <span class="s1">&#39;words&#39;</span> <span class="ow">in</span> <span class="n">segment</span><span class="p">:</span>
+                         <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">segment</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">]:</span>
+                             <span class="n">parsed</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">w</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">w</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">],</span> <span class="n">w</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Fallback if no word level timestamps (shouldn&#39;t happen with word_timestamps=True)</span>
+                        <span class="c1"># Just split text? Timestamps will be approximate segment level</span>
+                        <span class="n">text</span> <span class="o">=</span> <span class="n">segment</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">t_word</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                             <span class="n">parsed</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t_word</span><span class="p">,</span> <span class="n">segment</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">],</span> <span class="n">segment</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]))</span>
 
-            <span class="c1"># start timer</span>
-            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-            <span class="c1"># decode file</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="n">decode_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">speech_context</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">,</span>
-                                  <span class="n">max_alternatives</span><span class="p">,</span> <span class="n">enable_word_time_offsets</span><span class="p">)</span>
-
-            <span class="c1"># parsing response</span>
-            <span class="n">parsed_results</span> <span class="o">=</span> <span class="n">parse_response</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-
-            <span class="c1"># save the processed file</span>
-            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parsed_results</span><span class="p">)</span>
-
-            <span class="c1"># save the processed file</span>
-            <span class="n">raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-
+            <span class="c1"># Save</span>
             <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
-                <span class="c1"># save the raw response in a pickle</span>
-                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="s2">&quot;.p&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span> <span class="p">)</span> <span class="p">)</span>
+                <span class="c1"># save raw pickle</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="s2">&quot;.p&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pfile</span><span class="p">:</span>
+                    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">pfile</span><span class="p">)</span>
+                
+                <span class="c1"># save text</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">return_raw</span><span class="p">:</span>
+                     <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">parsed</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tfile</span><span class="p">:</span>
+                        <span class="n">tfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
 
-                <span class="c1"># save a text file with just the words</span>
-                <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">parsed_results</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">f</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                                    <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parsed</span><span class="p">)</span>
+            
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished in &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; seconds.&#39;</span><span class="p">)</span>
 
-            <span class="c1"># print when finished</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished file &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; of &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; in &#39;</span> <span class="o">+</span>
-                  <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39; seconds.&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error decoding </span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
 
-        <span class="c1"># handle when something goes wrong</span>
-        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-
-            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Decoding of file &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;failed.  Moving on to next file.&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">return_raw</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">raw</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">words</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">results</span></div>
 </pre></div>
 
     </div>
@@ -392,7 +243,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

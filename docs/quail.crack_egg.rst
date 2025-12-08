@@ -1,5 +1,5 @@
-quail.crack_egg
-===============
+﻿quail.crack\_egg
+================
 
 .. currentmodule:: quail
 

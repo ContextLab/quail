@@ -16,10 +16,9 @@ recall neighboring items sequentially.
 import quail
 
 #load data
-egg = quail.load_example_data()
+egg = quail.load('example')
 
-#analysis
-analyzed_data = quail.analyze(egg, analysis='temporal', listgroup=['early']*4+['late']*4)
+#analyze and plot
+fegg = egg.analyze('temporal', listgroup=['early']*4+['late']*4)
 
-#plot
-quail.plot(analyzed_data, title='Temporal Clustering')
+fegg.plot(title='Temporal Clustering')

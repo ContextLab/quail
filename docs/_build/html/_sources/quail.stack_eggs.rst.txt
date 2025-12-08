@@ -1,5 +1,5 @@
-quail.stack_eggs
-===============
+﻿quail.stack\_eggs
+=================
 
 .. currentmodule:: quail
 

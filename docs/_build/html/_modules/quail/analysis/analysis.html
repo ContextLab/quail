@@ -1,44 +1,35 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>quail.analysis.analysis &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../../../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -108,27 +99,27 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <h1>Source code for quail.analysis.analysis</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">zip</span>
-<span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">range</span>
-<span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">from</span> <span class="nn">..helpers</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">..distance</span> <span class="k">import</span> <span class="n">dist_funcs</span> <span class="k">as</span> <span class="n">dist_funcs_dict</span>
-<span class="kn">from</span> <span class="nn">.recmat</span> <span class="k">import</span> <span class="n">recall_matrix</span>
-<span class="kn">from</span> <span class="nn">.accuracy</span> <span class="k">import</span> <span class="n">accuracy_helper</span>
-<span class="kn">from</span> <span class="nn">.spc</span> <span class="k">import</span> <span class="n">spc_helper</span>
-<span class="kn">from</span> <span class="nn">.pnr</span> <span class="k">import</span> <span class="n">pnr_helper</span>
-<span class="kn">from</span> <span class="nn">.lagcrp</span> <span class="k">import</span> <span class="n">lagcrp_helper</span>
-<span class="kn">from</span> <span class="nn">.clustering</span> <span class="k">import</span> <span class="n">fingerprint_helper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">zip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">range</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">six</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">six</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..helpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">dist_funcs</span> <span class="k">as</span> <span class="n">dist_funcs_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.recmat</span><span class="w"> </span><span class="kn">import</span> <span class="n">recall_matrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.accuracy</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_helper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.spc</span><span class="w"> </span><span class="kn">import</span> <span class="n">spc_helper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.pnr</span><span class="w"> </span><span class="kn">import</span> <span class="n">pnr_helper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.lagcrp</span><span class="w"> </span><span class="kn">import</span> <span class="n">lagcrp_helper</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.clustering</span><span class="w"> </span><span class="kn">import</span> <span class="n">fingerprint_helper</span>
 
 <span class="n">analyses</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;accuracy&#39;</span> <span class="p">:</span> <span class="n">accuracy_helper</span><span class="p">,</span>
@@ -141,11 +132,11 @@
 <span class="p">}</span>
 
 <span class="c1"># main analysis function</span>
-<div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../../../quail.analyze.html#quail.analyze">[docs]</a><span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="analyze"><a class="viewcode-back" href="../../../quail.analyze.html#quail.analyze">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">analyze</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span>
             <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">permute</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">n_perms</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span>
             <span class="n">distance</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    General analysis function that groups data by subject/list number and performs analysis.</span>
 
 <span class="sd">    Parameters</span>
@@ -219,7 +210,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Analysis not recognized. Choose one of the following: &#39;</span>
                         <span class="s1">&#39;accuracy, spc, pfr, lag-crp, fingerprint, temporal&#39;</span><span class="p">)</span>
 
-    <span class="kn">from</span> <span class="nn">..egg</span> <span class="k">import</span> <span class="n">FriedEgg</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..egg</span><span class="w"> </span><span class="kn">import</span> <span class="n">FriedEgg</span>
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="s1">&#39;subjgroup&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">egg</span><span class="o">.</span><span class="n">subjgroup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -252,26 +243,26 @@
         <span class="s1">&#39;analysis&#39;</span> <span class="p">:</span> <span class="n">analyses</span><span class="p">[</span><span class="n">analysis</span><span class="p">]</span>
     <span class="p">}</span>
 
-    <span class="k">if</span> <span class="n">analysis</span> <span class="ow">is</span> <span class="s1">&#39;pfr&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">analysis</span> <span class="o">==</span> <span class="s1">&#39;pfr&#39;</span><span class="p">:</span>
         <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;position&#39;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
-    <span class="k">elif</span> <span class="n">analysis</span> <span class="ow">is</span> <span class="s1">&#39;pnr&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">analysis</span> <span class="o">==</span> <span class="s1">&#39;pnr&#39;</span><span class="p">:</span>
         <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;position&#39;</span> <span class="p">:</span> <span class="n">position</span><span class="p">})</span>
-    <span class="k">if</span> <span class="n">analysis</span> <span class="ow">is</span> <span class="s1">&#39;temporal&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">analysis</span> <span class="o">==</span> <span class="s1">&#39;temporal&#39;</span><span class="p">:</span>
         <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;features&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;temporal&#39;</span><span class="p">]})</span>
     <span class="k">if</span> <span class="n">analysis</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;temporal&#39;</span><span class="p">,</span> <span class="s1">&#39;fingerprint&#39;</span><span class="p">]:</span>
         <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;permute&#39;</span> <span class="p">:</span> <span class="n">permute</span><span class="p">,</span> <span class="s1">&#39;n_perms&#39;</span> <span class="p">:</span> <span class="n">n_perms</span><span class="p">})</span>
-    <span class="k">if</span> <span class="n">analysis</span> <span class="ow">is</span> <span class="s1">&#39;lagcrp&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">analysis</span> <span class="o">==</span> <span class="s1">&#39;lagcrp&#39;</span><span class="p">:</span>
         <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;ts&#39;</span> <span class="p">:</span> <span class="n">ts</span><span class="p">})</span>
 
     <span class="k">return</span> <span class="n">FriedEgg</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">_analyze_chunk</span><span class="p">(</span><span class="n">egg</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">),</span> <span class="n">analysis</span><span class="o">=</span><span class="n">analysis</span><span class="p">,</span>
                     <span class="n">list_length</span><span class="o">=</span><span class="n">egg</span><span class="o">.</span><span class="n">list_length</span><span class="p">,</span> <span class="n">n_lists</span><span class="o">=</span><span class="n">egg</span><span class="o">.</span><span class="n">n_lists</span><span class="p">,</span>
                     <span class="n">n_subjects</span><span class="o">=</span><span class="n">egg</span><span class="o">.</span><span class="n">n_subjects</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">)</span></div>
 
-<span class="k">def</span> <span class="nf">_analyze_chunk</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_analyze_chunk</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">subjgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subjname</span><span class="o">=</span><span class="s1">&#39;Subject&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">listname</span><span class="o">=</span><span class="s1">&#39;List&#39;</span><span class="p">,</span> <span class="n">analysis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analysis_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">pass_features</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                    <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Private function that groups data by subject/list number and performs</span>
 <span class="sd">    analysis for a chunk of data.</span>
 
@@ -309,16 +300,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># perform the analysis</span>
-    <span class="k">def</span> <span class="nf">_analysis</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_analysis</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
         <span class="n">subj</span><span class="p">,</span> <span class="n">lst</span> <span class="o">=</span> <span class="n">c</span>
         <span class="n">subjects</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]]</span>
         <span class="n">lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">][</span><span class="n">lst</span><span class="p">]]</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">crack</span><span class="p">(</span><span class="n">lists</span><span class="o">=</span><span class="n">lists</span><span class="p">,</span> <span class="n">subjects</span><span class="o">=</span><span class="n">subjects</span><span class="p">)</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">([[</span><span class="n">subj</span><span class="p">],[</span><span class="n">lst</span><span class="p">]],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="n">subjname</span><span class="p">,</span> <span class="n">listname</span><span class="p">])</span>
         <span class="n">opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">analysis_type</span> <span class="ow">is</span> <span class="s1">&#39;fingerprint&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s1">&#39;fingerprint&#39;</span><span class="p">:</span>
                 <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;columns&#39;</span> <span class="p">:</span> <span class="n">features</span><span class="p">})</span>
-        <span class="k">elif</span> <span class="n">analysis_type</span> <span class="ow">is</span> <span class="s1">&#39;lagcrp&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">analysis_type</span> <span class="o">==</span> <span class="s1">&#39;lagcrp&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;ts&#39;</span><span class="p">]:</span>
                 <span class="n">opts</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;columns&#39;</span> <span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;ts&#39;</span><span class="p">],</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;ts&#39;</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)})</span>
             <span class="k">else</span><span class="p">:</span>
@@ -332,17 +323,36 @@
     <span class="n">subjdict</span> <span class="o">=</span> <span class="p">{</span><span class="n">subj</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">subj</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">subjgroup</span><span class="p">)]</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">subjgroup</span><span class="p">)}</span>
 
     <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">listgroup</span><span class="p">):</span>
+        <span class="c1"># If listgroup is specific to each subject, this logic is complex/broken for grouping?</span>
+        <span class="c1"># But keeping it as list (legacy behavior?) or trying to map?</span>
+        <span class="c1"># The iterating chunks uses listdict[0].</span>
+        <span class="c1"># For now, let&#39;s fix the shared case which is crashing.</span>
         <span class="n">listdict</span> <span class="o">=</span> <span class="p">[{</span><span class="n">lst</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">lst</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listgrpsub</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">listgrpsub</span><span class="p">)}</span> <span class="k">for</span> <span class="n">listgrpsub</span> <span class="ow">in</span> <span class="n">listgroup</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">listdict</span> <span class="o">=</span> <span class="p">[{</span><span class="n">lst</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">lst</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)}</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">]</span>
+        <span class="c1"># Shared list grouping</span>
+        <span class="n">ld</span> <span class="o">=</span> <span class="p">{</span><span class="n">lst</span> <span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">lst</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)]</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">listgroup</span><span class="p">)}</span>
+        <span class="n">listdict</span> <span class="o">=</span> <span class="p">{</span><span class="n">subj</span> <span class="p">:</span> <span class="n">ld</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span><span class="p">}</span>
 
-    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[(</span><span class="n">subj</span><span class="p">,</span> <span class="n">lst</span><span class="p">)</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">listdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="c1"># Shared list grouping (Dict keyed by subject group)</span>
+        <span class="c1"># Use the specific lists for each subject group</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[(</span><span class="n">subj</span><span class="p">,</span> <span class="n">lst</span><span class="p">)</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="n">subj</span><span class="p">]]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Nested list grouping (List of dicts)</span>
+        <span class="c1"># Assuming listdict[0] keys are representative? Or iterate?</span>
+        <span class="c1"># Legacy behavior used listdict[0]</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[(</span><span class="n">subj</span><span class="p">,</span> <span class="n">lst</span><span class="p">)</span> <span class="k">for</span> <span class="n">subj</span> <span class="ow">in</span> <span class="n">subjdict</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">listdict</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
     <span class="k">if</span> <span class="n">parallel</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">multiprocessing</span>
-        <span class="kn">from</span> <span class="nn">pathos.multiprocessing</span> <span class="k">import</span> <span class="n">ProcessingPool</span> <span class="k">as</span> <span class="n">Pool</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">_analysis</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pathos.multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProcessingPool</span> <span class="k">as</span> <span class="n">Pool</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">_analysis</span><span class="p">,</span> <span class="n">chunks</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span> 
     <span class="k">else</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">_analysis</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chunks</span><span class="p">]</span>
 
@@ -364,7 +374,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

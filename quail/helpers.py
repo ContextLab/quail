@@ -35,10 +35,19 @@ def list2pd(all_data, subjindex=None, listindex=None):
     def make_multi_index(listindex, sub_num):
         return pd.MultiIndex.from_tuples([(sub_num,lst) for lst in listindex], names = ['Subject', 'List'])
 
+    if len(all_data)==0 or (len(all_data)>0 and len(all_data[0])==0):
+        # Even if empty data, we might want an index if passed?
+        # But DataFrame without columns/data doesn't utilize index well.
+        # If rec is empty but pres has shape, Egg expects rec to match pres index shape.
+        return pd.DataFrame()
+
     listindex = list(listindex)
     subjindex = list(subjindex)
 
-    subs_list_of_dfs = [pd.DataFrame(sub_data, index=make_multi_index(listindex[sub_num], subjindex[sub_num])) for sub_num,sub_data in enumerate(all_data)]
+    subs_list_of_dfs = [pd.DataFrame(sub_data, index=make_multi_index(listindex[sub_num], subjindex[sub_num])) for sub_num,sub_data in enumerate(all_data) if sub_data]
+    
+    if not subs_list_of_dfs:
+         return pd.DataFrame()
 
     return pd.concat(subs_list_of_dfs)
 
@@ -140,7 +149,7 @@ def stack_eggs(eggs, meta='concatenate'):
     pres = [egg.pres.loc[sub,:].values.tolist() for egg in eggs for sub in egg.pres.index.levels[0].values.tolist()]
     rec = [egg.rec.loc[sub,:].values.tolist() for egg in eggs for sub in egg.rec.index.levels[0].values.tolist()]
 
-    if meta is 'concatenate':
+    if meta == 'concatenate':
         new_meta = {}
         for egg in eggs:
             for key in egg.meta:
@@ -150,7 +159,7 @@ def stack_eggs(eggs, meta='concatenate'):
                 else:
                     new_meta[key] = egg.meta.get(key)
 
-    elif meta is 'separate':
+    elif meta == 'separate':
         new_meta = list(egg.meta for egg in eggs)
 
     return Egg(pres=pres, rec=rec, meta=new_meta)

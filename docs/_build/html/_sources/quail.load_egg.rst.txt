@@ -1,5 +1,5 @@
-quail.load_egg
-==============
+﻿quail.load\_egg
+===============
 
 .. currentmodule:: quail
 

@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>quail.load_example_data &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -83,7 +75,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">quail.load_example_data</a></li>
+<li><a class="reference internal" href="#">quail.load_example_data</a><ul>
+<li><a class="reference internal" href="#quail.load_example_data"><code class="docutils literal notranslate"><span class="pre">load_example_data()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -111,42 +106,44 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="quail-load-example-data">
-<h1>quail.load_example_data<a class="headerlink" href="#quail-load-example-data" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="quail.load_example_data">
-<code class="descclassname">quail.</code><code class="descname">load_example_data</code><span class="sig-paren">(</span><em>dataset='automatic'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/load.html#load_example_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.load_example_data" title="Permalink to this definition">¶</a></dt>
+  <section id="quail-load-example-data">
+<h1>quail.load_example_data<a class="headerlink" href="#quail-load-example-data" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="quail.load_example_data">
+<span class="sig-prename descclassname"><span class="pre">quail.</span></span><span class="sig-name descname"><span class="pre">load_example_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'automatic'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/load.html#load_example_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quail.load_example_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads example data</p>
-<p>The example data is an egg containing 30 subjects who completed a free
+<p>The automatic and manual example data are eggs containing 30 subjects who completed a free
 recall experiment as described here: <a class="reference external" href="https://psyarxiv.com/psh48/">https://psyarxiv.com/psh48/</a>. The subjects
 studied 8 lists of 16 words each and then performed a free recall test.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>dataset</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">The dataset to load. Can be &#8216;automatic&#8217; or &#8216;manual&#8217;. The free recall
-audio recordings for the &#8216;automatic&#8217; dataset was transcribed by Google
-Cloud Speech and the &#8216;manual&#8217; dataset was transcribed by humans.</p>
+<p>The naturalistic example data is is an egg containing 17 subjects who viewed and verbally
+recounted an episode of the BBC series Sherlock, as described here:
+<a class="reference external" href="https://www.nature.com/articles/nn.4450">https://www.nature.com/articles/nn.4450</a>. We fit a topic model to hand-annotated
+text-descriptions of scenes from the video and used the model to transform both the
+scene descriptions and manual transcriptions of each subject’s verbal recall. We then
+used a Hidden Markov Model to segment the video model and the recall models, by subject,
+into k events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dataset</strong><span class="classifier">str</span></dt><dd><p>The dataset to load. Can be ‘automatic’, ‘manual’, or ‘naturalistic’. The free recall
+audio recordings for the ‘automatic’ dataset was transcribed by Google
+Cloud Speech and the ‘manual’ dataset was transcribed by humans. The ‘naturalistic’
+dataset was transcribed by humans and transformed as described above.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">quail.Egg</span></dt>
-<dd><p class="first last">Example data</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">quail.Egg</span></dt><dd><p>Example data</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -168,7 +165,7 @@ Cloud Speech and the &#8216;manual&#8217; dataset was transcribed by humans.</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

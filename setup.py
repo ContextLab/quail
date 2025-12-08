@@ -17,17 +17,15 @@ Quail is a Python package that facilitates analyses of behavioral data from memo
 The intended user of this toolbox is a memory researcher who seeks an easy way to analyze and visualize data from free recall psychology experiments.
 """
 
-with open('requirements.txt') as f:
-    REQUIREMENTS = f.read().splitlines()
 
 EXTRAS_REQUIRE={
-    'speech-decoding': ["pydub", "google-cloud-speech<0.31dev,>=0.30.0", "google-cloud>=0.32.0,<0.34.0"],
+    'speech-decoding': ["pydub", "openai-whisper", "google-cloud-storage>=2.0.0"],
     'efficient-learning': ["sqlalchemy"],
 }
 
 setup(
     name='quail',
-    version='0.2.2',
+    version='0.3.0',
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/x-rst',
@@ -37,6 +35,13 @@ setup(
     license='MIT',
     packages=find_packages(exclude=('tests', 'docs', 'paper')),
     include_package_data=True,
-    install_requires=REQUIREMENTS,
+    install_requires=[
+        'numpy>=2.0.0',
+        'scipy>=1.10.0',
+        'matplotlib>=3.5.0',
+        'seaborn>=0.12.0',
+        'pandas>=2.0.0',
+        'joblib>=1.3.0',
+    ],
     extras_require=EXTRAS_REQUIRE,
 )

@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>quail.recmat2egg &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -83,7 +75,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">quail.recmat2egg</a></li>
+<li><a class="reference internal" href="#">quail.recmat2egg</a><ul>
+<li><a class="reference internal" href="#quail.recmat2egg"><code class="docutils literal notranslate"><span class="pre">recmat2egg()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -111,40 +106,33 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="quail-recmat2egg">
-<h1>quail.recmat2egg<a class="headerlink" href="#quail-recmat2egg" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="quail.recmat2egg">
-<code class="descclassname">quail.</code><code class="descname">recmat2egg</code><span class="sig-paren">(</span><em>recmat</em>, <em>list_length=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/helpers.html#recmat2egg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.recmat2egg" title="Permalink to this definition">¶</a></dt>
+  <section id="quail-recmat2egg">
+<h1>quail.recmat2egg<a class="headerlink" href="#quail-recmat2egg" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="quail.recmat2egg">
+<span class="sig-prename descclassname"><span class="pre">quail.</span></span><span class="sig-name descname"><span class="pre">recmat2egg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recmat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/helpers.html#recmat2egg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quail.recmat2egg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates egg data object from zero-indexed recall matrix</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>recmat</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of lists (subs) of lists (encoding lists) of ints or 2D numpy array</span></dt>
-<dd><p class="first last">recall matrix representing serial positions of freely recalled words             e.g. [[[16, 15, 0, 2, 3, None, None...], [16, 4, 5, 6, 1, None, None...]]]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>recmat</strong><span class="classifier">list of lists (subs) of lists (encoding lists) of ints or 2D numpy array</span></dt><dd><p>recall matrix representing serial positions of freely recalled words             e.g. [[[16, 15, 0, 2, 3, None, None…], [16, 4, 5, 6, 1, None, None…]]]</p>
 </dd>
-<dt><strong>list_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">The length of each list (e.g. 16)</p>
+<dt><strong>list_length</strong><span class="classifier">int</span></dt><dd><p>The length of each list (e.g. 16)</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>egg</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Egg data object</span></dt>
-<dd><p class="first last">egg data object computed from the recall matrix</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>egg</strong><span class="classifier">Egg data object</span></dt><dd><p>egg data object computed from the recall matrix</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -166,7 +154,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

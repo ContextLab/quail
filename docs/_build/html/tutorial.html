@@ -1,44 +1,38 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>How to use the Quail package &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Egg data object" href="tutorial/egg.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -71,7 +65,14 @@
      href="index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"></ul>
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to use the Quail package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API reference</a></li>
+</ul>
+</ul>
 </li>
               
                 <li class="dropdown">
@@ -88,7 +89,7 @@
 <li><a class="reference internal" href="#basic-analysis-and-plotting">Basic analysis and plotting</a></li>
 <li><a class="reference internal" href="#more-advanced-plotting">More advanced plotting</a></li>
 <li><a class="reference internal" href="#setting-up-speech-decoding">Setting up speech decoding</a></li>
-<li><a class="reference internal" href="#what-is-a-memory-fingerprint">What is a &#8220;memory fingerprint&#8221;?</a></li>
+<li><a class="reference internal" href="#what-is-a-memory-fingerprint">What is a “memory fingerprint”?</a></li>
 </ul>
 </li>
 </ul>
@@ -118,33 +119,33 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="how-to-use-the-quail-package">
-<span id="tutorial"></span><h1>How to use the Quail package<a class="headerlink" href="#how-to-use-the-quail-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="the-egg-data-object">
-<h2>The Egg data object<a class="headerlink" href="#the-egg-data-object" title="Permalink to this headline">¶</a></h2>
+  <section id="how-to-use-the-quail-package">
+<span id="tutorial"></span><h1>How to use the Quail package<a class="headerlink" href="#how-to-use-the-quail-package" title="Permalink to this heading">¶</a></h1>
+<section id="the-egg-data-object">
+<h2>The Egg data object<a class="headerlink" href="#the-egg-data-object" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/egg.html">The Egg data object</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#load-in-the-library">Load in the library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#the-pres-data-structure">The <code class="docutils literal"><span class="pre">pres</span></code> data structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#the-rec-data-structure">The <code class="docutils literal"><span class="pre">rec</span></code> data structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#multisubject-eggs">Multisubject <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#the-pres-data-structure">The <code class="docutils literal notranslate"><span class="pre">pres</span></code> data structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#the-rec-data-structure">The <code class="docutils literal notranslate"><span class="pre">rec</span></code> data structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#multisubject-eggs">Multisubject <code class="docutils literal notranslate"><span class="pre">eggs</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#adding-features-to-the-egg">Adding features to the egg</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#defining-custom-distance-functions-for-the-stimulus-feature-dimensions">Defining custom distance functions for the stimulus feature dimensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#adding-meta-data-to-an-egg">Adding meta data to an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#adding-listgroup-and-subjgroup-to-an-egg">Adding <code class="docutils literal"><span class="pre">listgroup</span></code> and <code class="docutils literal"><span class="pre">subjgroup</span></code> to an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#saving-an-egg">Saving an <code class="docutils literal"><span class="pre">egg</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#stacking-eggs">Stacking <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#cracking-eggs">Cracking <code class="docutils literal"><span class="pre">eggs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#adding-meta-data-to-an-egg">Adding meta data to an <code class="docutils literal notranslate"><span class="pre">egg</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#adding-listgroup-and-subjgroup-to-an-egg">Adding <code class="docutils literal notranslate"><span class="pre">listgroup</span></code> and <code class="docutils literal notranslate"><span class="pre">subjgroup</span></code> to an <code class="docutils literal notranslate"><span class="pre">egg</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#saving-an-egg">Saving an <code class="docutils literal notranslate"><span class="pre">egg</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#stacking-eggs">Stacking <code class="docutils literal notranslate"><span class="pre">eggs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/egg.html#cracking-eggs">Cracking <code class="docutils literal notranslate"><span class="pre">eggs</span></code></a></li>
 </ul>
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="basic-analysis-and-plotting">
-<h2>Basic analysis and plotting<a class="headerlink" href="#basic-analysis-and-plotting" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="basic-analysis-and-plotting">
+<h2>Basic analysis and plotting<a class="headerlink" href="#basic-analysis-and-plotting" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/basic_analyze_and_plot.html">Basic analyzing and plotting</a><ul>
@@ -158,9 +159,9 @@
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="more-advanced-plotting">
-<h2>More advanced plotting<a class="headerlink" href="#more-advanced-plotting" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="more-advanced-plotting">
+<h2>More advanced plotting<a class="headerlink" href="#more-advanced-plotting" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/advanced_plotting.html">Advanced plotting</a><ul>
@@ -171,13 +172,13 @@
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="setting-up-speech-decoding">
-<h2>Setting up speech decoding<a class="headerlink" href="#setting-up-speech-decoding" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="setting-up-speech-decoding">
+<h2>Setting up speech decoding<a class="headerlink" href="#setting-up-speech-decoding" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/speech_decoding.html">Automated Speech Decoding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial/speech_decoding.html#setting-up-ffmpeg">Setting up <code class="docutils literal"><span class="pre">ffmpeg</span></code></a><ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/speech_decoding.html#setting-up-ffmpeg">Setting up <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/speech_decoding.html#on-a-mac">On a mac:</a></li>
 </ul>
 </li>
@@ -187,16 +188,16 @@
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="what-is-a-memory-fingerprint">
-<h2>What is a &#8220;memory fingerprint&#8221;?<a class="headerlink" href="#what-is-a-memory-fingerprint" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="what-is-a-memory-fingerprint">
+<h2>What is a “memory fingerprint”?<a class="headerlink" href="#what-is-a-memory-fingerprint" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorial/fingerprint.html">Computing a memory fingerprint</a></li>
 </ul>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -218,7 +219,7 @@
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -1,5 +1,5 @@
-quail.load_example_data
-=======================
+﻿quail.load\_example\_data
+=========================
 
 .. currentmodule:: quail
 

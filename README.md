@@ -59,12 +59,12 @@ This will work on clean systems, but if you encounter issues you may need to run
 <h2>Requirements</h2>
 
 + python>=3.6
-+ pandas>=0.18.0
-+ seaborn>=0.7.1
-+ matplotlib>=1.5.1
-+ scipy>=0.17.1
-+ numpy>=1.10.4
-+ future
++ pandas>=2.0.0
++ seaborn>=0.12.0
++ matplotlib>=3.5.0
++ scipy>=1.10.0
++ numpy>=2.0.0
++ joblib>=1.3.0
 + pytest (for development)
 
 If installing from github (instead of pip), you must also install the requirements:

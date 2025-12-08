@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>Plot Lag-CRP &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -111,40 +103,114 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-lagcrp-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-lagcrp-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
 </div>
-<div class="sphx-glr-example-title section" id="plot-lag-crp">
-<span id="sphx-glr-auto-examples-plot-lagcrp-py"></span><h1>Plot Lag-CRP<a class="headerlink" href="#plot-lag-crp" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="plot-lag-crp">
+<span id="sphx-glr-auto-examples-plot-lagcrp-py"></span><h1>Plot Lag-CRP<a class="headerlink" href="#plot-lag-crp" title="Permalink to this heading">¶</a></h1>
 <p>This example plots a Lag-CRP as described in Kahana et al (1996).
 Given the recall of a stimulus in position n, this plot shows the probability of
 recalling stimuli in neighboring stimulus positions (n+/-5).</p>
-<img alt="../_images/sphx_glr_plot_lagcrp_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_lagcrp_001.png" />
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Code source: Andrew Heusser</span>
+<img src="../_images/sphx_glr_plot_lagcrp_001.png" srcset="../_images/sphx_glr_plot_lagcrp_001.png" alt="Lag-CRP" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+/Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
+  return np.nanmean(lagcrp, axis=0)
+
+&lt;Axes: title={&#39;center&#39;: &#39;Lag-CRP&#39;}, xlabel=&#39;Position&#39;, ylabel=&#39;Conditional Response Probability&#39;&gt;
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Code source: Andrew Heusser</span>
 <span class="c1"># License: MIT</span>
 
 <span class="c1"># import</span>
-<span class="kn">import</span> <span class="nn">quail</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quail</span>
 
 <span class="c1"># load data</span>
 <span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
 
 <span class="c1"># analyze and plot</span>
-<span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Lag-CRP&#39;</span><span class="p">)</span>
+<span class="n">fegg</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">fegg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Lag-CRP&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  17.009 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-lagcrp-py">
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_lagcrp.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_lagcrp.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_lagcrp.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_lagcrp.ipynb</span></code></a></div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.824 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-lagcrp-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/2893184c93a9b7c40ecc2263fb3eff4b/plot_lagcrp.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_lagcrp.ipynb</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/151c4f9686a1c8ab7af91a1344e18b2d/plot_lagcrp.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_lagcrp.py</span></code></a></p>
 </div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/977efc29b039e9acd652c1337b6f664f/plot_lagcrp.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_lagcrp.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
 
 
     </div>
@@ -166,7 +232,7 @@ recalling stimuli in neighboring stimulus positions (n+/-5).</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

@@ -139,15 +139,15 @@ def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
         'analysis' : analyses[analysis]
     }
 
-    if analysis is 'pfr':
+    if analysis == 'pfr':
         opts.update({'position' : 0})
-    elif analysis is 'pnr':
+    elif analysis == 'pnr':
         opts.update({'position' : position})
-    if analysis is 'temporal':
+    if analysis == 'temporal':
         opts.update({'features' : ['temporal']})
     if analysis in ['temporal', 'fingerprint']:
         opts.update({'permute' : permute, 'n_perms' : n_perms})
-    if analysis is 'lagcrp':
+    if analysis == 'lagcrp':
         opts.update({'ts' : ts})
 
     return FriedEgg(data=_analyze_chunk(egg, **opts), analysis=analysis,
@@ -203,9 +203,9 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
         s = data.crack(lists=lists, subjects=subjects)
         index = pd.MultiIndex.from_arrays([[subj],[lst]], names=[subjname, listname])
         opts = dict()
-        if analysis_type is 'fingerprint':
+        if analysis_type == 'fingerprint':
                 opts.update({'columns' : features})
-        elif analysis_type is 'lagcrp':
+        elif analysis_type == 'lagcrp':
             if kwargs['ts']:
                 opts.update({'columns' : range(-kwargs['ts'],kwargs['ts']+1)})
             else:
@@ -219,17 +219,36 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
     subjdict = {subj : data.pres.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
 
     if all(isinstance(el, list) for el in listgroup):
+        # If listgroup is specific to each subject, this logic is complex/broken for grouping?
+        # But keeping it as list (legacy behavior?) or trying to map?
+        # The iterating chunks uses listdict[0].
+        # For now, let's fix the shared case which is crashing.
         listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgrpsub)] for lst in set(listgrpsub)} for listgrpsub in listgroup]
     else:
-        listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)} for subj in subjdict]
+        # Shared list grouping
+        ld = {lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
+        listdict = {subj : ld for subj in subjdict}
 
-    chunks = [(subj, lst) for subj in subjdict for lst in listdict[0]]
+    if isinstance(listdict, dict):
+        # Shared list grouping (Dict keyed by subject group)
+        # Use the specific lists for each subject group
+        chunks = [(subj, lst) for subj in subjdict for lst in listdict[subj]]
+    else:
+        # Nested list grouping (List of dicts)
+        # Assuming listdict[0] keys are representative? Or iterate?
+        # Legacy behavior used listdict[0]
+        chunks = [(subj, lst) for subj in subjdict for lst in listdict[0]]
 
     if parallel:
         import multiprocessing
         from pathos.multiprocessing import ProcessingPool as Pool
-        p = Pool(multiprocessing.cpu_count())
-        res = p.map(_analysis, chunks)
+        try:
+            p = Pool(multiprocessing.cpu_count())
+            res = p.map(_analysis, chunks)
+        finally:
+            p.close()
+            p.join()
+            p.clear() 
     else:
         res = [_analysis(c) for c in chunks]
 
