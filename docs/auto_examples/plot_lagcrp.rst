@@ -101,7 +101,7 @@ recalling stimuli in neighboring stimulus positions (n+/-5).
     /Users/jmanning/quail/quail/analysis/lagcrp.py:279: RuntimeWarning: Mean of empty slice
       return np.nanmean(lagcrp, axis=0)
 
-    <Axes: title={'center': 'Lag-CRP'}, xlabel='Position', ylabel='Conditional Response Probability'>
+    <Axes: title={'center': 'Lag-CRP'}, xlabel='Lag', ylabel='Conditional Response Probability'>
 
 
 
@@ -129,7 +129,7 @@ recalling stimuli in neighboring stimulus positions (n+/-5).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.868 seconds)
+   **Total running time of the script:** (0 minutes 0.906 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_lagcrp.py:

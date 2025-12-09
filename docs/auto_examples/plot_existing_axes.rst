@@ -71,7 +71,7 @@ This example plots free recall accuracy in an existing Matplotlib Axes object.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.587 seconds)
+   **Total running time of the script:** (0 minutes 0.665 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_existing_axes.py:

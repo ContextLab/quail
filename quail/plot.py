@@ -83,6 +83,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
     """
 
+    sns.set_palette("viridis")
+    
     def plot_acc(data, plot_style, plot_type, listname, subjname, **kwargs):
 
         # set defaul style to bar
@@ -141,9 +143,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             plot_func = sns.violinplot
 
         if plot_type == 'list':
-            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, legend=legend, **kwargs)
         elif plot_type == 'subject':
-            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, legend=legend, **kwargs)
         else:
             ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
 
@@ -201,22 +203,23 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_type = plot_type if plot_type is not None else 'list'
 
         if plot_type == 'subject':
-            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=subjname, **kwargs)
+            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=subjname, legend=False, **kwargs)
             if 'ax' in kwargs:
                 del kwargs['ax']
             sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=subjname, ax=ax, legend=False, **kwargs)
         elif plot_type == 'list':
-            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=listname, **kwargs)
+            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=listname, legend=False, **kwargs)
             if 'ax' in kwargs:
                 del kwargs['ax']
             sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=listname, ax=ax, legend=False, **kwargs)
         
-        # Deduplicate legend
-        handles, labels = ax.get_legend_handles_labels()
-        if handles:
-             by_label = dict(zip(labels, handles))
-             title_text = subjname if plot_type == 'subject' else listname
-             ax.legend(by_label.values(), by_label.keys(), title=title_text)
+        if legend:
+            # Deduplicate legend
+            handles, labels = ax.get_legend_handles_labels()
+            if handles:
+                 by_label = dict(zip(labels, handles))
+                 title_text = subjname if plot_type == 'subject' else listname
+                 ax.legend(by_label.values(), by_label.keys(), title=title_text)
 
         ax.set_xlim(-5,5)
         ax.set_xlabel('Lag')
@@ -292,10 +295,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plt.title(title)
 
     if legend is False:
-        try:
-            ax.legend_.remove()
-        except:
-            pass
+        if ax.get_legend() is not None:
+            ax.get_legend().remove()
 
     if xlim:
         plt.xlim(xlim)
