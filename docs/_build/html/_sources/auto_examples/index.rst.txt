@@ -83,6 +83,23 @@ Gallery of Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a fingerprint.  Briefly, a fingerprint can be described as a summary of how a subject organizes information with respect to the multiple features of the stimuli.  In addition to presentation and recall data, a features object is passed to the Egg class.  It is comprised of a dictionary for each presented stimulus that contains feature dimensions and values for each stimulus.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_fingerprint_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_fingerprint.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot memory fingerprint</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of an item being recalled first given its list position.">
 
 .. only:: html
@@ -112,23 +129,6 @@ Gallery of Examples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Plot temporal clustering</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a fingerprint.  Briefly, a fingerprint can be described as a summary of how a subject organizes information with respect to the multiple features of the stimuli.  In addition to presentation and recall data, a features object is passed to the Egg class.  It is comprised of a dictionary for each presented stimulus that contains feature dimensions and values for each stimulus.">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_fingerprint_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_fingerprint.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Plot memory fingerprint</div>
     </div>
 
 
@@ -265,9 +265,9 @@ Gallery of Examples
    /auto_examples/recmat2egg
    /auto_examples/plot_lagcrp
    /auto_examples/plot_spc
+   /auto_examples/plot_fingerprint
    /auto_examples/plot_pfr
    /auto_examples/plot_temporal
-   /auto_examples/plot_fingerprint
    /auto_examples/plot_pnr
    /auto_examples/plot_accuracy
    /auto_examples/decode_speech

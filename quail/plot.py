@@ -97,7 +97,7 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             plot_func = sns.violinplot
 
         if plot_type == 'list':
-            ax = plot_func(data=data, x=listname, y="Accuracy", **kwargs)
+            ax = plot_func(data=data, x=listname, y="Accuracy", hue=listname, legend=False, **kwargs)
         elif plot_type == 'subject':
             ax = plot_func(data=data, x=subjname, y="Accuracy", **kwargs)
         elif plot_type == 'split':
@@ -210,7 +210,16 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             if 'ax' in kwargs:
                 del kwargs['ax']
             sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=listname, ax=ax, legend=False, **kwargs)
+        
+        # Deduplicate legend
+        handles, labels = ax.get_legend_handles_labels()
+        if handles:
+             by_label = dict(zip(labels, handles))
+             title_text = subjname if plot_type == 'subject' else listname
+             ax.legend(by_label.values(), by_label.keys(), title=title_text)
+
         ax.set_xlim(-5,5)
+        ax.set_xlabel('Lag')
 
         return ax
 
@@ -244,10 +253,23 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     # convert to tiny and format for plotting
     tidy_data = format2tidy(results.data, subjname, listname, subjgroup, analysis=results.analysis, position=results.position)
 
+    # Auto-suppress legend if only one group
+    if legend is True:
+        try:
+            if plot_type == 'list':
+                 # Check unique listnames
+                 if len(tidy_data[listname].unique()) <= 1:
+                     legend = False
+            elif plot_type == 'subject':
+                 if len(tidy_data[subjname].unique()) <= 1:
+                     legend = False
+        except:
+             pass
+
     if not ax==None:
         kwargs['ax']=ax
 
-    #plot!
+    # plot!
     if results.analysis=='accuracy':
         ax = plot_acc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
     elif results.analysis=='temporal':
@@ -280,6 +302,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
     if ylim:
         plt.ylim(ylim)
+
+    sns.despine(ax=ax, top=True, right=True)
 
     if save_path:
         mpl.rcParams['pdf.fonttype'] = 42

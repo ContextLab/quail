@@ -65,14 +65,14 @@ values for each stimulus.
     egg = quail.load('example')
 
     # analyze and plot
-    fegg = egg.analyze('fingerprint', listgroup=['average']*8, features=['temporal'])
+    fegg = egg.analyze('fingerprint', listgroup=['average']*8)
 
     fegg.plot(title='Memory Fingerprint')
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.765 seconds)
+   **Total running time of the script:** (0 minutes 4.060 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_fingerprint.py:
