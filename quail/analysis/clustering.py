@@ -17,14 +17,27 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
     egg : quail.Egg
         Data to analyze
 
-    dist_funcs : dict
-        Dictionary of distance functions for feature clustering analyses
+    permute : bool
+        Determines whether to correct clustering scores by shuffling recall order
+        to create a distribution of clustering scores. Default is False.
+
+    n_perms : int
+        Number of permutations to run for "corrected" clustering scores.
+        Default is 1000.
+
+    match : str (exact, best)
+        Matching approach to compute recall matrix. Default is 'exact'.
+
+    distance : str
+        The distance function used to compare items. Default is 'euclidean'.
+
+    features : list
+        List of features to analyze. If None, uses all available features.
 
     Returns
     ----------
     probabilities : Numpy array
       Each number represents clustering along a different feature dimension
-
     """
 
     if features is None:
@@ -85,7 +98,7 @@ def _get_weight_exact(egg, feature, distdict, permute, n_perms):
     if len(rec) <= 2:
         warnings.warn('Not enough recalls to compute fingerprint, returning default'
               'fingerprint.. (everything is .5)')
-        return np.nan
+        return 0.5
 
     distmat = get_distmat(egg, feature, distdict)
 

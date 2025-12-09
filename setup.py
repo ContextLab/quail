@@ -19,7 +19,7 @@ The intended user of this toolbox is a memory researcher who seeks an easy way t
 
 
 EXTRAS_REQUIRE={
-    'speech-decoding': ["pydub", "openai-whisper", "google-cloud-storage>=2.0.0"],
+    'speech-decoding': ["pydub", "openai-whisper"],
     'efficient-learning': ["sqlalchemy"],
 }
 

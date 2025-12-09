@@ -104,7 +104,7 @@ def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
 
     if analysis not in analyses.keys():
         raise ValueError('Analysis not recognized. Choose one of the following: '
-                        'accuracy, spc, pfr, lag-crp, fingerprint, temporal')
+                        'accuracy, spc, pfr, lagcrp, fingerprint, temporal')
 
     from ..egg import FriedEgg
 
