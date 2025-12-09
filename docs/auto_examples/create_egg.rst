@@ -31,7 +31,7 @@ words/stimuli that were recalled by the subject.
 .. code-block:: Python
 
 
-    # Code source: Andrew Heusser
+    # Code source: Contextual Dynamics Laboratory
     # License: MIT
 
     import quail

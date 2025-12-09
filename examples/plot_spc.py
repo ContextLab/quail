@@ -9,7 +9,7 @@ position during stimulus encoding.
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 # import

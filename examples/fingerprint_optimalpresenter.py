@@ -8,7 +8,7 @@ An example of how to reorder stimuli with the optimal presenter class
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 import numpy as np

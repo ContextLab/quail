@@ -9,7 +9,7 @@ the analysis and plotting functions can be used.
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 # import

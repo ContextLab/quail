@@ -51,7 +51,7 @@ list position.
 .. code-block:: Python
 
 
-    # Code source: Andrew Heusser
+    # Code source: Contextual Dynamics Laboratory
     # License: MIT
 
     # import
@@ -68,7 +68,7 @@ list position.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.534 seconds)
+   **Total running time of the script:** (0 minutes 0.596 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_pfr.py:

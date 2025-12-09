@@ -8,7 +8,7 @@ This an example of how to crack an egg (take a slice of subjects/lists from it)
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 #import

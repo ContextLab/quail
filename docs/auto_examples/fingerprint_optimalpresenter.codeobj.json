@@ -1,0 +1,29 @@
+{
+ "Fingerprint": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "Fingerprint"
+  }
+ ],
+ "OptimalPresenter": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "OptimalPresenter"
+  }
+ ],
+ "quail.Egg": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "Egg"
+  }
+ ]
+}

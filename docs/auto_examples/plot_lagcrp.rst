@@ -112,7 +112,7 @@ recalling stimuli in neighboring stimulus positions (n+/-5).
 .. code-block:: Python
 
 
-    # Code source: Andrew Heusser
+    # Code source: Contextual Dynamics Laboratory
     # License: MIT
 
     # import
@@ -129,7 +129,7 @@ recalling stimuli in neighboring stimulus positions (n+/-5).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.824 seconds)
+   **Total running time of the script:** (0 minutes 0.699 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_lagcrp.py:

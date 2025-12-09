@@ -8,7 +8,7 @@ This example plots free recall accuracy in an existing Matplotlib Axes object.
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 #import
