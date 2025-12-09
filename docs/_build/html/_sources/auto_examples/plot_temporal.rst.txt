@@ -51,7 +51,7 @@ recall neighboring items sequentially.
 .. code-block:: Python
 
 
-    # Code source: Andrew Heusser
+    # Code source: Contextual Dynamics Laboratory
     # License: MIT
 
     # import
@@ -68,7 +68,7 @@ recall neighboring items sequentially.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.810 seconds)
+   **Total running time of the script:** (0 minutes 1.830 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_temporal.py:

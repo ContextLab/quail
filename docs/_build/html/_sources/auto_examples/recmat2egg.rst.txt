@@ -30,7 +30,7 @@ the analysis and plotting functions can be used.
 .. code-block:: Python
 
 
-    # Code source: Andrew Heusser
+    # Code source: Contextual Dynamics Laboratory
     # License: MIT
 
     # import

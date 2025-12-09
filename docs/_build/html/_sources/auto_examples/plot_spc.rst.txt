@@ -51,7 +51,7 @@ position during stimulus encoding.
 .. code-block:: Python
 
 
-    # Code source: Andrew Heusser
+    # Code source: Contextual Dynamics Laboratory
     # License: MIT
 
     # import
@@ -68,7 +68,7 @@ position during stimulus encoding.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.634 seconds)
+   **Total running time of the script:** (0 minutes 0.587 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_spc.py:

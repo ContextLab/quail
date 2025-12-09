@@ -55,7 +55,7 @@ values for each stimulus.
 .. code-block:: Python
 
 
-    # Code source: Andrew Heusser
+    # Code source: Contextual Dynamics Laboratory
     # License: MIT
 
     #import
@@ -72,7 +72,7 @@ values for each stimulus.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.533 seconds)
+   **Total running time of the script:** (0 minutes 1.765 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_fingerprint.py:

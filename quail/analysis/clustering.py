@@ -132,6 +132,7 @@ def _get_weight_exact(egg, feature, distdict, permute, n_perms):
         # So c IS in the pool?
         # "past_idxs.append(pres.index(c))" happens at end.
         valid_mask = ~seen
+        valid_mask[c_idx] = False # Exclude current item from pool
         
         dists_filt = dists[valid_mask]
         

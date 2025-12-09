@@ -119,7 +119,7 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             plot_func = sns.violinplot
 
         if plot_type == 'list':
-            ax = plot_func(data=data, x=listname, y="Temporal Clustering Score", **kwargs)
+            ax = plot_func(data=data, x=listname, y="Temporal Clustering Score", hue=listname, legend=False, **kwargs)
         elif plot_type == 'subject':
             ax = plot_func(data=data, x=subjname, y="Temporal Clustering Score", **kwargs)
         elif plot_type == 'split':
