@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:10.515** total execution time for 14 files **from auto_examples**:
+**00:11.507** total execution time for 14 files **from auto_examples**:
 
 .. container::
 
@@ -33,28 +33,28 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_fingerprint.py` (``plot_fingerprint.py``)
-     - 00:04.507
+     - 00:05.299
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_temporal.py` (``plot_temporal.py``)
-     - 00:01.627
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_accuracy.py` (``plot_accuracy.py``)
-     - 00:00.941
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_lagcrp.py` (``plot_lagcrp.py``)
-     - 00:00.906
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_pnr.py` (``plot_pnr.py``)
-     - 00:00.667
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_existing_axes.py` (``plot_existing_axes.py``)
-     - 00:00.665
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_pfr.py` (``plot_pfr.py``)
-     - 00:00.635
+     - 00:01.977
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_spc.py` (``plot_spc.py``)
-     - 00:00.567
+     - 00:00.819
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_lagcrp.py` (``plot_lagcrp.py``)
+     - 00:00.736
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_accuracy.py` (``plot_accuracy.py``)
+     - 00:00.716
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_pnr.py` (``plot_pnr.py``)
+     - 00:00.686
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_pfr.py` (``plot_pfr.py``)
+     - 00:00.677
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_existing_axes.py` (``plot_existing_axes.py``)
+     - 00:00.597
      - 0.0
    * - :ref:`sphx_glr_auto_examples_crack_egg.py` (``crack_egg.py``)
      - 00:00.000

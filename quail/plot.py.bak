@@ -84,7 +84,6 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     """
 
     sns.set_palette("viridis")
-    plot_type = plot_type if plot_type is not None else 'list'
     
     def plot_acc(data, plot_style, plot_type, listname, subjname, **kwargs):
 
