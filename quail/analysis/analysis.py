@@ -31,7 +31,7 @@ analyses = {
 def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
             listname='List', analysis=None, position=0, permute=False,
             n_perms=1000, parallel=False, match='exact',
-            distance='euclidean', features=None, ts=None):
+            distance='euclidean', features=None, ts=None, n_jobs=-1):
     """
     General analysis function that groups data by subject/list number and performs analysis.
 
@@ -92,6 +92,10 @@ def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
         Applies only to 'best' and 'smooth' matching approaches.  Can be any
         distance function supported by numpy.spatial.distance.cdist.
 
+    n_jobs : int
+        Number of parallel jobs for fingerprint analysis. Default is -1 (all cores).
+        Only used for fingerprint/temporal analyses when joblib is available.
+
 
     Returns
     ----------
@@ -146,7 +150,7 @@ def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
     if analysis == 'temporal':
         opts.update({'features' : ['temporal']})
     if analysis in ['temporal', 'fingerprint']:
-        opts.update({'permute' : permute, 'n_perms' : n_perms})
+        opts.update({'permute' : permute, 'n_perms' : n_perms, 'n_jobs' : n_jobs})
     if analysis == 'lagcrp':
         opts.update({'ts' : ts})
 

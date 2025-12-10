@@ -6,9 +6,17 @@ from scipy.spatial.distance import cdist
 from ..distance import dist_funcs as distdict
 from ..helpers import shuffle_egg
 
+# Check if joblib is available for parallel processing
+try:
+    from joblib import Parallel, delayed
+    HAS_JOBLIB = True
+except ImportError:
+    HAS_JOBLIB = False
+
 
 def fingerprint_helper(egg, permute=False, n_perms=1000,
-                       match='exact', distance='euclidean', features=None):
+                       match='exact', distance='euclidean', features=None,
+                       parallel=True, n_jobs=-1):
     """
     Computes clustering along a set of feature dimensions
 
@@ -34,6 +42,14 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
     features : list
         List of features to analyze. If None, uses all available features.
 
+    parallel : bool
+        Whether to use parallel processing. Default is True.
+        Requires joblib to be installed.
+
+    n_jobs : int
+        Number of parallel jobs. Default is -1 (use all cores).
+        Only used if parallel=True and joblib is available.
+
     Returns
     ----------
     probabilities : Numpy array
@@ -41,13 +57,24 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
     """
 
     if features is None:
-        features = egg.dist_funcs.keys()
+        features = list(egg.dist_funcs.keys())
+    elif not isinstance(features, list):
+        features = list(features)
 
     inds = egg.pres.index.tolist()
-    slices = [egg.crack(subjects=[i], lists=[j]) for i, j in inds]
 
-    weights = _get_weights(slices, features, distdict, permute, n_perms, match,
-                            distance)
+    # Use optimized direct computation to avoid creating Egg objects
+    use_parallel = parallel and HAS_JOBLIB and len(inds) > 10
+
+    if use_parallel:
+        # Parallel processing for large datasets
+        weights = _get_weights_parallel(egg, inds, features, distdict, permute,
+                                        n_perms, match, distance, n_jobs)
+    else:
+        # Optimized serial processing - work directly with DataFrames
+        weights = _get_weights_fast(egg, inds, features, distdict, permute,
+                                    n_perms, match, distance)
+
     return np.nanmean(weights, axis=0)
 
 
@@ -85,6 +112,151 @@ def _get_weights(slices, features, distdict, permute, n_perms, match, distance):
                 weights[sdx, fdx] = _get_weight_best(s, f, distdict, permute,
                                                       n_perms, distance)
     return weights
+
+
+def _get_weights_fast(egg, inds, features, distdict_module, permute, n_perms, match, distance):
+    """
+    Optimized serial processing that works directly with DataFrames.
+    Avoids creating Egg objects for each slice, dramatically reducing overhead.
+    """
+    weights = np.zeros((len(inds), len(features)))
+
+    for sdx, idx in enumerate(inds):
+        # Extract data directly from DataFrame using index
+        pres_row = egg.pres.loc[idx]
+        rec_row = egg.rec.loc[idx]
+
+        # Get items and features directly
+        pres_items = [cell['item'] for cell in pres_row.values if cell and not (isinstance(cell.get('item'), float) and np.isnan(cell.get('item', 0)))]
+        rec_items = [cell['item'] for cell in rec_row.values if cell and not (isinstance(cell.get('item'), float) and np.isnan(cell.get('item', 0)))]
+        pres_feats = [cell for cell in pres_row.values if cell and not (isinstance(cell.get('item'), float) and np.isnan(cell.get('item', 0)))]
+
+        if len(rec_items) <= 2:
+            weights[sdx, :] = np.nan
+            continue
+
+        for fdx, feature in enumerate(features):
+            if match == 'exact':
+                weights[sdx, fdx] = _compute_weight_exact_fast(
+                    pres_items, rec_items, pres_feats, feature,
+                    egg.dist_funcs, distdict_module, permute, n_perms
+                )
+            elif match == 'best':
+                # For 'best' match, fall back to Egg-based computation (less common)
+                from ..egg import Egg
+                slice_egg = egg.crack(subjects=[idx[0]], lists=[idx[1]])
+                weights[sdx, fdx] = _get_weight_best(slice_egg, feature, distdict_module,
+                                                      permute, n_perms, distance)
+    return weights
+
+
+def _get_weights_parallel(egg, inds, features, distdict_module, permute, n_perms, match, distance, n_jobs):
+    """
+    Parallel processing for large datasets using joblib.
+    """
+    def process_slice(idx):
+        """Process a single slice and return weights for all features."""
+        pres_row = egg.pres.loc[idx]
+        rec_row = egg.rec.loc[idx]
+
+        # Get items and features directly
+        pres_items = [cell['item'] for cell in pres_row.values if cell and not (isinstance(cell.get('item'), float) and np.isnan(cell.get('item', 0)))]
+        rec_items = [cell['item'] for cell in rec_row.values if cell and not (isinstance(cell.get('item'), float) and np.isnan(cell.get('item', 0)))]
+        pres_feats = [cell for cell in pres_row.values if cell and not (isinstance(cell.get('item'), float) and np.isnan(cell.get('item', 0)))]
+
+        slice_weights = np.zeros(len(features))
+
+        if len(rec_items) <= 2:
+            return np.full(len(features), np.nan)
+
+        for fdx, feature in enumerate(features):
+            if match == 'exact':
+                slice_weights[fdx] = _compute_weight_exact_fast(
+                    pres_items, rec_items, pres_feats, feature,
+                    egg.dist_funcs, distdict_module, permute, n_perms
+                )
+            elif match == 'best':
+                # For 'best' match, fall back to Egg-based computation
+                from ..egg import Egg
+                slice_egg = egg.crack(subjects=[idx[0]], lists=[idx[1]])
+                slice_weights[fdx] = _get_weight_best(slice_egg, feature, distdict_module,
+                                                       permute, n_perms, distance)
+        return slice_weights
+
+    # Run in parallel
+    results = Parallel(n_jobs=n_jobs)(delayed(process_slice)(idx) for idx in inds)
+    return np.array(results)
+
+
+def _compute_weight_exact_fast(pres_items, rec_items, pres_feats, feature, dist_funcs, distdict_module, permute, n_perms):
+    """
+    Fast computation of exact match weight without creating Egg objects.
+    Works directly with extracted item lists and feature dictionaries.
+    """
+    if permute:
+        # For permutation, we need to shuffle and recompute
+        perms = []
+        for _ in range(n_perms):
+            shuffled_rec = list(rec_items)
+            np.random.shuffle(shuffled_rec)
+            perms.append(_compute_weight_exact_fast(
+                pres_items, shuffled_rec, pres_feats, feature,
+                dist_funcs, distdict_module, False, None
+            ))
+        real = _compute_weight_exact_fast(
+            pres_items, rec_items, pres_feats, feature,
+            dist_funcs, distdict_module, False, None
+        )
+        bools = [1 if perm < real else 0.5 if perm == real else 0 for perm in perms]
+        return np.sum(np.array(bools), axis=0) / n_perms
+
+    # Build distance matrix from features
+    f_data = [xi[feature] for xi in pres_feats if xi and feature in xi]
+    if len(f_data) == 0:
+        return np.nan
+
+    f = np.array(f_data)
+    if f.ndim == 1:
+        f = f.reshape(-1, 1)
+
+    distmat = cdist(f, f, distdict_module[dist_funcs[feature]])
+
+    # Map items to indices
+    try:
+        p_map = {item: i for i, item in enumerate(pres_items)}
+        r_idxs = [p_map[item] for item in rec_items if item in p_map]
+    except TypeError:
+        r_idxs = [pres_items.index(item) for item in rec_items if item in pres_items]
+
+    if len(r_idxs) < 2:
+        return np.nan
+
+    ranks = []
+    seen = np.zeros(len(pres_items), dtype=bool)
+
+    for i in range(len(r_idxs) - 1):
+        c_idx = r_idxs[i]
+        n_idx = r_idxs[i + 1]
+
+        if seen[c_idx] or seen[n_idx]:
+            continue
+
+        dists = distmat[c_idx]
+        target_dist = dists[n_idx]
+
+        valid_mask = ~seen
+        valid_mask[c_idx] = False
+
+        dists_filt = dists[valid_mask]
+
+        n_greater = np.sum(dists_filt > target_dist)
+        n_equal = np.sum(dists_filt == target_dist)
+        avg_rank = n_greater + (n_equal + 1) / 2.0
+
+        ranks.append(avg_rank / len(dists_filt))
+        seen[c_idx] = True
+
+    return np.nanmean(ranks)
 
 
 def _get_weight_exact(egg, feature, distdict, permute, n_perms):
