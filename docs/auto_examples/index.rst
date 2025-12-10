@@ -251,6 +251,40 @@ Gallery of Examples
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates analyzing the classic Murdock (1962) free recall dataset, which established the serial position effect as a fundamental phenomenon in memory research. The dataset contains 90 subjects (15 per condition) across 6 experimental conditions varying in list length (10, 15, 20, 30, or 40 items) and presentation rate (1 or 2 sec/item). Each subject completed 80 lists.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_murdock_data_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_murdock_data.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Analyze Murdock (1962) Free Recall Data</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates analyzing the Polyn et al. (2009) free recall dataset, which was used in the development of the Context Maintenance and Retrieval (CMR) model. The dataset contains behavioral data from 45 subjects who studied lists of 24 words using either SIZE or ANIMACY encoding tasks.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_cmr_data_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_cmr_data.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Analyze Polyn et al. (2009) CMR Data</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -275,6 +309,8 @@ Gallery of Examples
    /auto_examples/create_multisubject_egg
    /auto_examples/create_egg
    /auto_examples/fingerprint_optimalpresenter
+   /auto_examples/plot_murdock_data
+   /auto_examples/plot_cmr_data
 
 
 .. only:: html

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:11.507** total execution time for 14 files **from auto_examples**:
+**00:39.916** total execution time for 16 files **from auto_examples**:
 
 .. container::
 
@@ -32,29 +32,11 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_fingerprint.py` (``plot_fingerprint.py``)
-     - 00:05.299
+   * - :ref:`sphx_glr_auto_examples_plot_cmr_data.py` (``plot_cmr_data.py``)
+     - 00:20.982
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_temporal.py` (``plot_temporal.py``)
-     - 00:01.977
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_spc.py` (``plot_spc.py``)
-     - 00:00.819
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_lagcrp.py` (``plot_lagcrp.py``)
-     - 00:00.736
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_accuracy.py` (``plot_accuracy.py``)
-     - 00:00.716
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_pnr.py` (``plot_pnr.py``)
-     - 00:00.686
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_pfr.py` (``plot_pfr.py``)
-     - 00:00.677
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_existing_axes.py` (``plot_existing_axes.py``)
-     - 00:00.597
+   * - :ref:`sphx_glr_auto_examples_plot_murdock_data.py` (``plot_murdock_data.py``)
+     - 00:18.935
      - 0.0
    * - :ref:`sphx_glr_auto_examples_crack_egg.py` (``crack_egg.py``)
      - 00:00.000
@@ -69,6 +51,30 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_fingerprint_optimalpresenter.py` (``fingerprint_optimalpresenter.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_accuracy.py` (``plot_accuracy.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_existing_axes.py` (``plot_existing_axes.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_fingerprint.py` (``plot_fingerprint.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_lagcrp.py` (``plot_lagcrp.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_pfr.py` (``plot_pfr.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_pnr.py` (``plot_pnr.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_spc.py` (``plot_spc.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_temporal.py` (``plot_temporal.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_recmat2egg.py` (``recmat2egg.py``)

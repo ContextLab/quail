@@ -1,0 +1,558 @@
+{
+ "Counter": [
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "collections",
+   "module_short": "collections",
+   "name": "Counter"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "dict"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "collections",
+   "module_short": "collections",
+   "name": "Counter"
+  }
+ ],
+ "all_conditions": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "avg_listgroup": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "axes": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "egg": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "Egg"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "Egg"
+  }
+ ],
+ "egg.analyze": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "Egg.analyze"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "Egg.analyze"
+  }
+ ],
+ "egg.list_length": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "egg.n_lists": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "egg.n_subjects": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "egg.pres.loc": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core.frame",
+   "module_short": "pandas.core.frame",
+   "name": "DataFrame.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core",
+   "module_short": "pandas.core",
+   "name": "DataFrame.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas",
+   "module_short": "pandas",
+   "name": "DataFrame.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core.generic",
+   "module_short": "pandas.core.generic",
+   "name": "NDFrame.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core",
+   "module_short": "pandas.core",
+   "name": "NDFrame.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas",
+   "module_short": "pandas",
+   "name": "NDFrame.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core.arraylike",
+   "module_short": "pandas.core.arraylike",
+   "name": "OpsMixin.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core",
+   "module_short": "pandas.core",
+   "name": "OpsMixin.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas",
+   "module_short": "pandas",
+   "name": "OpsMixin.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core.base",
+   "module_short": "pandas.core.base",
+   "name": "PandasObject.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core",
+   "module_short": "pandas.core",
+   "name": "PandasObject.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas",
+   "module_short": "pandas",
+   "name": "PandasObject.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core.indexing",
+   "module_short": "pandas.core.indexing",
+   "name": "IndexingMixin.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core",
+   "module_short": "pandas.core",
+   "name": "IndexingMixin.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas",
+   "module_short": "pandas",
+   "name": "IndexingMixin.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core.accessor",
+   "module_short": "pandas.core.accessor",
+   "name": "DirNamesMixin.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas.core",
+   "module_short": "pandas.core",
+   "name": "DirNamesMixin.loc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pandas",
+   "module_short": "pandas",
+   "name": "DirNamesMixin.loc"
+  }
+ ],
+ "fig": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.figure",
+   "module_short": "matplotlib.figure",
+   "name": "Figure"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Figure"
+  }
+ ],
+ "fingerprint": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  }
+ ],
+ "fingerprint.plot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  }
+ ],
+ "lagcrp": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  }
+ ],
+ "lagcrp.plot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  }
+ ],
+ "list_idx": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "listgroup": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "listgroup.append": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  }
+ ],
+ "pfr": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  }
+ ],
+ "pfr.plot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  }
+ ],
+ "plt.savefig": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.pyplot",
+   "module_short": "matplotlib.pyplot",
+   "name": "savefig"
+  }
+ ],
+ "plt.show": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.pyplot",
+   "module_short": "matplotlib.pyplot",
+   "name": "show"
+  }
+ ],
+ "plt.subplots": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.pyplot",
+   "module_short": "matplotlib.pyplot",
+   "name": "subplots"
+  }
+ ],
+ "plt.suptitle": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.pyplot",
+   "module_short": "matplotlib.pyplot",
+   "name": "suptitle"
+  }
+ ],
+ "plt.tight_layout": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.pyplot",
+   "module_short": "matplotlib.pyplot",
+   "name": "tight_layout"
+  }
+ ],
+ "quail.load_example_data": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "load_example_data"
+  }
+ ],
+ "sample": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "dict"
+  }
+ ],
+ "spc": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  }
+ ],
+ "spc.plot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  }
+ ],
+ "subj_idx": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "subj_listgroup": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "subj_listgroup.append": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  }
+ ],
+ "warnings.filterwarnings": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "warnings",
+   "module_short": "warnings",
+   "name": "filterwarnings"
+  }
+ ]
+}
