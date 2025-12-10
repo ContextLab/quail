@@ -545,15 +545,25 @@ def load_example_data(dataset='automatic'):
     Conditions: LL10-2s, LL15-2s, LL20-1s, LL20-2s, LL30-1s, LL40-1s.
     Features include: item, temporal (serial position), list_length, rate, and condition.
 
+    The frfr example data contains behavioral data from a series of free recall experiments
+    investigating how different word features affect memory organization. The dataset contains
+    452 subjects across 11 experimental conditions: feature-rich (all features varied),
+    category, color, length, first-letter, location, size, adaptive, reduced, reduced-early,
+    and reduced-late. Each subject studied 16 lists of 16 words. Features include: item,
+    category, color, location, size, firstLetter, wordLength, temporal (serial position),
+    condition (experiment type), and list_type (early or late lists).
+    Reference: Heusser, A.C., Fitzpatrick, P.C., & Manning, J.R. (2018). How is experience
+    transformed into memory? bioRxiv. https://doi.org/10.1101/409987
+
     Parameters
     ----------
     dataset : str
-        The dataset to load. Can be 'automatic', 'manual', 'naturalistic', 'cmr', or 'murd62'.
-        The free recall audio recordings for the 'automatic' dataset was transcribed by Google
-        Cloud Speech and the 'manual' dataset was transcribed by humans. The 'naturalistic'
-        dataset was transcribed by humans and transformed as described above. The 'cmr'
-        dataset is from Polyn, Norman & Kahana (2009). The 'murd62' dataset is from
-        Murdock (1962).
+        The dataset to load. Can be 'automatic', 'manual', 'naturalistic', 'cmr', 'murd62',
+        or 'frfr'. The free recall audio recordings for the 'automatic' dataset was transcribed
+        by Google Cloud Speech and the 'manual' dataset was transcribed by humans. The
+        'naturalistic' dataset was transcribed by humans and transformed as described above.
+        The 'cmr' dataset is from Polyn, Norman & Kahana (2009). The 'murd62' dataset is from
+        Murdock (1962). The 'frfr' dataset is from Heusser, Fitzpatrick & Manning (2018).
 
     Returns
     ----------
@@ -562,8 +572,8 @@ def load_example_data(dataset='automatic'):
     """
 
     # can only be auto or manual
-    assert dataset in ['automatic', 'manual', 'naturalistic', 'cmr', 'murd62'], \
-        "Dataset can only be automatic, manual, naturalistic, cmr, or murd62"
+    assert dataset in ['automatic', 'manual', 'naturalistic', 'cmr', 'murd62', 'frfr'], \
+        "Dataset can only be automatic, manual, naturalistic, cmr, murd62, or frfr"
 
     if dataset == 'cmr':
         # open cmr egg (Polyn et al. 2009 data)
@@ -571,6 +581,9 @@ def load_example_data(dataset='automatic'):
     elif dataset == 'murd62':
         # open murd62 egg (Murdock 1962 data)
         egg = Egg(**joblib.load(os.path.dirname(os.path.abspath(__file__)) + '/data/murd62.egg'))
+    elif dataset == 'frfr':
+        # open frfr egg (Heusser et al. 2018 feature-rich free recall data)
+        egg = Egg(**joblib.load(os.path.dirname(os.path.abspath(__file__)) + '/data/frfr.egg'))
     elif dataset == 'naturalistic':
         # open naturalistic egg
         egg = Egg(**joblib.load(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg'))
