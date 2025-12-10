@@ -107,3 +107,103 @@ def test_egg_recmat():
     recmat = [[[3, 4, 2, 1, 0], [4, 2, 5, 3, 2]]]
     egg = Egg(recmat=recmat, list_length=10)
     assert isinstance(egg, Egg)
+
+
+# Test DataFrame input support
+class TestEggDataFrameInput:
+    """Tests for creating Eggs from DataFrames directly."""
+
+    def test_egg_from_dataframe(self):
+        """Test that Egg can be created from DataFrames."""
+        # Create test data as DataFrames
+        pres_data = [[{'item': 'CAT', 'category': 'animal'},
+                      {'item': 'DOG', 'category': 'animal'}],
+                     [{'item': 'HAT', 'category': 'object'},
+                      {'item': 'BAT', 'category': 'animal'}]]
+        rec_data = [[{'item': 'DOG', 'category': 'animal'},
+                     {'item': 'CAT', 'category': 'animal'}],
+                    [{'item': 'BAT', 'category': 'animal'}]]
+
+        # Create MultiIndex DataFrames
+        index = pd.MultiIndex.from_tuples([(0, 0), (0, 1)], names=['subject', 'list'])
+        pres_df = pd.DataFrame(pres_data, index=index)
+        rec_df = pd.DataFrame(rec_data, index=index)
+
+        egg_df = Egg(pres=pres_df, rec=rec_df)
+        assert isinstance(egg_df, Egg)
+        assert egg_df.n_subjects == 1
+        assert egg_df.n_lists == 2
+        assert egg_df.list_length == 2
+
+    def test_egg_from_dataframe_dist_funcs(self):
+        """Test that dist_funcs are properly inferred from DataFrame input."""
+        pres_data = [[{'item': 'CAT', 'category': 'animal', 'temporal': 0},
+                      {'item': 'DOG', 'category': 'animal', 'temporal': 1}]]
+        rec_data = [[{'item': 'DOG', 'category': 'animal'}]]
+
+        index = pd.MultiIndex.from_tuples([(0, 0)], names=['subject', 'list'])
+        pres_df = pd.DataFrame(pres_data, index=index)
+        rec_df = pd.DataFrame(rec_data, index=index)
+
+        egg_df = Egg(pres=pres_df, rec=rec_df)
+        assert 'category' in egg_df.dist_funcs
+        assert 'temporal' in egg_df.dist_funcs
+        assert egg_df.dist_funcs['category'] == 'match'
+        assert egg_df.dist_funcs['temporal'] == 'euclidean'
+
+    def test_egg_from_dataframe_custom_dist_funcs(self):
+        """Test that custom dist_funcs override defaults for DataFrame input."""
+        pres_data = [[{'item': 'CAT', 'size': 1.5}]]
+        rec_data = [[{'item': 'CAT', 'size': 1.5}]]
+
+        index = pd.MultiIndex.from_tuples([(0, 0)], names=['subject', 'list'])
+        pres_df = pd.DataFrame(pres_data, index=index)
+        rec_df = pd.DataFrame(rec_data, index=index)
+
+        custom_dist = {'size': 'correlation'}
+        egg_df = Egg(pres=pres_df, rec=rec_df, dist_funcs=custom_dist)
+        assert egg_df.dist_funcs['size'] == 'correlation'
+
+    def test_egg_from_dataframe_requires_multiindex(self):
+        """Test that non-MultiIndex DataFrames raise ValueError."""
+        pres_df = pd.DataFrame([[{'item': 'CAT'}]])
+        rec_df = pd.DataFrame([[{'item': 'CAT'}]])
+
+        with pytest.raises(ValueError, match="MultiIndex"):
+            Egg(pres=pres_df, rec=rec_df)
+
+    def test_egg_from_dataframe_analyze(self):
+        """Test that egg created from DataFrame can be analyzed."""
+        pres_data = [[{'item': 'CAT', 'category': 'animal', 'temporal': 0},
+                      {'item': 'DOG', 'category': 'animal', 'temporal': 1},
+                      {'item': 'HAT', 'category': 'object', 'temporal': 2},
+                      {'item': 'BAT', 'category': 'animal', 'temporal': 3}]]
+        rec_data = [[{'item': 'DOG', 'category': 'animal'},
+                     {'item': 'CAT', 'category': 'animal'},
+                     {'item': 'BAT', 'category': 'animal'}]]
+
+        index = pd.MultiIndex.from_tuples([(0, 0)], names=['subject', 'list'])
+        pres_df = pd.DataFrame(pres_data, index=index)
+        rec_df = pd.DataFrame(rec_data, index=index)
+
+        egg_df = Egg(pres=pres_df, rec=rec_df)
+        result = egg_df.analyze('accuracy')
+        assert isinstance(result, FriedEgg)
+
+    def test_egg_from_dataframe_multiple_subjects(self):
+        """Test DataFrame input with multiple subjects."""
+        pres_data = [[{'item': 'CAT', 'temporal': 0}, {'item': 'DOG', 'temporal': 1}],
+                     [{'item': 'HAT', 'temporal': 0}, {'item': 'BAT', 'temporal': 1}],
+                     [{'item': 'RAT', 'temporal': 0}, {'item': 'MAT', 'temporal': 1}],
+                     [{'item': 'SAT', 'temporal': 0}, {'item': 'PAT', 'temporal': 1}]]
+        rec_data = [[{'item': 'DOG'}], [{'item': 'BAT'}],
+                    [{'item': 'MAT'}], [{'item': 'PAT'}]]
+
+        index = pd.MultiIndex.from_tuples([(0, 0), (0, 1), (1, 0), (1, 1)],
+                                          names=['subject', 'list'])
+        pres_df = pd.DataFrame(pres_data, index=index)
+        rec_df = pd.DataFrame(rec_data, index=index)
+
+        egg_df = Egg(pres=pres_df, rec=rec_df)
+        assert egg_df.n_subjects == 2
+        assert egg_df.n_lists == 2

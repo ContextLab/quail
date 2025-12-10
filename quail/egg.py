@@ -32,27 +32,18 @@ class Egg(object):
     Parameters
     ----------
 
-    pres : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.
-        This is a nested list containing the presented stimuli/stimulus features.
-        The outer list groups the data into subjects, the middle list groups the
-        data into experiments and the inner list groups the data into stimuli
-        presented together in one block (or list). Each item within the list can
-        be a string representing the stimulus or a dictionary representing the
-        stimuli and its features. If dictionaries are passed, identify the stimulus
-        name using the 'item' key and a string label. To represent additional
-        stimulus features, use any text (str) label as the key and a value of the
-        following types: string, int, float, list, array.
+    pres : list, np.ndarray, or pd.DataFrame
+        Presented stimuli/stimulus features. Can be provided as:
+        - Nested list: list (subjects) of lists (lists) of lists (items) of strings or dicts
+        - NumPy array: Same structure as nested list
+        - Pandas DataFrame: Multi-indexed DataFrame where each cell is a dict with 'item' key
+          and optional feature keys. Index should be (subject, list) MultiIndex.
 
-    rec : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.
-        This is a nested list containing the recalled stimuli/stimulus features.
-        The outer list groups the data into subjects, the middle list groups the
-        data into experiments and the inner list groups the data into stimuli
-        presented together in one block (or list). Each item within the list can
-        be a string representing the stimulus or a dictionary representing the
-        stimuli and its features. If dictionaries are passed, identify the stimulus
-        name using the 'item' key and a string label. To represent additional
-        stimulus features, use any text (str) label as the key and a value of the
-        following types: string, int, float, list, array.
+        For lists/arrays, each item can be a string representing the stimulus or a
+        dictionary with 'item' key for the stimulus name and additional keys for features.
+
+    rec : list, np.ndarray, or pd.DataFrame
+        Recalled stimuli/stimulus features. Same format options as pres.
 
     features : list (subjects) of lists (experiment) of lists (list/block) of strings or dictionaries.
         This is DEPRECATED, but left in for legacy support. This is a nested list
@@ -146,6 +137,45 @@ class Egg(object):
                 list_length = len(recmat[0][0])
             pres = [[[str(word) for word in list(range(0,list_length))] for reclist in recsub] for recsub in recmat]
             rec = [[[str(word) for word in reclist if word is not None] for reclist in recsub] for recsub in recmat]
+        # handle if DataFrames are passed directly
+        elif isinstance(pres, pd.DataFrame) and isinstance(rec, pd.DataFrame):
+            # DataFrames passed directly - use them as-is after validation
+            # Ensure DataFrames have proper MultiIndex
+            if not isinstance(pres.index, pd.MultiIndex):
+                raise ValueError("DataFrame pres must have a MultiIndex (subject, list)")
+            if not isinstance(rec.index, pd.MultiIndex):
+                raise ValueError("DataFrame rec must have a MultiIndex (subject, list)")
+
+            # Get sample item to extract dist_funcs
+            sample_item = pres.iloc[0, 0]
+            if isinstance(sample_item, dict):
+                self.dist_funcs = default_dist_funcs(dist_funcs, sample_item)
+            else:
+                self.dist_funcs = dist_funcs or {}
+
+            # Assign directly
+            self.pres = pres.map(lambda x: {'item': np.nan} if pd.isnull(x) else x)
+            self.rec = rec.map(lambda x: {'item': np.nan} if pd.isnull(x) else x)
+            self.feature_names = list(self.get_pres_features()[0][0][0]) if len(pres) > 0 else []
+            self.subjgroup = subjgroup
+            self.subjname = subjname
+            self.listgroup = listgroup
+            self.listname = listname
+            self.n_subjects = len(self.pres.index.levels[0].values)
+            self.n_lists = len(self.pres.index.levels[1].values)
+            self.list_length = len(self.pres.columns)
+
+            if meta is None:
+                self.meta = {}
+            else:
+                self.meta = meta
+
+            if date_created is None:
+                self.date_created = time.strftime("%c")
+            else:
+                self.date_created = date_created
+
+            return  # Early return - DataFrame path complete
         else:
             # check to see if pres is a list(list(list))
             if not all(isinstance(item, list) for sub in pres for item in sub):

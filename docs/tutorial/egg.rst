@@ -995,11 +995,11 @@ thing:
         .dataframe tbody tr th:only-of-type {
             vertical-align: middle;
         }
-    
+
         .dataframe tbody tr th {
             vertical-align: top;
         }
-    
+
         .dataframe thead th {
             text-align: right;
         }
@@ -1043,5 +1043,68 @@ thing:
       </tbody>
     </table>
     </div>
+
+
+Creating ``eggs`` from DataFrames
+---------------------------------
+
+In addition to nested lists, you can also create an ``egg`` directly from
+Pandas DataFrames. This is useful when you already have your data organized
+as DataFrames or when loading data from saved egg files. The DataFrames must
+have a MultiIndex with (subject, list) levels:
+
+.. code:: ipython3
+
+    import pandas as pd
+
+    # Create presented data as list of rows, where each row contains dicts
+    pres_data = [
+        [{'item': 'cat', 'category': 'animal'}, {'item': 'dog', 'category': 'animal'}],
+        [{'item': 'hat', 'category': 'object'}, {'item': 'bat', 'category': 'animal'}]
+    ]
+    rec_data = [
+        [{'item': 'dog', 'category': 'animal'}, {'item': 'cat', 'category': 'animal'}],
+        [{'item': 'bat', 'category': 'animal'}]
+    ]
+
+    # Create MultiIndex for 1 subject, 2 lists
+    index = pd.MultiIndex.from_tuples([(0, 0), (0, 1)], names=['Subject', 'List'])
+
+    # Create DataFrames
+    pres_df = pd.DataFrame(pres_data, index=index)
+    rec_df = pd.DataFrame(rec_data, index=index)
+
+    # Create egg from DataFrames
+    egg_from_df = quail.Egg(pres=pres_df, rec=rec_df)
+    egg_from_df.info()
+
+.. parsed-literal::
+
+    Number of subjects: 1
+    Number of lists per subject: 2
+    Number of words per list: 2
+    Date created: ...
+    Meta data: {}
+
+
+You can verify the egg was created correctly:
+
+.. code:: ipython3
+
+    egg_from_df.get_pres_items()
+
+This approach is particularly useful when working with pre-processed data
+or when programmatically constructing experiments with many conditions.
+Distance functions are automatically inferred from the feature types, but
+you can also pass custom ``dist_funcs`` as usual:
+
+.. code:: ipython3
+
+    # Create egg with custom distance function
+    egg_custom = quail.Egg(
+        pres=pres_df,
+        rec=rec_df,
+        dist_funcs={'category': 'match'}
+    )
 
 
