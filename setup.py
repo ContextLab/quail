@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from setuptools import setup, find_packages
 
 DESCRIPTION = 'A python toolbox for analyzing and plotting free recall data'
@@ -12,11 +13,15 @@ Quail is a Python package that facilitates analyses of behavioral data from memo
 - Clustering metrics (e.g. single-number summaries of how often participants transition from recalling a word to another related word, where "related" can be user-defined.)
 - Many nice plotting functions
 - Convenience functions for loading in data
-- Automatically parse speech data (audio files) using wrappers for the Google Cloud Speech to Text API
+- Automatically parse speech data (audio files) using OpenAI Whisper
 
 The intended user of this toolbox is a memory researcher who seeks an easy way to analyze and visualize data from free recall psychology experiments.
 """
 
+# Read requirements from requirements.txt
+here = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(here, 'requirements.txt')) as f:
+    requirements = [line.strip() for line in f if line.strip() and not line.startswith('#')]
 
 EXTRAS_REQUIRE={
     'speech-decoding': ["pydub", "openai-whisper"],
@@ -35,13 +40,6 @@ setup(
     license='MIT',
     packages=find_packages(exclude=('tests', 'docs', 'paper')),
     include_package_data=True,
-    install_requires=[
-        'numpy>=2.0.0',
-        'scipy>=1.10.0',
-        'matplotlib>=3.5.0',
-        'seaborn>=0.12.0',
-        'pandas>=2.0.0',
-        'joblib>=1.3.0',
-    ],
+    install_requires=requirements,
     extras_require=EXTRAS_REQUIRE,
 )

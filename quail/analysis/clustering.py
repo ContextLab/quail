@@ -96,9 +96,8 @@ def _get_weight_exact(egg, feature, distdict, permute, n_perms):
     rec = list(egg.get_rec_items().values[0])
 
     if len(rec) <= 2:
-        warnings.warn('Not enough recalls to compute fingerprint, returning default'
-              'fingerprint.. (everything is .5)')
-        return 0.5
+        warnings.warn('Not enough recalls to compute fingerprint, returning NaN')
+        return np.nan
 
     distmat = get_distmat(egg, feature, distdict)
 
@@ -174,14 +173,11 @@ def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
 
     rec = list(egg.get_rec_items().values[0])
     if len(rec) <= 2:
-        warnings.warn('Not enough recalls to compute fingerprint, returning default'
-              'fingerprint.. (everything is .5)')
+        warnings.warn('Not enough recalls to compute fingerprint, returning NaN')
         return np.nan
 
     distmat = get_distmat(egg, feature, distdict)
     matchmat = get_match(egg, feature, distdict)
-    print(f"DEBUG: matchmat.shape={matchmat.shape}, len(rec)={len(rec)}")
-    print(f"DEBUG: distmat.shape={distmat.shape}")
 
     ranks = []
     for i in range(len(rec)-1):
