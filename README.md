@@ -1,5 +1,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1003184.svg)](https://doi.org/10.5281/zenodo.1003184)
 [![JOSS](http://joss.theoj.org/papers/3fb5123eb2538e06f6a25ded0a088b73/status.svg)](http://joss.theoj.org/papers/10.21105/joss.00424)
+[![Tests](https://github.com/ContextLab/quail/actions/workflows/tests.yml/badge.svg)](https://github.com/ContextLab/quail/actions/workflows/tests.yml)
+[![Documentation Status](https://readthedocs.org/projects/cdl-quail/badge/?version=latest)](https://cdl-quail.readthedocs.io/en/latest/?badge=latest)
 
 ![Quail logo](images/Quail_Logo_small.png)
 
@@ -12,7 +14,7 @@ Quail is a Python package that facilitates analyses of behavioral data from memo
 - Clustering metrics (e.g. single-number summaries of how often participants transition from recalling a word to another related word, where "related" can be user-defined.)
 - Many nice plotting functions
 - Convenience functions for loading in data
-- Automatically parse speech data (audio files) using wrappers for the Google Cloud Speech to Text API
+- Automatically parse speech data (audio files) using OpenAI Whisper
 
 The intended user of this toolbox is a memory researcher who seeks an easy way to analyze and visualize data from free recall psychology experiments.
 
