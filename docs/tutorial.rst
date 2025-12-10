@@ -44,3 +44,15 @@ What is a "memory fingerprint"?
   :maxdepth: 2
 
   tutorial/fingerprint.ipynb
+
+Example datasets
+----------------
+
+Quail includes two classic free recall datasets for demonstration and testing.
+These tutorials show how to load and analyze these datasets.
+
+.. toctree::
+  :maxdepth: 2
+
+  tutorial/murdock_1962
+  tutorial/cmr_polyn_2009
