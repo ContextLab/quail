@@ -370,13 +370,6 @@ def order_stick(presenter, egg, dist_dict, strategy, fingerprint):
         return feature_stick
 
     def reorder_list(egg, feature_stick, dist_dict, tau):
-
-        def compute_stimulus_stick(s, tau):
-            '''create a 'stick' of feature weights'''
-
-            feature_stick = [[weights[feature]]*round(weights[feature]**alpha)*100 for feature in w]
-            return [item for sublist in feature_stick for item in sublist]
-
         # parse egg
         pres, rec, features, dist_funcs = parse_egg(egg)
 

@@ -387,7 +387,7 @@ def loadEL(dbpath=None, recpath=None, remove_subs=None, wordpool=None, groupby=N
 
     # add custom filters
     if filters:
-        filter_func = [adaptive_filter, experimeter_filter, experiments_filter] + filters
+        filter_func = [adaptive_filter, experimenter_filter, experiments_filter] + filters
     else:
         filter_func = [adaptive_filter, experimenter_filter, experiments_filter]
 
