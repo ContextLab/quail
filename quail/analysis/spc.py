@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from .recmat import recall_matrix
 
 def spc_helper(egg, match='exact', distance='euclidean',
@@ -31,10 +32,30 @@ def spc_helper(egg, match='exact', distance='euclidean',
 
     """
 
-    def spc(lst):
-        d = np.zeros_like(egg.pres.values[0])
+    def get_list_length(list_idx):
+        """Get actual list length by counting non-nan items"""
+        pres_row = egg.pres.iloc[list_idx]
+        length = 0
+        for item in pres_row:
+            if isinstance(item, dict) and 'item' in item:
+                if not (isinstance(item['item'], float) and pd.isna(item['item'])):
+                    length += 1
+                else:
+                    break
+            else:
+                break
+        return length
+
+    def spc(lst, list_idx):
+        actual_length = get_list_length(list_idx)
+        # Initialize with NaN for all positions
+        d = np.full(len(egg.pres.values[0]), np.nan, dtype=float)
+        # Set valid positions to 0
+        d[:actual_length] = 0
+        # Mark recalled positions as 1
         inds = np.array(lst[~np.isnan(lst)]).astype(int)
-        d[inds-1]=1
+        valid_inds = inds[(inds >= 1) & (inds <= actual_length)]
+        d[valid_inds - 1] = 1
         return d
 
     opts = dict(match=match, distance=distance, features=features)
@@ -43,9 +64,9 @@ def spc_helper(egg, match='exact', distance='euclidean',
     recmat = recall_matrix(egg, **opts)
 
     if match in ['exact', 'best']:
-        result = [spc(lst) for lst in recmat]
+        result = [spc(lst, i) for i, lst in enumerate(recmat)]
     elif match == 'smooth':
         result = np.nanmean(recmat, 2)
     else:
         raise ValueError('Match must be set to exact, best or smooth.')
-    return np.mean(result, 0)
+    return np.nanmean(result, 0)

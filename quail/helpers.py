@@ -214,6 +214,36 @@ def crack_egg(egg, subjects=None, lists=None):
         features = egg.features.loc[idx[subjects,lists],egg.features.columns]
         opts['features'] = [features.loc[sub,:].values.tolist() for sub in subjects]
 
+    # Preserve listgroup if it exists
+    if hasattr(egg, 'listgroup') and egg.listgroup is not None:
+        # Get list indices for slicing listgroup
+        all_lists = egg.pres.index.levels[1].values.tolist()
+        list_indices = [all_lists.index(l) for l in lists]
+        # Slice listgroup for selected subjects and lists
+        sliced_listgroup = []
+        all_subjects = egg.pres.index.levels[0].values.tolist()
+        for sub in subjects:
+            sub_idx = all_subjects.index(sub)
+            if sub_idx < len(egg.listgroup):
+                sub_listgroup = egg.listgroup[sub_idx]
+                sliced_listgroup.append([sub_listgroup[i] for i in list_indices if i < len(sub_listgroup)])
+        if sliced_listgroup:
+            opts['listgroup'] = sliced_listgroup
+
+    # Preserve other optional fields
+    if hasattr(egg, 'listname') and egg.listname is not None:
+        opts['listname'] = egg.listname
+    if hasattr(egg, 'subjgroup') and egg.subjgroup is not None:
+        # Slice subjgroup for selected subjects
+        all_subjects = egg.pres.index.levels[0].values.tolist()
+        opts['subjgroup'] = [egg.subjgroup[all_subjects.index(s)] for s in subjects if all_subjects.index(s) < len(egg.subjgroup)]
+    if hasattr(egg, 'subjname') and egg.subjname is not None:
+        opts['subjname'] = egg.subjname
+    if hasattr(egg, 'dist_funcs') and egg.dist_funcs is not None:
+        opts['dist_funcs'] = egg.dist_funcs
+    if hasattr(egg, 'meta') and egg.meta is not None:
+        opts['meta'] = egg.meta
+
     return Egg(pres=pres, rec=rec, **opts)
 
 def df2list(df):

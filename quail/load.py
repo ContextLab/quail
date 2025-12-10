@@ -529,13 +529,31 @@ def load_example_data(dataset='automatic'):
     used a Hidden Markov Model to segment the video model and the recall models, by subject,
     into k events.
 
+    The cmr example data contains behavioral data from Polyn, Norman & Kahana (2009),
+    "A Context Maintenance and Retrieval Model of Organizational Processes in Free Recall",
+    Psychological Review, Vol. 116 (1), 129-156. The dataset contains 45 subjects who
+    studied lists of 24 words each using either SIZE or ANIMACY encoding tasks.
+    List types include: SIZE-only (listType=0), ANIMACY-only (listType=1), and
+    task-shift lists (listType=2) where participants alternated between encoding tasks.
+    Features include: item (word), task (SIZE or ANIMACY), temporal (serial position),
+    and wordpool_idx (index into the original wordpool).
+
+    The murd62 example data contains behavioral data from Murdock (1962), "The serial
+    position effect of free recall", Journal of Experimental Psychology, 64(5), 482-488.
+    The dataset contains 7200 trials across 6 experimental conditions varying in list
+    length (10, 15, 20, 30, or 40 items) and presentation rate (1 or 2 seconds per item).
+    Conditions: LL10-2s, LL15-2s, LL20-1s, LL20-2s, LL30-1s, LL40-1s.
+    Features include: item, temporal (serial position), list_length, rate, and condition.
+
     Parameters
     ----------
     dataset : str
-        The dataset to load. Can be 'automatic', 'manual', or 'naturalistic'. The free recall
-        audio recordings for the 'automatic' dataset was transcribed by Google
+        The dataset to load. Can be 'automatic', 'manual', 'naturalistic', 'cmr', or 'murd62'.
+        The free recall audio recordings for the 'automatic' dataset was transcribed by Google
         Cloud Speech and the 'manual' dataset was transcribed by humans. The 'naturalistic'
-        dataset was transcribed by humans and transformed as described above.
+        dataset was transcribed by humans and transformed as described above. The 'cmr'
+        dataset is from Polyn, Norman & Kahana (2009). The 'murd62' dataset is from
+        Murdock (1962).
 
     Returns
     ----------
@@ -544,14 +562,20 @@ def load_example_data(dataset='automatic'):
     """
 
     # can only be auto or manual
-    assert dataset in ['automatic', 'manual', 'naturalistic'], "Dataset can only be automatic, manual, or naturalistic"
+    assert dataset in ['automatic', 'manual', 'naturalistic', 'cmr', 'murd62'], \
+        "Dataset can only be automatic, manual, naturalistic, cmr, or murd62"
 
-
-    if dataset == 'naturalistic':
+    if dataset == 'cmr':
+        # open cmr egg (Polyn et al. 2009 data)
+        egg = Egg(**joblib.load(os.path.dirname(os.path.abspath(__file__)) + '/data/cmr.egg'))
+    elif dataset == 'murd62':
+        # open murd62 egg (Murdock 1962 data)
+        egg = Egg(**joblib.load(os.path.dirname(os.path.abspath(__file__)) + '/data/murd62.egg'))
+    elif dataset == 'naturalistic':
         # open naturalistic egg
         egg = Egg(**joblib.load(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg'))
     else:
-    # open pickled egg
+        # open pickled egg
         try:
             with open(os.path.dirname(os.path.abspath(__file__)) + '/data/' + dataset + '.egg', 'rb') as handle:
                 egg = pickle.load(handle)

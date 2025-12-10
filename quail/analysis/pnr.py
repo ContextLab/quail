@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from .recmat import recall_matrix
 
 def pnr_helper(egg, position, match='exact',
@@ -35,8 +36,29 @@ def pnr_helper(egg, position, match='exact',
       each number represents the probability of nth recall for a word presented in given position/index
 
     """
-    def pnr(lst, position):
-        return [1 if pos==lst[position] else 0 for pos in range(1,egg.list_length+1)]
+
+    def get_list_length(list_idx):
+        """Get actual list length by counting non-nan items"""
+        pres_row = egg.pres.iloc[list_idx]
+        length = 0
+        for item in pres_row:
+            if isinstance(item, dict) and 'item' in item:
+                if not (isinstance(item['item'], float) and pd.isna(item['item'])):
+                    length += 1
+                else:
+                    break
+            else:
+                break
+        return length
+
+    def pnr(lst, position, list_idx):
+        actual_length = get_list_length(list_idx)
+        # Initialize with NaN for all positions up to max list length
+        result = [np.nan] * egg.list_length
+        # Set valid positions
+        for pos in range(1, actual_length + 1):
+            result[pos - 1] = 1 if pos == lst[position] else 0
+        return result
 
     opts = dict(match=match, distance=distance, features=features)
     if match == 'exact':
@@ -44,7 +66,7 @@ def pnr_helper(egg, position, match='exact',
     recmat = recall_matrix(egg, **opts)
 
     if match in ['exact', 'best']:
-        result = [pnr(lst, position) for lst in recmat]
+        result = [pnr(lst, position, i) for i, lst in enumerate(recmat)]
     elif match == 'smooth':
         result = np.atleast_2d(recmat[:, :, 0])
     else:

@@ -219,25 +219,35 @@ def _analyze_chunk(data, subjgroup=None, subjname='Subject', listgroup=None,
     subjdict = {subj : data.pres.index.levels[0].values[subj==np.array(subjgroup)] for subj in set(subjgroup)}
 
     if all(isinstance(el, list) for el in listgroup):
-        # If listgroup is specific to each subject, this logic is complex/broken for grouping?
-        # But keeping it as list (legacy behavior?) or trying to map?
-        # The iterating chunks uses listdict[0].
-        # For now, let's fix the shared case which is crashing.
-        listdict = [{lst : data.pres.index.levels[1].values[lst==np.array(listgrpsub)] for lst in set(listgrpsub)} for listgrpsub in listgroup]
+        # Per-subject listgroup: listgroup is a list of lists, one per subject
+        # Map subject indices to their listgroup dictionaries
+        per_subject_listdict = []
+        for listgrpsub in listgroup:
+            ld = {lst : data.pres.index.levels[1].values[lst==np.array(listgrpsub)] for lst in set(listgrpsub)}
+            per_subject_listdict.append(ld)
+
+        # Create listdict keyed by subject group, mapping to the appropriate per-subject dict
+        # For each subject group, find the corresponding subject indices and their listdicts
+        listdict = {}
+        for subj_group in subjdict:
+            # Get subject indices that belong to this group
+            subj_indices_in_group = subjdict[subj_group]
+            if len(subj_indices_in_group) > 0:
+                # Use the first subject's listdict as representative for the group
+                # (assuming all subjects in a group have the same list groupings)
+                first_subj_idx = subj_indices_in_group[0]
+                if first_subj_idx < len(per_subject_listdict):
+                    listdict[subj_group] = per_subject_listdict[first_subj_idx]
+                else:
+                    # Fallback: use first listdict
+                    listdict[subj_group] = per_subject_listdict[0]
     else:
         # Shared list grouping
         ld = {lst : data.pres.index.levels[1].values[lst==np.array(listgroup)] for lst in set(listgroup)}
         listdict = {subj : ld for subj in subjdict}
 
-    if isinstance(listdict, dict):
-        # Shared list grouping (Dict keyed by subject group)
-        # Use the specific lists for each subject group
-        chunks = [(subj, lst) for subj in subjdict for lst in listdict[subj]]
-    else:
-        # Nested list grouping (List of dicts)
-        # Assuming listdict[0] keys are representative? Or iterate?
-        # Legacy behavior used listdict[0]
-        chunks = [(subj, lst) for subj in subjdict for lst in listdict[0]]
+    # Now listdict is always a dict keyed by subject group
+    chunks = [(subj, lst) for subj in subjdict for lst in listdict[subj]]
 
     if parallel:
         import multiprocessing

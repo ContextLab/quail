@@ -191,24 +191,36 @@ def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
 
 
 def get_distmat(egg, feature, distdict):
-    f_data = [xi[feature] for xi in egg.get_pres_features().values[0]]
+    # Filter out empty feature dictionaries (from padded lists)
+    pres_feats = egg.get_pres_features().values[0]
+    f_data = [xi[feature] for xi in pres_feats if xi and feature in xi]
+    if len(f_data) == 0:
+        # No valid data for this feature - return nan
+        return np.nan
     # Ensure (N_items, N_features)
     # If elements are scalars, np.array gives (N,), reshape to (N, 1)
     # If elements are lists, np.array gives (N, K)
     f = np.array(f_data)
     if f.ndim == 1:
         f = f.reshape(-1, 1)
-        
+
     return cdist(f, f, distdict[egg.dist_funcs[feature]])
 
 
 def get_match(egg, feature, distdict):
-    p_data = [xi[feature] for xi in egg.get_pres_features().values[0]]
+    # Filter out empty feature dictionaries (from padded lists)
+    pres_feats = egg.get_pres_features().values[0]
+    p_data = [xi[feature] for xi in pres_feats if xi and feature in xi]
+    if len(p_data) == 0:
+        return np.nan
     p = np.array(p_data)
     if p.ndim == 1:
         p = p.reshape(-1, 1)
-        
-    r_data = [xi[feature] for xi in egg.get_rec_features().values[0]]
+
+    rec_feats = egg.get_rec_features().values[0]
+    r_data = [xi[feature] for xi in rec_feats if xi and feature in xi]
+    if len(r_data) == 0:
+        return np.nan
     r = np.array(r_data)
     if r.ndim == 1:
         r = r.reshape(-1, 1)
