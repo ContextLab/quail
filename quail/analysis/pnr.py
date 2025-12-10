@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from .recmat import recall_matrix
 
+
 def pnr_helper(egg, position, match='exact',
                distance='euclidean', features=None):
 
@@ -62,7 +63,7 @@ def pnr_helper(egg, position, match='exact',
 
     opts = dict(match=match, distance=distance, features=features)
     if match == 'exact':
-        opts.update({'features' : 'item'})
+        opts.update({'features': 'item'})
     recmat = recall_matrix(egg, **opts)
 
     if match in ['exact', 'best']:

@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from .recmat import recall_matrix
 
+
 def spc_helper(egg, match='exact', distance='euclidean',
                features=None):
     """
@@ -60,7 +61,7 @@ def spc_helper(egg, match='exact', distance='euclidean',
 
     opts = dict(match=match, distance=distance, features=features)
     if match == 'exact':
-        opts.update({'features' : 'item'})
+        opts.update({'features': 'item'})
     recmat = recall_matrix(egg, **opts)
 
     if match in ['exact', 'best']:
