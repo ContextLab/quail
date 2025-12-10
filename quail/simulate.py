@@ -10,9 +10,8 @@ def simulate_list(nwords=16, nrec=10, ncats=4):
     path = os.path.join(os.path.dirname(__file__), 'data/cut_wordpool.csv')
     wp = pd.read_csv(path)
 
-    # get one list
-    # logic seems to pick a group random
-    wp = wp[wp['GROUP']==np.random.choice(list(range(16)), 1)[0]].sample(16)
+    # get one list - pick a random group (groups are 1-16)
+    wp = wp[wp['GROUP']==np.random.choice(list(range(1, 17)), 1)[0]].sample(16)
 
     wp['COLOR'] = [[int(np.random.rand() * 255) for i in range(3)] for i in range(16)]
     
