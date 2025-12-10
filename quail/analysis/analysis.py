@@ -148,7 +148,7 @@ def analyze(egg, subjgroup=None, listgroup=None, subjname='Subject',
     elif analysis == 'pnr':
         opts.update({'position' : position})
     if analysis == 'temporal':
-        opts.update({'features' : ['temporal']})
+        opts.update({'features' : ['Temporal']})
     if analysis in ['temporal', 'fingerprint']:
         opts.update({'permute' : permute, 'n_perms' : n_perms, 'n_jobs' : n_jobs})
     if analysis == 'lagcrp':

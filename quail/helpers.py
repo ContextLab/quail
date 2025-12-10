@@ -75,7 +75,7 @@ def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
     elif analysis=='accuracy':
         melted_df.columns = ['Subject', listname, 'Accuracy', subjname]
     elif analysis=='temporal':
-        melted_df.columns = ['Subject', listname, 'Temporal Clustering Score', subjname]
+        melted_df.columns = ['Subject', listname, 'Temporal clustering score', subjname]
     return melted_df
 
 def recmat2egg(recmat, list_length=None):

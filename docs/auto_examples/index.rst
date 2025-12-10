@@ -285,6 +285,23 @@ Gallery of Examples
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates analyzing the Feature-Rich Free Recall (FRFR) dataset, which investigates how different word features affect memory organization during free recall. The dataset contains 452 subjects across 11 experimental conditions, each varying which word features were made salient during encoding.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_frfr_data_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_frfr_data.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Analyze Feature-Rich Free Recall (FRFR) Data</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -311,6 +328,7 @@ Gallery of Examples
    /auto_examples/fingerprint_optimalpresenter
    /auto_examples/plot_murdock_data
    /auto_examples/plot_cmr_data
+   /auto_examples/plot_frfr_data
 
 
 .. only:: html

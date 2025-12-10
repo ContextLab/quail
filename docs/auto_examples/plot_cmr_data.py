@@ -30,6 +30,8 @@ Review, Vol. 116 (1), 129-156. https://doi.org/10.1037/a0014420
 # Code source: Contextual Dynamics Laboratory
 # License: MIT
 
+from collections import Counter
+
 import quail
 import matplotlib.pyplot as plt
 import warnings
@@ -63,7 +65,6 @@ for subj_idx in range(egg.n_subjects):
     listgroup.append(subj_listgroup)
 
 # Count lists per condition (excluding None)
-from collections import Counter
 all_conditions = [c for subj in listgroup for c in subj if c is not None]
 print(f"Lists per condition: {dict(Counter(all_conditions))}")
 

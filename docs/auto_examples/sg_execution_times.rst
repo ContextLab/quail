@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:39.916** total execution time for 16 files **from auto_examples**:
+**01:31.195** total execution time for 17 files **from auto_examples**:
 
 .. container::
 
@@ -32,11 +32,8 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_cmr_data.py` (``plot_cmr_data.py``)
-     - 00:20.982
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_murdock_data.py` (``plot_murdock_data.py``)
-     - 00:18.935
+   * - :ref:`sphx_glr_auto_examples_plot_frfr_data.py` (``plot_frfr_data.py``)
+     - 01:31.195
      - 0.0
    * - :ref:`sphx_glr_auto_examples_crack_egg.py` (``crack_egg.py``)
      - 00:00.000
@@ -56,6 +53,9 @@ Computation times
    * - :ref:`sphx_glr_auto_examples_plot_accuracy.py` (``plot_accuracy.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_cmr_data.py` (``plot_cmr_data.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_existing_axes.py` (``plot_existing_axes.py``)
      - 00:00.000
      - 0.0
@@ -63,6 +63,9 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_lagcrp.py` (``plot_lagcrp.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_plot_murdock_data.py` (``plot_murdock_data.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_pfr.py` (``plot_pfr.py``)

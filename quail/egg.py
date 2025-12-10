@@ -206,14 +206,14 @@ class Egg(object):
         # if item is missing from pres, add it
         if len(pres)>0 and len(pres[0])>0 and len(pres[0][0])>0 and 'item' not in pres[0][0][0]:
             [[[x.update({'item' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
-        if len(pres)>0 and len(pres[0])>0 and len(pres[0][0])>0 and 'temporal' not in pres[0][0][0]:
-            [[[x.update({'temporal' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
+        if len(pres)>0 and len(pres[0])>0 and len(pres[0][0])>0 and 'Temporal' not in pres[0][0][0]:
+            [[[x.update({'Temporal' : i}) for i, x in enumerate(y)] for y in z] for z in pres]
 
         # if item is missing from rec, add it
         if len(rec)>0 and len(rec[0])>0 and len(rec[0][0])>0 and 'item' not in rec[0][0][0]:
             [[[x.update({'item' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
-        if len(rec)>0 and len(rec[0])>0 and len(rec[0][0])>0 and 'temporal' not in rec[0][0][0]:
-            [[[x.update({'temporal' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
+        if len(rec)>0 and len(rec[0])>0 and len(rec[0][0])>0 and 'Temporal' not in rec[0][0][0]:
+            [[[x.update({'Temporal' : i}) for i, x in enumerate(y)] for y in z] for z in rec]
 
         # attach features and dist funcs if they are passed
         if features is not None:

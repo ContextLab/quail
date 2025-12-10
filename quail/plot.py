@@ -9,6 +9,9 @@ import matplotlib as mpl
 
 mpl.rcParams['pdf.fonttype'] = 42
 
+# Default font sizes
+DEFAULT_LABEL_FONTSIZE = 14
+
 def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
          listname='List', subjconds=None, listconds=None, plot_type=None,
          plot_style=None, title=None, legend=None, xlim=None, ylim=None,
@@ -106,6 +109,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         elif plot_type == 'split':
             ax = plot_func(data=data, x=subjname, y="Accuracy", hue=listname, **kwargs)
 
+        ax.set_ylabel("Accuracy", fontsize=DEFAULT_LABEL_FONTSIZE)
+        ax.set_xlabel(ax.get_xlabel(), fontsize=DEFAULT_LABEL_FONTSIZE)
         return ax
 
     def plot_temporal(data, plot_style, plot_type, listname, subjname, **kwargs):
@@ -122,12 +127,14 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             plot_func = sns.violinplot
 
         if plot_type == 'list':
-            ax = plot_func(data=data, x=listname, y="Temporal Clustering Score", hue=listname, legend=False, **kwargs)
+            ax = plot_func(data=data, x=listname, y="Temporal clustering score", hue=listname, legend=False, **kwargs)
         elif plot_type == 'subject':
-            ax = plot_func(data=data, x=subjname, y="Temporal Clustering Score", **kwargs)
+            ax = plot_func(data=data, x=subjname, y="Temporal clustering score", **kwargs)
         elif plot_type == 'split':
-            ax = plot_func(data=data, x=subjname, y="Temporal Clustering Score", hue=listname, **kwargs)
+            ax = plot_func(data=data, x=subjname, y="Temporal clustering score", hue=listname, **kwargs)
 
+        ax.set_ylabel("Temporal clustering score", fontsize=DEFAULT_LABEL_FONTSIZE)
+        ax.set_xlabel(ax.get_xlabel(), fontsize=DEFAULT_LABEL_FONTSIZE)
         return ax
 
     def plot_fingerprint(data, plot_style, plot_type, listname, subjname, **kwargs):
@@ -150,6 +157,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         else:
             ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
 
+        ax.set_ylabel("Clustering score", fontsize=DEFAULT_LABEL_FONTSIZE)
+        ax.set_xlabel("Feature", fontsize=DEFAULT_LABEL_FONTSIZE)
         return ax
 
     def plot_fingerprint_temporal(data, plot_style, plot_type, listname, subjname, **kwargs):
@@ -173,6 +182,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         else:
             ax = plot_func(data=data, x="Feature", y="Clustering Score", order=order, **kwargs)
 
+        ax.set_ylabel("Clustering score", fontsize=DEFAULT_LABEL_FONTSIZE)
+        ax.set_xlabel("Feature", fontsize=DEFAULT_LABEL_FONTSIZE)
         return ax
 
     def plot_spc(data, plot_style, plot_type, listname, subjname, **kwargs):
@@ -185,6 +196,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             ax = sns.lineplot(data = data, x="Position", y="Proportion Recalled", hue=listname, **kwargs)
         ax.set_xlim(0, data['Position'].max())
 
+        ax.set_ylabel("Proportion recalled", fontsize=DEFAULT_LABEL_FONTSIZE)
+        ax.set_xlabel("Position", fontsize=DEFAULT_LABEL_FONTSIZE)
         return ax
 
     def plot_pnr(data, plot_style, plot_type, listname, subjname, position, list_length, **kwargs):
@@ -197,6 +210,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
             ax = sns.lineplot(data = data, x="Position", y='Probability of Recall: Position ' + str(position), hue=listname, **kwargs)
         ax.set_xlim(0,list_length-1)
 
+        ax.set_ylabel('Probability of recall: position ' + str(position), fontsize=DEFAULT_LABEL_FONTSIZE)
+        ax.set_xlabel("Position", fontsize=DEFAULT_LABEL_FONTSIZE)
         return ax
 
     def plot_lagcrp(data, plot_style, plot_type, listname, subjname, **kwargs):
@@ -223,7 +238,8 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
                  ax.legend(by_label.values(), by_label.keys(), title=title_text)
 
         ax.set_xlim(-5,5)
-        ax.set_xlabel('Lag')
+        ax.set_ylabel("Conditional response probability", fontsize=DEFAULT_LABEL_FONTSIZE)
+        ax.set_xlabel("Lag", fontsize=DEFAULT_LABEL_FONTSIZE)
 
         return ax
 

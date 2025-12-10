@@ -43,7 +43,7 @@ Polyn, S.M., Norman, K.A., & Kahana, M.J. (2009). A Context Maintenance and
 Retrieval Model of Organizational Processes in Free Recall. Psychological
 Review, Vol. 116 (1), 129-156. https://doi.org/10.1037/a0014420
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-118
+.. GENERATED FROM PYTHON SOURCE LINES 29-119
 
 
 
@@ -74,6 +74,8 @@ Review, Vol. 116 (1), 129-156. https://doi.org/10.1037/a0014420
 
     # Code source: Contextual Dynamics Laboratory
     # License: MIT
+
+    from collections import Counter
 
     import quail
     import matplotlib.pyplot as plt
@@ -108,7 +110,6 @@ Review, Vol. 116 (1), 129-156. https://doi.org/10.1037/a0014420
         listgroup.append(subj_listgroup)
 
     # Count lists per condition (excluding None)
-    from collections import Counter
     all_conditions = [c for subj in listgroup for c in subj if c is not None]
     print(f"Lists per condition: {dict(Counter(all_conditions))}")
 
@@ -164,7 +165,7 @@ Review, Vol. 116 (1), 129-156. https://doi.org/10.1037/a0014420
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 20.982 seconds)
+   **Total running time of the script:** (0 minutes 12.763 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_cmr_data.py:

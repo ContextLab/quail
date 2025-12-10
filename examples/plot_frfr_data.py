@@ -44,10 +44,14 @@ from collections import Counter
 
 import quail
 import matplotlib.pyplot as plt
+import seaborn as sns
 import warnings
 
 # Suppress RuntimeWarnings about empty slices
 warnings.filterwarnings('ignore', category=RuntimeWarning)
+
+# Create viridis palette for distinguishing 11 conditions
+viridis_palette = sns.color_palette("viridis", n_colors=11)
 
 # Load the FRFR dataset
 egg = quail.load_example_data('frfr')
@@ -60,18 +64,34 @@ subjgroup = []
 for subj_idx in range(egg.n_subjects):
     try:
         sample = egg.pres.loc[(subj_idx, 0)][0]
-        if sample and 'condition' in sample:
-            subjgroup.append(sample['condition'])
+        if sample and 'Condition' in sample:
+            subjgroup.append(sample['Condition'])
         else:
-            subjgroup.append('unknown')
+            subjgroup.append('Unknown')
     except (KeyError, IndexError, TypeError):
-        subjgroup.append('unknown')
+        subjgroup.append('Unknown')
+
+# Define condition order for consistent plotting
+condition_order = [
+    'Feature rich',
+    'Reduced early',
+    'Reduced late',
+    'Reduced',
+    'Adaptive',
+    'Category',
+    'Size',
+    'Color',
+    'Location',
+    'Word length',
+    'First letter'
+]
 
 # Count subjects per condition
 condition_counts = Counter(subjgroup)
 print("\nSubjects per condition:")
-for cond, count in sorted(condition_counts.items()):
-    print(f"  {cond}: {count}")
+for cond in condition_order:
+    if cond in condition_counts:
+        print(f"  {cond}: {condition_counts[cond]}")
 
 # Split egg into early (lists 0-7) and late (lists 8-15) lists
 print("\nSplitting data into early and late lists...")
@@ -92,7 +112,7 @@ print("\n" + "=" * 60)
 print("Creating Figure 1: PFR, Lag-CRP, SPC by condition")
 print("=" * 60)
 
-fig1, axes1 = plt.subplots(2, 3, figsize=(18, 10))
+fig1, axes1 = plt.subplots(2, 3, figsize=(18, 10), sharey='col')
 
 # --- Top row: Early lists ---
 print("\nAnalyzing early lists...")
@@ -100,7 +120,8 @@ print("\nAnalyzing early lists...")
 # PFR - Early
 print("  Computing PFR (early)...")
 pfr_early = egg_early.analyze('pfr', listgroup=listgroup_early)
-pfr_early.plot(ax=axes1[0, 0], subjgroup=subjgroup, plot_type='subject', legend=True)
+pfr_early.plot(ax=axes1[0, 0], subjgroup=subjgroup, plot_type='subject', legend=True,
+               hue_order=condition_order, palette=viridis_palette)
 axes1[0, 0].set_title('Probability of First Recall (Early Lists)')
 axes1[0, 0].set_xlabel('Serial Position')
 axes1[0, 0].set_ylabel('Probability')
@@ -110,7 +131,8 @@ axes1[0, 0].legend(loc='upper right', fontsize=6, ncol=2)
 # Lag-CRP - Early
 print("  Computing Lag-CRP (early)...")
 lagcrp_early = egg_early.analyze('lagcrp', listgroup=listgroup_early)
-lagcrp_early.plot(ax=axes1[0, 1], subjgroup=subjgroup, plot_type='subject', legend=False)
+lagcrp_early.plot(ax=axes1[0, 1], subjgroup=subjgroup, plot_type='subject', legend=False,
+                  hue_order=condition_order, palette=viridis_palette)
 axes1[0, 1].set_title('Lag-CRP (Early Lists)')
 axes1[0, 1].set_xlabel('Lag')
 axes1[0, 1].set_ylabel('Conditional Recall Probability')
@@ -120,7 +142,8 @@ axes1[0, 1].axvline(x=0, color='gray', linestyle='--', alpha=0.5)
 # SPC - Early
 print("  Computing SPC (early)...")
 spc_early = egg_early.analyze('spc', listgroup=listgroup_early)
-spc_early.plot(ax=axes1[0, 2], subjgroup=subjgroup, plot_type='subject', legend=False)
+spc_early.plot(ax=axes1[0, 2], subjgroup=subjgroup, plot_type='subject', legend=False,
+               hue_order=condition_order, palette=viridis_palette)
 axes1[0, 2].set_title('Serial Position Curve (Early Lists)')
 axes1[0, 2].set_xlabel('Serial Position')
 axes1[0, 2].set_ylabel('Recall Probability')
@@ -132,7 +155,8 @@ print("\nAnalyzing late lists...")
 # PFR - Late
 print("  Computing PFR (late)...")
 pfr_late = egg_late.analyze('pfr', listgroup=listgroup_late)
-pfr_late.plot(ax=axes1[1, 0], subjgroup=subjgroup, plot_type='subject', legend=False)
+pfr_late.plot(ax=axes1[1, 0], subjgroup=subjgroup, plot_type='subject', legend=False,
+              hue_order=condition_order, palette=viridis_palette)
 axes1[1, 0].set_title('Probability of First Recall (Late Lists)')
 axes1[1, 0].set_xlabel('Serial Position')
 axes1[1, 0].set_ylabel('Probability')
@@ -141,7 +165,8 @@ axes1[1, 0].set_ylim([0, 0.3])
 # Lag-CRP - Late
 print("  Computing Lag-CRP (late)...")
 lagcrp_late = egg_late.analyze('lagcrp', listgroup=listgroup_late)
-lagcrp_late.plot(ax=axes1[1, 1], subjgroup=subjgroup, plot_type='subject', legend=False)
+lagcrp_late.plot(ax=axes1[1, 1], subjgroup=subjgroup, plot_type='subject', legend=False,
+                 hue_order=condition_order, palette=viridis_palette)
 axes1[1, 1].set_title('Lag-CRP (Late Lists)')
 axes1[1, 1].set_xlabel('Lag')
 axes1[1, 1].set_ylabel('Conditional Recall Probability')
@@ -151,7 +176,8 @@ axes1[1, 1].axvline(x=0, color='gray', linestyle='--', alpha=0.5)
 # SPC - Late
 print("  Computing SPC (late)...")
 spc_late = egg_late.analyze('spc', listgroup=listgroup_late)
-spc_late.plot(ax=axes1[1, 2], subjgroup=subjgroup, plot_type='subject', legend=False)
+spc_late.plot(ax=axes1[1, 2], subjgroup=subjgroup, plot_type='subject', legend=False,
+              hue_order=condition_order, palette=viridis_palette)
 axes1[1, 2].set_title('Serial Position Curve (Late Lists)')
 axes1[1, 2].set_xlabel('Serial Position')
 axes1[1, 2].set_ylabel('Recall Probability')
@@ -164,41 +190,45 @@ plt.savefig('frfr_recall_analysis.png', dpi=150, bbox_inches='tight')
 print("\nSaved Figure 1 to frfr_recall_analysis.png")
 
 # ============================================================================
-# Figure 2: Memory Fingerprints for Early (left) and Late (right) lists
+# Figure 2: Memory Fingerprints for Early (top) and Late (bottom) lists
 # ============================================================================
 print("\n" + "=" * 60)
 print("Creating Figure 2: Memory Fingerprints by condition")
 print("=" * 60)
 
-fig2, axes2 = plt.subplots(1, 2, figsize=(14, 6))
+# Stacked layout: 2 rows, 1 column (larger to avoid overlapping text)
+fig2, axes2 = plt.subplots(2, 1, figsize=(8, 8), sharey=True)
 
-# Features for fingerprint analysis
-fingerprint_features = ['category', 'size', 'color', 'location',
-                        'wordLength', 'firstLetter', 'temporal']
+# Features for fingerprint analysis (sentence case)
+fingerprint_features = ['Category', 'Size', 'Color', 'Location',
+                        'Word length', 'First letter', 'Temporal']
 
-# Fingerprint - Early lists
+# Fingerprint - Early lists (top panel)
 print("\nComputing fingerprints (early lists)...")
 fp_early = egg_early.analyze('fingerprint', features=fingerprint_features,
                              listgroup=listgroup_early)
 fp_early.plot(ax=axes2[0], subjgroup=subjgroup, plot_type='subject',
-              title='Memory Fingerprint (Early Lists)', ylim=[0, 1])
-axes2[0].set_xlabel('Feature')
-axes2[0].set_ylabel('Clustering Score')
-axes2[0].legend(loc='upper right', fontsize=7, ncol=2)
+              plot_style='bar', ylim=[0.5, 0.81], legend=False,
+              hue_order=condition_order, palette=viridis_palette)
+axes2[0].set_title('Memory fingerprints\nEarly lists', fontsize=14)
+axes2[0].set_xlabel('')  # Remove x-label on top panel
+axes2[0].set_ylabel('Clustering score', fontsize=14)
+axes2[0].tick_params(axis='x', labelbottom=False)  # Hide x tick labels on top
 
-# Fingerprint - Late lists
+# Fingerprint - Late lists (bottom panel)
 print("Computing fingerprints (late lists)...")
 fp_late = egg_late.analyze('fingerprint', features=fingerprint_features,
                            listgroup=listgroup_late)
 fp_late.plot(ax=axes2[1], subjgroup=subjgroup, plot_type='subject',
-             title='Memory Fingerprint (Late Lists)', ylim=[0, 1])
-axes2[1].set_xlabel('Feature')
-axes2[1].set_ylabel('Clustering Score')
-# No legend on second plot since first has it
+             plot_style='bar', ylim=[0.5, 0.81], legend=True,
+             hue_order=condition_order, palette=viridis_palette)
+axes2[1].set_title('Late lists', fontsize=14)
+axes2[1].set_xlabel('Feature', fontsize=14)
+axes2[1].set_ylabel('Clustering score', fontsize=14)
+# Move legend to upper right of bottom panel
+axes2[1].legend(loc='upper right', fontsize=6, ncol=3, title='Condition')
 
 plt.tight_layout()
-fig2.suptitle('FRFR Dataset: Memory Fingerprints by Condition (Early vs Late Lists)',
-              y=1.02, fontsize=14)
 plt.savefig('frfr_fingerprint_analysis.png', dpi=150, bbox_inches='tight')
 print("Saved Figure 2 to frfr_fingerprint_analysis.png")
 
