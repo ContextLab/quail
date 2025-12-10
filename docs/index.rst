@@ -6,10 +6,10 @@
 **Quail**: A python toolbox for analyzing free recall experiments and plotting the results
 ====================================================================================================
 
-.. image:: _static/plot_lagcrp.png
-    :width: 400pt
-.. image:: _static/plot_fingerprint.png
-    :width: 400pt
+.. image:: _static/murdock_1962_analysis.png
+    :width: 800pt
+    :align: center
+    :alt: Murdock (1962) Free Recall Analysis
 
 `Quail <https://github.com/ContextLab/quail>`_ is a library for analyzing and visualizing free recall data
 in Python. It is built on top of matplotlib and seaborn.  For sample Jupyter

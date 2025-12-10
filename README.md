@@ -161,50 +161,53 @@ egg = quail.Egg(pres=presented_words, rec=recalled_words)
 
 <h2>Analyze some data</h2>
 
-```
-#load data
-egg = quail.load_example_data()
+```python
+# Load example data (CMR dataset)
+egg = quail.load_example_data('cmr')
 
-#analysis
-analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*8)
+# Create listgroup for averaging across lists
+listgroup = ['average'] * egg.n_lists
+
+# Analyze accuracy
+analyzed_data = egg.analyze('accuracy', listgroup=listgroup)
 ```
 
 <h2>Plot Accuracy</h2>
 
-```
-analyzed_data = quail.analyze(egg, analysis='accuracy', listgroup=['average']*8)
-ax = quail.plot(analyzed_data, title='Recall Accuracy')
+```python
+analyzed_data = egg.analyze('accuracy', listgroup=listgroup)
+analyzed_data.plot(title='Recall Accuracy')
 ```
 ![Plot Accuracy](images/plot_acc.png)
 
 <h2>Plot Serial Position Curve</h2>
 
-```
-analyzed_data = quail.analyze(egg, analysis='spc', listgroup=['average']*8)
-ax = quail.plot(analyzed_data, title='Serial Position Curve')
+```python
+analyzed_data = egg.analyze('spc', listgroup=listgroup)
+analyzed_data.plot(title='Serial Position Curve')
 ```
 ![Plot SPC](images/plot_spc.png)
 
 <h2>Plot Probability of First Recall</h2>
 
-```
-analyzed_data = quail.analyze(egg, analysis='pfr', listgroup=['average']*8)
-ax = quail.plot(analyzed_data, title='Probability of First Recall')
+```python
+analyzed_data = egg.analyze('pfr', listgroup=listgroup)
+analyzed_data.plot(title='Probability of First Recall')
 ```
 ![Plot PFR](images/plot_pfr.png)
 
 <h2>Plot Lag-CRP</h2>
 
-```
-analyzed_data = quail.analyze(egg, analysis='lagcrp', listgroup=['average']*8)
-ax = quail.plot(analyzed_data, title='Lag-CRP')
+```python
+analyzed_data = egg.analyze('lagcrp', listgroup=listgroup)
+analyzed_data.plot(title='Lag-CRP')
 ```
 ![Plot Lag-CRP](images/plot_lagcrp.png)
 
 <h2>Plot Memory Fingerprint</h2>
 
-```
-analyzed_data = quail.analyze(egg, analysis='fingerprint', listgroup=['average']*8)
-ax = quail.plot(analyzed_data, title='Memory Fingerprint')
+```python
+analyzed_data = egg.analyze('fingerprint', features=['task', 'temporal'], listgroup=listgroup)
+analyzed_data.plot(title='Memory Fingerprint')
 ```
 ![Plot Fingerprint](images/plot_fingerprint.png)
