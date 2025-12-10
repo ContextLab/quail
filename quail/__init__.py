@@ -1,4 +1,7 @@
-from pkg_resources import get_distribution
+try:
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
 
 from .load import load, load_example_data, load_egg, loadEL
 from .egg import Egg, FriedEgg
@@ -10,5 +13,5 @@ from .fingerprint import Fingerprint, OptimalPresenter
 from .distance import *
 
 
-__version__ = get_distribution('quail').version
+__version__ = version('quail')
 

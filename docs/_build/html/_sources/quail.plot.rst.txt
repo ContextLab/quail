@@ -1,5 +1,5 @@
-quail.plot
-===============
+﻿quail.plot
+==========
 
 .. currentmodule:: quail
 

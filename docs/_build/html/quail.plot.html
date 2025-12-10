@@ -1,44 +1,38 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>quail.plot &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="quail.decode_speech" href="quail.decode_speech.html" />
+    <link rel="prev" title="quail.analyze" href="quail.analyze.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -71,7 +65,14 @@
      href="index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"></ul>
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">How to use the Quail package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API reference</a></li>
+</ul>
+</ul>
 </li>
               
                 <li class="dropdown">
@@ -83,7 +84,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">quail.plot</a></li>
+<li><a class="reference internal" href="#">quail.plot</a><ul>
+<li><a class="reference internal" href="#quail.plot"><code class="docutils literal notranslate"><span class="pre">plot()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -111,91 +115,70 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="quail-plot">
-<h1>quail.plot<a class="headerlink" href="#quail-plot" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="quail.plot">
-<code class="descclassname">quail.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>results</em>, <em>subjgroup=None</em>, <em>subjname='Subject Group'</em>, <em>listgroup=None</em>, <em>listname='List'</em>, <em>subjconds=None</em>, <em>listconds=None</em>, <em>plot_type=None</em>, <em>plot_style=None</em>, <em>title=None</em>, <em>legend=True</em>, <em>xlim=None</em>, <em>ylim=None</em>, <em>save_path=None</em>, <em>show=True</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/plot.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.plot" title="Permalink to this definition">¶</a></dt>
+  <section id="quail-plot">
+<h1>quail.plot<a class="headerlink" href="#quail-plot" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="quail.plot">
+<span class="sig-prename descclassname"><span class="pre">quail.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subjgroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subjname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Subject</span> <span class="pre">Group'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">listgroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">listname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'List'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subjconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">listconds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/plot.html#plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quail.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>General plot function that groups data by subject/list number and performs analysis.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">quail.FriedEgg</span></dt>
-<dd><p class="first last">Object containing results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>results</strong><span class="classifier">quail.FriedEgg</span></dt><dd><p>Object containing results</p>
 </dd>
-<dt><strong>subjgroup</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of strings or ints</span></dt>
-<dd><p class="first last">String/int variables indicating how to group over subjects.  Must be
+<dt><strong>subjgroup</strong><span class="classifier">list of strings or ints</span></dt><dd><p>String/int variables indicating how to group over subjects.  Must be
 the length of the number of subjects</p>
 </dd>
-<dt><strong>subjname</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Name of the subject grouping variable</p>
+<dt><strong>subjname</strong><span class="classifier">string</span></dt><dd><p>Name of the subject grouping variable</p>
 </dd>
-<dt><strong>listgroup</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of strings or ints</span></dt>
-<dd><p class="first last">String/int variables indicating how to group over list.  Must be
+<dt><strong>listgroup</strong><span class="classifier">list of strings or ints</span></dt><dd><p>String/int variables indicating how to group over list.  Must be
 the length of the number of lists</p>
 </dd>
-<dt><strong>listname</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Name of the list grouping variable</p>
+<dt><strong>listname</strong><span class="classifier">string</span></dt><dd><p>Name of the list grouping variable</p>
 </dd>
-<dt><strong>subjconds</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
-<dd><p class="first last">List of subject hues (str) to plot</p>
+<dt><strong>subjconds</strong><span class="classifier">list</span></dt><dd><p>List of subject hues (str) to plot</p>
 </dd>
-<dt><strong>listconds</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
-<dd><p class="first last">List of list hues (str) to plot</p>
+<dt><strong>listconds</strong><span class="classifier">list</span></dt><dd><p>List of list hues (str) to plot</p>
 </dd>
-<dt><strong>plot_type</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Specifies the type of plot. If list (default), the list groupings (listgroup)
+<dt><strong>plot_type</strong><span class="classifier">string</span></dt><dd><p>Specifies the type of plot. If list (default), the list groupings (listgroup)
 will determine the plot grouping. If subject, the subject groupings
 (subjgroup) will determine the plot grouping. If split (currenty just
 works for accuracy plots), both listgroup and subjgroup will determine
 the plot groupings</p>
 </dd>
-<dt><strong>plot_style</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Specifies the style of the plot.  This currently works only for
+<dt><strong>plot_style</strong><span class="classifier">string</span></dt><dd><p>Specifies the style of the plot.  This currently works only for
 accuracy and fingerprint plots. The plot style can be bar (default for
 accruacy plot), violin (default for fingerprint plots) or swarm.</p>
 </dd>
-<dt><strong>title</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">The title of the plot</p>
+<dt><strong>title</strong><span class="classifier">string</span></dt><dd><p>The title of the plot</p>
 </dd>
-<dt><strong>legend</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">If true (default), a legend is plotted.</p>
+<dt><strong>legend</strong><span class="classifier">bool</span></dt><dd><p>If true (default), a legend is plotted.</p>
 </dd>
-<dt><strong>ylim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of numbers</span></dt>
-<dd><p class="first last">A ymin/max can be specified by a list of the form [ymin, ymax]</p>
+<dt><strong>ylim</strong><span class="classifier">list of numbers</span></dt><dd><p>A ymin/max can be specified by a list of the form [ymin, ymax]</p>
 </dd>
-<dt><strong>xlim</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of numbers</span></dt>
-<dd><p class="first last">A xmin/max can be specified by a list of the form [xmin, xmax]</p>
+<dt><strong>xlim</strong><span class="classifier">list of numbers</span></dt><dd><p>A xmin/max can be specified by a list of the form [xmin, xmax]</p>
 </dd>
-<dt><strong>save_path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Path to save out figure.  Include the file extension, e.g.
-save_path=&#8217;figure.pdf&#8217;</p>
+<dt><strong>save_path</strong><span class="classifier">str</span></dt><dd><p>Path to save out figure.  Include the file extension, e.g.
+save_path=’figure.pdf’</p>
 </dd>
-<dt><strong>show</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">If False, do not show figure, but still return ax handle (default True).</p>
+<dt><strong>show</strong><span class="classifier">bool</span></dt><dd><p>If False, do not show figure, but still return ax handle (default True).</p>
 </dd>
-<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Matplotlib.Axes object or None</span></dt>
-<dd><p class="first last">A plot object to draw to. If None, a new one is created and returned.</p>
+<dt><strong>ax</strong><span class="classifier">Matplotlib.Axes object or None</span></dt><dd><p>A plot object to draw to. If None, a new one is created and returned.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">matplotlib.Axes.Axis</span></dt>
-<dd><p class="first last">An axis handle for the figure</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">matplotlib.Axes.Axis</span></dt><dd><p>An axis handle for the figure</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -217,7 +200,7 @@ save_path=&#8217;figure.pdf&#8217;</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

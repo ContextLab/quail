@@ -1,0 +1,181 @@
+{
+ "ax": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes._axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.axes",
+   "module_short": "matplotlib.axes",
+   "name": "Axes"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Axes"
+  }
+ ],
+ "egg": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "Egg"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "Egg"
+  }
+ ],
+ "egg.analyze": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "Egg.analyze"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "Egg.analyze"
+  }
+ ],
+ "fegg": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg"
+  }
+ ],
+ "fegg.plot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail.egg",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "FriedEgg.plot"
+  }
+ ],
+ "fig": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.figure",
+   "module_short": "matplotlib.figure",
+   "name": "Figure"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Figure"
+  }
+ ],
+ "fig.add_subplot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.figure",
+   "module_short": "matplotlib.figure",
+   "name": "Figure.add_subplot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Figure.add_subplot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.figure",
+   "module_short": "matplotlib.figure",
+   "name": "FigureBase.add_subplot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "FigureBase.add_subplot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.artist",
+   "module_short": "matplotlib.artist",
+   "name": "Artist.add_subplot"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib",
+   "module_short": "matplotlib",
+   "name": "Artist.add_subplot"
+  }
+ ],
+ "plt.figure": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "matplotlib.pyplot",
+   "module_short": "matplotlib.pyplot",
+   "name": "figure"
+  }
+ ],
+ "quail.load": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "load"
+  }
+ ]
+}

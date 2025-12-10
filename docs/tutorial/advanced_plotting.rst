@@ -1,4 +1,3 @@
-
 Advanced plotting
 =================
 
@@ -14,12 +13,15 @@ of 16 words each.
     %matplotlib inline
     egg = quail.load_example_data()
 
+.. code:: ipython3
 
-.. parsed-literal::
+    import warnings
+    warnings.filterwarnings('ignore')
 
-    /usr/local/lib/python3.6/site-packages/pydub/utils.py:165: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
-      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+.. code:: ipython3
 
+    import warnings
+    warnings.filterwarnings('ignore')
 
 Accuracy
 --------
@@ -99,7 +101,7 @@ bar for each list, averaged over all subjects:
 
 
 
-.. image:: advanced_plotting_files/advanced_plotting_5_0.png
+.. image:: advanced_plotting_files/advanced_plotting_7_0.png
 
 
 We can plot the accuracy for each subject by setting
@@ -112,7 +114,7 @@ grouping variable by setting the ``subjname`` kwarg:
 
 
 
-.. image:: advanced_plotting_files/advanced_plotting_7_0.png
+.. image:: advanced_plotting_files/advanced_plotting_9_0.png
 
 
 Furthermore, we can add a title using the ``title`` kwarg, and change
@@ -122,21 +124,6 @@ the y axis limits using ``ylim``:
 
     ax = accuracy.plot(plot_type='subject', subjname='Subject Number',
                     title='Accuracy by Subject', ylim=[0,1])
-
-
-
-.. image:: advanced_plotting_files/advanced_plotting_9_0.png
-
-
-In addition to bar plots, accuracy can be plotted as a violin or swarm
-plot by using the ``plot_style`` kwarg:
-
-.. code:: ipython3
-
-    ax = accuracy.plot(plot_type='subject', subjname='Subject Number',
-                    title='Accuracy by Subject', ylim=[0,1], plot_style='violin')
-    ax = accuracy.plot(plot_type='subject', subjname='Subject Number',
-                    title='Accuracy by Subject', ylim=[0,1], plot_style='swarm')
 
 
 
@@ -255,18 +242,6 @@ This will create a plot with respect to both the ``subjgroup`` and
 .. image:: advanced_plotting_files/advanced_plotting_18_0.png
 
 
-Like above, these plots can also be violin or swarm plots:
-
-.. code:: ipython3
-
-    ax = accuracy.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split', plot_style='violin')
-    ax = accuracy.plot(subjgroup=['Experiment 1']*15+['Experiment 2']*15, plot_type='split', plot_style='swarm')
-
-
-
-.. image:: advanced_plotting_files/advanced_plotting_20_0.png
-
-
 Memory fingerprints
 -------------------
 
@@ -283,7 +258,7 @@ instead of a barplot.
 
 
 
-.. image:: advanced_plotting_files/advanced_plotting_23_0.png
+.. image:: advanced_plotting_files/advanced_plotting_21_0.png
 
 
 Other analyses
@@ -302,23 +277,55 @@ Plot by list grouping
     plot_type = 'list'
     
     spc = egg.analyze('spc', listgroup=listgroup)
+    import matplotlib.pyplot as plt
+    plt.figure()
+    import matplotlib.pyplot as plt
+    plt.figure()
     ax = spc.plot(plot_type=plot_type, ylim=[0, 1])
     
     pfr = egg.analyze('pfr', listgroup=listgroup)
+    import matplotlib.pyplot as plt
+    plt.figure()
+    import matplotlib.pyplot as plt
+    plt.figure()
     ax = pfr.plot(plot_type=plot_type)
     
     lagcrp = egg.analyze('lagcrp', listgroup=listgroup)
+    import matplotlib.pyplot as plt
+    plt.figure()
+    import matplotlib.pyplot as plt
+    plt.figure()
     ax = lagcrp.plot(plot_type=plot_type)
+
 
 
 .. parsed-literal::
 
-    /Users/andrewheusser/Documents/github/quail_contextlab/quail/analysis/lagcrp.py:129: RuntimeWarning: Mean of empty slice
-      return np.nanmean(lagcrp, axis=0)
+    <Figure size 640x480 with 0 Axes>
 
 
 
-.. image:: advanced_plotting_files/advanced_plotting_26_1.png
+.. image:: advanced_plotting_files/advanced_plotting_24_1.png
+
+
+
+.. parsed-literal::
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. image:: advanced_plotting_files/advanced_plotting_24_3.png
+
+
+
+.. parsed-literal::
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. image:: advanced_plotting_files/advanced_plotting_24_5.png
 
 
 Plot by subject grouping
@@ -331,21 +338,55 @@ Plot by subject grouping
     plot_type = 'subject'
     
     spc = egg.analyze('spc', listgroup=listgroup)
+    import matplotlib.pyplot as plt
+    plt.figure()
+    import matplotlib.pyplot as plt
+    plt.figure()
     ax = spc.plot(subjgroup=subjgroup, plot_type=plot_type, ylim=[0,1])
     
     pfr = egg.analyze('pfr', listgroup=listgroup)
+    import matplotlib.pyplot as plt
+    plt.figure()
+    import matplotlib.pyplot as plt
+    plt.figure()
     ax = pfr.plot(subjgroup=subjgroup, plot_type=plot_type)
     
     lagcrp = egg.analyze('lagcrp', listgroup=listgroup)
+    import matplotlib.pyplot as plt
+    plt.figure()
+    import matplotlib.pyplot as plt
+    plt.figure()
     ax = lagcrp.plot(subjgroup=subjgroup, plot_type=plot_type)
+
 
 
 .. parsed-literal::
 
-    /Users/andrewheusser/Documents/github/quail_contextlab/quail/analysis/lagcrp.py:129: RuntimeWarning: Mean of empty slice
-      return np.nanmean(lagcrp, axis=0)
+    <Figure size 640x480 with 0 Axes>
 
 
 
-.. image:: advanced_plotting_files/advanced_plotting_28_1.png
+.. image:: advanced_plotting_files/advanced_plotting_26_1.png
+
+
+
+.. parsed-literal::
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. image:: advanced_plotting_files/advanced_plotting_26_3.png
+
+
+
+.. parsed-literal::
+
+    <Figure size 640x480 with 0 Axes>
+
+
+
+.. image:: advanced_plotting_files/advanced_plotting_26_5.png
+
+
 

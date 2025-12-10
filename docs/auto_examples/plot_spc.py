@@ -9,14 +9,16 @@ position during stimulus encoding.
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 # import
 import quail
 
 #load data
-egg = quail.load_example_data()
+egg = quail.load('example')
 
 # analyze and plot
-egg.analyze('spc', listgroup=['average']*8).plot(title='Serial Position Curve')
+fegg = egg.analyze('spc', listgroup=['average']*8)
+
+fegg.plot(title='Serial Position Curve')

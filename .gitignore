@@ -11,3 +11,4 @@ dist/*
 .pytest_cache/*
 venv/
 docs/_build
+docs/sg_execution_times.rst

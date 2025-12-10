@@ -10,7 +10,7 @@ recalling stimuli in neighboring stimulus positions (n+/-5).
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 # import

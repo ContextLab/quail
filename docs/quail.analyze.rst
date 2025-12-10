@@ -1,5 +1,5 @@
-quail.analyze
-===============
+﻿quail.analyze
+=============
 
 .. currentmodule:: quail
 

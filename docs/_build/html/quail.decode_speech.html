@@ -1,44 +1,38 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>quail.decode_speech &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="quail.stack_eggs" href="quail.stack_eggs.html" />
+    <link rel="prev" title="quail.plot" href="quail.plot.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -71,7 +65,14 @@
      href="index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"></ul>
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">How to use the Quail package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API reference</a></li>
+</ul>
+</ul>
 </li>
               
                 <li class="dropdown">
@@ -83,7 +84,10 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">quail.decode_speech</a></li>
+<li><a class="reference internal" href="#">quail.decode_speech</a><ul>
+<li><a class="reference internal" href="#quail.decode_speech"><code class="docutils literal notranslate"><span class="pre">decode_speech()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </ul>
 </li>
@@ -111,83 +115,41 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="quail-decode-speech">
-<h1>quail.decode_speech<a class="headerlink" href="#quail-decode-speech" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="quail.decode_speech">
-<code class="descclassname">quail.</code><code class="descname">decode_speech</code><span class="sig-paren">(</span><em>path</em>, <em>keypath=None</em>, <em>save=False</em>, <em>speech_context=None</em>, <em>sample_rate=44100</em>, <em>max_alternatives=1</em>, <em>language_code='en-US'</em>, <em>enable_word_time_offsets=True</em>, <em>return_raw=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/decode_speech.html#decode_speech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quail.decode_speech" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode speech for a file or folder and return results</p>
-<p>This function wraps the Google Speech API and ffmpeg to decode speech for
-free recall experiments.  Note: in order for this to work, you must have a
-Google Speech account, a google speech credentials file referenced in your
-_bash_profile, and ffmpeg installed on your computer.  See our readthedocs
-for more information on how to set this up:
-<a class="reference external" href="http://cdl-quail.readthedocs.io/en/latest/">http://cdl-quail.readthedocs.io/en/latest/</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>path</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Path to a wav file, or a folder of wav files.</p>
+  <section id="quail-decode-speech">
+<h1>quail.decode_speech<a class="headerlink" href="#quail-decode-speech" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="quail.decode_speech">
+<span class="sig-prename descclassname"><span class="pre">quail.</span></span><span class="sig-name descname"><span class="pre">decode_speech</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'base'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_raw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quail/decode_speech.html#decode_speech"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#quail.decode_speech" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode speech for a file or folder and return results using OpenAI Whisper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>path</strong><span class="classifier">str</span></dt><dd><p>Path to a wav file, or a folder of wav files.</p>
 </dd>
-<dt><strong>keypath</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Google Cloud Speech API key filepath. This is a JSON file containing
-credentials that was generated when creating a service account key.
-If None, assumes you have a local key that is set with an environmental
-variable. See the speech decoding tutorial for details.</p>
+<dt><strong>model_size</strong><span class="classifier">str</span></dt><dd><p>Whisper model size: ‘tiny’, ‘base’, ‘small’, ‘medium’, ‘large’.
+Default is ‘base’.</p>
 </dd>
-<dt><strong>save</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
-<dd><p class="first last">False by default, but if set to true, will save a pickle with the results
-object from google speech, and a text file with the decoded words.</p>
+<dt><strong>save</strong><span class="classifier">boolean</span></dt><dd><p>False by default. If true, saves results object (pickle) and text transcript.</p>
 </dd>
-<dt><strong>speech_context</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str</span></dt>
-<dd><p class="first last">This allows you to give some context to the speech decoding algorithm.
-For example, this could be the words studied on a given list, or all
-words in an experiment.</p>
+<dt><strong>return_raw</strong><span class="classifier">boolean</span></dt><dd><p>If True, returns the full Whisper result dictionary. 
+If False (default), returns a list of (WORD, START, END) tuples.</p>
 </dd>
-<dt><strong>sample_rate</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">The sample rate of your audio files (default is 44100).</p>
-</dd>
-<dt><strong>max_alternatives</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">You can specify the speech decoding to return multiple guesses to the
-decoding.  This will be saved in the results object (default is 1).</p>
-</dd>
-<dt><strong>language_code</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Decoding language code.  Default is en-US. See  here for more details:
-<a class="reference external" href="https://cloud.google.com/speech/docs/languages">https://cloud.google.com/speech/docs/languages</a></p>
-</dd>
-<dt><strong>enable_word_time_offsets</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">Returns timing information s(onsets/offsets) for each word (default is
-True).</p>
-</dd>
-<dt><strong>return_raw</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span></dt>
-<dd><p class="first last">Intead of returning the parsed results objects (i.e. the words), you can
-return the raw reponse object.  This has more details about the decoding,
-such as confidence.</p>
+<dt><strong>**kwargs</strong><span class="classifier">dict</span></dt><dd><p>Additional arguments passed to whisper.transcribe (e.g. language).</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>words</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of str, or list of lists of str</span></dt>
-<dd><p class="first last">The results of the speech decoding. This will be a list if only one file
-is input, or a list of lists if more than one file is decoded.</p>
 </dd>
-<dt><strong>raw</strong> <span class="classifier-delimiter">:</span> <span class="classifier">google speech object, or list of objects</span></dt>
-<dd><p class="first last">You can optionally return the google speech object instead of the parsed
-results by using the return_raw flag.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>words</strong><span class="classifier">list of str, or list of lists of str</span></dt><dd><p>The results of the speech decoding.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-</div>
+</section>
 
 
     </div>
@@ -209,7 +171,7 @@ results by using the return_raw flag.</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

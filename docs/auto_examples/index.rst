@@ -9,223 +9,9 @@ Gallery of Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to make an egg out of a precomputed recall matrix so that the analysis a...">
+    <div class="sphx-glr-thumbnails">
 
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_recmat2egg_thumb.png
-
-        :ref:`sphx_glr_auto_examples_recmat2egg.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/recmat2egg
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a Lag-CRP as described in Kahana et al (1996). Given the recall of a stimulu...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_lagcrp_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_lagcrp.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_lagcrp
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of recall success as a function of serial position during st...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_spc_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_spc.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_spc
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a fingerprint.  Briefly, a fingerprint can be described as a summary of how ...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_fingerprint_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_fingerprint.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_fingerprint
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of an item being recalled first given its list position.">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_pfr_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_pfr.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_pfr
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_accuracy_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_accuracy.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_accuracy
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots temporal clustering, the extent to which subject tend to recall neighboring ...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_temporal_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_temporal.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_temporal
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of an item being recalled nth given its list position.">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_pnr_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_pnr.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_pnr
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy in an existing Matplotlib Axes object.">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_existing_axes_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_existing_axes.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_existing_axes
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_decode_speech_thumb.png
-
-        :ref:`sphx_glr_auto_examples_decode_speech.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/decode_speech
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="An egg is made up of two primary pieces of data: `pres`, which are the words/stimuli that were ...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_create_multisubject_egg_thumb.png
-
-        :ref:`sphx_glr_auto_examples_create_multisubject_egg.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/create_multisubject_egg
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -233,9 +19,239 @@ Gallery of Examples
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_crack_egg_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_crack_egg_thumb.png
+    :alt:
 
-        :ref:`sphx_glr_auto_examples_crack_egg.py`
+  :ref:`sphx_glr_auto_examples_crack_egg.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Crack Egg</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to make an egg out of a precomputed recall matrix so that the analysis and plotting functions can be used.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_recmat2egg_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_recmat2egg.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Make egg out of recall matrix</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a Lag-CRP as described in Kahana et al (1996). Given the recall of a stimulus in position n, this plot shows the probability of recalling stimuli in neighboring stimulus positions (n+/-5).">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_lagcrp_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_lagcrp.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot Lag-CRP</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of recall success as a function of serial position during stimulus encoding.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_spc_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_spc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot serial position curve</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots a fingerprint.  Briefly, a fingerprint can be described as a summary of how a subject organizes information with respect to the multiple features of the stimuli.  In addition to presentation and recall data, a features object is passed to the Egg class.  It is comprised of a dictionary for each presented stimulus that contains feature dimensions and values for each stimulus.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_fingerprint_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_fingerprint.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot memory fingerprint</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of an item being recalled first given its list position.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_pfr_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_pfr.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot probability of first recall</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots temporal clustering, the extent to which subject tend to recall neighboring items sequentially.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_temporal_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_temporal.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot temporal clustering</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots the probability of an item being recalled nth given its list position.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_pnr_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_pnr.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot probability of nth recall</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_accuracy_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_accuracy.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot free recall accuracy</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy for a single subject.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_decode_speech_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_decode_speech.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Decode speech</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example plots free recall accuracy in an existing Matplotlib Axes object.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_existing_axes_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_existing_axes.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot free recall accuracy in an existing ax object</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An egg is made up of two primary pieces of data: pres, which are the words/stimuli that were presented to a subject and rec, which are the words/stimuli that were recalled by the subject.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_create_multisubject_egg_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_create_multisubject_egg.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Create a multisubject egg</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An egg is made up of two primary pieces of data: pres, which are the words/stimuli that were presented to a subject and rec, which are the words/stimuli that were recalled by the subject.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_create_egg_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_create_egg.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Create an egg</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="An example of how to reorder stimuli with the optimal presenter class">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_fingerprint_optimalpresenter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_fingerprint_optimalpresenter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Optimal presenter</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
@@ -246,71 +262,36 @@ Gallery of Examples
    :hidden:
 
    /auto_examples/crack_egg
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="An egg is made up of two primary pieces of data: `pres`, which are the words/stimuli that were ...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_create_egg_thumb.png
-
-        :ref:`sphx_glr_auto_examples_create_egg.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
+   /auto_examples/recmat2egg
+   /auto_examples/plot_lagcrp
+   /auto_examples/plot_spc
+   /auto_examples/plot_fingerprint
+   /auto_examples/plot_pfr
+   /auto_examples/plot_temporal
+   /auto_examples/plot_pnr
+   /auto_examples/plot_accuracy
+   /auto_examples/decode_speech
+   /auto_examples/plot_existing_axes
+   /auto_examples/create_multisubject_egg
    /auto_examples/create_egg
+   /auto_examples/fingerprint_optimalpresenter
 
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="An example of how to reorder stimuli with the optimal presenter class">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_fingerprint_optimalpresenter_thumb.png
+  .. container:: sphx-glr-footer sphx-glr-footer-gallery
 
-        :ref:`sphx_glr_auto_examples_fingerprint_optimalpresenter.py`
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-.. raw:: html
+      :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
 
-    </div>
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/fingerprint_optimalpresenter
-.. raw:: html
-
-    <div style='clear:both'></div>
-
-
-
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-gallery
-
-
-  .. container:: sphx-glr-download
-
-    :download:`Download all examples in Python source code: auto_examples_python.zip <//Users/andrewheusser/Documents/github/quail_contextlab/docs/auto_examples/auto_examples_python.zip>`
-
-
-
-  .. container:: sphx-glr-download
-
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//Users/andrewheusser/Documents/github/quail_contextlab/docs/auto_examples/auto_examples_jupyter.zip>`
+      :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
 
 
 .. only:: html
 
  .. rst-class:: sphx-glr-signature
 
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

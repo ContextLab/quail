@@ -1,0 +1,11 @@
+{
+ "quail.recmat2egg": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "quail",
+   "module_short": "quail",
+   "name": "recmat2egg"
+  }
+ ]
+}

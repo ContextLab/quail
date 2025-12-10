@@ -39,13 +39,13 @@ def pnr_helper(egg, position, match='exact',
         return [1 if pos==lst[position] else 0 for pos in range(1,egg.list_length+1)]
 
     opts = dict(match=match, distance=distance, features=features)
-    if match is 'exact':
+    if match == 'exact':
         opts.update({'features' : 'item'})
     recmat = recall_matrix(egg, **opts)
 
     if match in ['exact', 'best']:
         result = [pnr(lst, position) for lst in recmat]
-    elif match is 'smooth':
+    elif match == 'smooth':
         result = np.atleast_2d(recmat[:, :, 0])
     else:
         raise ValueError('Match must be set to exact, best or smooth.')

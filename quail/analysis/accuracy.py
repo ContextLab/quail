@@ -36,13 +36,13 @@ def accuracy_helper(egg, match='exact', distance='euclidean',
         return len([i for i in np.unique(lst) if i>=0])/(egg.list_length)
 
     opts = dict(match=match, distance=distance, features=features)
-    if match is 'exact':
+    if match == 'exact':
         opts.update({'features' : 'item'})
     recmat = recall_matrix(egg, **opts)
 
     if match in ['exact', 'best']:
         result = [acc(lst) for lst in recmat]
-    elif match is 'smooth':
+    elif match == 'smooth':
         result = np.mean(recmat, axis=1)
     else:
         raise ValueError('Match must be set to exact, best or smooth.')

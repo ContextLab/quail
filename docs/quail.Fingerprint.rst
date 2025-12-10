@@ -1,5 +1,5 @@
-quail\.Fingerprint
-==================
+﻿quail.Fingerprint
+=================
 
 .. currentmodule:: quail
 

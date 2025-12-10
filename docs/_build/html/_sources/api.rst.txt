@@ -1,4 +1,4 @@
-:orphan:
+
 
 .. _api_ref:
 
@@ -34,7 +34,7 @@ Fingerprint class
   quail.Fingerprint
 
 Optimal Presenter class
-------------------
+-----------------------
 
 .. autosummary::
   :toctree:
@@ -42,7 +42,7 @@ Optimal Presenter class
   quail.OptimalPresenter
 
 Load example data
-------------------
+-----------------
 
 .. autosummary::
   :toctree:
@@ -51,7 +51,7 @@ Load example data
 
 
 Load egg
-------------------
+--------
 
 .. autosummary::
   :toctree:
@@ -59,7 +59,7 @@ Load egg
   quail.load_egg
 
 Analyze
-------------------
+-------
 
 .. autosummary::
   :toctree:
@@ -67,7 +67,7 @@ Analyze
   quail.analyze
 
 Plot
-------------------
+----
 
 .. autosummary::
   :toctree:
@@ -75,7 +75,7 @@ Plot
   quail.plot
 
 Decode speech
-------------------
+-------------
 
 .. autosummary::
   :toctree:
@@ -83,7 +83,7 @@ Decode speech
   quail.decode_speech
 
 Stack eggs
-------------------
+----------
 
 .. autosummary::
   :toctree:
@@ -91,7 +91,7 @@ Stack eggs
   quail.stack_eggs
 
 Crack egg
-------------------
+---------
 
 .. autosummary::
   :toctree:
@@ -99,7 +99,7 @@ Crack egg
   quail.crack_egg
 
 Convert recall matrix to egg
-------------------
+----------------------------
 
 .. autosummary::
   :toctree:

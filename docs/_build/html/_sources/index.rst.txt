@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 **Quail**: A python toolbox for analyzing free recall experiments and plotting the results
-==================================
+====================================================================================================
 
 .. image:: _static/plot_lagcrp.png
     :width: 400pt
@@ -13,9 +13,9 @@
 
 `Quail <https://github.com/ContextLab/quail>`_ is a library for analyzing and visualizing free recall data
 in Python. It is built on top of matplotlib and seaborn.  For sample Jupyter
-notebooks, click `here <https://github.com/ContextLab/quail-example-notebooks>`_
+notebooks, click `Examples <https://github.com/ContextLab/quail-example-notebooks>`_
 and to read the paper, click
-`here <http://joss.theoj.org/papers/3fb5123eb2538e06f6a25ded0a088b73>`_.
+`Paper <http://joss.theoj.org/papers/3fb5123eb2538e06f6a25ded0a088b73>`_.
 
  Some key features of Quail are:
 
@@ -25,3 +25,10 @@ and to read the paper, click
  + Set of powerful tools for importing data, automatically transcribing audio files and more.
 
  .. toctree::
+    :maxdepth: 2
+    :caption: Contents:
+
+    installation
+    tutorial
+    auto_examples/index
+    api

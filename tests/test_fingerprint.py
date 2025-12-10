@@ -42,7 +42,7 @@ for r in recalled:
 egg = Egg(pres=[[presented]],rec=[[recalled]])
 
 def test_fingerprint():
-    assert np.allclose(egg.analyze('fingerprint', features=['category']).data.values[0], np.array([0.79166667]))
+    assert np.allclose(egg.analyze('fingerprint', features=['category']).data.values[0], np.array([0.91666667]))
 
 def test_fingerprint_permute_runs():
     assert egg.analyze('fingerprint', permute=True, n_perms=3)

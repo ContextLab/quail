@@ -10,7 +10,7 @@ words/stimuli that were recalled by the subject.
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 import quail

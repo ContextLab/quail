@@ -13,7 +13,7 @@ values for each stimulus.
 
 """
 
-# Code source: Andrew Heusser
+# Code source: Contextual Dynamics Laboratory
 # License: MIT
 
 #import
@@ -23,6 +23,6 @@ import quail
 egg = quail.load('example')
 
 # analyze and plot
-fegg = egg.analyze('fingerprint', listgroup=['average']*8, features=['temporal'])
+fegg = egg.analyze('fingerprint', listgroup=['average']*8)
 
 fegg.plot(title='Memory Fingerprint')

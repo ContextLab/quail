@@ -11,7 +11,7 @@ mpl.rcParams['pdf.fonttype'] = 42
 
 def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
          listname='List', subjconds=None, listconds=None, plot_type=None,
-         plot_style=None, title=None, legend=True, xlim=None, ylim=None,
+         plot_style=None, title=None, legend=None, xlim=None, ylim=None,
          save_path=None, show=True, ax=None, **kwargs):
     """
     General plot function that groups data by subject/list number and performs analysis.
@@ -83,24 +83,27 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
     """
 
+    sns.set_palette("viridis")
+    plot_type = plot_type if plot_type is not None else 'list'
+    
     def plot_acc(data, plot_style, plot_type, listname, subjname, **kwargs):
 
         # set defaul style to bar
         plot_style = plot_style if plot_style is not None else 'bar'
         plot_type = plot_type if plot_type is not None else 'list'
 
-        if plot_style is 'bar':
+        if plot_style == 'bar':
             plot_func = sns.barplot
-        elif plot_style is 'swarm':
+        elif plot_style == 'swarm':
             plot_func = sns.swarmplot
-        elif plot_style is 'violin':
+        elif plot_style == 'violin':
             plot_func = sns.violinplot
 
-        if plot_type is 'list':
-            ax = plot_func(data=data, x=listname, y="Accuracy", **kwargs)
-        elif plot_type is 'subject':
+        if plot_type == 'list':
+            ax = plot_func(data=data, x=listname, y="Accuracy", hue=listname, legend=False, **kwargs)
+        elif plot_type == 'subject':
             ax = plot_func(data=data, x=subjname, y="Accuracy", **kwargs)
-        elif plot_type is 'split':
+        elif plot_type == 'split':
             ax = plot_func(data=data, x=subjname, y="Accuracy", hue=listname, **kwargs)
 
         return ax
@@ -111,18 +114,18 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_style = plot_style if plot_style is not None else 'bar'
         plot_type = plot_type if plot_type is not None else 'list'
 
-        if plot_style is 'bar':
+        if plot_style == 'bar':
             plot_func = sns.barplot
-        elif plot_style is 'swarm':
+        elif plot_style == 'swarm':
             plot_func = sns.swarmplot
-        elif plot_style is 'violin':
+        elif plot_style == 'violin':
             plot_func = sns.violinplot
 
-        if plot_type is 'list':
-            ax = plot_func(data=data, x=listname, y="Temporal Clustering Score", **kwargs)
-        elif plot_type is 'subject':
+        if plot_type == 'list':
+            ax = plot_func(data=data, x=listname, y="Temporal Clustering Score", hue=listname, legend=False, **kwargs)
+        elif plot_type == 'subject':
             ax = plot_func(data=data, x=subjname, y="Temporal Clustering Score", **kwargs)
-        elif plot_type is 'split':
+        elif plot_type == 'split':
             ax = plot_func(data=data, x=subjname, y="Temporal Clustering Score", hue=listname, **kwargs)
 
         return ax
@@ -133,17 +136,17 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_style = plot_style if plot_style is not None else 'violin'
         plot_type = plot_type if plot_type is not None else 'list'
 
-        if plot_style is 'bar':
+        if plot_style == 'bar':
             plot_func = sns.barplot
-        elif plot_style is 'swarm':
+        elif plot_style == 'swarm':
             plot_func = sns.swarmplot
-        elif plot_style is 'violin':
+        elif plot_style == 'violin':
             plot_func = sns.violinplot
 
-        if plot_type is 'list':
-            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, **kwargs)
-        elif plot_type is 'subject':
-            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, **kwargs)
+        if plot_type == 'list':
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=listname, legend=legend, **kwargs)
+        elif plot_type == 'subject':
+            ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", hue=subjname, legend=legend, **kwargs)
         else:
             ax = plot_func(data=tidy_data, x="Feature", y="Clustering Score", **kwargs)
 
@@ -155,17 +158,17 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plot_style = plot_style if plot_style is not None else 'violin'
         plot_type = plot_type if plot_type is not None else 'list'
 
-        if plot_style is 'bar':
+        if plot_style == 'bar':
             plot_func = sns.barplot
-        elif plot_style is 'swarm':
+        elif plot_style == 'swarm':
             plot_func = sns.swarmplot
-        elif plot_style is 'violin':
+        elif plot_style == 'violin':
             plot_func = sns.violinplot
 
         order = list(tidy_data['Feature'].unique())
-        if plot_type is 'list':
+        if plot_type == 'list':
             ax = plot_func(data=data, x="Feature", y="Clustering Score", hue=listname, order=order, **kwargs)
-        elif plot_type is 'subject':
+        elif plot_type == 'subject':
             ax = plot_func(data=data, x="Feature", y="Clustering Score", hue=subjname, order=order, **kwargs)
         else:
             ax = plot_func(data=data, x="Feature", y="Clustering Score", order=order, **kwargs)
@@ -176,9 +179,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
         plot_type = plot_type if plot_type is not None else 'list'
 
-        if plot_type is 'subject':
+        if plot_type == 'subject':
             ax = sns.lineplot(data = data, x="Position", y="Proportion Recalled", hue=subjname, **kwargs)
-        elif plot_type is 'list':
+        elif plot_type == 'list':
             ax = sns.lineplot(data = data, x="Position", y="Proportion Recalled", hue=listname, **kwargs)
         ax.set_xlim(0, data['Position'].max())
 
@@ -188,9 +191,9 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
         plot_type = plot_type if plot_type is not None else 'list'
 
-        if plot_type is 'subject':
+        if plot_type == 'subject':
             ax = sns.lineplot(data = data, x="Position", y='Probability of Recall: Position ' + str(position), hue=subjname, **kwargs)
-        elif plot_type is 'list':
+        elif plot_type == 'list':
             ax = sns.lineplot(data = data, x="Position", y='Probability of Recall: Position ' + str(position), hue=listname, **kwargs)
         ax.set_xlim(0,list_length-1)
 
@@ -200,17 +203,27 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
 
         plot_type = plot_type if plot_type is not None else 'list'
 
-        if plot_type is 'subject':
-            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=subjname, **kwargs)
+        if plot_type == 'subject':
+            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=subjname, legend=False, **kwargs)
             if 'ax' in kwargs:
                 del kwargs['ax']
             sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=subjname, ax=ax, legend=False, **kwargs)
-        elif plot_type is 'list':
-            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=listname, **kwargs)
+        elif plot_type == 'list':
+            ax = sns.lineplot(data=data[data['Position']<0], x="Position", y="Conditional Response Probability", hue=listname, legend=False, **kwargs)
             if 'ax' in kwargs:
                 del kwargs['ax']
             sns.lineplot(data=data[data['Position']>0], x="Position", y="Conditional Response Probability", hue=listname, ax=ax, legend=False, **kwargs)
+        
+        if legend:
+            # Deduplicate legend
+            handles, labels = ax.get_legend_handles_labels()
+            if handles:
+                 by_label = dict(zip(labels, handles))
+                 title_text = subjname if plot_type == 'subject' else listname
+                 ax.legend(by_label.values(), by_label.keys(), title=title_text)
+
         ax.set_xlim(-5,5)
+        ax.set_xlabel('Lag')
 
         return ax
 
@@ -229,7 +242,7 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         results.data = results.data.loc[idx[subjconds, :],:]
 
         # filter subjgroup
-        subjgroup = filter(lambda x: x in subjconds, subjgroup)
+        subjgroup = list(filter(lambda x: x in subjconds, subjgroup))
 
     if listconds:
         # make sure its a list
@@ -244,10 +257,25 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
     # convert to tiny and format for plotting
     tidy_data = format2tidy(results.data, subjname, listname, subjgroup, analysis=results.analysis, position=results.position)
 
+    # Auto-suppress legend if only one group
+    # Auto-suppress legend if only one group and user didn't specify
+    if legend is None:
+        legend = True
+        try:
+            if plot_type == 'list':
+                 # Check unique listnames
+                 if len(tidy_data[listname].unique()) <= 1:
+                     legend = False
+            elif plot_type == 'subject':
+                 if len(tidy_data[subjname].unique()) <= 1:
+                     legend = False
+        except:
+             pass
+
     if not ax==None:
         kwargs['ax']=ax
 
-    #plot!
+    # plot!
     if results.analysis=='accuracy':
         ax = plot_acc(tidy_data, plot_style, plot_type, listname, subjname, **kwargs)
     elif results.analysis=='temporal':
@@ -270,16 +298,16 @@ def plot(results, subjgroup=None, subjname='Subject Group', listgroup=None,
         plt.title(title)
 
     if legend is False:
-        try:
-            ax.legend_.remove()
-        except:
-            pass
+        if ax.get_legend() is not None:
+            ax.get_legend().remove()
 
     if xlim:
         plt.xlim(xlim)
 
     if ylim:
         plt.ylim(ylim)
+
+    sns.despine(ax=ax, top=True, right=True)
 
     if save_path:
         mpl.rcParams['pdf.fonttype'] = 42

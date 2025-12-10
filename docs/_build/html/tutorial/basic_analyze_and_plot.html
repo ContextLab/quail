@@ -1,44 +1,38 @@
 <!DOCTYPE html>
 
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>Basic analyzing and plotting &#8212; quail 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootswatch-3.3.6/yeti/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
-    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/bootstrap-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Advanced plotting" href="advanced_plotting.html" />
+    <link rel="prev" title="The Egg data object" href="egg.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
 
-  </head>
-  <body role="document">
+  </head><body>
 
   <div id="navbar" class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -71,7 +65,14 @@
      href="../index.html">Site <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
-      aria-labelledby="dLabelGlobalToc"></ul>
+      aria-labelledby="dLabelGlobalToc"><p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">How to use the Quail package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API reference</a></li>
+</ul>
+</ul>
 </li>
               
                 <li class="dropdown">
@@ -119,48 +120,48 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12 content">
+    <div class="body col-md-12 content" role="main">
       
-  <div class="section" id="basic-analyzing-and-plotting">
-<h1>Basic analyzing and plotting<a class="headerlink" href="#basic-analyzing-and-plotting" title="Permalink to this headline">¶</a></h1>
-<p>This tutorial will go over the basics of analyzing <code class="docutils literal"><span class="pre">eggs</span></code>, the primary
-data structure used in <code class="docutils literal"><span class="pre">quail</span></code>. To learn about how an egg is set up,
+  <section id="basic-analyzing-and-plotting">
+<h1>Basic analyzing and plotting<a class="headerlink" href="#basic-analyzing-and-plotting" title="Permalink to this heading">¶</a></h1>
+<p>This tutorial will go over the basics of analyzing <code class="docutils literal notranslate"><span class="pre">eggs</span></code>, the primary
+data structure used in <code class="docutils literal notranslate"><span class="pre">quail</span></code>. To learn about how an egg is set up,
 see the egg tutorial.</p>
 <p>An egg is made up of (at minimum) the stimuli presented to a subject and
 the stimuli recalled by the subject. With these, two components we can
 perform a number of analyses:</p>
 <ol class="arabic simple">
-<li><strong>Recall Accuracy</strong> - the proportion of stimuli presented that were
-later recalled</li>
-<li><strong>Serial Position Curve</strong> - recall accuracy as a function of the
-encoding position of the stimulus</li>
-<li><strong>Probability of First Recall</strong> - the probability that a stimulus
-will be recalled first as a function of its encoding position</li>
-<li><strong>Lag-CRP</strong> - given the recall of word n, the probability of
-recalling stimuli at neighboring positions (n+/-1, 2, 3 etc).</li>
-<li><strong>Temporal Clustering</strong> - a measure of recall clustering by temporal
-proximity during encoding</li>
+<li><p><strong>Recall Accuracy</strong> - the proportion of stimuli presented that were
+later recalled</p></li>
+<li><p><strong>Serial Position Curve</strong> - recall accuracy as a function of the
+encoding position of the stimulus</p></li>
+<li><p><strong>Probability of First Recall</strong> - the probability that a stimulus
+will be recalled first as a function of its encoding position</p></li>
+<li><p><strong>Lag-CRP</strong> - given the recall of word n, the probability of
+recalling stimuli at neighboring positions (n+/-1, 2, 3 etc).</p></li>
+<li><p><strong>Temporal Clustering</strong> - a measure of recall clustering by temporal
+proximity during encoding</p></li>
 </ol>
 <p>If we have a set of features for the stimuli, we can also compute a
 <strong>Memory Fingerprint</strong>, which is an estimate of how a subject clusters
 their recall responses with respect to features of a stimulus (see the
 fingerprint tutorial for more on this).</p>
-<p>Let’s get to analyzing some <code class="docutils literal"><span class="pre">eggs</span></code>. First, we’ll load in some example
+<p>Let’s get to analyzing some <code class="docutils literal notranslate"><span class="pre">eggs</span></code>. First, we’ll load in some example
 data:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">quail</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">quail</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 
 <span class="n">egg</span> <span class="o">=</span> <span class="n">quail</span><span class="o">.</span><span class="n">load_example_data</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">6</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pydub</span><span class="o">/</span><span class="n">utils</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">165</span><span class="p">:</span> <span class="ne">RuntimeWarning</span><span class="p">:</span> <span class="n">Couldn</span><span class="s1">&#39;t find ffmpeg or avconv - defaulting to ffmpeg, but may not work</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.6</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pydub</span><span class="o">/</span><span class="n">utils</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">165</span><span class="p">:</span> <span class="ne">RuntimeWarning</span><span class="p">:</span> <span class="n">Couldn</span><span class="s1">&#39;t find ffmpeg or avconv - defaulting to ffmpeg, but may not work</span>
   <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Couldn&#39;t find ffmpeg or avconv - defaulting to ffmpeg, but may not work&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This dataset is comprised of 30 subjects, who each performed 8
 study/test blocks of 16 words each. Here are some of the presented
 words:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">get_pres_items</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">get_pres_items</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 <div>
@@ -320,7 +321,7 @@ words:</p>
   </tbody>
 </table>
 </div><p>and some of the recalled words:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">get_rec_items</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">get_rec_items</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 <div>
@@ -517,11 +518,11 @@ words:</p>
 <p>5 rows × 22 columns</p>
 </div><p>We can start with the simplest analysis - recall accuracy - which is
 just the proportion of stimuli recalled that were in the encoding lists.
-To compute accuracy, simply call the <code class="docutils literal"><span class="pre">analyze</span></code> method, with the
-<code class="docutils literal"><span class="pre">analysis</span></code> key word argument set to <code class="docutils literal"><span class="pre">accuracy</span></code>:</p>
-<div class="section" id="recall-accuracy">
-<h2>Recall Accuracy<a class="headerlink" href="#recall-accuracy" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">acc</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+To compute accuracy, simply call the <code class="docutils literal notranslate"><span class="pre">analyze</span></code> method, with the
+<code class="docutils literal notranslate"><span class="pre">analysis</span></code> key word argument set to <code class="docutils literal notranslate"><span class="pre">accuracy</span></code>:</p>
+<section id="recall-accuracy">
+<h2>Recall Accuracy<a class="headerlink" href="#recall-accuracy" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">acc</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
 <span class="n">acc</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -576,13 +577,13 @@ To compute accuracy, simply call the <code class="docutils literal"><span class=
     </tr>
   </tbody>
 </table>
-</div><p>The result is a <code class="docutils literal"><span class="pre">FriedEgg</span></code> data object. The accuracy data can be
-retrieved using the <code class="docutils literal"><span class="pre">get_data</span></code> method, which returns a multi-index
+</div><p>The result is a <code class="docutils literal notranslate"><span class="pre">FriedEgg</span></code> data object. The accuracy data can be
+retrieved using the <code class="docutils literal notranslate"><span class="pre">get_data</span></code> method, which returns a multi-index
 Pandas DataFrame where the first-level index is the subject identifier
 and the second level index is the list number. By default, note that
 each list is analyzed separately. However, you can easily return the
-average over lists using the <code class="docutils literal"><span class="pre">listgroup</span></code> kew word argument:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">accuracy_avg</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+average over lists using the <code class="docutils literal notranslate"><span class="pre">listgroup</span></code> kew word argument:</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy_avg</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">accuracy_avg</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -642,10 +643,10 @@ average over lists using the <code class="docutils literal"><span class="pre">li
   </tbody>
 </table>
 </div><p>Now, the result is a single value for each subject representing the
-average accuracy across the 16 lists. The <code class="docutils literal"><span class="pre">listgroup</span></code> kwarg can also
+average accuracy across the 16 lists. The <code class="docutils literal notranslate"><span class="pre">listgroup</span></code> kwarg can also
 be used to do some fancier groupings, like splitting the data into the
 first and second half of the experiment:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">accuracy_split</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy_split</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">accuracy_split</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -704,10 +705,10 @@ first and second half of the experiment:</p>
 </table>
 </div><p>These analysis results can be passed directly into the plot function
 like so:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">accuracy_split</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy_split</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115714710</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115714710</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <img alt="../_images/basic_analyze_and_plot_14_1.png" src="../_images/basic_analyze_and_plot_14_1.png" />
@@ -715,12 +716,12 @@ like so:</p>
 lets take a look at the serial position curve analysis. As stated above
 the serial position curve (or spc) computes recall accuracy as a
 function of the encoding position of the stimulus. To use it, use the
-same <code class="docutils literal"><span class="pre">analyze</span></code> method illustrated above, but set the <code class="docutils literal"><span class="pre">analysis</span></code>
-kwarg to <code class="docutils literal"><span class="pre">spc</span></code>. Let’s also average across lists within subject:</p>
-</div>
-<div class="section" id="serial-position-curve">
-<h2>Serial Position Curve<a class="headerlink" href="#serial-position-curve" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">spc</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;spc&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+same <code class="docutils literal notranslate"><span class="pre">analyze</span></code> method illustrated above, but set the <code class="docutils literal notranslate"><span class="pre">analysis</span></code>
+kwarg to <code class="docutils literal notranslate"><span class="pre">spc</span></code>. Let’s also average across lists within subject:</p>
+</section>
+<section id="serial-position-curve">
+<h2>Serial Position Curve<a class="headerlink" href="#serial-position-curve" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spc</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;spc&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">spc</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -887,22 +888,22 @@ kwarg to <code class="docutils literal"><span class="pre">spc</span></code>. Let
 </div><p>The result is a df where each row is a subject and each column is the
 encoding position of the word. To plot, simply pass the result of the
 analysis function to the plot function:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">spc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115758240</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115758240</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <img alt="../_images/basic_analyze_and_plot_19_1.png" src="../_images/basic_analyze_and_plot_19_1.png" />
-</div>
-<div class="section" id="probability-of-first-recall">
-<h2>Probability of First Recall<a class="headerlink" href="#probability-of-first-recall" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="probability-of-first-recall">
+<h2>Probability of First Recall<a class="headerlink" href="#probability-of-first-recall" title="Permalink to this heading">¶</a></h2>
 <p>The next analysis we’ll take a look at is the probability of first
 recall, which is the probability that a word will be recalled first as a
-function of its encoding position. To compute this, call the <code class="docutils literal"><span class="pre">analyze</span></code>
-method with the <code class="docutils literal"><span class="pre">analysis</span></code> kwarg set to <code class="docutils literal"><span class="pre">pfr</span></code>. Again, we’ll average
+function of its encoding position. To compute this, call the <code class="docutils literal notranslate"><span class="pre">analyze</span></code>
+method with the <code class="docutils literal notranslate"><span class="pre">analysis</span></code> kwarg set to <code class="docutils literal notranslate"><span class="pre">pfr</span></code>. Again, we’ll average
 over lists:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">pfr</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;pfr&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pfr</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;pfr&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">pfr</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1067,26 +1068,26 @@ over lists:</p>
   </tbody>
 </table>
 </div><p>This df is set up just like the serial position curve. To plot:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">pfr</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pfr</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x1158b5160</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x1158b5160</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <img alt="../_images/basic_analyze_and_plot_23_1.png" src="../_images/basic_analyze_and_plot_23_1.png" />
-</div>
-<div class="section" id="lag-crp">
-<h2>Lag-CRP<a class="headerlink" href="#lag-crp" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="lag-crp">
+<h2>Lag-CRP<a class="headerlink" href="#lag-crp" title="Permalink to this heading">¶</a></h2>
 <p>The next analysis to consider is the lag-CRP, which again is a function
 that given the recall of word n, returns the probability of recalling
 words at neighboring positions (n+/-1, 2, 3 etc). To use it? You guessed
-it: call the <code class="docutils literal"><span class="pre">analyze</span></code> method with the <code class="docutils literal"><span class="pre">analysis</span></code> kwarg set to
-<code class="docutils literal"><span class="pre">lagcrp</span></code>:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">lagcrp</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+it: call the <code class="docutils literal notranslate"><span class="pre">analyze</span></code> method with the <code class="docutils literal notranslate"><span class="pre">analysis</span></code> kwarg set to
+<code class="docutils literal notranslate"><span class="pre">lagcrp</span></code>:</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lagcrp</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;lagcrp&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">lagcrp</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">andrewheusser</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">quail_contextlab</span><span class="o">/</span><span class="n">quail</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">lagcrp</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">129</span><span class="p">:</span> <span class="ne">RuntimeWarning</span><span class="p">:</span> <span class="n">Mean</span> <span class="n">of</span> <span class="n">empty</span> <span class="nb">slice</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">andrewheusser</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">github</span><span class="o">/</span><span class="n">quail_contextlab</span><span class="o">/</span><span class="n">quail</span><span class="o">/</span><span class="n">analysis</span><span class="o">/</span><span class="n">lagcrp</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">129</span><span class="p">:</span> <span class="ne">RuntimeWarning</span><span class="p">:</span> <span class="n">Mean</span> <span class="n">of</span> <span class="n">empty</span> <span class="nb">slice</span>
   <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">lagcrp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1289,35 +1290,35 @@ it: call the <code class="docutils literal"><span class="pre">analyze</span></co
 </div><p>Unlike the previous two analyses, the result of this analysis returns a
 df where the number of columns are double the length of the lists. To
 view the results:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">lagcrp</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lagcrp</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115924630</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115924630</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <img alt="../_images/basic_analyze_and_plot_27_1.png" src="../_images/basic_analyze_and_plot_27_1.png" />
-</div>
-<div class="section" id="temporal-clustering">
-<h2>Temporal clustering<a class="headerlink" href="#temporal-clustering" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="temporal-clustering">
+<h2>Temporal clustering<a class="headerlink" href="#temporal-clustering" title="Permalink to this heading">¶</a></h2>
 <p>Another way to evaluate temporal clustering is to measure the temporal
 distance of each transition made with respect to where on a list the
 subject could have transitioned. This ‘temporal clustering score’ is a
 good summary of how strongly participants are clustering their responses
 according to temporal proximity during encoding.</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">temporal</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;temporal&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temporal</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;temporal&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;First Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;Second Half&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">temporal</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plot_style</span><span class="o">=</span><span class="s1">&#39;violin&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115a86da0</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115a86da0</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <img alt="../_images/basic_analyze_and_plot_29_1.png" src="../_images/basic_analyze_and_plot_29_1.png" />
-</div>
-<div class="section" id="memory-fingerprint">
-<h2>Memory Fingerprint<a class="headerlink" href="#memory-fingerprint" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="memory-fingerprint">
+<h2>Memory Fingerprint<a class="headerlink" href="#memory-fingerprint" title="Permalink to this heading">¶</a></h2>
 <p>Last but not least is the memory fingerprint analysis. For a detailed
 treatment of this analysis, see the fingerprint tutorial.</p>
-<p>As described in the fingerprint tutorial, the <code class="docutils literal"><span class="pre">features</span></code> data
+<p>As described in the fingerprint tutorial, the <code class="docutils literal notranslate"><span class="pre">features</span></code> data
 structure is used to estimate how subjects cluster their recall
 responses with respect to the features of the encoded stimuli. Briefly,
 these estimates are derived by computing the similarity of neighboring
@@ -1329,10 +1330,10 @@ same category. Similarly, if after you recall “cat” you recall the word
 both words share the first letter “c”. This logic can be extended to any
 number of feature dimensions.</p>
 <p>Here is a glimpse of the features df:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">feature_names</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">egg</span><span class="o">.</span><span class="n">feature_names</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">,</span>
  <span class="s1">&#39;location&#39;</span><span class="p">,</span>
  <span class="s1">&#39;category&#39;</span><span class="p">,</span>
  <span class="s1">&#39;firstLetter&#39;</span><span class="p">,</span>
@@ -1342,9 +1343,9 @@ number of feature dimensions.</p>
 </pre></div>
 </div>
 <p>Like the other analyses, computing the memory fingerprint can be done
-using the <code class="docutils literal"><span class="pre">analyze</span></code> method with the <code class="docutils literal"><span class="pre">analysis</span></code> kwarg set to
-<code class="docutils literal"><span class="pre">fingerprint</span></code>:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
+using the <code class="docutils literal notranslate"><span class="pre">analyze</span></code> method with the <code class="docutils literal notranslate"><span class="pre">analysis</span></code> kwarg set to
+<code class="docutils literal notranslate"><span class="pre">fingerprint</span></code>:</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fingerprint</span> <span class="o">=</span> <span class="n">egg</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="s1">&#39;fingerprint&#39;</span><span class="p">,</span> <span class="n">listgroup</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;average&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">fingerprint</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1451,11 +1452,11 @@ represent a subjects tendency to cluster their recall responses along a
 particular feature dimensions. They are probability values, and thus,
 greater values indicate more clustering along that feature dimension. To
 plot, simply pass the result to the plot function:</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="n">order</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">order</span><span class="o">=</span><span class="nb">sorted</span><span class="p">(</span><span class="n">egg</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
 <span class="n">fingerprint</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115aae438</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x115aae438</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <img alt="../_images/basic_analyze_and_plot_35_1.png" src="../_images/basic_analyze_and_plot_35_1.png" />
@@ -1467,13 +1468,13 @@ we implemented a permutation clustering procedure which shuffles the
 order of each recall list and recomputes the clustering score with
 respect to that distribution. Note: this also works with the temporal
 clustering analysis.</p>
-<div class="highlight-ipython3"><div class="highlight"><pre><span></span><span class="c1"># warning: this can take a little while.  Setting parallel=True will help speed up the permutation computation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># warning: this can take a little while.  Setting parallel=True will help speed up the permutation computation</span>
 <span class="c1"># fingerprint = quail.analyze(egg, analysis=&#39;fingerprint&#39;, listgroup=[&#39;average&#39;]*8, permute=True, n_perms=100)</span>
 <span class="c1"># ax = quail.plot(fingerprint, ylim=[0,1.2])</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
     </div>
@@ -1495,7 +1496,7 @@ clustering analysis.</p>
     </p>
     <p>
         &copy; Copyright 2017, Contextual Dynamics Laboratory.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br/>
     </p>
   </div>
 </footer>

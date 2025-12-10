@@ -1,5 +1,5 @@
-quail\.OptimalPresenter
-=======================
+﻿quail.OptimalPresenter
+======================
 
 .. currentmodule:: quail
 

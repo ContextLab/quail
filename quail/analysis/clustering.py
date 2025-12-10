@@ -17,14 +17,27 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
     egg : quail.Egg
         Data to analyze
 
-    dist_funcs : dict
-        Dictionary of distance functions for feature clustering analyses
+    permute : bool
+        Determines whether to correct clustering scores by shuffling recall order
+        to create a distribution of clustering scores. Default is False.
+
+    n_perms : int
+        Number of permutations to run for "corrected" clustering scores.
+        Default is 1000.
+
+    match : str (exact, best)
+        Matching approach to compute recall matrix. Default is 'exact'.
+
+    distance : str
+        The distance function used to compare items. Default is 'euclidean'.
+
+    features : list
+        List of features to analyze. If None, uses all available features.
 
     Returns
     ----------
     probabilities : Numpy array
       Each number represents clustering along a different feature dimension
-
     """
 
     if features is None:
@@ -39,7 +52,26 @@ def fingerprint_helper(egg, permute=False, n_perms=1000,
 
 
 def _get_corrected_rank(x, dists):
-    return (np.sum(dists > x) + np.sum(dists == x) / 2) / len(dists)
+    # Legacy behavior: Average rank of matches (unnormalized? No, normalized by len)
+    # dists are sorted ascending by default in numpy, but we assumed descending for 'rank'?
+    # Fingerprint logic: High rank = Good match (low distance).
+    # If dists=[1, 0, 0, 0] and x=0.
+    # Descending: [1, 0, 0, 0]. 0 matches at indices 1, 2, 3.
+    # 1-based ranks: 2, 3, 4. Avg: 3.
+    # Score: 3 / 4 = 0.75.
+    
+    # Implementation:
+    # Sort dists descending
+    dists_sorted = np.sort(dists)[::-1]
+    # Find indices where equal
+    matches = np.where(dists_sorted == x)[0]
+    if len(matches) == 0:
+        return np.nan # Should not happen if x is in dists?
+    
+    # 1-based ranks
+    ranks = matches + 1
+    avg_rank = np.mean(ranks)
+    return avg_rank / len(dists)
 
 
 def _get_weights(slices, features, distdict, permute, n_perms, match, distance):
@@ -66,22 +98,72 @@ def _get_weight_exact(egg, feature, distdict, permute, n_perms):
     if len(rec) <= 2:
         warnings.warn('Not enough recalls to compute fingerprint, returning default'
               'fingerprint.. (everything is .5)')
-        return np.nan
+        return 0.5
 
     distmat = get_distmat(egg, feature, distdict)
 
-    past_words = []
-    past_idxs = []
+    # Map items to indices for faster lookup
+    # Handle duplicate items? Quail usually assumes unique items in pres for index()
+    try:
+        p_map = {item: i for i, item in enumerate(pres)}
+        # Filter recalls to those in presentation list
+        r_idxs = [p_map[item] for item in rec if item in p_map]
+    except TypeError:
+        # Fallback for unhashable types (dicts/lists? shouldn't happen for items)
+        r_idxs = [pres.index(item) for item in rec if item in pres]
+
     ranks = []
-    for i in range(len(rec)-1):
-        c, n = rec[i], rec[i + 1]
-        if (c in pres and n in pres) and (c not in past_words and n not in past_words):
-            dists = distmat[pres.index(c),:]
-            di = dists[pres.index(n)]
-            dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
-            ranks.append(_get_corrected_rank(di, dists_filt))
-            past_idxs.append(pres.index(c))
-            past_words.append(c)
+    seen = np.zeros(len(pres), dtype=bool)
+    
+    # Pre-loop checks
+    if len(r_idxs) < 2:
+        return np.nan
+
+    for i in range(len(r_idxs)-1):
+        c_idx = r_idxs[i]
+        n_idx = r_idxs[i+1]
+        
+        # Skip if already recalled (shouldn't happen in standard FR but check)
+        if seen[c_idx] or seen[n_idx]:
+             # Matches logic "c not in past_words and n not in past_words"
+             # If c was seen (prev iteration), it's in past.
+             # Wait, loop updates past_idxs AFTER calc.
+             # So c_idx is NOT seen yet.
+             pass
+
+        # Check if they were seen in *previous* steps
+        if seen[c_idx] or seen[n_idx]:
+            continue
+
+        # Get distances from current item
+        dists = distmat[c_idx]
+        target_dist = dists[n_idx]
+        
+        # Filter: keep only NOT seen indices
+        # Note: current c_idx is NOT in "seen" yet, so it is included in pool?
+        # Original logic: "if idx not in past_idxs". past_idxs appended c AFTER.
+        # So c IS in the pool?
+        # "past_idxs.append(pres.index(c))" happens at end.
+        valid_mask = ~seen
+        valid_mask[c_idx] = False # Exclude current item from pool
+        
+        dists_filt = dists[valid_mask]
+        
+        # Optimize Rank Calculation
+        # sort desc
+        # n_greater = np.sum(dists_filt > target_dist)
+        # n_equal = np.sum(dists_filt == target_dist)
+        # avg_rank = n_greater + (n_equal + 1) / 2
+        
+        n_greater = np.sum(dists_filt > target_dist)
+        n_equal = np.sum(dists_filt == target_dist)
+        avg_rank = n_greater + (n_equal + 1) / 2.0
+        
+        ranks.append(avg_rank / len(dists_filt))
+        
+        # Update seen
+        seen[c_idx] = True
+        
     return np.nanmean(ranks)
 
 
@@ -98,6 +180,8 @@ def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
 
     distmat = get_distmat(egg, feature, distdict)
     matchmat = get_match(egg, feature, distdict)
+    print(f"DEBUG: matchmat.shape={matchmat.shape}, len(rec)={len(rec)}")
+    print(f"DEBUG: distmat.shape={distmat.shape}")
 
     ranks = []
     for i in range(len(rec)-1):
@@ -108,125 +192,34 @@ def _get_weight_best(egg, feature, distdict, permute, n_perms, distance):
         ranks.append(_get_corrected_rank(di, dists_filt))
     return np.nanmean(ranks)
 
-def _get_weight_smooth(egg, feature, distdict, permute, n_perms, distance):
-
-    if permute:
-        return _permute(egg, feature, distdict, _get_weight_smooth, n_perms)
-
-    rec = list(egg.get_rec_items().values[0])
-    if len(rec) <= 2:
-        warnings.warn('Not enough recalls to compute fingerprint, returning default'
-              'fingerprint.. (everything is .5)')
-        return np.nan
-
-    distmat = get_distmat(egg, feature, distdict)
-    matchmat = get_match(egg, feature, distdict)
-
-    ranks = []
-    for i in range(len(rec)-1):
-        cdx, ndx = np.argmin(matchmat[i, :]), np.argmin(matchmat[i+1, :])
-        dists = distmat[cdx, :]
-        di = dists[ndx]
-        dists_filt = np.array([dist for idx, dist in enumerate(dists)])
-        ranks.append(_get_corrected_rank(di, dists_filt))
-    return np.nanmean(ranks)
 
 
 def get_distmat(egg, feature, distdict):
-    f = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().values[0]])
-    if 1 in f.shape:
-        f = f.T
+    f_data = [xi[feature] for xi in egg.get_pres_features().values[0]]
+    # Ensure (N_items, N_features)
+    # If elements are scalars, np.array gives (N,), reshape to (N, 1)
+    # If elements are lists, np.array gives (N, K)
+    f = np.array(f_data)
+    if f.ndim == 1:
+        f = f.reshape(-1, 1)
+        
     return cdist(f, f, distdict[egg.dist_funcs[feature]])
 
 
 def get_match(egg, feature, distdict):
-    p = np.atleast_2d([xi[feature] for xi in egg.get_pres_features().values[0]]).T
-    r = np.atleast_2d([xi[feature] for xi in egg.get_rec_features().values[0]]).T
+    p_data = [xi[feature] for xi in egg.get_pres_features().values[0]]
+    p = np.array(p_data)
+    if p.ndim == 1:
+        p = p.reshape(-1, 1)
+        
+    r_data = [xi[feature] for xi in egg.get_rec_features().values[0]]
+    r = np.array(r_data)
+    if r.ndim == 1:
+        r = r.reshape(-1, 1)
+        
     return cdist(p, r, distdict[egg.dist_funcs[feature]])
 
 
-def compute_feature_weights(pres_list, rec_list, feature_list, distances):
-    """
-    Compute clustering scores along a set of feature dimensions
-
-    Parameters
-    ----------
-    pres_list : list
-        list of presented words
-
-    rec_list : list
-        list of recalled words
-
-    feature_list : list
-        list of feature dicts for presented words
-
-    distances : dict
-        dict of distance matrices for each feature
-
-    Returns
-    ----------
-    weights : list
-        list of clustering scores for each feature dimension
-    """
-
-    # initialize the weights object for just this list
-    weights = {}
-    for feature in feature_list[0]:
-        weights[feature] = []
-
-    # return default list if there is not enough data to compute the fingerprint
-    if len(rec_list) <= 2:
-        print('Not enough recalls to compute fingerprint, returning default'
-              'fingerprint.. (everything is .5)')
-        for feature in feature_list[0]:
-            weights[feature] = .5
-        return [weights[key] for key in weights]
-
-    # initialize past word list
-    past_words = []
-    past_idxs = []
-
-    # loop over words
-    for i in range(len(rec_list)-1):
-
-        # grab current word
-        c = rec_list[i]
-
-        # grab the next word
-        n = rec_list[i + 1]
-
-        # if both recalled words are in the encoding list and haven't been recalled before
-        if (c in pres_list and n in pres_list) and (c not in past_words and n not in past_words):
-
-            # for each feature
-            for feature in feature_list[0]:
-
-                # get the distance vector for the current word
-                dists = distances[feature][pres_list.index(c),:]
-
-                # distance between current and next word
-                cdist = dists[pres_list.index(n)]
-
-                # filter dists removing the words that have already been recalled
-                dists_filt = np.array([dist for idx, dist in enumerate(dists) if idx not in past_idxs])
-
-                # get indices
-                avg_rank = np.mean(np.where(np.sort(dists_filt)[::-1] == cdist)[0]+1)
-
-                # compute the weight
-                weights[feature].append(avg_rank / len(dists_filt))
-
-            # keep track of what has been recalled already
-            past_idxs.append(pres_list.index(c))
-            past_words.append(c)
-
-    # average over the cluster scores for a particular dimension
-    for feature in weights:
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", category=RuntimeWarning)
-            weights[feature] = np.nanmean(weights[feature])
-
-    return [weights[key] for key in weights]
 
 
 def _permute(egg, feature, distdict, func, n_perms=100):

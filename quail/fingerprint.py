@@ -75,8 +75,8 @@ class Fingerprint(object):
             self.history.append(self.state)
             n+=1
         else:
-            self.state = None
-            self.features = None
+            self.state = state
+            self.features = None if state is None else getattr(state, 'index', None)
 
         self.n = n
 
@@ -179,6 +179,18 @@ class OptimalPresenter(object):
         if params is not None:
             self.params.update(params)
 
+        if fingerprint is not None:
+            self.params['fingerprint'] = fingerprint
+            
+        # If features provided, update fingerprint features?
+        # The Fingerprint element in params needs features set.
+        if features is not None:
+            # If current fingerprint is empty/default, set features?
+            # Or just store features in params?
+            # get_features() calls self.features on fingerprint.
+            if self.params['fingerprint'].features is None:
+                self.params['fingerprint'].features = features
+        
         self.strategy = strategy
 
     def set_params(self, name, value):
@@ -682,13 +694,22 @@ def compute_feature_weights_dict(pres_list, rec_list, feature_list, dist_dict):
 
     # initialize the weights object for just this list
     weights = {}
-    for feature in feature_list[0]:
+    
+    # Filter features to those present in both pres_list features and supported by logic
+    valid_features = []
+    if len(feature_list) > 0:
+        for f in feature_list[0]:
+            # heuristic: check if f indicates a feature key we care about
+            if f != 'item':
+                 valid_features.append(f)
+
+    for feature in valid_features:
         weights[feature] = []
 
     # return default list if there is not enough data to compute the fingerprint
     if len(rec_list) < 2:
         print('Not enough recalls to compute fingerprint, returning default fingerprint.. (everything is .5)')
-        for feature in feature_list[0]:
+        for feature in valid_features:
             weights[feature] = .5
         return [weights[key] for key in weights]
 
@@ -709,7 +730,7 @@ def compute_feature_weights_dict(pres_list, rec_list, feature_list, dist_dict):
         if (c in pres_list and n in pres_list) and (c not in past_words and n not in past_words):
 
             # for each feature
-            for feature in feature_list[0]:
+            for feature in valid_features:
 
                 # get the distance vector for the current word
                 # dists = [dist_dict[c][j][feature] for j in dist_dict[c]]
