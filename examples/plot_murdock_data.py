@@ -52,8 +52,8 @@ subjgroup = []
 for subj_idx in range(egg.n_subjects):
     try:
         sample = egg.pres.loc[(subj_idx, 0)][0]
-        if sample and 'condition' in sample:
-            subjgroup.append(sample['condition'])
+        if sample and 'Condition' in sample:
+            subjgroup.append(sample['Condition'])
         else:
             subjgroup.append('Unknown')
     except (KeyError, IndexError, TypeError):

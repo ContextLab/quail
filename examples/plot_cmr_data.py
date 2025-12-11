@@ -54,8 +54,8 @@ for subj_idx in range(egg.n_subjects):
     for list_idx in range(egg.n_lists):
         try:
             sample = egg.pres.loc[(subj_idx, list_idx)][0]
-            if sample and 'condition' in sample:
-                subj_listgroup.append(sample['condition'])
+            if sample and 'Condition' in sample:
+                subj_listgroup.append(sample['Condition'])
             else:
                 # Use the same group name as valid lists to avoid separate "Unknown" category
                 # These are likely practice/buffer lists
@@ -104,7 +104,7 @@ axes[1, 0].set_ylim([0, 1])
 
 # 4. Memory Fingerprint - averaged across all lists
 avg_listgroup = ['average'] * egg.n_lists
-fingerprint = egg.analyze('fingerprint', features=['task', 'temporal'],
+fingerprint = egg.analyze('fingerprint', features=['Task', 'Temporal'],
                           listgroup=avg_listgroup)
 fingerprint.plot(ax=axes[1, 1], title='Memory Fingerprint', ylim=[0, 1])
 axes[1, 1].set_xlabel('Feature')

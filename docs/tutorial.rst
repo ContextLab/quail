@@ -48,7 +48,7 @@ What is a "memory fingerprint"?
 Example datasets
 ----------------
 
-Quail includes two classic free recall datasets for demonstration and testing.
+Quail includes several classic free recall datasets for demonstration and testing.
 These tutorials show how to load and analyze these datasets.
 
 .. toctree::
@@ -56,3 +56,4 @@ These tutorials show how to load and analyze these datasets.
 
   tutorial/murdock_1962
   tutorial/cmr_polyn_2009
+  tutorial/frfr_heusser_2018
