@@ -53,9 +53,12 @@ def list2pd(all_data, subjindex=None, listindex=None):
 
 def format2tidy(df, subjname, listname, subjgroup, analysis=None, position=0):
     melted_df = pd.melt(df.T)
+    # Get the actual column name for subjects (first column after melt)
+    # This may be 'Subject' or the actual index level name from the DataFrame
+    subject_col = melted_df.columns[0]
     melted_df[subjname]=""
-    for idx,sub in enumerate(melted_df['Subject'].unique()):
-        melted_df.loc[melted_df['Subject']==sub,subjname]=subjgroup[idx]
+    for idx,sub in enumerate(melted_df[subject_col].unique()):
+        melted_df.loc[melted_df[subject_col]==sub,subjname]=subjgroup[idx]
     if analysis=='spc':
         base = list(df.columns)
         melted_df['Position'] = base * int(melted_df.shape[0] / len(base))
